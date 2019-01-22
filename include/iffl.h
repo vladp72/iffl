@@ -66,6 +66,45 @@
 //   debug_memory_resource a memory resource that can be used along
 //   with polimorfic allocator for debugging contained.
 //
+// Interface tht user is responsible for:
+//
+//  Since we are implementing intrusive container, user have to give us a 
+//  helper calss thar implement folowing methods 
+//   - tell us minimum required size element have to have ti be able to query element size
+//          constexpr static size_t minimum_size() noexcept
+//   - query offset to next element 
+//          constexpr static size_t get_next_element_offset(char const *buffer) noexcept
+//   - update offset to the next element
+//          constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept
+//   - calculate element size from data
+//          constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept
+//   - validate that data fit into the buffer
+//          constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept
+//
+//  By default we are looking for a partial specialization for the element type.
+//  For example:
+//
+//    namespace iffl {
+//        template <>
+//        struct flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> {
+//            constexpr static size_t minimum_size() noexcept { <implementation> }
+//            constexpr static size_t get_next_element_offset(char const *buffer) noexcept { <implementation> }
+//            constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept { <implementation> }
+//            constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept { <implementation> }
+//            constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {<implementation>}
+//        };
+//    }
+//
+//
+//   for sample implementation see flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> @ test\iffl_test_cases.cpp
+//   and addition documetation in this mode right above where primary
+//   template for flat_forward_list_traits is defined
+//
+//   If picking traits using partial specialization is not preferable then traits can be passed as
+//   an explicit template parameter. For example:
+// 
+//   using ffl_iterator = iffl::flat_forward_list_iterator<FLAT_FORWARD_LIST_TEST, my_traits>;
+//
 // Debugging:
 //
 //   if you define FFL_DBG_CHECK_DATA_VALID then every method
@@ -241,6 +280,49 @@ public:
 private:
     bool armed_{ true };
 };
+
+
+//
+// For example see flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> @ test\iffl_test_cases.cpp
+// 
+// Specialize this class for the tipe that is an element header for your
+// flat forward list
+//
+// Example:
+// See flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> @ test\iffl_tests.cpp
+//
+// This is the only method required by flat_forward_list_iterator.
+// Returns offset to the next element or 0 if this is the last element.
+//
+// constexpr static size_t get_next_element_offset(char const *buffer) noexcept;
+//
+// This method is requiered for flat_forward_list_validate algorithm
+// Minimum number of bytes to be able to safely query offset to next 
+// and safely examine other fields.
+//
+// constexpr static size_t minimum_size() noexcept;
+//
+// This method is required for flat_forward_list_validate algorithm
+// Validates that variable data fits in the buffer
+//
+// constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept;
+//
+// This method is used by flat_forward_list container to update offset to the
+// next element. size can be 0 if this element is last or above zero for any other element. 
+//
+// constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept
+//
+// This method is used by flat_forward_list. It calculates size of element, but it should
+// not use next element offset, and instead it should calculate size based on the data this 
+// element contains. It is used when we append new element to the container, and need to
+// update offset to the next on the element that used to be last. In that case offset to 
+// the next is determined by calling this method. 
+// Another example that uses this method is element_shrink_to_fit.
+//
+// constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept 
+//
+template <typename T>
+struct flat_forward_list_traits;
 
 //
 // Creates an instance of guard given
@@ -476,28 +558,6 @@ struct container_element_type_base {
     using difference_type = std::ptrdiff_t;
 };
 
-//
-// Specialize this class for the tipe that is an element header for your
-// flat forward list
-//
-// This is the only method required by flat_forward_list_iterator.
-// Returns offset to the next element or 0 if this is the last element.
-//
-// constexpr static size_t get_next_element_offset(char const *buffer) noexcept;
-//
-// This method is requiered for flat_forward_list_validate algorithm
-// Minimum number of bytes to be able to safely query offset to next 
-// and safely examine other fields.
-//
-// constexpr static size_t minimum_size() noexcept;
-//
-// This method is required for flat_forward_list_validate algorithm
-// Validates that variable data fits in the buffer
-//
-// constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept;
-//
-template <typename T>
-struct flat_forward_list_traits;
 //
 // Iterator for flat forward list
 // T  - type of element header
