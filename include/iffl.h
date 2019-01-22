@@ -1,4 +1,6 @@
 //
+// Author: Vladimir Petter
+//
 // Implements intrusive flat forward list.
 //
 // This container is designed to contain element with 
