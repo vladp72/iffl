@@ -66,6 +66,21 @@
 //   debug_memory_resource a memory resource that can be used along
 //   with polimorfic allocator for debugging contained.
 //
+// Debugging:
+//
+//   if you define FFL_DBG_CHECK_DATA_VALID then every method
+//   that modifies data in container will call flat_forward_list_validate
+//   at the end and makes sure that data are valid, and last element is
+//   where container believes it should be.
+//   Cost O(n).
+//
+//   If you define FFL_DBG_CHECK_ITERATOR_VALID then every input 
+//   iterator will be cheked to match to valid element in the container.
+//   Cost O(n)
+//
+//   You can use debug_memory_resource and pmr_flat_forward_list to validate
+//   that all allocations are freed and that there are no buffer overruns/underruns
+//
 
 #include <type_traits>
 #include <memory>
@@ -2170,9 +2185,11 @@ private:
     }
 
     void validate_data_invariants() const noexcept {
+#ifdef FFL_DBG_CHECK_DATA_VALID
         auto[valid, last] = flat_forward_list_validate<T, TT>(buffer_begin_, buffer_end_);
         FFL_CODDING_ERROR_IF_NOT(valid || nullptr == last);
         FFL_CODDING_ERROR_IF_NOT(last == last_element_);
+#endif //FFL_DBG_CHECK_DATA_VALID
     }
 
     void validate_pointer_invariants() const noexcept {
@@ -2212,6 +2229,7 @@ private:
     }
 
     void validate_compare_to_all_valid_elements(const_iterator const &it) const noexcept {
+#ifdef FFL_DBG_CHECK_ITERATOR_VALID
         //
         // If not end iterator then must point to one of the valid iterators.
         //
@@ -2225,6 +2243,9 @@ private:
             }
             FFL_CODDING_ERROR_IF_NOT(found_match);
         }
+#else //FFL_DBG_CHECK_ITERATOR_VALID
+        it;
+#endif //FFL_DBG_CHECK_ITERATOR_VALID
     }
 
     struct all_sizes {

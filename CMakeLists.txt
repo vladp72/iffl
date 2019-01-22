@@ -206,6 +206,11 @@ target_link_libraries ( iffl_test
                         iffl
                       )
 
+target_compile_definitions ( iffl_test
+                            PRIVATE
+                                FFL_DBG_CHECK_DATA_VALID
+                                FFL_DBG_CHECK_ITERATOR_VALID )
+
 add_test ( iffl_test
            iffl_test
          )
