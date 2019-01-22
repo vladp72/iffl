@@ -1,9 +1,4 @@
 #include <windows.h>
-#include <iostream>
-#include <atomic>
-#include <map>
-#include <unordered_map>
-#include <vector>
 
 #include "iffl.h"
 #include "iffl_test_cases.h"
@@ -104,43 +99,8 @@ namespace iffl {
     };
 }
 
-//typedef struct _FILE_FULL_EA_INFORMATION {
-//    ULONG  NextEntryOffset;
-//    UCHAR  Flags;
-//    UCHAR  EaNameLength;
-//    USHORT EaValueLength;
-//    CHAR   EaName[1];
-//} FILE_FULL_EA_INFORMATION, *PFILE_FULL_EA_INFORMATION;
-//
-//namespace ffl {
-//    template <>
-//    struct flat_forward_list_traits<FILE_FULL_EA_INFORMATION> {
-//        //
-//        // This is the only method required by flat_forward_list_iterator.
-//        //
-//        constexpr static size_t get_next_element_offset(char const *buffer) noexcept {
-//            FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
-//            return e.NextEntryOffset;
-//        }
-//        //
-//        // This method is requiered for validate algorithm
-//        //
-//        constexpr static size_t minimum_size() noexcept {
-//            return FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength);
-//         }
-//        //
-//        // This method is required for validate algorithm
-//        //
-//        constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {
-//            FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
-//            return true;
-//        }
-//    };
-//}
-
 using ffl_iterator = iffl::flat_forward_list_iterator<FLAT_FORWARD_LIST_TEST>;
 using ffl_const_iterator = iffl::flat_forward_list_const_iterator<FLAT_FORWARD_LIST_TEST>;
-
 
 void flat_forward_list_validate_test1(char const * title, bool expected_to_be_valid, char const *first, char const *end) {
     printf("-----\"%s\"-----\n", title);

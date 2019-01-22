@@ -157,6 +157,7 @@ export ( TARGETS iffl FILE aiiflconfig.cmake )
 add_executable ( iffl_test
                  test/iffl_test.cpp
                  test/iffl_test_cases.cpp
+                 test/iffl_ea_usecase.cpp
                )
 
 #

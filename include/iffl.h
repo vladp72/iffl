@@ -128,6 +128,7 @@
 #include <tuple>
 #include <algorithm>
 #include <utility>
+#include <atomic>
 
 #include <intrin.h>
 
@@ -1322,11 +1323,15 @@ public:
                 });
     }
 
-    template <typename F, typename ... P>
+    template <typename F
+              //, typename ... P
+              >
     void emplace_front(size_type element_size, 
-                       F const &fn,
-                       P&& ... p) {
-        emplace(begin(), fn, std::forward<P>(p)...);
+                       F const &fn
+                       //, P&& ... p
+                       ) {
+        //emplace(begin(), element_size, fn, std::forward<P>(p)...);
+        emplace(begin(), element_size, fn);
     }
 
     void pop_front() {
