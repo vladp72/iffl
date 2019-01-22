@@ -1,5 +1,6 @@
 //
 // Author: Vladimir Petter
+// github: https://github.com/vladp72/iffl
 //
 // Implements intrusive flat forward list.
 //

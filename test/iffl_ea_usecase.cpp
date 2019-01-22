@@ -41,11 +41,8 @@ namespace iffl {
         constexpr static size_t get_size(char const *buffer) {
             return get_size(*reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer));
         }
-        //
-        // This method is required for validate algorithm
-        //
-        constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {
-            FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
+
+        constexpr static bool validate_element_size(FILE_FULL_EA_INFORMATION const &e, size_t buffer_size) noexcept {
             //
             // if this is last element then make sure it fits in the reminder of buffer
             // otherwise make sure that pointer to the next element fits reminder of buffer
@@ -60,6 +57,28 @@ namespace iffl {
                 return  get_size(e) <= buffer_size;
             } else if (e.NextEntryOffset <= buffer_size) {
                 return  get_size(e) <= e.NextEntryOffset;
+            }
+            return false;
+        }
+
+        static bool validate_data(FILE_FULL_EA_INFORMATION const &e) noexcept {
+            //
+            // check that EA name has terminating zero in the scope of EaNameLength 
+            //
+            char const *end = e.EaName + e.EaNameLength;
+            return end != std::find_if(e.EaName,
+                                       end, 
+                                       [](char c) -> bool {
+                                            return c == '\0'; 
+                                       });
+        }
+        //
+        // This method is required for validate algorithm
+        //
+        constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {
+            FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
+            if (validate_element_size(e, buffer_size)) {
+                return validate_data(e);
             }
             return false;
         }
@@ -99,6 +118,9 @@ char const ea_data2[] = { 1,2,3,4,5,6,7,8,9,0xa,0xb,0xc,0xd,0xf };
 // Validates adn prints extended attribute list
 //
 void handle_ea(char const *buffer, size_t buffer_lenght) {
+
+    printf("-----\"handle_ea\"-----\n");
+
     size_t idx{ 0 };
     char const *failed_validation{ nullptr };
     size_t invalid_element_length{ 0 };
@@ -107,13 +129,17 @@ void handle_ea(char const *buffer, size_t buffer_lenght) {
         iffl::flat_forward_list_validate<FILE_FULL_EA_INFORMATION>(
             buffer,
             buffer + buffer_lenght,
-            [&idx, &failed_validation, &invalid_element_length] (size_t buffer_size,
-                                                               char const *buffer) -> bool {
-                bool is_valid = iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>::validate(buffer_size, buffer);
+            [buffer, &idx, &failed_validation, &invalid_element_length] (size_t buffer_size,
+                                                                         char const *element_buffer) -> bool {
+                bool is_valid = iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>::validate(buffer_size, element_buffer);
                 if (is_valid) {
                     FILE_FULL_EA_INFORMATION const &e = 
-                        *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
-                    printf("FILE_FULL_EA_INFORMATION[%zi].NextEntryOffset = %u\n", 
+                        *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(element_buffer);
+                    printf("FILE_FULL_EA_INFORMATION[%zi] @ = 0x%p, buffer offset %zi\n",
+                           idx,
+                           &e,
+                           element_buffer - buffer);
+                    printf("FILE_FULL_EA_INFORMATION[%zi].NextEntryOffset = %u\n",
                            idx,
                            e.NextEntryOffset);
                     printf("FILE_FULL_EA_INFORMATION[%zi].Flags = %u\n", 
@@ -134,6 +160,7 @@ void handle_ea(char const *buffer, size_t buffer_lenght) {
                         }
                         printf("\n");
                     }
+                    ++idx;
                 } else {
                     invalid_element_length = buffer_size;
                     failed_validation = buffer;
@@ -144,8 +171,8 @@ void handle_ea(char const *buffer, size_t buffer_lenght) {
     printf("\n");
     printf("valid                            : %s\n", is_valid ? "yes" : "no");
     printf("found elements                   : %zi\n", idx);
-    printf("last valid element               : %p\n", last_valid);
-    printf("element failed validation        : %p\n", failed_validation);
+    printf("last valid element               : 0x%p\n", last_valid);
+    printf("element failed validation        : 0x%p\n", failed_validation);
     printf("element failed validation length : %zi\n", invalid_element_length);
     printf("\n");
 }
