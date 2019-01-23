@@ -110,6 +110,18 @@ constexpr inline std::pair<bool, char const *> flat_forward_list_validate(
 ```   
 
 **flat_forward_list_iterator** and flat_forward_list_const_iterator that can be used to enmirate over previously validated buffer.
+
+```   
+template<typename T,
+         typename TT = flat_forward_list_traits<T>>
+using flat_forward_list_iterator = flat_forward_list_iterator_t<T, TT>;
+
+template<typename T,
+         typename TT = flat_forward_list_traits<T>>
+using flat_forward_list_const_iterator = flat_forward_list_iterator_t< std::add_const_t<T>, TT>;
+```   
+
+**flat_forward_list** a container that provides a set of helper algorithms and manages y while list changes.
 Container tracks data in buffer using 3 pointers
  - **buffer_begin** is a pointer to the buffer that containes flat forward list
  - **last_element** is a pointer to the start of the last element in the buffer
@@ -117,24 +129,39 @@ Container tracks data in buffer using 3 pointers
  Just like with vector, user can resize buffer to a size larger than required by the current elements. This helps avoid buffer reallocations as you insert new elements or resize existing elements.
  Erasing elements does not shrink buffer. To shrink buffer user have to explicitely call shrink_to_fit.
 
-**flat_forward_list** a container that provides a set of helper algorithms and manages y while list changes.
+ ```   
+ template <typename T,
+          typename TT = flat_forward_list_traits<T>,
+          typename A = std::allocator<char>>
+class flat_forward_list;
+```   
 
 **pmr_flat_forward_list** is a an aliase of flat_forward_list where allocatoe is polimorfic_allocator.
 
-debug_memory_resource a memory resource that can be used along
-with polimorfic allocator for debugging contained.
+ ```   
+template <typename T,
+          typename TT = flat_forward_list_traits<T>>
+ using pmr_flat_forward_list = flat_forward_list<T, 
+                                                 TT, 
+                                                 std::pmr::polymorphic_allocator<char>>;
+ ```   
+
+**debug_memory_resource** a memory resource that can be used along with polimorfic allocator for debugging contained.
+ ```   
+class debug_memory_resource;
+ ```   
 
 User is responsible for implementing helper class that has following methods
 - tell us minimum required size element must have to be able to query element size
-constexpr static size_t minimum_size() noexcept
+constexpr static size_t minimum_size() noexcept;
 and addition documentation in this mode right above where primary
-constexpr static size_t get_next_element_offset(char const *buffer) noexcept
+constexpr static size_t get_next_element_offset(char const *buffer) noexcept;
 - update offset to the next element
-constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept
+constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept;
 - calculate element size from data
-constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept
+constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept;
 - validate that data fit into the buffer
-constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept
+constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept;
 
 By default we are looking for a partial specialization for the element type.
 
