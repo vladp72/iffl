@@ -270,7 +270,7 @@ namespace iffl {
 }
 ```
 
-Now FILE_FULL_EA_INFORMATION is ready to be used with iffl.
+Now FILE_FULL_EA_INFORMATION is ready to be used with iffl. By default you will not explicitely spell that for FILE_FULL_EA_INFORMATION we should use iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>. Compiler will do the right thing using partial template specialization magic.
 Here is an example where prepare_ea_and_call_handler uses container to prepare buffer with FILE_FULL_EA_INFORMATION, and calls  handle_ea.
 Function handle_ea uses flat_forward_list_validate to safely process elements of untrusted buffer. 
 
@@ -381,7 +381,6 @@ void handle_ea(char const *buffer, size_t buffer_lenght) {
              }
     }
 }
-
 ```
 
 You can find sample implementation for another type FLAT_FORWARD_LIST_TEST at [test\iffl_test_cases.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_test_cases.cpp)
@@ -392,5 +391,5 @@ If picking traits using partial specialization is not feasible then traits can b
 
 an explicit template parameter. For example:
 ```
-   using ffl_iterator = iffl::flat_forward_list_iterator<FLAT_FORWARD_LIST_TEST, my_traits>;
+   using ffl_iterator = iffl::flat_forward_list_iterator<FILE_FULL_EA_INFORMATION, my_alternative_ea_traits>;
 ```
