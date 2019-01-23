@@ -42,8 +42,6 @@
 // Output of NtQueryDirectoryFile 
 //   https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/ns-ntifs-_file_both_dir_information
 //
-// Cluster property list CLUSPROP_VALUE
-//   https://docs.microsoft.com/en-us/windows/desktop/api/clusapi/ns-clusapi-clusprop_value
 // 
 // This module implements 
 //
