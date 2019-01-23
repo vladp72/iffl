@@ -42,7 +42,7 @@ namespace iffl {
             return get_size(*reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer));
         }
 
-        constexpr static bool validate_element_size(FILE_FULL_EA_INFORMATION const &e, size_t buffer_size) noexcept {
+        constexpr static bool validate_size(FILE_FULL_EA_INFORMATION const &e, size_t buffer_size) noexcept {
             //
             // if this is last element then make sure it fits in the reminder of buffer
             // otherwise make sure that pointer to the next element fits reminder of buffer
@@ -63,24 +63,24 @@ namespace iffl {
 
         static bool validate_data(FILE_FULL_EA_INFORMATION const &e) noexcept {
             //
-            // check that EA name has terminating zero in the scope of EaNameLength 
+            // This is and example of a validation you might want to do.
+            // Extended attribute name does not have to be 0 terminated 
+            // so it is not strictly speaking nessesary here.
             //
-            char const *end = e.EaName + e.EaNameLength;
-            return end != std::find_if(e.EaName,
-                                       end, 
-                                       [](char c) -> bool {
-                                            return c == '\0'; 
-                                       });
+            // char const *end = e.EaName + e.EaNameLength;
+            // return end != std::find_if(e.EaName,
+            //                            end, 
+            //                            [](char c) -> bool {
+            //                                 return c == '\0'; 
+            //                            });
+            return true;
         }
         //
         // This method is required for validate algorithm
         //
         constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {
             FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
-            if (validate_element_size(e, buffer_size)) {
-                return validate_data(e);
-            }
-            return false;
+            return validate_size(e, buffer_size) && validate_data(e);
         }
         //
         // This method is required by container
@@ -148,7 +148,8 @@ void handle_ea(char const *buffer, size_t buffer_lenght) {
                     printf("FILE_FULL_EA_INFORMATION[%zi].EaNameLength = %u \"%s\"\n", 
                            idx,
                            static_cast<int>(e.EaNameLength),
-                           e.EaNameLength ? e.EaName : "");
+                           (e.EaNameLength ? std::string{ e.EaName, e.EaName + e.EaNameLength } 
+                                           : std::string{}).c_str());
                     printf("FILE_FULL_EA_INFORMATION[%zi].EaValueLength = %hu\n", 
                            idx,
                            e.EaValueLength);
@@ -186,48 +187,48 @@ void prepare_ea_and_call_handler() {
     ea_iffl eas;
 
     eas.emplace_front(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) 
-                     + sizeof(ea_name0), 
+                     + sizeof(ea_name0)-1, 
                      [](char *buffer,
                         size_t new_element_size) {
                         FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
                         e.Flags = 0;
-                        e.EaNameLength = sizeof(ea_name0);
+                        e.EaNameLength = sizeof(ea_name0)-1;
                         e.EaValueLength = 0;
                         iffl::copy_data(e.EaName,
                                         ea_name0,
-                                        sizeof(ea_name0));
+                                        sizeof(ea_name0)-1);
                       });
 
     eas.emplace_back(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) 
-                     + sizeof(ea_name1)
+                     + sizeof(ea_name1)-1
                      + sizeof(ea_data1),
                      [](char *buffer,
                         size_t new_element_size) {
                         FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
                         e.Flags = 1;
-                        e.EaNameLength = sizeof(ea_name1);
+                        e.EaNameLength = sizeof(ea_name1)-1;
                         e.EaValueLength = sizeof(ea_data1);
                         iffl::copy_data(e.EaName,
                                         ea_name1,
-                                        sizeof(ea_name1));
-                        iffl::copy_data(e.EaName + sizeof(ea_name1),
+                                        sizeof(ea_name1)-1);
+                        iffl::copy_data(e.EaName + sizeof(ea_name1)-1,
                                         ea_data1,
                                         sizeof(ea_data1));
                       });
 
     eas.emplace_front(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) 
-                     + sizeof(ea_name2)
+                     + sizeof(ea_name2)-1
                      + sizeof(ea_data2),
                      [](char *buffer,
                         size_t new_element_size) {
                         FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
                         e.Flags = 2;
-                        e.EaNameLength = sizeof(ea_name2);
+                        e.EaNameLength = sizeof(ea_name2)-1;
                         e.EaValueLength = sizeof(ea_data2);
                         iffl::copy_data(e.EaName,
                                         ea_name2,
-                                        sizeof(ea_name2));
-                        iffl::copy_data(e.EaName + sizeof(ea_name2),
+                                        sizeof(ea_name2)-1);
+                        iffl::copy_data(e.EaName + sizeof(ea_name2)-1,
                                         ea_data2,
                                         sizeof(ea_data2));
                       });

@@ -4,7 +4,7 @@
 //
 // Implements intrusive flat forward list.
 //
-// This container is designed to contain element with 
+// This container is designed for types with 
 // following general structure: 
 //
 //                      ------------------------------------------------------------
@@ -50,28 +50,28 @@
 //   function flat_forward_list_validate that 
 //   can be use to deal with untrusted buffers.
 //   You can use it to validate if untrusted buffer 
-//   contains a valid list, and to find boundary at 
+//   contains a valid list, and to find entry at 
 //   which list gets invalid.
-//   It also can be used to enumirate over validated
-//   elements 
+//   It also can be used to enumerate over validated
+//   elements.
 //
 //   flat_forward_list_iterator and flat_forward_list_const_iterator 
-//   that can be used to enmirate over previously validated buffer
+//   that can be used to enumerate over previously validated buffer.
 //
 //   flat_forward_list a container that provides a set of helper 
-//   algorithms and manages y while list changes.
+//   algorithms and manages buffer lifetime while list changes.
 //
 //   pmr_flat_forward_list is a an aliase of flat_forward_list
-//   where allocatoe is polimorfic_allocator.
+//   where allocator is polimorfic_allocator.
 //
 //   debug_memory_resource a memory resource that can be used along
 //   with polimorfic allocator for debugging contained.
 //
-// Interface tht user is responsible for:
+// Interface that user have to implement for a type that will be stored in the container:
 //
 //  Since we are implementing intrusive container, user have to give us a 
-//  helper calss thar implement folowing methods 
-//   - tell us minimum required size element have to have ti be able to query element size
+//  helper class that implements folowing methods 
+//   - tell minimum required size am element must have to be able to query element size
 //          constexpr static size_t minimum_size() noexcept
 //   - query offset to next element 
 //          constexpr static size_t get_next_element_offset(char const *buffer) noexcept
@@ -82,7 +82,8 @@
 //   - validate that data fit into the buffer
 //          constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept
 //
-//  By default we are looking for a partial specialization for the element type.
+//  By default algorithms and conteiners in this library are looking for specialization 
+//  of flat_forward_list_traits for the element type.
 //  For example:
 //
 //    namespace iffl {
@@ -98,8 +99,8 @@
 //
 //
 //   for sample implementation see flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> @ test\iffl_test_cases.cpp
-//   and addition documetation in this mode right above where primary
-//   template for flat_forward_list_traits is defined
+//   and addition documetation in this mode right before primary
+//   template for flat_forward_list_traits definition
 //
 //   If picking traits using partial specialization is not preferable then traits can be passed as
 //   an explicit template parameter. For example:
