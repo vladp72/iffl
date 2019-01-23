@@ -138,7 +138,7 @@ constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept
 
 By default we are looking for a partial specialization for the element type.
 
-For example:
+User have to implement following interface:
 ```
     namespace iffl {
         template <>
@@ -151,6 +151,98 @@ For example:
         };
     }
 ```
+
+Sample implementation for FILE_FULL_EA_INFORMATION:
+
+```
+typedef struct _FILE_FULL_EA_INFORMATION {
+    ULONG  NextEntryOffset;
+    UCHAR  Flags;
+    UCHAR  EaNameLength;
+    USHORT EaValueLength;
+    CHAR   EaName[1];
+} FILE_FULL_EA_INFORMATION, *PFILE_FULL_EA_INFORMATION;
+
+namespace iffl {
+    template <>
+    struct flat_forward_list_traits<FILE_FULL_EA_INFORMATION> {
+        //
+        // This is the only method required by flat_forward_list_iterator.
+        //
+        constexpr static size_t get_next_element_offset(char const *buffer) noexcept {
+            FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
+            return e.NextEntryOffset;
+        }
+        //
+        // This method is requiered for validate algorithm
+        //
+        constexpr static size_t minimum_size() noexcept {
+            return FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength);
+        }
+        //
+        // Helper method that calculates buffer size. Not required.
+        //
+        constexpr static size_t get_size(FILE_FULL_EA_INFORMATION const &e) {
+            return  FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) +
+                    e.EaNameLength +
+                    e.EaValueLength;
+        }
+        constexpr static size_t get_size(char const *buffer) {
+            return get_size(*reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer));
+        }
+        //
+        // Helper method that check that element sizes are correct. Not required.
+        //
+        constexpr static bool validate_size(FILE_FULL_EA_INFORMATION const &e, size_t buffer_size) noexcept {
+            if (e.NextEntryOffset == 0) {
+                return  get_size(e) <= buffer_size;
+            } else if (e.NextEntryOffset <= buffer_size) {
+                return  get_size(e) <= e.NextEntryOffset;
+            }
+            return false;
+        }
+        //
+        // Helper method that checks that data are valid
+        //
+        static bool validate_data(FILE_FULL_EA_INFORMATION const &e) noexcept {
+            //
+            // This is and example of a validation you might want to do.
+            // Extended attribute name does not have to be 0 terminated 
+            // so it is not strictly speaking nessesary here.
+            //
+            // char const *end = e.EaName + e.EaNameLength;
+            // return end != std::find_if(e.EaName,
+            //                            end, 
+            //                            [](char c) -> bool {
+            //                                 return c == '\0'; 
+            //                            });
+            return true;
+        }
+        //
+        // This method is required for validate algorithm and container
+        //
+        constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {
+            FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
+            return validate_size(e, buffer_size) && validate_data(e);
+        }
+        //
+        // This method is required by container only
+        //
+        constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept {
+            FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
+            FFL_CODDING_ERROR_IF_NOT(size == 0 || size >= get_size(e));
+            e.NextEntryOffset = static_cast<ULONG>(size);
+        }
+        //
+        // This method is required by container only
+        //
+        constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept {
+            return get_size(buffer);
+        }
+    };
+}
+```
+
 for sample implementation see flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> at [test\iffl_test_cases.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_test_cases.cpp)
 and addition documetation in this mode right above where primary
 template for flat_forward_list_traits is defined
