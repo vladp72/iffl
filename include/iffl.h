@@ -21,8 +21,6 @@
 // FILE_NOTIFY_EXTENDED_INFORMATION 
 //   https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_file_notify_extended_information
 //
-// WIN32_FIND_DATA 
-//   https://docs.microsoft.com/en-us/windows/desktop/api/minwinbase/ns-minwinbase-_win32_find_dataa
 //
 // FILE_INFO_BY_HANDLE_CLASS 
 //   https://msdn.microsoft.com/en-us/8f02e824-ca41-48c1-a5e8-5b12d81886b5
