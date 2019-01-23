@@ -243,10 +243,119 @@ namespace iffl {
 }
 ```
 
-for sample implementation see flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> at [test\iffl_test_cases.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_test_cases.cpp)
-and addition documetation in this mode right above where primary
-template for flat_forward_list_traits is defined
+Now FILE_FULL_EA_INFORMATION is ready to be used with iffl.
+Here is an example where prepare_ea_and_call_handler uses container to prepare buffer with FILE_FULL_EA_INFORMATION, and calls  handle_ea.
+Function handle_ea uses flat_forward_list_validate to safely process elements of untrusted buffer. 
 
+```
+using ea_iffl = iffl::flat_forward_list<FILE_FULL_EA_INFORMATION>;
+
+void handle_ea(char const *buffer, size_t buffer_lenght) {
+    size_t idx{ 0 };
+    char const *failed_validation{ nullptr };
+    size_t invalid_element_length{ 0 };
+    //
+    // Use flat_forward_list_validate algorithm to safely process elements of untrusted input buffer
+    //
+    auto[is_valid, last_valid] =
+        iffl::flat_forward_list_validate<FILE_FULL_EA_INFORMATION>(
+            buffer,
+            buffer + buffer_lenght,
+            [buffer, &idx, &failed_validation, &invalid_element_length] (size_t buffer_size,
+                                                                         char const *element_buffer) -> bool {
+                bool is_valid = iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>::validate(buffer_size, element_buffer);
+                if (is_valid) {
+                    //
+                    // Add here code that handles element
+                    //
+                    FILE_FULL_EA_INFORMATION const &e = 
+                        *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(element_buffer);
+                    printf("FILE_FULL_EA_INFORMATION[%zi] @ = 0x%p, buffer offset %zi\n",
+                           idx,
+                           &e,
+                           element_buffer - buffer);
+                } else {
+                    invalid_element_length = buffer_size;
+                    failed_validation = buffer;
+                }
+                return is_valid;
+            });
+}
+
+void prepare_ea_and_call_handler() {
+    //
+    // Use container to fill buffer
+    //
+    ea_iffl eas;
+
+    char const ea_name0[] = "TEST_EA_0";
+
+    eas.emplace_front(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) 
+                     + sizeof(ea_name0)-1, 
+                     [](char *buffer,
+                        size_t new_element_size) {
+                        FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
+                        e.Flags = 0;
+                        e.EaNameLength = sizeof(ea_name0)-1;
+                        e.EaValueLength = 0;
+                        iffl::copy_data(e.EaName,
+                                        ea_name0,
+                                        sizeof(ea_name0)-1);
+                      });
+
+    char const ea_name1[] = "TEST_EA_1";
+    char const ea_data1[] = {1,2,3};
+
+    eas.emplace_back(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) 
+                     + sizeof(ea_name1)-1
+                     + sizeof(ea_data1),
+                     [](char *buffer,
+                        size_t new_element_size) {
+                        FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
+                        e.Flags = 1;
+                        e.EaNameLength = sizeof(ea_name1)-1;
+                        e.EaValueLength = sizeof(ea_data1);
+                        iffl::copy_data(e.EaName,
+                                        ea_name1,
+                                        sizeof(ea_name1)-1);
+                        iffl::copy_data(e.EaName + sizeof(ea_name1)-1,
+                                        ea_data1,
+                                        sizeof(ea_data1));
+                      });
+
+    handle_ea(eas.data(), eas.used_capacity());
+ }
+
+```
+
+using ea_iterator = iffl::flat_forward_list_iterator<FILE_FULL_EA_INFORMATION>;
+using ea_const_iterator = iffl::flat_forward_list_const_iterator<FILE_FULL_EA_INFORMATION>;
+
+void handle_ea(char const *buffer, size_t buffer_lenght) {
+    size_t idx{ 0 };
+    char const *failed_validation{ nullptr };
+    size_t invalid_element_length{ 0 };
+    //
+    // Use flat_forward_list_validate algorithm to safely process elements of untrusted input buffer
+    //
+    auto[is_valid, last_valid] = iffl::flat_forward_list_validate<FILE_FULL_EA_INFORMATION>( buffer, buffer + buffer_lenght);
+    //
+    // If buffer contains a valid non-empty list then use iterators to walk elements
+    //
+    if (is_valid && last_valid) {
+        std::for_each(
+            ea_const_iterator{buffer}, 
+            ea_const_iterator{},
+             [](FILE_FULL_EA_INFORMATION const &e) {
+                    printf("FILE_FULL_EA_INFORMATION @ = 0x%p\n", &e);
+             }
+    }
+}
+
+```
+
+You can find sample implementation for another type FLAT_FORWARD_LIST_TEST at [test\iffl_test_cases.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_test_cases.cpp)
+Addition documetation is in [iffl.h](https://github.com/vladp72/iffl/blob/master/include/iffl.h) right above declaration of primary template for flat_forward_list_traits
 
 
 If picking traits using partial specialization is not feasible then traits can be passed as
