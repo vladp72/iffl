@@ -375,7 +375,7 @@ void handle_ea(char const *buffer, size_t buffer_lenght) {
     if (is_valid && last_valid) {
         std::for_each(
             ea_const_iterator{buffer}, 
-            ea_const_iterator{},
+            ea_const_iterator{}, // this santinel iterator plays a role of end
              [](FILE_FULL_EA_INFORMATION const &e) {
                     printf("FILE_FULL_EA_INFORMATION @ = 0x%p\n", &e);
              }
