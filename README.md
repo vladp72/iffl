@@ -1,11 +1,17 @@
 # iffl
+
 C++ container for Intrusive Flat Forward List
 
 Intrusive Flat Forward List for POD elements
 Implements intrusive flat forward list (iffl).
 https://github.com/vladp72/iffl/tree/master/include
 
-Often times when dealing with OS or just C interface we need to pass in or parse a linked list of variable size structs organized into a linked list in a buffer. This header only library provides an algorithm for safe parsing such a collection, iterators for going over trusted collection, and a container for manipulating this list (push/pop/erase/insert/sort/merge/etc). To facilitate usage across C interface container also supports attach (a.k.a adopt ) buffer and detach buffer (you would need a custom allocator both sides would agree on).
+Often times when dealing with OS or just C interface we need to pass in or parse a linked 
+list of variable size structs organized into a linked list in a buffer. This header only 
+library provides an algorithm for safe parsing such a collection, iterators for going over 
+trusted collection, and a container for manipulating this list (push/pop/erase/insert/sort/merge/etc). 
+To facilitate usage across C interface container also supports attach (a.k.a adopt ) buffer 
+and detach buffer (you would need a custom allocator both sides would agree on).
 
 This container is designed to contain element of following general structure:
 that can be used to enumerate over previously validated buffer
