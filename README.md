@@ -1,4 +1,4 @@
-Intrusive Flat Forward List for POD types
+#Intrusive Flat Forward List for POD types
 
 This header only library that implements intrusive flat forward list (iffl).
 
@@ -8,16 +8,16 @@ Often times when dealing with OS or just C interface we need to pass in or parse
 
 This container is designed to contain element of following general structure:
 that can be used to enumerate over previously validated buffer
-
+```
                       ------------------------------------------------------------
                       |                                                          |
                       |                                                          V
  | <fields> | offset to next element | <offsets of data> | [data] | [padding] || [next element] ...
  |                        header                         | [data] | [padding] || [next element] ...
-
+ ```
 
 Examples are from Windows, but I am sure there is plenty of samples in Unix:
-
+```
 typedef struct _FILE_FULL_EA_INFORMATION {
   ULONG  NextEntryOffset; // intrusive hook with offset of the next element
   UCHAR  Flags;
@@ -25,8 +25,9 @@ typedef struct _FILE_FULL_EA_INFORMATION {
   USHORT EaValueLength;
   CHAR   EaName[1];
 } FILE_FULL_EA_INFORMATION, *PFILE_FULL_EA_INFORMATION;
+```
 https:docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ns-wdm-_file_full_ea_information
-
+```
 typedef struct _FILE_NOTIFY_EXTENDED_INFORMATION {
   DWORD         NextEntryOffset; // intrusive hook with offset of the next element
   DWORD         Action;
@@ -44,10 +45,10 @@ typedef struct _FILE_NOTIFY_EXTENDED_INFORMATION {
   WCHAR         FileName[1];
 } FILE_NOTIFY_EXTENDED_INFORMATION, *PFILE_NOTIFY_EXTENDED_INFORMATION;
 https:docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_file_notify_extended_information
-
+```
 output for the following information classes from FILE_INFO_BY_HANDLE_CLASS
 https:msdn.microsoft.com/en-us/8f02e824-ca41-48c1-a5e8-5b12d81886b5
-
+```
 FileIdBothDirectoryInfo
 FileIdBothDirectoryRestartInfo
 FileIoPriorityHintInfo
@@ -60,10 +61,10 @@ FileIdInfo
 FileIdExtdDirectoryInfo
 FileIdExtdDirectoryRestartInfo
 For example output buffer for
-
+```
 GetFileInformationByHandleEx(file_handle, FileIdBothDirectoryInfo, buffer, buffer_size);
 will be filled with structures
-
+```
 typedef struct _FILE_ID_BOTH_DIR_INFO {
   DWORD         NextEntryOffset; // intrusive hook with offset of the next element
   DWORD         FileIndex;
@@ -81,7 +82,7 @@ typedef struct _FILE_ID_BOTH_DIR_INFO {
   LARGE_INTEGER FileId;
   WCHAR         FileName[1];
 } FILE_ID_BOTH_DIR_INFO, *PFILE_ID_BOTH_DIR_INFO;
-
+```
 Output of NtQueryDirectoryFile
 https:docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/ns-ntifs-_file_both_dir_information
 
@@ -93,13 +94,13 @@ which list gets invalid.
 with polymorphic allocator for debugging contained.
 elements
 
-flat_forward_list_iterator and flat_forward_list_const_iterator
+**flat_forward_list_iterator** and flat_forward_list_const_iterator
 that can be used to enmirate over previously validated buffer
 
-flat_forward_list a container that provides a set of helper
+**flat_forward_list** a container that provides a set of helper
 algorithms and manages y while list changes.
 
-pmr_flat_forward_list is a an aliase of flat_forward_list
+**pmr_flat_forward_list** is a an aliase of flat_forward_list
 where allocatoe is polimorfic_allocator.
 
 debug_memory_resource a memory resource that can be used along
@@ -120,7 +121,7 @@ constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept
 By default we are looking for a partial specialization for the element type.
 
 For example:
-
+```
     namespace iffl {
         template <>
         struct flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> {
@@ -131,7 +132,7 @@ For example:
             constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {<implementation>}
         };
     }
-
+```
 for sample implementation see flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> @ test\iffl_test_cases.cpp
 and addition documetation in this mode right above where primary
 template for flat_forward_list_traits is defined
