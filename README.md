@@ -88,22 +88,36 @@ typedef struct _FILE_ID_BOTH_DIR_INFO {
 Output of NtQueryDirectoryFile
 [FILE_ID_BOTH_DIR_INFO documentation](https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/ns-ntifs-_file_both_dir_information)
 
-function flat_forward_list_validate that
-can be use to deal with untrusted buffers.
-You can use it to validate if untrusted buffer
-contains a valid list, and to find boundary at
-which list gets invalid.
-with polymorphic allocator for debugging contained.
-elements
+function **flat_forward_list_validate** that can be use to deal with untrusted buffers. You can use it to validate if untrusted buffer contains a valid list, and to find boundary at which list gets invalid. with polymorphic allocator for debugging contained elements.
 
-**flat_forward_list_iterator** and flat_forward_list_const_iterator
-that can be used to enmirate over previously validated buffer
+```
+template<typename T,
+         typename TT = flat_forward_list_traits<T>>
+struct default_validate_element_fn {
+    bool operator() (size_t buffer_size, char const *buffer) const noexcept {
+        return TT::validate(buffer_size, buffer);
+    }
+};
 
-**flat_forward_list** a container that provides a set of helper
-algorithms and manages y while list changes.
+template<typename T,
+         typename TT = flat_forward_list_traits<T>,
+         typename F = default_validate_element_fn<T, TT>>
+constexpr inline std::pair<bool, char const *> flat_forward_list_validate(char const *first,
+                                                                          char const *end, 
+                                                                          F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept {
+```   
 
-**pmr_flat_forward_list** is a an aliase of flat_forward_list
-where allocatoe is polimorfic_allocator.
+**flat_forward_list_iterator** and flat_forward_list_const_iterator that can be used to enmirate over previously validated buffer.
+Container tracks data in buffer using 3 pointers
+ - **buffer_begin** is a pointer to the buffer that containes flat forward list
+ - **last_element** is a pointer to the start of the last element in the buffer
+ - **buffer_end** is a pointer pass the end of the buffer
+ Just like with vector, user can resize buffer to a size larger than required by the current elements. This helps avoid buffer reallocations as you insert new elements or resize existing elements.
+ Erasing elements does not shrink buffer. To shrink buffer user have to explicitely call shrink_to_fit.
+
+**flat_forward_list** a container that provides a set of helper algorithms and manages y while list changes.
+
+**pmr_flat_forward_list** is a an aliase of flat_forward_list where allocatoe is polimorfic_allocator.
 
 debug_memory_resource a memory resource that can be used along
 with polimorfic allocator for debugging contained.
