@@ -135,7 +135,7 @@ For example:
         };
     }
 ```
-for sample implementation see flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> @ [test\iffl_test_cases.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_test_cases.cpp)
+for sample implementation see flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> at [test\iffl_test_cases.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_test_cases.cpp)
 and addition documetation in this mode right above where primary
 template for flat_forward_list_traits is defined
 
