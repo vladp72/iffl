@@ -106,7 +106,7 @@ constexpr inline std::pair<bool, char const *> flat_forward_list_validate(
         char const *first,
         char const *end, 
         F const &validate_element_fn = default_validate_element_fn<T, TT>{}
-    ) noexcept
+    ) noexcept;
 ```   
 
 **flat_forward_list_iterator** and flat_forward_list_const_iterator that can be used to enmirate over previously validated buffer.
