@@ -109,7 +109,7 @@ constexpr inline std::pair<bool, char const *> flat_forward_list_validate(
     ) noexcept;
 ```   
 
-**flat_forward_list_iterator** and flat_forward_list_const_iterator that can be used to enmirate over previously validated buffer.
+**flat_forward_list_iterator** and flat_forward_list_const_iterator are forward iterators that can be used to enmirate over previously validated buffer.
 
 ```   
 template<typename T,
@@ -392,4 +392,272 @@ If picking traits using partial specialization is not feasible then traits can b
 an explicit template parameter. For example:
 ```
    using ffl_iterator = iffl::flat_forward_list_iterator<FILE_FULL_EA_INFORMATION, my_alternative_ea_traits>;
+```
+
+Container interface
+```
+struct attach_buffer {};
+
+struct as_pointers {};
+
+template <typename T,
+          typename TT = flat_forward_list_traits<T>,
+          typename A = std::allocator<char>>
+class flat_forward_list 
+
+    //
+    // Technically we need T to be 
+    // - trivialy destructable
+    // - trivialy constructable
+    // - trivialy movable
+    // - trivialy copyable
+    //
+    static_assert(std::is_pod_v<T>, "T must be a Plain Old Definition");
+
+    using size_type = typename container_element_type_base<T>::size_type;
+    using difference_type = typename container_element_type_base<T>::difference_type;
+    using buffer_value_type = char;
+    using const_buffer_value_type = char const;
+    using element_traits_type = TT;
+    using allocator_type = A ;
+    using allocator_type_t = std::allocator_traits<A>;
+    using buffer_pointer = char *;
+    using const_buffer_pointer = char const *;
+    using buffer_reference = char & ;
+    using const_buffer_reference = char const &;
+
+    //
+    // pointer to the start of buffer
+    // used buffer size
+    // total buffer size
+    //
+    using detach_type_as_size = std::tuple<char *, size_t, size_t>;
+    using detach_type_as_pointers = std::tuple<char *, char *, char *>;
+
+    using iterator = flat_forward_list_iterator<T, TT>;
+    using const_iterator = flat_forward_list_const_iterator<T, TT>;
+
+    inline static size_type const npos = std::numeric_limits<size_type>::max();
+
+    flat_forward_list() noexcept;
+
+    explicit flat_forward_list(A a) noexcept;
+
+    flat_forward_list(flat_forward_list && other) noexcept;
+
+    flat_forward_list(flat_forward_list const &other);
+
+    template <typename AA = A>
+    flat_forward_list(attach_buffer,
+                      char *buffer_begin,
+                      char *last_element,
+                      char *buffer_end,
+                      AA &&a = AA{}) noexcept;
+
+    template <typename AA = A>
+    flat_forward_list(char const *buffer_begin,
+                      char const *last_element,
+                      char const *buffer_end,
+                      AA &&a = AA{});
+
+    template <typename AA = A>
+    flat_forward_list(attach_buffer,
+                      char *buffer,
+                      size_t buffer_size,
+                      AA &&a = AA{}) noexcept;
+
+    template <typename AA = A>
+    flat_forward_list(char const *buffer,
+                      size_t buffer_size,
+                      AA &&a = AA{}) noexcept;
+
+    flat_forward_list &operator= (flat_forward_list && other) noexcept (allocator_type_t::propagate_on_container_move_assignment::value);
+
+    flat_forward_list &operator= (flat_forward_list const &other);
+
+    ~flat_forward_list() noexcept;
+
+    detach_type_as_size detach() noexcept;
+
+    detach_type_as_pointers detach(as_pointers) noexcept;
+
+    void attach(char *buffer_begin,
+                char *last_element,
+                char *buffer_end);
+
+    bool try_attach(char *buffer,
+                    size_t buffer_size) noexcept;
+
+    void copy_from_buffer(char const *buffer_begin,
+                          char const *last_element,
+                          char const *buffer_end);
+
+    bool copy_from_buffer(char const *buffer_begin,
+                          char const *buffer_end);
+
+    bool copy_from_buffer(char const *buffer,
+                          size_type buffer_size);
+
+    template<typename AA>
+    bool is_compatible_allocator(AA const &other_allocator) const noexcept;
+
+    A &get_allocator() & noexcept;
+
+    A const &get_allocator() const & noexcept;
+
+    A && get_allocator() && noexcept;
+
+    size_type max_size() const noexcept;
+
+    void clear() noexcept;
+
+    void shrink_to_fit();
+
+    void resize_buffer(size_type size);
+
+    void push_back(size_type init_buffer_size,
+                   char const *init_buffer = nullptr);
+
+    template <typename F, typename ... P>
+    void emplace_back(size_type element_size,
+                      F const &fn,
+                      P&& ... p);
+
+    iterator insert(iterator const &it, 
+                    size_type init_buffer_size, 
+                    char const *init_buffer = nullptr);
+
+    template <typename F, 
+              typename ... P>
+    iterator emplace(iterator const &it,
+                     size_type new_element_size,
+                     F const &fn,
+                     P&& ... p);
+
+    void push_front(size_type init_buffer_size, char const *init_buffer = nullptr);
+
+    template <typename F,
+              typename ... P >
+    void emplace_front(size_type element_size, 
+                       F const &fn,
+                       P&& ... p );
+
+    void pop_front();
+
+    void erase_after(iterator const &it) noexcept;
+
+    //
+    // Usualy pair of iterators define aa half opened range [start, end)
+    // Note that in this case our range is (start, last]. In other words
+    // we will erase all elements after start, including last.
+    // We give this method unusual name so people would stop and read
+    // this comment about range
+    //
+    void erase_after_half_closed(iterator const &before_start, iterator const &last) noexcept;
+
+    void erase_all_after(iterator const &it) noexcept;
+
+    iterator erase_all_from(iterator const &it) noexcept;
+
+    void erase_all() noexcept;
+
+    iterator erase(iterator const &it);
+
+    iterator erase(iterator const &start, iterator const &end) noexcept;
+
+    void swap(flat_forward_list &other) noexcept (allocator_type_t::propagate_on_container_swap::value ||
+                                                  allocator_type_t::propagate_on_container_move_assignment::value);
+
+    template <typename LESS_F>
+    void sort(LESS_F const &fn);
+
+    void reverse();
+
+    template<class F>
+    void merge(flat_forward_list &other,
+               F const &fn);
+
+    template<typename F>
+    void unique(F const &fn);
+
+    template<typename F>
+    void remove_if(F const &fn);
+     
+    T &front();
+
+    T const &front() const;
+
+    T &back();
+
+    T const &back() const;
+
+    iterator begin() noexcept;
+
+    const_iterator begin() const noexcept;
+
+    iterator last() noexcept;
+
+    const_iterator last() const noexcept;
+
+    iterator end() noexcept;
+
+    const_iterator end() const noexcept;
+
+    const_iterator cbegin() const noexcept;
+
+    const_iterator clast() const noexcept;
+
+    const_iterator cend() const noexcept;
+
+    char *data() noexcept;
+
+    char const *data() const noexcept;
+
+    bool revalidate_data();
+
+    void all_elements_shrink_to_fit();
+
+    void element_shrink_to_fit(iterator const &it);
+
+    iterator element_add_size(iterator const &it,
+                              size_type size_to_add);
+
+    template <typename F,
+              typename ... P >
+        iterator element_resize(iterator const &it,
+                                size_type element_new_size,
+                                F const &fn,
+                                P&& ... p ) noexcept;
+
+    size_type element_required_size(const_iterator const &it) const noexcept;
+
+    size_type element_used_size(const_iterator const &it) const noexcept;
+
+    std::pair<size_type, size_type> element_range(const_iterator const &it) const noexcept;
+
+    bool element_contains(const_iterator const &it, size_type position) const noexcept;
+
+    iterator find_element_before(size_type position) noexcept;
+
+    const_iterator find_element_before(size_type position) const noexcept;
+
+    iterator find_element_at(size_type position) noexcept;
+
+    const_iterator find_element_at(size_type position) const noexcept;
+
+    iterator find_element_after(size_type position) noexcept;
+
+    const_iterator find_element_after(size_type position) const noexcept;
+
+    size_type size() const noexcept;
+
+    bool empty() const noexcept;
+
+    size_type used_capacity() const noexcept;
+
+    size_type total_capacity() const noexcept;
+
+    size_type remaining_capacity() const noexcept;
+
+};
 ```
