@@ -1,4 +1,4 @@
-# Intrusive Flat Forward List for POD types
+# Intrusive Flat Forward List for plain old definition (POD) types
 
 This header only library that implements intrusive flat forward list (iffl).
 
@@ -274,7 +274,7 @@ Now FILE_FULL_EA_INFORMATION is ready to be used with iffl. By default you will 
 Here is an example where prepare_ea_and_call_handler uses container to prepare buffer with FILE_FULL_EA_INFORMATION, and calls  handle_ea.
 Function handle_ea uses flat_forward_list_validate to safely process elements of untrusted buffer. 
 
-Since FILE_FULL_EA_INFORMATION is a POD and does not have constructor, container methods that deal with creation of new elements allow passing
+Since FILE_FULL_EA_INFORMATION is a Plain Old Definition (POD) it does not have constructor, container methods that deal with creation of new elements allow passing
 a functor that will be called once container allocates requested space for the element to initialize element data. In this sample you can see prepare_ea_and_call_handler is calling emplace_front and emplace_back and is passing in a lambda that initializes element.
 If you want to zero intialize element then call container.push_back(element_size). 
 If you want to initialzie element using a buffer that contains element blueprint then call .push_back(element_size, bluprint_buffer). It will copy bluprint buffer to the container.
