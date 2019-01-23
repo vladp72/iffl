@@ -26,7 +26,7 @@ typedef struct _FILE_FULL_EA_INFORMATION {
   CHAR   EaName[1];
 } FILE_FULL_EA_INFORMATION, *PFILE_FULL_EA_INFORMATION;
 ```
-https:docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ns-wdm-_file_full_ea_information
+[FILE_FULL_EA_INFORMATION documentation] (https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ns-wdm-_file_full_ea_information)
 ```
 typedef struct _FILE_NOTIFY_EXTENDED_INFORMATION {
   DWORD         NextEntryOffset; // intrusive hook with offset of the next element
@@ -44,10 +44,9 @@ typedef struct _FILE_NOTIFY_EXTENDED_INFORMATION {
   DWORD         FileNameLength;
   WCHAR         FileName[1];
 } FILE_NOTIFY_EXTENDED_INFORMATION, *PFILE_NOTIFY_EXTENDED_INFORMATION;
-https:docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_file_notify_extended_information
+[FILE_NOTIFY_EXTENDED_INFORMATION documentation] (https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_file_notify_extended_information)
 ```
-output for the following information classes from FILE_INFO_BY_HANDLE_CLASS
-https:msdn.microsoft.com/en-us/8f02e824-ca41-48c1-a5e8-5b12d81886b5
+output for the following information classes from [FILE_INFO_BY_HANDLE_CLASS](https://msdn.microsoft.com/en-us/8f02e824-ca41-48c1-a5e8-5b12d81886b5)
 ```
 FileIdBothDirectoryInfo
 FileIdBothDirectoryRestartInfo
@@ -62,7 +61,10 @@ FileIdExtdDirectoryInfo
 FileIdExtdDirectoryRestartInfo
 For example output buffer for
 ```
+For eample
+```
 GetFileInformationByHandleEx(file_handle, FileIdBothDirectoryInfo, buffer, buffer_size);
+```
 will be filled with structures
 ```
 typedef struct _FILE_ID_BOTH_DIR_INFO {
@@ -84,7 +86,7 @@ typedef struct _FILE_ID_BOTH_DIR_INFO {
 } FILE_ID_BOTH_DIR_INFO, *PFILE_ID_BOTH_DIR_INFO;
 ```
 Output of NtQueryDirectoryFile
-https:docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/ns-ntifs-_file_both_dir_information
+[FILE_ID_BOTH_DIR_INFO documentation] (https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/ns-ntifs-_file_both_dir_information)
 
 function flat_forward_list_validate that
 can be use to deal with untrusted buffers.
@@ -133,7 +135,7 @@ For example:
         };
     }
 ```
-for sample implementation see flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> @ test\iffl_test_cases.cpp
+for sample implementation see flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> @ [test\iffl_test_cases.cpp] https://github.com/vladp72/iffl/blob/master/test/iffl_test.cpp()
 and addition documetation in this mode right above where primary
 template for flat_forward_list_traits is defined
 
