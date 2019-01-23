@@ -327,7 +327,10 @@ void prepare_ea_and_call_handler() {
  }
 
 ```
+If user prefers separate buffer validation and element processing then she can use default iffl::flat_forward_list_validate validation functor, and ince validation passes use iterators to walk the elements.
+Here is a samole implementation:
 
+```
 using ea_iterator = iffl::flat_forward_list_iterator<FILE_FULL_EA_INFORMATION>;
 using ea_const_iterator = iffl::flat_forward_list_const_iterator<FILE_FULL_EA_INFORMATION>;
 
