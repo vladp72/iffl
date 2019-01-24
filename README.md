@@ -630,10 +630,10 @@ class flat_forward_list
 
     template <typename F,
               typename ... P >
-        iterator element_resize(iterator const &it,
-                                size_type element_new_size,
-                                F const &fn,
-                                P&& ... p ) noexcept;
+    iterator element_resize(iterator const &it,
+                            size_type element_new_size,
+                            F const &fn,
+                            P&& ... p ) noexcept;
 
     size_type element_required_size(const_iterator const &it) const noexcept;
 

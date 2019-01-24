@@ -1322,14 +1322,14 @@ public:
     }
 
     template <typename F
-              //, typename ... P
+             ,typename ... P
               >
     void emplace_front(size_type element_size, 
                        F const &fn
-                       //, P&& ... p
+                       , P&& ... p
                        ) {
-        //emplace(begin(), element_size, fn, std::forward<P>(p)...);
-        emplace(begin(), element_size, fn);
+        emplace(begin(), element_size, fn, std::forward<P>(p)...);
+        //emplace(begin(), element_size, fn);
     }
 
     void pop_front() {
