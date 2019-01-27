@@ -158,6 +158,7 @@ add_executable ( iffl_test
                  test/iffl_test.cpp
                  test/iffl_test_cases.cpp
                  test/iffl_ea_usecase.cpp
+                 test/iffl_c_api_usecase.cpp
                )
 
 #

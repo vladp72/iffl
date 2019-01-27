@@ -589,7 +589,7 @@ void flat_forward_list_detach_attach_test3() {
 
     auto[start_ptr, used_size, total_zize] = ffl1.detach();
 
-    FFL_CODDING_ERROR_IF_NOT(ffl2.try_attach(start_ptr, total_zize));
+    FFL_CODDING_ERROR_IF_NOT(ffl2.attach(start_ptr, total_zize));
 
     FFL_CODDING_ERROR_IF_NOT(element_count == ffl2.size());
 }

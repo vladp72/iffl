@@ -128,6 +128,8 @@
 #include <utility>
 #include <atomic>
 
+#include <cerrno>
+
 #include <intrin.h>
 
 //
@@ -149,16 +151,16 @@
 //
 // Assertions
 //
+#ifndef FFL_CRASH_APPLICATION
+#define FFL_CRASH_APPLICATION() {__debugbreak();}
+#endif
+
 #ifndef FFL_CODDING_ERROR_IF
-#define FFL_CODDING_ERROR_IF(C) if (C) {__debugbreak();} else {;}
+#define FFL_CODDING_ERROR_IF(C) if (C) {FFL_CRASH_APPLICATION();} else {;}
 #endif
 
 #ifndef FFL_CODDING_ERROR_IF_NOT
-#define FFL_CODDING_ERROR_IF_NOT(C) if (C) {;} else {__debugbreak();}
-#endif
-
-#ifndef FFL_CRASH_APPLICATION
-#define FFL_CRASH_APPLICATION() {__debugbreak();}
+#define FFL_CODDING_ERROR_IF_NOT(C) if (C) {;} else {FFL_CRASH_APPLICATION();}
 #endif
 
 //
@@ -879,9 +881,7 @@ public:
                       size_t buffer_size,
                       AA &&a = AA{}) noexcept
         : A( std::forward<AA>(a) ) {
-        if (!attach(buffer, buffer_size)) {
-            raise_invalid_buffer_exception("flat_forward_list construction with attach buffer validation failed");
-        }
+        attach(buffer, buffer_size);
     }
 
     template <typename AA = A>
@@ -889,9 +889,7 @@ public:
                       size_t buffer_size,
                       AA &&a = AA{}) noexcept
         : A(std::forward<AA>(a)) {
-        if (!copy_from_buffer(buffer, buffer_size)) {
-            raise_invalid_buffer_exception("flat_forward_list construction with copy buffer validation failed");
-        }
+        copy_from_buffer(buffer, buffer_size);
     }
 
     flat_forward_list &operator= (flat_forward_list && other) noexcept (allocator_type_t::propagate_on_container_move_assignment::value) {
@@ -947,21 +945,25 @@ public:
                 char *buffer_end) {
 
         FFL_CODDING_ERROR_IF(buffer_begin_ == buffer_begin);
-        FFL_CODDING_ERROR_IF_NOT(buffer_begin < last_element && last_element < buffer_end);
+        if (last_element) {
+            FFL_CODDING_ERROR_IF_NOT(buffer_begin < last_element && last_element < buffer_end);
+        } else {
+            FFL_CODDING_ERROR_IF_NOT(buffer_begin < buffer_end);
+        }
         clear();
         buffer_begin_ = buffer_begin;
         buffer_end_ = buffer_end;
         last_element_ = last_element;
     }
 
-    bool try_attach(char *buffer,
-                    size_t buffer_size) noexcept {
+    bool attach(char *buffer,
+                size_t buffer_size) noexcept {
         FFL_CODDING_ERROR_IF(buffer_begin_ == buffer);
         auto[is_valid, last_valid] = flat_forward_list_validate<T, TT>(buffer, 
                                                                        buffer + buffer_size);
-        if (is_valid) {
-            attach(buffer, last_valid, buffer + buffer_size);
-        }
+        attach(buffer, 
+               is_valid ? last_valid : nullptr, 
+               buffer + buffer_size);
         return is_valid;
     }
 
@@ -970,7 +972,11 @@ public:
                           char const *buffer_end) {
         flat_forward_list l(get_allocator());
 
-        FFL_CODDING_ERROR_IF_NOT(buffer_begin < last_element && last_element < buffer_end);
+        if (last_element) {
+            FFL_CODDING_ERROR_IF_NOT(buffer_begin < last_element && last_element < buffer_end);
+        } else {
+            FFL_CODDING_ERROR_IF_NOT(buffer_begin < buffer_end);
+        }
 
         size_type buffer_size = buffer_end - buffer_begin;
         size_type last_element_offset = last_element - buffer_begin;
@@ -987,11 +993,9 @@ public:
 
         auto[is_valid, last_valid] = flat_forward_list_validate<T, TT>(buffer_begin,
                                                                        buffer_end);
-        if (is_valid) {
-            copy_from_buffer(buffer_begin,
-                             last_valid,
-                             buffer_end);
-        }
+        copy_from_buffer(buffer_begin,
+                         is_valid ? last_valid : nullptr,
+                         buffer_end);
 
         return is_valid;
     }
@@ -2336,7 +2340,7 @@ private:
     }
 
     static void raise_invalid_buffer_exception(char const *message) {
-        throw std::system_error(std::error_code{ ERROR_INVALID_PARAMETER , std::system_category() }, message);
+        throw std::system_error{ std::make_error_code(std::errc::invalid_argument), message };
     }
 
     //

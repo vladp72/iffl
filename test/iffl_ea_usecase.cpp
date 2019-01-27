@@ -1,3 +1,26 @@
+//
+// This use case demonstrates 
+//
+// - What specialization of flat_forward_list_traits for FILE_FULL_EA_INFORMATION
+//   should look like.
+//
+// - How you can utilize flat_forward_list to interact with
+//   an API that require something like flat forward list as 
+//   and input. 
+//   Caller fill in buffer with flat list of FILE_FULL_EA_INFORMATION.
+//   See prepare_ea_and_call_handler
+//
+// - And how to write a server that recieves a buffer with a list
+//   of these structures, and needs to validate and safely iterate 
+//   over this list. 
+//   Fnction handle_ea1 demonstrates how to validate and iterate in one
+//   loop
+//   Fnction handle_ea2 demonstrates how to first validate and then 
+//   iterate over trusted buffer
+//   
+
+//
+
 #include <windows.h>
 
 #include "iffl.h"
@@ -67,7 +90,7 @@ namespace iffl {
             // Extended attribute name does not have to be 0 terminated 
             // so it is not strictly speaking nessesary here.
             //
-            // char const *end = e.EaName + e.EaNameLength;
+            // char const * const end = e.EaName + e.EaNameLength;
             // return end != std::find_if(e.EaName,
             //                            end, 
             //                            [](char c) -> bool {
@@ -106,6 +129,8 @@ namespace iffl {
 }
 
 using ea_iffl = iffl::flat_forward_list<FILE_FULL_EA_INFORMATION>;
+using ea_iffl_iterator = iffl::flat_forward_list_iterator<FILE_FULL_EA_INFORMATION>;
+using ea_iffl_const_iterator = iffl::flat_forward_list_const_iterator<FILE_FULL_EA_INFORMATION>;
 
 char const ea_name0[] = "TEST_EA_0";
 //char const ea_data1[]; no data
@@ -115,57 +140,83 @@ char const ea_name2[] = "TEST_EA_2";
 char const ea_data2[] = { 1,2,3,4,5,6,7,8,9,0xa,0xb,0xc,0xd,0xf };
 
 //
-// Validates adn prints extended attribute list
+// Helper function that prints EA information
 //
-void handle_ea(char const *buffer, size_t buffer_lenght) {
+void print_ea(size_t idx, 
+              size_t offset,
+              FILE_FULL_EA_INFORMATION const &e) {
+    printf("FILE_FULL_EA_INFORMATION[%zi] @ = 0x%p, buffer offset %zi\n",
+           idx,
+           &e,
+           offset);
+    printf("FILE_FULL_EA_INFORMATION[%zi].NextEntryOffset = %u\n",
+           idx,
+           e.NextEntryOffset);
+    printf("FILE_FULL_EA_INFORMATION[%zi].Flags = %u\n",
+           idx,
+           static_cast<int>(e.Flags));
+    printf("FILE_FULL_EA_INFORMATION[%zi].EaNameLength = %u \"%s\"\n",
+           idx,
+           static_cast<int>(e.EaNameLength),
+           (e.EaNameLength ? std::string{ e.EaName, e.EaName + e.EaNameLength }
+    : std::string{}).c_str());
+    printf("FILE_FULL_EA_INFORMATION[%zi].EaValueLength = %hu\n",
+           idx,
+           e.EaValueLength);
+    if (e.EaValueLength) {
+        char const * data_first = e.EaName + e.EaNameLength;
+        char const * const data_end = e.EaName + e.EaNameLength + e.EaValueLength;
+        for (; data_first != data_end; ++data_first) {
+            printf("%x", static_cast<int>(*data_first));
+        }
+        printf("\n");
+    }
+}
 
-    printf("-----\"handle_ea\"-----\n");
+//
+// Validates and handle elements in one loop.
+// Handling in this case simply prints element content
+//
+void handle_ea1(char const *buffer, size_t buffer_lenght) {
+
+    printf("-----\"handle_ea1\"-----\n");
 
     size_t idx{ 0 };
     char const *failed_validation{ nullptr };
     size_t invalid_element_length{ 0 };
-
+    //
+    // Validate and iterate in one loop
+    //
     auto[is_valid, last_valid] =
         iffl::flat_forward_list_validate<FILE_FULL_EA_INFORMATION>(
             buffer,
             buffer + buffer_lenght,
             [buffer, &idx, &failed_validation, &invalid_element_length] (size_t buffer_size,
                                                                          char const *element_buffer) -> bool {
+                //
+                // validate element
+                //
                 bool is_valid = iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>::validate(buffer_size, element_buffer);
+                //
+                // if element is valid then process element
+                //
                 if (is_valid) {
                     FILE_FULL_EA_INFORMATION const &e = 
                         *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(element_buffer);
-                    printf("FILE_FULL_EA_INFORMATION[%zi] @ = 0x%p, buffer offset %zi\n",
-                           idx,
-                           &e,
-                           element_buffer - buffer);
-                    printf("FILE_FULL_EA_INFORMATION[%zi].NextEntryOffset = %u\n",
-                           idx,
-                           e.NextEntryOffset);
-                    printf("FILE_FULL_EA_INFORMATION[%zi].Flags = %u\n", 
-                           idx,
-                           static_cast<int>(e.Flags));
-                    printf("FILE_FULL_EA_INFORMATION[%zi].EaNameLength = %u \"%s\"\n", 
-                           idx,
-                           static_cast<int>(e.EaNameLength),
-                           (e.EaNameLength ? std::string{ e.EaName, e.EaName + e.EaNameLength } 
-                                           : std::string{}).c_str());
-                    printf("FILE_FULL_EA_INFORMATION[%zi].EaValueLength = %hu\n", 
-                           idx,
-                           e.EaValueLength);
-                    if (e.EaValueLength) {
-                        char const * data_first = e.EaName + e.EaNameLength;
-                        char const * const data_end = e.EaName + e.EaNameLength + e.EaValueLength;
-                        for (; data_first != data_end; ++data_first) {
-                            printf("%x", static_cast<int>(*data_first));
-                        }
-                        printf("\n");
-                    }
+
+                    print_ea(idx, element_buffer - buffer, e);
                     ++idx;
                 } else {
+                    //
+                    // Safe additional information about element that failed
+                    // validation
+                    //
                     invalid_element_length = buffer_size;
                     failed_validation = buffer;
                 }
+                //
+                // validation loop is aborted if element is not valid
+                //
                 return is_valid;
             });
 
@@ -179,8 +230,43 @@ void handle_ea(char const *buffer, size_t buffer_lenght) {
 }
 
 //
+// Validates and handle elements in one loop.
+// Handling in this case simply prints element content
+//
+void handle_ea2(char const *buffer, size_t buffer_lenght) {
+
+    printf("-----\"handle_ea2\"-----\n");
+
+    size_t idx{ 0 };
+    //
+    // First validate buffer
+    //
+    auto[is_valid, last_element] =
+        iffl::flat_forward_list_validate<FILE_FULL_EA_INFORMATION>( buffer, buffer + buffer_lenght);
+    //
+    // Using iterators go over elements of trusted buffer
+    //
+    if (is_valid && last_element) {
+        ea_iffl_const_iterator start{buffer};
+        ea_iffl_const_iterator end{}; // sentinel element that plays role of end
+
+        std::for_each(start, end,
+                      [buffer, &idx](FILE_FULL_EA_INFORMATION const &e) {
+                          print_ea(idx, reinterpret_cast<char const *>(&e) - buffer, e);
+                          ++idx;
+                      });
+    }
+
+    printf("\n");
+    printf("valid                            : %s\n", is_valid ? "yes" : "no");
+    printf("found elements                   : %zi\n", idx);
+    printf("last valid element               : 0x%p\n", last_element);
+    printf("\n");
+}
+
+//
 // Creates extended attribute list with 3 entries and 
-// calls handle_ea
+// calls handle_ea1 and handle_ea2
 //
 void prepare_ea_and_call_handler() {
 
@@ -233,7 +319,8 @@ void prepare_ea_and_call_handler() {
                                         sizeof(ea_data2));
                       });
 
-    handle_ea(eas.data(), eas.used_capacity());
+    handle_ea1(eas.data(), eas.used_capacity());
+    handle_ea2(eas.data(), eas.used_capacity());
 
 }
 
