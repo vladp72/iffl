@@ -394,7 +394,7 @@ constexpr inline std::pair<bool, void*> flat_forward_list_validate(void *first,
 template<typename T,
          typename TT = flat_forward_list_traits<T>>
 class flat_forward_list_iterator_t : public std::iterator <std::forward_iterator_tag, T>
-                                   , public TT {
+                                   , private TT {
 public:
 
     using element_type = T;

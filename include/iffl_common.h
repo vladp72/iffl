@@ -19,18 +19,23 @@
 #include <intrin.h>
 
 //
-// Assertions
+// Assertions that stop program if it is at a risk of going to 
+// undefined behavior.
 //
+#ifndef FFL_FAST_FAIL
+#define FFL_FAST_FAIL(EC) {__debugbreak();__fastfail(EC);}
+#endif
+
 #ifndef FFL_CRASH_APPLICATION
-#define FFL_CRASH_APPLICATION() {__debugbreak();}
+#define FFL_CRASH_APPLICATION() FFL_FAST_FAIL(ENOTRECOVERABLE)
 #endif
 
 #ifndef FFL_CODDING_ERROR_IF
-#define FFL_CODDING_ERROR_IF(C) if (C) {FFL_CRASH_APPLICATION();} else {;}
+#define FFL_CODDING_ERROR_IF(C) if (C) {FFL_FAST_FAIL(ENOTRECOVERABLE);} else {;}
 #endif
 
 #ifndef FFL_CODDING_ERROR_IF_NOT
-#define FFL_CODDING_ERROR_IF_NOT(C) if (C) {;} else {FFL_CRASH_APPLICATION();}
+#define FFL_CODDING_ERROR_IF_NOT(C) if (C) {;} else {FFL_FAST_FAIL(ENOTRECOVERABLE);}
 #endif
 
 //
