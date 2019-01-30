@@ -1206,8 +1206,29 @@ void flat_forward_list_sort_test1() {
     print_flat_forward_list("flat_forward_list_sort_test1-ordered-merged-unique", ffl_merge);
 }
 
+void flat_forward_list_traits_traits_test1() {
+    using test_traits = iffl::flat_forward_list_traits<FLAT_FORWARD_LIST_TEST>;
+    using test_traits_traits = iffl::flat_forward_list_traits_traits<test_traits>;
+    
+    static_assert (test_traits_traits::has_minimum_size_v, 
+                   "FLAT_FORWARD_LIST_TEST must have minimum_size");
+
+    static_assert (test_traits_traits::can_calculate_next_element_offset_v, 
+                   "FLAT_FORWARD_LIST_TEST must have calculate_next_element_offset");
+
+    static_assert (test_traits_traits::has_next_element_offset_v, 
+                   "FLAT_FORWARD_LIST_TEST must have get_next_element_offset");
+
+    static_assert (test_traits_traits::can_set_next_element_offset_v, 
+                   "FLAT_FORWARD_LIST_TEST must have set_next_element_offset");
+
+    static_assert (test_traits_traits::can_validate_v, 
+                   "FLAT_FORWARD_LIST_TEST must have validate");
+}
+
 
 void run_all_flat_forward_list_tests() {
+    flat_forward_list_traits_traits_test1();
     flat_forward_list_validate_test1();
     flat_forward_list_iterator_test1();
     flat_forward_list_push_back_test1();

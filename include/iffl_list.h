@@ -118,6 +118,7 @@
 //
 
 #include <iffl_common.h>
+#include <iffl_mpl.h>
 
 //
 // intrusive flat forward list
@@ -165,6 +166,103 @@ namespace iffl {
 //
 template <typename T>
 struct flat_forward_list_traits;
+
+//
+// I know, traits of traits does sounds redicules,
+// but this is exactly what this class is.
+// Given flat_forward_list_traits instantiation,
+// or a class that you want to use as traits for your
+// flat_forward_list element types, it detects what methods
+// are implemented by this trait so in the rest of algorithms
+// and containers we can use this helper, and avoid rewriting
+// same complicated and nusty machinery.
+//
+// How to use:
+//
+// using my_traits_traits = flat_forward_list_traits_traits<my_traits>;
+//
+//// If traits provide us a way to get value of the next element offset for a type
+//// then use it, otherwise ask it to calculate next element offset from its own
+//// size
+//
+// if constexpr (my_traits_traits::has_next_element_offset_v) {
+//      my_traits::get_next_element_offset(buffer)
+// } else {
+//      my_traits::calculate_next_element_offset(buffer)
+// }
+//
+template <typename TT>
+struct flat_forward_list_traits_traits {
+
+private:
+    //
+    // Metafunctions that we will use with detect-idiom to find
+    // properties of TT without triggering a compile time error
+    //
+    //
+    // Metafunction that detects if traits include minimum_size
+    //
+    template <typename P>
+    using has_minimum_size_mfn = decltype(std::declval<P &>().minimum_size());
+    //
+    // Metafunction that detects if traits include calculate_next_element_offset
+    //
+    template <typename P>
+    using can_calculate_next_element_offset_mfn = decltype(std::declval<P &>().calculate_next_element_offset(nullptr));
+    //
+    // Metafunction that detects if traits include get_next_element_offset
+    //
+    template <typename P>
+    using has_next_element_offset_mfn = decltype(std::declval<P &>().get_next_element_offset(nullptr));
+    //
+    // Metafunction that detects if traits include set_next_element_offset
+    //
+    template <typename P>
+    using can_set_next_element_offset_mfn = decltype(std::declval<P &>().set_next_element_offset(nullptr, 0));
+    //
+    // Metafunction that detects if traits include validate
+    //
+    template <typename P>
+    using has_validate_mfn = decltype(std::declval<P &>().validate(0, nullptr));
+
+public:
+
+    //
+    // If traits have minimum_size then 
+    // has_minimum_size_t is std::true_type otherwise std::false_type
+    // has_minimum_size_v is std::true_type{} otherwise std::false_type{}
+    //
+    using has_minimum_size_t = iffl::mpl::is_detected < has_minimum_size_mfn, TT>;
+    constexpr static auto const has_minimum_size_v{ iffl::mpl::is_detected_v < has_minimum_size_mfn, TT> };
+    //
+    // If traits have calculate_next_element_offset then 
+    // can_calculate_next_element_offset_t is std::true_type otherwise std::false_type
+    // can_calculate_next_element_offset_v is std::true_type{} otherwise std::false_type{}
+    //
+    using can_calculate_next_element_offset_t = iffl::mpl::is_detected < can_calculate_next_element_offset_mfn, TT>;
+    constexpr static auto const can_calculate_next_element_offset_v{ iffl::mpl::is_detected_v < can_calculate_next_element_offset_mfn, TT> };
+    //
+    // If traits have get_next_element_offset then 
+    // has_next_element_offset_t is std::true_type otherwise std::false_type
+    // has_next_element_offset_v is std::true_type{} otherwise std::false_type{}
+    //
+    using has_next_element_offset_t = iffl::mpl::is_detected < has_next_element_offset_mfn, TT>;
+    constexpr static auto const has_next_element_offset_v{ iffl::mpl::is_detected_v < has_next_element_offset_mfn, TT> };
+    //
+    // If traits have set_next_element_offset then 
+    // can_set_next_element_offset_t is std::true_type otherwise std::false_type
+    // can_set_next_element_offset_v is std::true_type{} otherwise std::false_type{}
+    //
+    using can_set_next_element_offset_t = iffl::mpl::is_detected < can_set_next_element_offset_mfn, TT>;
+    constexpr static auto const can_set_next_element_offset_v{ iffl::mpl::is_detected_v < can_set_next_element_offset_mfn, TT> };
+    //
+    // If traits have validate then 
+    // can_validate_t is std::true_type otherwise std::false_type
+    // can_validate_v is std::true_type{} otherwise std::false_type{}
+    //
+    using can_validate_t = iffl::mpl::is_detected < has_validate_mfn, TT>;
+    constexpr static auto const can_validate_v{ iffl::mpl::is_detected_v < has_validate_mfn, TT> };
+};
 
 //
 // Default element validation functor.

@@ -63,7 +63,7 @@ namespace details {
     // attempt to evaluate std::void_t<Operation<Arguments ...>>.
     // void_t returns type void no matter what parameters we pass
     // 
-    // 3. Operation is the metafunction that we are trying toevaluate
+    // 3. Operation is the metafunction that we are trying to evaluate
     // for the Arguments...
     //
     // 4. Parameters for the metafunction Operation
@@ -83,12 +83,12 @@ namespace details {
     // otherwise we fall-back to the default above
     //
     template<typename Default,
-        template<typename... > typename Operation,
-        typename... Arguments>
+             template<typename... > typename Operation,
+             typename... Arguments>
     struct detector<Default,
                     void_t<Operation<Arguments...>>,
-                           Operation,
-                           Arguments... > {
+                    Operation,
+                    Arguments... > {
         using value_type = std::true_type;
         using type = Operation<Arguments...>;
     };
@@ -110,8 +110,8 @@ using is_detected =
                                     Arguments...>::value_type;
 
 //
-// Technically we do not this because is_detected already 
-// returns value_type, but we will defin it anyways in case
+// Technically we do not need this because is_detected already 
+// returns value_type, but we will define it anyways in case
 // if folks expect it
 //
 template <template <typename... > typename Operation,
@@ -203,7 +203,7 @@ constexpr auto const is_detected_convertable_v{ is_detected_convertable<Converta
 } //namespace iffl::mpl;
 
 ////
-//// two test classes we will use to demonstrate use cases of detect idiom
+//// To demonstrate use cases of detect idiom we will define 2 classes
 ////
 //// This class has only foo, and does not have bar
 ////
@@ -237,18 +237,19 @@ constexpr auto const is_detected_convertable_v{ is_detected_convertable<Converta
 //
 ////
 //// A metafunction that we will use to detect if
-//// T{}.bar() is a valid expression 
+//// T{}.boo() is a valid expression 
 ////
 //template <typename T>
 //using has_boo = decltype(std::declval<T &>().boo());
 //
 ////
 //// Use Case 1: 
+////
 //// If T{}.foo() is valid then call it
 //// If T{}.bar() is valid then call it instead.
 ////
 //// We are using SFINAE to eliminate candidates that are not possible
-//// We are using SFINAE on the input parameter, which turns of template type deduction,
+//// We are using dependent template parameters on the input types, which turns of template type deduction,
 //// and because of that we split SFINAE portion to *_impl, and we rely on call_if_can
 //// to deduce parameter type, and explicitely pass it to the *_impl.
 ////
@@ -271,9 +272,10 @@ constexpr auto const is_detected_convertable_v{ is_detected_convertable<Converta
 //
 ////
 //// Use Case 2:
+////
 //// If T{}.foo() is valid then call it
 //// If T{}.bar() is valid then call it instead.
-//// It is the same as UC1, but in this case we do 
+//// It is the same as Use Case 1, but in this case we do 
 //// SFINAE on unnamed default template parameter.
 //// in this case type of template parameters deduces fine, but
 //// compiler complains that two functions have same input and out parameters
@@ -296,6 +298,7 @@ constexpr auto const is_detected_convertable_v{ is_detected_convertable<Converta
 //
 ////
 //// Use Case 3:
+////
 //// If T::differentce type is defined then use it, otherwise 
 //// use std::ptrdiff_t.
 ////
@@ -305,8 +308,8 @@ constexpr auto const is_detected_convertable_v{ is_detected_convertable<Converta
 //template <class T>
 //using difference_type = mpl::detected_or_t<std::ptrdiff_t, diff_t, T>;
 //
-//static_assert(std::is_same_v<std::ptrdiff_t, difference_type<test1>>, "Test 1 does not have ");
-//static_assert(std::is_same_v<char, difference_type<test2>>, "Test 2 overwrites difference_type ");
+//static_assert(std::is_same_v<std::ptrdiff_t, difference_type<test1>>, "test1 does not have difference_type");
+//static_assert(std::is_same_v<char, difference_type<test2>>, "test2 overwrites difference_type ");
 //
 //void test_detect() {
 //
@@ -314,6 +317,7 @@ constexpr auto const is_detected_convertable_v{ is_detected_convertable<Converta
 //    test2 t2;
 //    //
 //    // Use Case 4:
+//    //
 //    // Use for static asserts
 //    // Assert that test1{}.foo() is valid, and test1{}.boo() is not valid
 //    //
@@ -321,7 +325,8 @@ constexpr auto const is_detected_convertable_v{ is_detected_convertable<Converta
 //    static_assert(!mpl::is_detected_v<has_boo, test1>, "test1 must not have boo()");
 //    //
 //    // Use Case 5:
-//    // Use is if constexpr to choose one of code branches.
+//    //
+//    // Use if constexpr to choose one of code branches.
 //    // In many cases it is easier comparing to SFINAE on functions,
 //    // but it requires C++17
 //    //
@@ -349,4 +354,3 @@ constexpr auto const is_detected_convertable_v{ is_detected_convertable<Converta
 //    call_if_can2(t1);
 //    call_if_can2(t2);
 //}
-}
