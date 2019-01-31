@@ -338,6 +338,8 @@ template<typename T,
 constexpr inline std::pair<bool, char const *> flat_forward_list_validate(char const *first,
                                                                           char const *end, 
                                                                           F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept {
+    using traits_traits = flat_forward_list_traits_traits<TT>;
+    constexpr auto const type_has_next_offset{ traits_traits::has_next_element_offset_v };
     //
     // by default we did not found any valid elements
     //
@@ -367,29 +369,76 @@ constexpr inline std::pair<bool, char const *> flat_forward_list_validate(char c
         // is it large enough to even query next offset?
         //
         if (remaining_length < TT::minimum_size()) {
+            //
+            // If buffer is too small to fit next element
+            // then we are done.
+            // If element type does not have next element offset
+            // then validation succeeded.
+            //
+            if constexpr (!type_has_next_offset) {
+                result = true;
+            }
             break;
         }
         //
-        // Is offset of the next element in bound of the remaining buffer
+        // If type has next element offset then use that
+        // otherwise offset is calculated from the element size
         //
-        size_t next_element_offset = TT::get_next_element_offset(first);
-        if (remaining_length < next_element_offset) {
-            break;
-        }
-        //
-        // minimum and next are valid, check rest of the fields
-        //
-        if (!validate_element_fn(remaining_length, first)) {
-            break;
-        }
-        //
-        // This is end of list, we are done,
-        // and everything is valid
-        //
-        if (0 == next_element_offset) {
-            last_valid = first;
-            result = true;
-            break;
+        size_t next_element_offset = 0;
+
+        if constexpr (type_has_next_offset) {
+            //
+            // If type has next element offset then validate it before
+            // validating the rest of data
+            //
+            next_element_offset = TT::get_next_element_offset(first);
+            //
+            // Is offset of the next element in bound of the remaining buffer
+            //
+            if (remaining_length < next_element_offset) {
+                break;
+            }
+            //
+            // minimum and next are valid, check rest of the fields
+            //
+            if (!validate_element_fn(remaining_length, first)) {
+                break;
+            }
+            //
+            // This is end of list, we are done,
+            // and everything is valid
+            //
+            if (0 == next_element_offset) {
+                last_valid = first;
+                result = true;
+                break;
+            }
+
+        } else {
+
+            //
+            // Check that element is valid before asking to calculate
+            // element size.
+            //
+            if (!validate_element_fn(remaining_length, first)) {
+                break;
+            }
+            //
+            // Next element starts right after this element ends
+            //
+            next_element_offset = TT::calculate_next_element_offset(first);
+            //
+            // Element size must be at least min size
+            //
+            if (next_element_offset < TT::minimum_size()) {
+                break;
+            }
+            //
+            // Is offset of the next element in bound of the remaining buffer
+            //
+            if (remaining_length < next_element_offset) {
+                break;
+            }
         }
         //
         // Advance last valid element forward
