@@ -103,21 +103,35 @@ inline static size_t const iffl_npos = std::numeric_limits<size_t>::max();
 #undef FFL_SAVED_MIN_DEFINITION
 #endif
 
+constexpr size_t ptr_to_size(void const *const ptr) {
+    static_assert(sizeof(void*) == sizeof(size_t), 
+                  "This function assumes that on this platform size of pointer equals to a size of size_t type");
+    size_t const *const size_ptr = reinterpret_cast<size_t const *const>(&ptr);
+    return *size_ptr;
+}
+
+constexpr void * const size_to_ptr(size_t size) {
+    static_assert(sizeof(void*) == sizeof(size_t),
+                  "This function assumes that on this platform size of pointer equals to a size of size_t type");
+    void ** ptr_ptr = reinterpret_cast<void **>(&size);
+    return *ptr_ptr;
+}
+
 template<typename T>
 constexpr inline size_t roundup_size_to_alignment(size_t size) noexcept {
-    static_assert(alignof(T) > 0, "make sure algorithm does not break");
+    static_assert(alignof(T) > 0, "Cannot devide by 0");
     return ((size + alignof(T)-1) / alignof(T)) *alignof(T);
 }
 
 template<typename T>
 constexpr inline char * roundup_ptr_to_alignment(char *ptr) noexcept {
-    static_assert(alignof(T) > 0, "make sure algorithm does not break");
+    static_assert(alignof(T) > 0, "Cannot devide by 0");
     return ((ptr + alignof(T)-1) / alignof(T)) *alignof(T);
 }
 
 template<typename T>
 constexpr inline char const * roundup_ptr_to_alignment(char const *ptr) noexcept {
-    static_assert(alignof(T) > 0, "make sure algorithm does not break");
+    static_assert(alignof(T) > 0, "Cannot devide by 0");
     return ((ptr + alignof(T)-1) / alignof(T)) *alignof(T);
 }
 

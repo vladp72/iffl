@@ -224,6 +224,12 @@ private:
     //
     template <typename P>
     using has_validate_mfn = decltype(std::declval<P &>().validate(0, nullptr));
+    //
+    // Metafunction that detects if traits define function that should be used to
+    // pad next element offset
+    //
+    template <typename P>
+    using roundup_to_alignment_mfn = decltype(std::declval<P &>().roundup_to_alignment(size_t{ 0 }));
 
 public:
 
@@ -262,6 +268,13 @@ public:
     //
     using can_validate_t = iffl::mpl::is_detected < has_validate_mfn, TT>;
     constexpr static auto const can_validate_v{ iffl::mpl::is_detected_v < has_validate_mfn, TT> };
+    //
+    // If traits have validate then 
+    // roundup_to_alignment_t is std::true_type otherwise std::false_type
+    // roundup_to_alignment_v is std::true_type{} otherwise std::false_type{}
+    //
+    using roundup_to_alignment_t = iffl::mpl::is_detected < roundup_to_alignment_mfn, TT>;
+    constexpr static auto const roundup_to_alignment_v{ iffl::mpl::is_detected_v < roundup_to_alignment_mfn, TT> };
 };
 
 //
@@ -286,6 +299,208 @@ struct noop_validate_element_fn {
 };
 
 //
+// See below commment for flat_forward_list_validate.
+// Users are not expected to use this function directly,
+// instead use flat_forward_list_validate, which will call
+// flat_forward_list_validate_has_next_offset if TT::get_next_element_offset
+// is defined.
+//
+template<typename T,
+         typename TT = flat_forward_list_traits<T>,
+         typename F = default_validate_element_fn<T, TT>>
+constexpr inline std::pair<bool, char const *> flat_forward_list_validate_has_next_offset(char const *first,
+                                                                                          char const *end,
+                                                                                          F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept {
+    using traits_traits = flat_forward_list_traits_traits<TT>;
+    constexpr auto const type_has_next_offset{ traits_traits::has_next_element_offset_v };
+    static_assert(type_has_next_offset, "traits type must define get_next_element_offset");
+    //
+    // by default we did not found any valid elements
+    //
+    char const *last_valid = nullptr;
+    //
+    // null buffer is defined as valid
+    //
+    if (first == nullptr) {
+        FFL_CODDING_ERROR_IF_NOT(nullptr == end);
+        return std::make_pair(true, last_valid);
+    }
+    //
+    // empty buffer is defined as valid
+    //
+    if (first == end) {
+        return std::make_pair(true, last_valid);
+    }
+    //
+    // Can we safely subtract pointers?
+    //
+    FFL_CODDING_ERROR_IF(end < first);
+
+    size_t remaining_length = end - first;
+    bool result = false;
+    for (;;) {
+        //
+        // is it large enough to even query next offset?
+        //
+        if (remaining_length < TT::minimum_size()) {
+            break;
+        }
+        //
+        // If type has next element offset then use that
+        // otherwise offset is calculated from the element size
+        //
+        size_t next_element_offset = 0;
+
+        //
+        // If type has next element offset then validate it before
+        // validating the rest of data
+        //
+        next_element_offset = TT::get_next_element_offset(first);
+        //
+        // Is offset of the next element in bound of the remaining buffer
+        //
+        if (remaining_length < next_element_offset) {
+            break;
+        }
+        //
+        // minimum and next are valid, check rest of the fields
+        //
+        if (!validate_element_fn(remaining_length, first)) {
+            break;
+        }
+        //
+        // This is end of list, we are done,
+        // and everything is valid
+        //
+        if (0 == next_element_offset) {
+            last_valid = first;
+            result = true;
+            break;
+        }
+        //
+        // Advance last valid element forward
+        //
+        last_valid = first;
+        //
+        // Advance current element forward
+        //
+        first += next_element_offset;
+        remaining_length -= next_element_offset;
+    }
+
+    return std::make_pair(result, last_valid);
+}
+
+//
+// See below commment for flat_forward_list_validate.
+// Users are not expected to use this function directly,
+// instead prefer to use flat_forward_list_validate, which will call
+// flat_forward_list_validate_no_next_offset if TT::get_next_element_offset
+// is NOT defined.
+//
+// You can call this function directly IFF TT::get_next_element_offset is 
+// defined, but you want to run validation as if it is not defined.
+//
+template<typename T,
+         typename TT = flat_forward_list_traits<T>,
+         typename F = default_validate_element_fn<T, TT>>
+constexpr inline std::pair<bool, char const *> flat_forward_list_validate_no_next_offset(char const *first,
+                                                                                         char const *end,
+                                                                                         F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept {
+    //
+    // For this function to work correctly we do not care if 
+    // traits has get_next_element_offset
+    //using traits_traits = flat_forward_list_traits_traits<TT>;
+    //constexpr auto const type_has_next_offset{ traits_traits::has_next_element_offset_v };
+    //
+    // by default we did not found any valid elements
+    //
+    char const *last_valid = nullptr;
+    //
+    // null buffer is defined as valid
+    //
+    if (first == nullptr) {
+        FFL_CODDING_ERROR_IF_NOT(nullptr == end);
+        return std::make_pair(true, last_valid);
+    }
+    //
+    // empty buffer is defined as valid
+    //
+    if (first == end) {
+        return std::make_pair(true, last_valid);
+    }
+    //
+    // Can we safely subtract pointers?
+    //
+    FFL_CODDING_ERROR_IF(end < first);
+
+    size_t remaining_length = end - first;
+    bool result = false;
+    for (;;) {
+        //
+        // is it large enough to even query next offset?
+        //
+        if (remaining_length < TT::minimum_size()) {
+            //
+            // If buffer is too small to fit next element
+            // then we are done.
+            // If element type does not have next element offset
+            // then validation succeeded.
+            //
+            result = true;
+            break;
+        }
+        //
+        // If type has next element offset then use that
+        // otherwise offset is calculated from the element size
+        //
+        size_t next_element_offset = 0;
+
+        //
+        // Check that element is valid before asking to calculate
+        // element size.
+        //
+        if (!validate_element_fn(remaining_length, first)) {
+            break;
+        }
+        //
+        // Next element starts right after this element ends
+        //
+        next_element_offset = TT::calculate_next_element_offset(first);
+        //
+        // Element size must be at least min size
+        //
+        if (next_element_offset < TT::minimum_size()) {
+            break;
+        }
+        //
+        // Is offset of the next element in bound of the remaining buffer
+        //
+        if (remaining_length < next_element_offset) {
+            break;
+        }
+        //
+        // keep going to see if buffer is large enough to hold
+        // another element
+        //
+
+        //
+        // Advance last valid element forward
+        //
+        last_valid = first;
+        //
+        // Advance current element forward
+        //
+        first += next_element_offset;
+        remaining_length -= next_element_offset;
+    }
+
+    return std::make_pair(result, last_valid);
+}
+//
+// Validates that buffer contains valid flat forward list
+// and returns a pointer to the last element.
+//
 // Template parameters:
 //      T  - type of element header
 //      TT - type trait for T.
@@ -293,6 +508,19 @@ struct noop_validate_element_fn {
 //              - get_next_element_offset
 //              - minimum_size
 //              - validate
+//      F -  functor type that should be used to validate
+//           element data.
+//
+// Note:
+//     When TT has get_next_element_offset we will use
+//     flat_forward_list_validate_has_next_offset, otherwise
+//     we call flat_forward_list_validate_no_next_offset
+//     - flat_forward_list_validate_has_next_offset stops
+//       when next element offset is 0
+//     - flat_forward_list_validate_no_next_offset stops
+//       when buffer cannot fit next element
+//
+//
 //
 // Input:
 //      first - start of buffer we are validating
@@ -332,6 +560,7 @@ struct noop_validate_element_fn {
 //         <true, ptr>      - buffer contains a valid flat forward list, it is safe
 //                            to use iterators
 //
+
 template<typename T,
          typename TT = flat_forward_list_traits<T>,
          typename F = default_validate_element_fn<T, TT>>
@@ -341,117 +570,16 @@ constexpr inline std::pair<bool, char const *> flat_forward_list_validate(char c
     using traits_traits = flat_forward_list_traits_traits<TT>;
     constexpr auto const type_has_next_offset{ traits_traits::has_next_element_offset_v };
     //
-    // by default we did not found any valid elements
+    // If TT::get_next_element_offset is defined then use 
+    // flat_forward_list_validate_has_next_offset algorithm
+    // otherwise use flat_forward_list_validate_no_next_offset
+    // algorithm
     //
-    char const *last_valid = nullptr;
-    //
-    // null buffer is defined as valid
-    //
-    if (first == nullptr) {
-        FFL_CODDING_ERROR_IF_NOT(nullptr == end);
-        return std::make_pair(true, last_valid);
+    if constexpr (type_has_next_offset) {
+        return flat_forward_list_validate_has_next_offset<T, TT, F>(first, end, validate_element_fn);
+    } else {
+        return flat_forward_list_validate_no_next_offset<T, TT, F>(first, end, validate_element_fn);
     }
-    //
-    // empty buffer is defined as valid
-    //
-    if (first == end) {
-        return std::make_pair(true, last_valid);
-    }
-    //
-    // Can we safely subtract pointers?
-    //
-    FFL_CODDING_ERROR_IF(end < first);
-
-    size_t remaining_length = end - first;
-    bool result = false;
-    for (;;) {
-        //
-        // is it large enough to even query next offset?
-        //
-        if (remaining_length < TT::minimum_size()) {
-            //
-            // If buffer is too small to fit next element
-            // then we are done.
-            // If element type does not have next element offset
-            // then validation succeeded.
-            //
-            if constexpr (!type_has_next_offset) {
-                result = true;
-            }
-            break;
-        }
-        //
-        // If type has next element offset then use that
-        // otherwise offset is calculated from the element size
-        //
-        size_t next_element_offset = 0;
-
-        if constexpr (type_has_next_offset) {
-            //
-            // If type has next element offset then validate it before
-            // validating the rest of data
-            //
-            next_element_offset = TT::get_next_element_offset(first);
-            //
-            // Is offset of the next element in bound of the remaining buffer
-            //
-            if (remaining_length < next_element_offset) {
-                break;
-            }
-            //
-            // minimum and next are valid, check rest of the fields
-            //
-            if (!validate_element_fn(remaining_length, first)) {
-                break;
-            }
-            //
-            // This is end of list, we are done,
-            // and everything is valid
-            //
-            if (0 == next_element_offset) {
-                last_valid = first;
-                result = true;
-                break;
-            }
-
-        } else {
-
-            //
-            // Check that element is valid before asking to calculate
-            // element size.
-            //
-            if (!validate_element_fn(remaining_length, first)) {
-                break;
-            }
-            //
-            // Next element starts right after this element ends
-            //
-            next_element_offset = TT::calculate_next_element_offset(first);
-            //
-            // Element size must be at least min size
-            //
-            if (next_element_offset < TT::minimum_size()) {
-                break;
-            }
-            //
-            // Is offset of the next element in bound of the remaining buffer
-            //
-            if (remaining_length < next_element_offset) {
-                break;
-            }
-        }
-        //
-        // Advance last valid element forward
-        //
-        last_valid = first;
-        //
-        // Advance current element forward
-        //
-        first += next_element_offset;
-        remaining_length -= next_element_offset;
-    }
-    
-    return std::make_pair(result, last_valid);
 }
 
 template<typename T,
