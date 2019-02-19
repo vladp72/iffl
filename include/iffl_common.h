@@ -272,9 +272,18 @@ struct range {
         return buffer_end - data_end;
     }
 
-    void zero_unused_capacity_data_ptr(char *data_ptr) const noexcept {
-        zero_buffer(data_ptr,
+    void fill_unused_capacity_data_ptr(char *data_ptr, int fill_byte) const noexcept {
+        fill_buffer(data_ptr + data_size(),
+                    fill_byte,
                     unused_capacity());
+    }
+
+    void zero_unused_capacity_data_ptr(char *data_ptr) const noexcept {
+        fill_unused_capacity_data_ptr(data_ptr, 0);
+    }
+
+    void fill_unused_capacity_container_ptr(char *container_ptr, int fill_byte) const noexcept {
+        fill_unused_capacity_data_ptr(container_ptr + buffer_begin, fill_byte);
     }
 
     void zero_unused_capacity_container_ptr(char *container_ptr) const noexcept {

@@ -2627,6 +2627,38 @@ public:
         return s.remaining_capacity;
     }
 
+    void fill_padding(int fill_byte = 0, 
+                      bool zero_unused_capacity = true) noexcept {
+        validate_pointer_invariants();
+        //
+        // Query end one tim, and using local is cheaper
+        //
+        auto end{ this->end() };
+        //
+        // zero padding of each element
+        //
+        for (auto it = begin(); end != it; ++it) {
+            range_t element_range{ range_unsafe(it) };
+            element_range.fill_unused_capacity_data_ptr(it.get_ptr(), fill_byte);
+        }     
+        //
+        // If we told so then zero tail
+        //
+        if (zero_unused_capacity) {
+            all_sizes prev_sizes{ get_all_sizes() };
+            if (prev_sizes.used_capacity_unaligned > 0) {
+                size_type last_element_end{ prev_sizes.last_element_offset + prev_sizes.last_element_size_not_padded };
+                size_type unuset_tail_size{ prev_sizes.total_capacity - last_element_end };
+                fill_buffer(buffer_begin_ + last_element_end,
+                            fill_byte,
+                            unuset_tail_size);
+            }
+        }
+        
+        validate_pointer_invariants();
+        validate_data_invariants();
+    }
+
 private:
 
     //

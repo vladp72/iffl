@@ -615,6 +615,8 @@ void flat_forward_list_resize_elements_test1() {
         FFL_CODDING_ERROR_IF_NOT(elements_count == ffl.size());
     }
 
+    ffl.fill_padding(0xe1);
+
     idx = 1;
     //
     // Increase each element size by 10
@@ -635,11 +637,15 @@ void flat_forward_list_resize_elements_test1() {
 
         FFL_CODDING_ERROR_IF_NOT(elements_count == ffl.size());
     }
+
+    ffl.fill_padding(0xe2);
     //
     // Shrink buffer to fit to make sure on next iteration 
     // every resize would reallocate buffer
     //
     ffl.shrink_to_fit();
+
+    ffl.fill_padding(0xe3);
 
     idx = 1;
     //
@@ -654,6 +660,8 @@ void flat_forward_list_resize_elements_test1() {
         FFL_CODDING_ERROR_IF_NOT(elements_count == ffl.size());
     }
 
+    ffl.fill_padding(0xe5);
+
     idx = 1;
     //
     // Shrink to fit
@@ -662,6 +670,8 @@ void flat_forward_list_resize_elements_test1() {
         ffl.element_shrink_to_fit(i);
         FFL_CODDING_ERROR_IF_NOT(elements_count == ffl.size());
     }
+
+    ffl.fill_padding(0xe6);
 
     //
     // Shrink buffer to fit to make sure on next iteration 
@@ -678,6 +688,8 @@ void flat_forward_list_resize_elements_test1() {
         i = ffl.element_add_size(i, idx);
         FFL_CODDING_ERROR_IF_NOT(elements_count == ffl.size());
     }
+
+    ffl.fill_padding(0xe7);
 
     idx = 1;
     //
@@ -696,8 +708,12 @@ void flat_forward_list_resize_elements_test1() {
                                 });
     }
 
+    ffl.fill_padding(0xe8);
+
     FFL_CODDING_ERROR_IF_NOT(0 == ffl.size());
     ffl.shrink_to_fit();
+
+    ffl.fill_padding(0xe9);
 }
 
 void flat_forward_list_find_by_offset_test1() {
