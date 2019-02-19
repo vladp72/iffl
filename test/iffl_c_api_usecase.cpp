@@ -75,7 +75,7 @@ struct pod_array_list_entry_traits {
     //
     // This is the only method required by flat_forward_list_iterator.
     //
-    constexpr static size_t get_next_element_offset(char const *buffer) noexcept {
+    constexpr static size_t get_next_offset(char const *buffer) noexcept {
         header_type const &e = *reinterpret_cast<header_type const *>(buffer);
         return e.next_offset;
     }
@@ -95,6 +95,10 @@ struct pod_array_list_entry_traits {
         FFL_CODDING_ERROR_IF_NOT(iffl::roundup_size_to_alignment<T>(size) == size);
         return size;
     }
+    //
+    // Required by container ir validate algorithm when type
+    // does not support get_next_offset
+    //
     constexpr static size_t get_size(char const *buffer) {
         return get_size(*reinterpret_cast<header_type const *>(buffer));
     }
@@ -114,20 +118,13 @@ struct pod_array_list_entry_traits {
     //
     // This method is required by container
     //
-    constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept {
+    constexpr static void set_next_offset(char *buffer, size_t size) noexcept {
         header_type &e = *reinterpret_cast<header_type *>(buffer);
         FFL_CODDING_ERROR_IF_NOT(size == 0 ||
                                     size >= get_size(e));
         FFL_CODDING_ERROR_IF_NOT(iffl::roundup_size_to_alignment<T>(size) == size);
         e.next_offset = static_cast<unsigned long long>(size);
     }
-    //
-    // This method is required by container
-    //
-    constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept {
-        return get_size(buffer);
-    }
-
 };
 
 using long_long_array_list_entry = pod_array_list_entry<long long>;

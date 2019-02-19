@@ -41,7 +41,7 @@ namespace iffl {
         //
         // This is the only method required by flat_forward_list_iterator.
         //
-        constexpr static size_t get_next_element_offset(char const *buffer) noexcept {
+        constexpr static size_t get_next_offset(char const *buffer) noexcept {
             FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
             return e.NextEntryOffset;
         }
@@ -108,23 +108,12 @@ namespace iffl {
         //
         // This method is required by container
         //
-        constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept {
+        constexpr static void set_next_offset(char *buffer, size_t size) noexcept {
             FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
             FFL_CODDING_ERROR_IF_NOT(size == 0 ||
                                      size >= get_size(e));
             e.NextEntryOffset = static_cast<ULONG>(size);
         }
-        //
-        // This method is required by container
-        //
-        constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept {
-            //
-            // When calculating offset we use size padded 
-            // to guarantee alignment
-            //
-            return get_size(buffer);
-        }
-
     };
 }
 

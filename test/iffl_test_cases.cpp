@@ -28,7 +28,7 @@ namespace iffl {
         //
         // This is the only method required by flat_forward_list_iterator.
         //
-        constexpr static size_t get_next_element_offset(char const *buffer) noexcept {
+        constexpr static size_t get_next_offset(char const *buffer) noexcept {
             FLAT_FORWARD_LIST_TEST const &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST const *>(buffer);
             return e.NextEntryOffset;
         }
@@ -61,7 +61,7 @@ namespace iffl {
             // and this element size fits before next element starts
             //
             // Note that when we evaluate if buffer is valid we are not requiering
-            // that it is propertly alligned. An implementation can choose to enforce 
+            // that it is propertly aligned. An implementation can choose to enforce 
             // that
             //
             //
@@ -75,21 +75,11 @@ namespace iffl {
         //
         // This method is required by container
         //
-        constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept {
+        constexpr static void set_next_offset(char *buffer, size_t size) noexcept {
             FLAT_FORWARD_LIST_TEST &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST *>(buffer);
             FFL_CODDING_ERROR_IF_NOT(size == 0 ||  
                                      size >= get_size(e));
             e.NextEntryOffset = size;
-        }
-        //
-        // This method is required by container
-        //
-        constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept {
-            //
-            // When calculating offset we use size padded 
-            // to guarantee alignment
-            //
-            return get_size(buffer);
         }
     };
 
@@ -317,12 +307,12 @@ inline void flat_forward_list_iterator_test1() {
 //
 inline int flat_forward_list_iterator_syntax_check() {
 
-    static_assert(!std::is_const_v<ffl_iterator::element_type>,
+    static_assert(!std::is_const_v<ffl_iterator::value_type>,
                   "This is a non-const iterator");
-    static_assert(std::is_const_v<ffl_const_iterator::element_type>,
+    static_assert(std::is_const_v<ffl_const_iterator::value_type>,
                   "This is a const iterator");
-    static_assert(std::is_same_v<std::remove_cv_t<ffl_iterator::element_type>,
-                  std::remove_cv_t<ffl_const_iterator::element_type>>,
+    static_assert(std::is_same_v<std::remove_cv_t<ffl_iterator::value_type>,
+                  std::remove_cv_t<ffl_const_iterator::value_type>>,
                   "Elements should differ only by constness");
 
     ffl_iterator bli1;
@@ -666,9 +656,7 @@ void flat_forward_list_resize_elements_test1() {
 
     idx = 1;
     //
-    // Increase each element size by 10
-    // But set Data size to 0 so on next 
-    // iteration we can shrink to fit
+    // Shrink to fit
     //
     for (auto i = ffl.begin(); i != ffl.end(); ++i, ++idx) {
         ffl.element_shrink_to_fit(i);
@@ -720,116 +708,118 @@ void flat_forward_list_find_by_offset_test1() {
     FFL_CODDING_ERROR_IF_NOT(10 <= ffl.size());
 
     auto element0_it = ffl.cbegin();
-    auto[element0_start_offset, element0_end_offset] = ffl.element_range(element0_it);
-    FFL_CODDING_ERROR_IF(element0_start_offset < 0 || element0_start_offset >= element0_end_offset);
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(element0_it, element0_start_offset - 1));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element0_it, element0_start_offset));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element0_it, element0_start_offset + 1));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element0_it, element0_end_offset - 1));
-    FFL_CODDING_ERROR_IF(true  == ffl.element_contains(element0_it, element0_end_offset));
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(element0_it, element0_end_offset + 1));
+    auto element0_range = ffl.range(element0_it);
+    FFL_CODDING_ERROR_IF(element0_range.begin() < 0 || element0_range.begin() >= element0_range.buffer_end_unaligned());
+    FFL_CODDING_ERROR_IF(true == ffl.contains(element0_it, element0_range.begin() - 1));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element0_it, element0_range.begin()));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element0_it, element0_range.begin() + 1));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element0_it, element0_range.buffer_end_unaligned() - 1));
+    FFL_CODDING_ERROR_IF(true  == ffl.contains(element0_it, element0_range.buffer_end_unaligned()));
+    FFL_CODDING_ERROR_IF(true == ffl.contains(element0_it, element0_range.buffer_end_aligned() + 1));
 
     auto element1_it = element0_it + 1;
-    auto[element1_start_offset, element1_end_offset] = ffl.element_range(element1_it);
-    FFL_CODDING_ERROR_IF(element1_start_offset < 0 || element1_start_offset >= element1_end_offset);
-    FFL_CODDING_ERROR_IF_NOT(element1_start_offset == element0_end_offset);
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(element1_it, element1_start_offset - 1));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element1_it, element1_start_offset));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element1_it, element1_start_offset + 1));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element1_it, element1_end_offset - 1));
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(element1_it, element1_end_offset));
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(element1_it, element1_end_offset + 1));
+    auto element1_range = ffl.range(element1_it);
+    FFL_CODDING_ERROR_IF(element1_range.begin() < 0 || element1_range.begin() >= element1_range.buffer_end_unaligned());
+    FFL_CODDING_ERROR_IF_NOT(element1_range.begin() == element0_range.buffer_end_aligned());
+    FFL_CODDING_ERROR_IF(true == ffl.contains(element1_it, element1_range.begin() - 1));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element1_it, element1_range.begin()));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element1_it, element1_range.begin() + 1));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element1_it, element1_range.buffer_end_unaligned() - 1));
+    FFL_CODDING_ERROR_IF(true == ffl.contains(element1_it, element1_range.buffer_end_unaligned()));
+    FFL_CODDING_ERROR_IF(true == ffl.contains(element1_it, element1_range.buffer_end_unaligned() + 1));
 
     auto element2_it = element1_it + 1;
-    auto[element2_start_offset, element2_end_offset] = ffl.element_range(element2_it);
-    FFL_CODDING_ERROR_IF(element2_start_offset < 0 || element2_start_offset >= element2_end_offset);
-    FFL_CODDING_ERROR_IF_NOT(element2_start_offset == element1_end_offset);
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(element2_it, element2_start_offset - 1));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element2_it, element2_start_offset));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element2_it, element2_start_offset + 1));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element2_it, element2_end_offset - 1));
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(element2_it, element2_end_offset));
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(element2_it, element2_end_offset + 1));
+    auto element2_range = ffl.range(element2_it);
+    FFL_CODDING_ERROR_IF(element2_range.begin() < 0 || element2_range.begin() >= element2_range.buffer_end_unaligned());
+    FFL_CODDING_ERROR_IF_NOT(element2_range.begin() == element1_range.buffer_end_aligned());
+    FFL_CODDING_ERROR_IF(true == ffl.contains(element2_it, element2_range.begin() - 1));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element2_it, element2_range.begin()));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element2_it, element2_range.begin() + 1));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element2_it, element2_range.buffer_end_unaligned() - 1));
+    FFL_CODDING_ERROR_IF(true == ffl.contains(element2_it, element2_range.buffer_end_unaligned()));
+    FFL_CODDING_ERROR_IF(true == ffl.contains(element2_it, element2_range.buffer_end_unaligned() + 1));
 
     auto element3_it = element2_it + 1;
-    auto[element3_start_offset, element3_end_offset] = ffl.element_range(element3_it);
-    FFL_CODDING_ERROR_IF(element3_start_offset < 0 || element3_start_offset >= element3_end_offset);
-    FFL_CODDING_ERROR_IF_NOT(element3_start_offset == element2_end_offset);
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(element3_it, element3_start_offset - 1));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element3_it, element3_start_offset));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element3_it, element3_start_offset + 1));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element3_it, element3_end_offset - 1));
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(element3_it, element3_end_offset));
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(element3_it, element3_end_offset + 1));
+    auto element3_range = ffl.range(element3_it);
+    FFL_CODDING_ERROR_IF(element3_range.begin() < 0 || element3_range.begin() >= element3_range.buffer_end_unaligned());
+    FFL_CODDING_ERROR_IF_NOT(element3_range.begin() == element2_range.buffer_end_aligned());
+    FFL_CODDING_ERROR_IF(true == ffl.contains(element3_it, element3_range.begin() - 1));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element3_it, element3_range.begin()));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element3_it, element3_range.begin() + 1));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element3_it, element3_range.buffer_end_unaligned() - 1));
+    FFL_CODDING_ERROR_IF(true == ffl.contains(element3_it, element3_range.buffer_end_unaligned()));
+    FFL_CODDING_ERROR_IF(true == ffl.contains(element3_it, element3_range.buffer_end_unaligned() + 1));
 
     auto element4_it = element3_it + 1;
-    auto[element4_start_offset, element4_end_offset] = ffl.element_range(element4_it);
-    FFL_CODDING_ERROR_IF(element4_start_offset < 0 || element4_start_offset >= element4_end_offset);
-    FFL_CODDING_ERROR_IF_NOT(element4_start_offset == element3_end_offset);
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(element4_it, element4_start_offset - 1));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element4_it, element4_start_offset));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element4_it, element4_start_offset + 1));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(element4_it, element4_end_offset - 1));
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(element4_it, element4_end_offset));
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(element4_it, element4_end_offset + 1));
+    auto element4_range = ffl.range(element4_it);
+    FFL_CODDING_ERROR_IF(element4_range.begin() < 0 || element4_range.begin() >= element4_range.buffer_end_unaligned());
+    FFL_CODDING_ERROR_IF_NOT(element4_range.begin() == element3_range.buffer_end_aligned());
+    FFL_CODDING_ERROR_IF(true == ffl.contains(element4_it, element4_range.begin() - 1));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element4_it, element4_range.begin()));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element4_it, element4_range.begin() + 1));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(element4_it, element4_range.buffer_end_unaligned() - 1));
+    FFL_CODDING_ERROR_IF(true == ffl.contains(element4_it, element4_range.buffer_end_unaligned()));
+    FFL_CODDING_ERROR_IF(true == ffl.contains(element4_it, element4_range.buffer_end_unaligned() + 1));
 
     auto last_it = ffl.last();
-    auto[last_start_offset, last_end_offset] = ffl.element_range(last_it);
-    FFL_CODDING_ERROR_IF(last_start_offset < 0 || last_start_offset >= last_end_offset);
-    FFL_CODDING_ERROR_IF_NOT(element4_start_offset <= last_end_offset);
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(last_it, last_start_offset - 1));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(last_it, last_start_offset));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(last_it, last_start_offset + 1));
-    FFL_CODDING_ERROR_IF(false == ffl.element_contains(last_it, last_end_offset - 1));
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(last_it, last_end_offset));
-    FFL_CODDING_ERROR_IF(true == ffl.element_contains(last_it, last_end_offset + 1));
+    auto last_range = ffl.range(last_it);
+    FFL_CODDING_ERROR_IF(last_range.begin() < 0 || last_range.begin() >= last_range.buffer_end_unaligned());
+    FFL_CODDING_ERROR_IF_NOT(element4_range.begin() <= last_range.buffer_end_unaligned());
+    FFL_CODDING_ERROR_IF(true == ffl.contains(last_it, last_range.begin() - 1));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(last_it, last_range.begin()));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(last_it, last_range.begin() + 1));
+    FFL_CODDING_ERROR_IF(false == ffl.contains(last_it, last_range.buffer_end_unaligned() - 1));
+    FFL_CODDING_ERROR_IF(true == ffl.contains(last_it, last_range.buffer_end_unaligned()));
+    FFL_CODDING_ERROR_IF(true == ffl.contains(last_it, last_range.buffer_end_unaligned() + 1));
 
 
-    auto before_element1_start = ffl.find_element_before(element1_start_offset);
+    auto before_element1_start = ffl.find_element_before(element1_range.begin());
     FFL_CODDING_ERROR_IF_NOT(before_element1_start == element0_it);
-    auto before_element1_end = ffl.find_element_before(element1_end_offset);
+    auto before_element1_end = ffl.find_element_before(element1_range.buffer_end_unaligned());
+    FFL_CODDING_ERROR_IF_NOT(before_element1_end == element1_it);
+    before_element1_end = ffl.find_element_before(element1_range.buffer_end_aligned());
     FFL_CODDING_ERROR_IF_NOT(before_element1_end == element1_it);
 
-    auto at_element1_start = ffl.find_element_at(element1_start_offset);
+    auto at_element1_start = ffl.find_element_at(element1_range.begin());
     FFL_CODDING_ERROR_IF_NOT(at_element1_start == element1_it);
-    auto at_element1_end = ffl.find_element_at(element1_end_offset);
+    auto at_element1_end = ffl.find_element_at(element1_range.buffer_end_unaligned());
     FFL_CODDING_ERROR_IF_NOT(at_element1_end == element2_it);
 
-    auto after_element1_start = ffl.find_element_after(element1_start_offset);
+    auto after_element1_start = ffl.find_element_after(element1_range.begin());
     FFL_CODDING_ERROR_IF_NOT(after_element1_start == element2_it);
-    auto after_element1_end = ffl.find_element_after(element1_end_offset);
+    auto after_element1_end = ffl.find_element_after(element1_range.buffer_end_unaligned());
     FFL_CODDING_ERROR_IF_NOT(after_element1_end == element3_it);
 
 
-    auto before_element2_start = ffl.find_element_before(element2_start_offset);
+    auto before_element2_start = ffl.find_element_before(element2_range.begin());
     FFL_CODDING_ERROR_IF_NOT(before_element2_start == element1_it);
-    auto before_element2_end = ffl.find_element_before(element2_end_offset);
+    auto before_element2_end = ffl.find_element_before(element2_range.buffer_end_unaligned());
     FFL_CODDING_ERROR_IF_NOT(before_element2_end == element2_it);
 
-    auto at_element2_start = ffl.find_element_at(element2_start_offset);
+    auto at_element2_start = ffl.find_element_at(element2_range.begin());
     FFL_CODDING_ERROR_IF_NOT(at_element2_start == element2_it);
-    auto at_element2_end = ffl.find_element_at(element2_end_offset);
+    auto at_element2_end = ffl.find_element_at(element2_range.buffer_end_unaligned());
     FFL_CODDING_ERROR_IF_NOT(at_element2_end == element3_it);
 
-    auto after_element2_start = ffl.find_element_after(element2_start_offset);
+    auto after_element2_start = ffl.find_element_after(element2_range.begin());
     FFL_CODDING_ERROR_IF_NOT(after_element2_start == element3_it);
-    auto after_element2_end = ffl.find_element_after(element2_end_offset);
+    auto after_element2_end = ffl.find_element_after(element2_range.buffer_end_unaligned());
     FFL_CODDING_ERROR_IF_NOT(after_element2_end == element4_it);
 
 
-    auto before_last_start = ffl.find_element_before(last_start_offset);
+    auto before_last_start = ffl.find_element_before(last_range.begin());
     FFL_CODDING_ERROR_IF_NOT(before_last_start != ffl.cend());
-    auto before_last_end = ffl.find_element_before(last_end_offset);
+    auto before_last_end = ffl.find_element_before(last_range.buffer_end_unaligned());
     FFL_CODDING_ERROR_IF_NOT(before_last_end == last_it);
 
-    auto at_last_start = ffl.find_element_at(last_start_offset);
+    auto at_last_start = ffl.find_element_at(last_range.begin());
     FFL_CODDING_ERROR_IF_NOT(at_last_start == last_it);
-    auto at_last_end = ffl.find_element_at(last_end_offset);
+    auto at_last_end = ffl.find_element_at(last_range.buffer_end_unaligned());
     FFL_CODDING_ERROR_IF_NOT(at_last_end == ffl.cend());
 
-    auto after_last_start = ffl.find_element_after(last_start_offset);
+    auto after_last_start = ffl.find_element_after(last_range.begin());
     FFL_CODDING_ERROR_IF_NOT(after_last_start == ffl.cend());
-    auto after_last_end = ffl.find_element_after(last_end_offset);
+    auto after_last_end = ffl.find_element_after(last_range.buffer_end_unaligned());
     FFL_CODDING_ERROR_IF_NOT(after_last_end == ffl.cend());
 }
 
@@ -985,6 +975,8 @@ void flat_forward_list_resize_buffer_test1() {
     iffl::pmr_flat_forward_list<FLAT_FORWARD_LIST_TEST> ffl{ &dbg_memory_resource };
     fill_container_with_data(ffl, 10);
 
+    iffl::range r;
+
     FFL_CODDING_ERROR_IF_NOT(10 <= ffl.size());
 
     size_t elements_count = ffl.size();
@@ -1002,43 +994,43 @@ void flat_forward_list_resize_buffer_test1() {
     FFL_CODDING_ERROR_IF_NOT(elements_count == prev_elements_count);
     prev_elements_count = elements_count;
 
-    auto[element_start, element_end] = ffl.element_range(ffl.last());
+    auto element_range{ ffl.range(ffl.last()) };
 
-    ffl.resize_buffer(element_end);
+    ffl.resize_buffer(element_range.buffer_end_unaligned());
 
     elements_count = ffl.size();
     FFL_CODDING_ERROR_IF_NOT(elements_count == prev_elements_count);
     prev_elements_count = elements_count;
 
-    ffl.resize_buffer(element_start);
+    ffl.resize_buffer(element_range.begin());
 
     elements_count = ffl.size();
     FFL_CODDING_ERROR_IF_NOT(elements_count == prev_elements_count - 1);
     prev_elements_count = elements_count;
 
-    std::tie(element_start, element_end) = ffl.element_range(ffl.last());
-    ffl.resize_buffer(element_end - 1);
+    element_range = ffl.range(ffl.last());
+    ffl.resize_buffer(element_range.buffer_end_unaligned() - 1);
 
     elements_count = ffl.size();
     FFL_CODDING_ERROR_IF_NOT(elements_count == prev_elements_count - 1);
     prev_elements_count = elements_count;
 
-    std::tie(element_start, element_end) = ffl.element_range(ffl.last());
-    ffl.resize_buffer(element_start + 1);
+    element_range = ffl.range(ffl.last());
+    ffl.resize_buffer(element_range.begin() + 1);
 
     elements_count = ffl.size();
     FFL_CODDING_ERROR_IF_NOT(elements_count == prev_elements_count - 1);
     prev_elements_count = elements_count;
 
-    std::tie(element_start, element_end) = ffl.element_range(ffl.begin());
-    ffl.resize_buffer(element_end);
+    element_range = ffl.range(ffl.begin());
+    ffl.resize_buffer(element_range.buffer_end_unaligned());
 
     elements_count = ffl.size();
     FFL_CODDING_ERROR_IF_NOT(elements_count == 1);
     prev_elements_count = elements_count;
 
-    std::tie(element_start, element_end) = ffl.element_range(ffl.begin());
-    ffl.resize_buffer(element_start);
+    element_range = ffl.range(ffl.begin());
+    ffl.resize_buffer(element_range.begin());
 
     elements_count = ffl.size();
     FFL_CODDING_ERROR_IF_NOT(elements_count == 0);
@@ -1213,17 +1205,19 @@ void flat_forward_list_traits_traits_test1() {
     static_assert (test_traits_traits::has_minimum_size_v, 
                    "FLAT_FORWARD_LIST_TEST must have minimum_size");
 
-    static_assert (test_traits_traits::can_calculate_next_element_offset_v, 
-                   "FLAT_FORWARD_LIST_TEST must have calculate_next_element_offset");
+    static_assert (test_traits_traits::has_get_size_v, 
+                   "FLAT_FORWARD_LIST_TEST must have get_size");
 
-    static_assert (test_traits_traits::has_next_element_offset_v, 
-                   "FLAT_FORWARD_LIST_TEST must have get_next_element_offset");
+    static_assert (test_traits_traits::has_next_offset_v, 
+                   "FLAT_FORWARD_LIST_TEST must have get_next_offset");
 
-    static_assert (test_traits_traits::can_set_next_element_offset_v, 
+    static_assert (test_traits_traits::can_set_next_offset_v, 
                    "FLAT_FORWARD_LIST_TEST must have set_next_element_offset");
 
     static_assert (test_traits_traits::can_validate_v, 
                    "FLAT_FORWARD_LIST_TEST must have validate");
+
+    test_traits_traits::print_traits_info();
 }
 
 
