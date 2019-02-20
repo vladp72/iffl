@@ -405,7 +405,7 @@ public:
         printf("type \"%s\" {\n", ti.name());
 
         if constexpr (has_minimum_size_v) {
-            printf("  minimum_size    : yes -> %I64u\n", minimum_size());
+            printf("  minimum_size    : yes -> %zu\n", minimum_size());
         } else {
             printf("  minimum_size    : no \n");
         }
@@ -435,7 +435,7 @@ public:
         }
 
         if constexpr (has_alignment_v) {
-            printf("  alignment       : yes -> %I64u\n", alignment);
+            printf("  alignment       : yes -> %zu\n", alignment);
         } else {
             printf("  alignment       : no \n");
         }
@@ -1101,11 +1101,16 @@ public:
     using const_buffer_reference = char const &;
 
     //
-    // pointer to the start of buffer
-    // used buffer size
+    // pointer to the start of buffer,
+    // used buffer size,
     // total buffer size
     //
     using detach_type_as_size = std::tuple<char *, size_t, size_t>;
+    //
+    // pointer to the start of buffer,
+    // pointer to the start of last element,
+    // pointer to the buffer end
+    //
     using detach_type_as_pointers = std::tuple<char *, char *, char *>;
 
     using iterator = flat_forward_list_iterator<T, TT>;
@@ -1312,7 +1317,7 @@ public:
         validate_pointer_invariants();
     }
 
-    void truncate_unused_tail() {
+    void tail_shrink_to_fit() {
         resize_buffer(used_capacity());
     }
 
@@ -2215,7 +2220,7 @@ public:
 
     void shrink_to_fit() {
         shrink_to_fit(begin(), end());
-        truncate_unused_tail();
+        tail_shrink_to_fit();
     }
 
     void shrink_to_fit(iterator const &first, iterator const &end) {
