@@ -1353,27 +1353,28 @@ public:
 
             new_buffer = allocate_buffer(size);
             new_buffer_size = size;
+
+            bool is_valid{ true };
+            char *last_valid{ last_element_ };
             //
-            // shrinking. 
+            // If we are shrinking below used capacity then last element will
+            // be removed, and we need to do linear search for the new last element 
+            // that would fit new buffer size.
             //
-            auto[is_valid, last_valid] = flat_forward_list_validate<T, TT>(buffer_begin_, buffer_begin_ + size);
-            if (is_valid) {
-                FFL_CODDING_ERROR_IF_NOT(last_valid == last_element_);
-            } else {
-                FFL_CODDING_ERROR_IF_NOT(last_valid != last_element_);
+            if (prev_sizes.used_capacity_unaligned > size) {
+                std::tie(is_valid, last_valid) = flat_forward_list_validate<T, TT>(buffer_begin_, buffer_begin_ + size);
+                if (is_valid) {
+                    FFL_CODDING_ERROR_IF_NOT(last_valid == last_element_);
+                } else {
+                    FFL_CODDING_ERROR_IF_NOT(last_valid != last_element_);
+                }
             }
 
-            size_t new_last_element_offset{ 0 };
-            size_t new_last_element_size{ 0 };
-            size_t new_used_capacity{ 0 };
-
             if (last_valid) {
-                new_last_element_offset = last_valid - buffer_begin_;
+                size_type new_last_element_offset = last_valid - buffer_begin_;
 
                 size_with_padding_t last_valid_element_size{ traits_traits::get_size(last_valid) };
-
-                new_last_element_size = last_valid_element_size.size_padded();
-                new_used_capacity = new_last_element_offset + new_last_element_size;
+                size_type new_used_capacity = new_last_element_offset + last_valid_element_size.size_not_padded();;
                 
                 set_no_next_element(last_valid);
                 

@@ -119,22 +119,34 @@ constexpr inline void * const size_to_ptr(size_t size) {
     return *ptr_ptr;
 }
 
+constexpr inline size_t roundup_size_to_alignment(size_t size, size_t alignment) noexcept {
+    return alignment ? ((size + alignment - 1) / alignment) *alignment : size;
+}
+
 template<typename T>
 constexpr inline size_t roundup_size_to_alignment(size_t size) noexcept {
     static_assert(alignof(T) > 0, "Cannot devide by 0");
-    return ((size + alignof(T)-1) / alignof(T)) *alignof(T);
+    return roundup_size_to_alignment(size, alignof(T));
+}
+
+constexpr inline char * roundup_ptr_to_alignment(char *ptr, size_t alignment) noexcept {
+    return reinterpret_cast<char *>(size_to_ptr(roundup_size_to_alignment(ptr_to_size(ptr), alignment)));
 }
 
 template<typename T>
 constexpr inline char * roundup_ptr_to_alignment(char *ptr) noexcept {
     static_assert(alignof(T) > 0, "Cannot devide by 0");
-    return ((ptr + alignof(T)-1) / alignof(T)) *alignof(T);
+    return roundup_ptr_to_alignment(ptr, alignof(T));
+}
+
+constexpr inline char const * roundup_ptr_to_alignment(char const *ptr, size_t alignment) noexcept {
+    return reinterpret_cast<char const *>(size_to_ptr(roundup_size_to_alignment(ptr_to_size(ptr), alignment)));
 }
 
 template<typename T>
 constexpr inline char const * roundup_ptr_to_alignment(char const *ptr) noexcept {
     static_assert(alignof(T) > 0, "Cannot devide by 0");
-    return ((ptr + alignof(T)-1) / alignof(T)) *alignof(T);
+    return roundup_ptr_to_alignment(ptr, alignof(T));
 }
 
 inline void copy_data(char *to_buffer, char const *from_buffer, size_t length) noexcept {

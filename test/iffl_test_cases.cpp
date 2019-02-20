@@ -79,8 +79,12 @@ namespace iffl {
         //
         constexpr static void set_next_offset(char *buffer, size_t size) noexcept {
             FLAT_FORWARD_LIST_TEST &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST *>(buffer);
-            FFL_CODDING_ERROR_IF_NOT(size == 0 ||  
-                                     size >= get_size(e));
+            FFL_CODDING_ERROR_IF_NOT(size == 0 || size >= get_size(e));
+            //
+            // Validate alignment
+            //
+            FFL_CODDING_ERROR_IF_NOT(roundup_ptr_to_alignment(buffer, alignment) == buffer);
+            FFL_CODDING_ERROR_IF_NOT(0 == size || roundup_size_to_alignment(size, alignment) == size);
             e.NextEntryOffset = size;
         }
     };
