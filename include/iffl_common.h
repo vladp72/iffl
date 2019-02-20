@@ -305,7 +305,7 @@ struct range_with_alighment : public range {
     static constexpr size_t const alignment{ ALIGNMENT_V };
 
     static constexpr size_t roundup_size_to_alignment(size_t size) noexcept {
-        if constexpr (ALIGNMENT_V) {
+        if constexpr (0 != ALIGNMENT_V) {
             return ((size + ALIGNMENT_V - 1) / ALIGNMENT_V) *ALIGNMENT_V;
         } else {
             return size;
@@ -369,7 +369,7 @@ struct offset_with_aligment {
     size_t offset{ 0 };
 
     static constexpr size_t roundup_size_to_alignment(size_t offset) noexcept {
-        if constexpr (ALIGNMENT_V) {
+        if constexpr (0 != ALIGNMENT_V) {
             return ((offset + ALIGNMENT_V - 1) / ALIGNMENT_V) *ALIGNMENT_V;
         } else {
             return offset;
@@ -395,7 +395,7 @@ struct size_with_padding {
     size_t size{ 0 };
 
     static constexpr size_t roundup_size_to_alignment(size_t size) noexcept {
-        if constexpr (ALIGNMENT_V) {
+        if constexpr (0 != ALIGNMENT_V) {
             return ((size + ALIGNMENT_V - 1) / ALIGNMENT_V) *ALIGNMENT_V;
         } else {
             return size;

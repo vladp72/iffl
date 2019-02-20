@@ -72,6 +72,9 @@ template <typename T>
 struct pod_array_list_entry_traits {
 
     using header_type = pod_array_list_entry<T>;
+
+    constexpr static size_t const alignment{ alignof(header_type) };
+
     //
     // This is the only method required by flat_forward_list_iterator.
     //
@@ -257,5 +260,6 @@ void call_server() {
 
 
 void run_ffl_c_api_usecase() {
+    iffl::flat_forward_list_traits_traits<iffl::flat_forward_list_traits<long_long_array_list_entry>>::print_traits_info();
     call_server();
 }

@@ -25,6 +25,8 @@ void print_element(FLAT_FORWARD_LIST_TEST const &e) {
 namespace iffl {
     template <>
     struct flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> {
+
+        constexpr static size_t const alignment{ alignof(FLAT_FORWARD_LIST_TEST) };
         //
         // This is the only method required by flat_forward_list_iterator.
         //
@@ -667,7 +669,7 @@ void flat_forward_list_resize_elements_test1() {
     // Shrink to fit
     //
     for (auto i = ffl.begin(); i != ffl.end(); ++i, ++idx) {
-        ffl.element_shrink_to_fit(i);
+        ffl.shrink_to_fit(i);
         FFL_CODDING_ERROR_IF_NOT(elements_count == ffl.size());
     }
 

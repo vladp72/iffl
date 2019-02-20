@@ -194,7 +194,7 @@ namespace iffl {
 // element contains. It is used when we append new element to the container, and need to
 // update offset to the next on the element that used to be last. In that case offset to 
 // the next is determined by calling this method. 
-// Another example that uses this method is element_shrink_to_fit.
+// Another example that uses this method is shrink_to_fit.
 //
 // constexpr static size_t get_size(char const *buffer) noexcept 
 //
@@ -332,7 +332,7 @@ public:
     using offset_with_aligment_t = offset_with_aligment<alignment>;
 
     static constexpr size_t roundup_to_alignment(size_t s) noexcept {
-        if constexpr (has_alignment_v) {
+        if constexpr (has_alignment_v && 0 != alignment) {
             return ((s + alignment - 1) / alignment) *alignment;
         } else {
             return s;
@@ -394,7 +394,7 @@ public:
             // assert when attempt to set unaligned offset to 
             // next element 
             //
-            FFL_CODDING_ERROR_IF_NOT(size = type_traits::roundup_to_alignment(size));
+            FFL_CODDING_ERROR_IF_NOT(size == roundup_to_alignment(size));
         }
         return type_traits::set_next_offset(buffer, size);
     }
@@ -1312,7 +1312,7 @@ public:
         validate_pointer_invariants();
     }
 
-    void shrink_to_fit() {
+    void truncate_unused_tail() {
         resize_buffer(used_capacity());
     }
 
@@ -1432,7 +1432,8 @@ public:
         // previous last element so the new last element will be padded
         //
         if (prev_sizes.remaining_capacity_for_append < element_size) {
-            new_buffer_size = prev_sizes.used_capacity_aligned + element_size;
+            new_buffer_size = traits_traits::roundup_to_alignment(prev_sizes.total_capacity) + 
+                              (element_size - prev_sizes.remaining_capacity_for_append);
             new_buffer = allocate_buffer(new_buffer_size);
             cur = new_buffer + prev_sizes.used_capacity_aligned;
         } else {
@@ -1574,7 +1575,8 @@ public:
         // keep element that we are shifting right propertly aligned
         //
         if (prev_sizes.remaining_capacity_for_insert < new_element_size_aligned) {
-            new_buffer_size = prev_sizes.used_capacity_unaligned + new_element_size_aligned;
+            new_buffer_size = traits_traits::roundup_to_alignment(prev_sizes.total_capacity) + 
+                              (new_element_size_aligned - prev_sizes.remaining_capacity_for_insert);
             new_buffer = allocate_buffer(new_buffer_size);
             cur = new_buffer + element_range.begin();
             begin = new_buffer;
@@ -1638,14 +1640,14 @@ public:
             //
             if (buffer_begin_) {
                 copy_data(new_buffer, buffer_begin_, element_range.begin());
-                copy_data(cur + new_element_size, it.get_ptr(), tail_size);
+                copy_data(cur + new_element_size_aligned, it.get_ptr(), tail_size);
             }
             commit_new_buffer(new_buffer, new_buffer_size);
         }
         //
         // Last element moved ahead by the size of the new inserted element
         //
-        last_element_ = buffer_begin_ + prev_sizes.last_element_offset + new_element_size;
+        last_element_ = buffer_begin_ + prev_sizes.last_element_offset + new_element_size_aligned;
 
         validate_pointer_invariants();
         validate_data_invariants();
@@ -2210,32 +2212,46 @@ public:
         return valid;
     }
 
-    void all_elements_shrink_to_fit() {
-        for (iterator const &i = begin(); i != end(); ++i) {
-            element_shrink_to_fit(i);
+    void shrink_to_fit() {
+        shrink_to_fit(begin(), end());
+        truncate_unused_tail();
+    }
+
+    void shrink_to_fit(iterator const &first, iterator const &end) {
+        for (iterator i = first; i != end; ++i) {
+            shrink_to_fit(i);
         }
     }
 
-    void element_shrink_to_fit(iterator const &it) {
+    void shrink_to_fit(iterator const &it) {
         validate_pointer_invariants();
         validate_iterator_not_end(it);
 
+        size_type new_element_size{ required_size(it) };
+        //
+        // Make sure that any element, except the last one is padded at the end
+        //
+        if (last() != it) {
+            new_element_size = traits_traits::roundup_to_alignment(new_element_size);
+        } 
+
         iterator ret_it = element_resize(it,
-                                         traits_traits::roundup_to_alignment(required_size(it)),
-                                           [] (char *buffer,  
+                                         new_element_size,
+                                         [new_element_size] (char *buffer,
                                                size_type old_size, 
                                                size_type new_size) {
                                                //
+                                               // might extend if element was not propertly alligned. 
                                                // must be shrinking, and
                                                // data must fit new buffer
                                                //
-                                               FFL_CODDING_ERROR_IF_NOT(new_size <= old_size);
+                                               FFL_CODDING_ERROR_IF_NOT(new_size <= new_element_size);
                                                //
                                                // Cannot assert it here sice we have not changed next element offset yet
                                                // we will validate element at the end
                                                //
                                                //FFL_CODDING_ERROR_IF_NOT(traits_traits::validate(new_size, buffer));
-                                           });
+                                         });
         //
         // We are either shrinking or not changing size 
         // so there should be no reallocation 
@@ -2631,13 +2647,13 @@ public:
                       bool zero_unused_capacity = true) noexcept {
         validate_pointer_invariants();
         //
-        // Query end one tim, and using local is cheaper
+        // Fill gaps between any elements up to the last
         //
-        auto end{ this->end() };
+        auto last{ this->last() };
         //
         // zero padding of each element
         //
-        for (auto it = begin(); end != it; ++it) {
+        for (auto it = begin(); last != it; ++it) {
             range_t element_range{ range_unsafe(it) };
             element_range.fill_unused_capacity_data_ptr(it.get_ptr(), fill_byte);
         }     
@@ -2840,6 +2856,12 @@ private:
             auto[valid, last] = flat_forward_list_validate<T, TT>(buffer_begin_, last_element_ + buffer_lenght);
             FFL_CODDING_ERROR_IF_NOT(valid);
             FFL_CODDING_ERROR_IF_NOT(last == last_element_);
+
+            if (last_element_) {
+                size_with_padding_t last_element_size = traits_traits::get_size(last_element_);
+                size_type last_element_offset{ static_cast<size_type>(last_element_ - buffer_begin_) };
+                FFL_CODDING_ERROR_IF(buffer_lenght < (last_element_offset + last_element_size.size_not_padded()));
+            }
         }
 #endif //FFL_DBG_CHECK_DATA_VALID
     }
@@ -3049,7 +3071,14 @@ private:
         // When we are inserting new element in the middle we need to make sure inserted element
         // is padded, but we do not need to padd tail element
         //
+        FFL_CODDING_ERROR_IF(s.total_capacity < s.used_capacity_unaligned);
         s.remaining_capacity_for_insert = s.total_capacity - s.used_capacity_unaligned;
+        // 
+        // if (s.total_capacity > s.used_capacity_unaligned) {
+        //     s.remaining_capacity_for_insert = s.total_capacity - s.used_capacity_unaligned;
+        // } else {
+        //     s.remaining_capacity_for_insert = 0;
+        // }
         //
         // If we are appending then we need to padd current last element, but new inserted 
         // element does not have to be padded

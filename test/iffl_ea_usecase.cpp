@@ -38,6 +38,29 @@ typedef struct _FILE_FULL_EA_INFORMATION {
 namespace iffl {
     template <>
     struct flat_forward_list_traits<FILE_FULL_EA_INFORMATION> {
+
+        //
+        // By default entries in container are not aligned.
+        // By providing this member we are telling container to
+        // align entries as they are inserved in container.
+        // Container still would support lists that are not propertly
+        // aligned, but when inserting new elements it will make sure
+        // that elements are padded to guarantee that next entry
+        // is alligned, assuming current entry is alligned.
+        // For example we have following array
+        //
+        // element1 - alignment correct, 
+        //            but not correctly padded at the end
+        // element2 - is not aligned correctly because element1 is not correctly padded,
+        //            but is correctly padded
+        //
+        // If we insert element 1.5 between 1 and 2 we will make sure it is correctly padded
+        // but because 1 is not correctly padded, element 1.5 will not be correctly aligned.
+        // 
+        // Padding can be fixed for all elements in the container using shrink_to_fit.
+        //
+
+        constexpr static size_t const alignment{ alignof(FILE_FULL_EA_INFORMATION) };
         //
         // This is the only method required by flat_forward_list_iterator.
         //
@@ -314,5 +337,6 @@ void prepare_ea_and_call_handler() {
 }
 
 void run_ffl_ea_usecase() {
+    iffl::flat_forward_list_traits_traits<iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>>::print_traits_info();
     prepare_ea_and_call_handler();
 }

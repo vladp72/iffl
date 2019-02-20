@@ -623,7 +623,7 @@ class flat_forward_list
 
     void all_elements_shrink_to_fit();
 
-    void element_shrink_to_fit(iterator const &it);
+    void shrink_to_fit(iterator const &it);
 
     iterator element_add_size(iterator const &it,
                               size_type size_to_add);
