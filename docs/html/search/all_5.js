@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['range',['range',['../structiffl_1_1range.html',1,'iffl']]],
-  ['range_5fwith_5falighment',['range_with_alighment',['../structiffl_1_1range__with__alighment.html',1,'iffl']]]
+  ['offset_5fwith_5faligment',['offset_with_aligment',['../structiffl_1_1offset__with__aligment.html',1,'iffl']]]
 ];
