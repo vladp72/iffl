@@ -33,12 +33,24 @@ message(STATUS "Supressing stupid warning that CMAKE_C_COMPILER is not used. Her
 #
 enable_testing( )
 
+set(VERSION_MAJOR   1   CACHE STRING "Project major version number.")
+set(VERSION_MINOR   0   CACHE STRING "Project minor version number.")
+set(VERSION_PATCH   0   CACHE STRING "Project patch version number.")
+mark_as_advanced(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
+
 #
 # This is a static library
 #
 add_library ( iffl 
               STATIC
               "src/dummy.cpp")
+
+#
+# need to find a way how to install generated file
+#
+#set(IFFL_CONFIG_IN ${CMAKE_CURRENT_SOURCE_DIR}/include/iffl_config.h.in)
+#set(IFFL_CONFIG_OUT ${CMAKE_CURRENT_BINARY_DIR}/include/iffl_config.h)
+#configure_file(${IFFL_CONFIG_IN} ${IFFL_CONFIG_OUT} @ONLY)
 
 #
 # If we have compiler requirements for this library, list them

@@ -1,5 +1,3 @@
-#include <windows.h>
-
 #include "iffl.h"
 #include "iffl_test_cases.h"
 

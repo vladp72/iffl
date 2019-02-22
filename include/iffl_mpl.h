@@ -11,6 +11,7 @@
 //  Most likley can be replaced with concepts once they are officially 
 //  part of the language
 //
+#include <iffl_config.h>
 #include <type_traits>
 
 namespace iffl::mpl {

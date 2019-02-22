@@ -151,6 +151,7 @@
 //   that all allocations are freed and that there are no buffer overruns/underruns
 //
 
+#include <iffl_config.h>
 #include <iffl_common.h>
 #include <iffl_mpl.h>
 
@@ -333,7 +334,7 @@ public:
 
     static constexpr size_t roundup_to_alignment(size_t s) noexcept {
         if constexpr (has_alignment_v && 0 != alignment) {
-            return ((s + alignment - 1) / alignment) *alignment;
+            return roundup_size_to_alignment(s, alignment);
         } else {
             return s;
         }

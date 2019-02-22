@@ -10,6 +10,7 @@
 //
 //
 
+#include <iffl_config.h>
 #include <iffl_common.h>
 
 //

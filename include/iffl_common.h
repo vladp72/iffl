@@ -6,18 +6,15 @@
 // Common definitions and utility functions.
 //
 #include <type_traits>
-#include <memory>
-#include <memory_resource>
 #include <vector>
 #include <tuple>
 #include <algorithm>
 #include <utility>
 #include <atomic>
-
 #include <cerrno>
-
 #include <typeinfo>
-
+#include <memory>
+#include <memory_resource>
 #include <intrin.h>
 
 //
@@ -316,20 +313,12 @@ struct range_with_alighment : public range {
 
     static constexpr size_t const alignment{ ALIGNMENT_V };
 
-    static constexpr size_t roundup_size_to_alignment(size_t size) noexcept {
-        if constexpr (0 != ALIGNMENT_V) {
-            return ((size + ALIGNMENT_V - 1) / ALIGNMENT_V) *ALIGNMENT_V;
-        } else {
-            return size;
-        }
-    }
-
     constexpr size_t data_end_unaligned() const noexcept {
         return data_end;
     }
     
     constexpr size_t data_end_aligned() const noexcept {
-        return roundup_size_to_alignment(data_end);
+        return roundup_size_to_alignment(data_end, ALIGNMENT_V);
     }
 
     constexpr size_t buffer_end_unaligned() const noexcept {
@@ -337,7 +326,7 @@ struct range_with_alighment : public range {
     }
 
     constexpr size_t buffer_end_aligned() const noexcept {
-        return roundup_size_to_alignment(buffer_end);
+        return roundup_size_to_alignment(buffer_end, ALIGNMENT_V);
     }
 
     constexpr size_t data_size_not_padded() const noexcept {
@@ -380,20 +369,12 @@ struct offset_with_aligment {
 
     size_t offset{ 0 };
 
-    static constexpr size_t roundup_size_to_alignment(size_t offset) noexcept {
-        if constexpr (0 != ALIGNMENT_V) {
-            return ((offset + ALIGNMENT_V - 1) / ALIGNMENT_V) *ALIGNMENT_V;
-        } else {
-            return offset;
-        }
-    }
-
     constexpr size_t offset_unaligned() const noexcept {
         return offset_aligned - offset_unaligned;
     }
 
     constexpr size_t offset_aligned() const noexcept {
-        return roundup_size_to_alignment(offset);
+        return roundup_size_to_alignment(offset, ALIGNMENT_V);
     }
 
     constexpr size_t padding_size() const noexcept {
@@ -406,20 +387,12 @@ struct size_with_padding {
 
     size_t size{ 0 };
 
-    static constexpr size_t roundup_size_to_alignment(size_t size) noexcept {
-        if constexpr (0 != ALIGNMENT_V) {
-            return ((size + ALIGNMENT_V - 1) / ALIGNMENT_V) *ALIGNMENT_V;
-        } else {
-            return size;
-        }
-    }
-
     constexpr size_t size_not_padded() const noexcept {
         return size;
     }
 
     constexpr size_t size_padded() const noexcept {
-        return roundup_size_to_alignment(size);
+        return roundup_size_to_alignment(size, ALIGNMENT_V);
     }
 
     constexpr size_t padding_size() const noexcept {
