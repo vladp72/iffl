@@ -63,7 +63,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>iffl</b></li><li class="navelem"><b>mpl</b></li><li class="navelem"><b>details</b></li><li class="navelem"><a class="el" href="structiffl_1_1mpl_1_1details_1_1detector_3_01_default_00_01void__t_3_01_operation_3_01_arguments1637d2dddf2bf4a222e8547cef0cf2cb.html">detector&lt; Default, void_t&lt; Operation&lt; Arguments... &gt; &gt;, Operation, Arguments... &gt;</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespaceiffl.html">iffl</a></li><li class="navelem"><a class="el" href="namespaceiffl_1_1mpl.html">mpl</a></li><li class="navelem"><a class="el" href="namespaceiffl_1_1mpl_1_1details.html">details</a></li><li class="navelem"><a class="el" href="structiffl_1_1mpl_1_1details_1_1detector_3_01_default_00_01void__t_3_01_operation_3_01_arguments1637d2dddf2bf4a222e8547cef0cf2cb.html">detector&lt; Default, void_t&lt; Operation&lt; Arguments... &gt; &gt;, Operation, Arguments... &gt;</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -74,17 +74,33 @@ $(function() {
 <div class="title">iffl::mpl::details::detector&lt; Default, void_t&lt; Operation&lt; Arguments... &gt; &gt;, Operation, Arguments... &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="iffl__mpl_8h_source.html">iffl_mpl.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:aaf5ca5cd6e85f1cb1438cd42517b105d"><td class="memItemLeft" align="right" valign="top"><a id="aaf5ca5cd6e85f1cb1438cd42517b105d"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = std::true_type</td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1mpl_1_1details_1_1detector_3_01_default_00_01void__t_3_01_operation_3_01_arguments1637d2dddf2bf4a222e8547cef0cf2cb.html#aaf5ca5cd6e85f1cb1438cd42517b105d">value_type</a> = std::true_type</td></tr>
+<tr class="memdesc:aaf5ca5cd6e85f1cb1438cd42517b105d"><td class="mdescLeft">&#160;</td><td class="mdescRight">In this template specialization it is always true_type. <br /></td></tr>
 <tr class="separator:aaf5ca5cd6e85f1cb1438cd42517b105d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc4b47c44ed06d5196c28f72b83ff8bf"><td class="memItemLeft" align="right" valign="top"><a id="afc4b47c44ed06d5196c28f72b83ff8bf"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>type</b> = Operation&lt; Arguments... &gt;</td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1mpl_1_1details_1_1detector_3_01_default_00_01void__t_3_01_operation_3_01_arguments1637d2dddf2bf4a222e8547cef0cf2cb.html#afc4b47c44ed06d5196c28f72b83ff8bf">type</a> = Operation&lt; Arguments... &gt;</td></tr>
+<tr class="memdesc:afc4b47c44ed06d5196c28f72b83ff8bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">In this template specialization it is type of metafunction Operation&lt;Arguments...&gt; <br /></td></tr>
 <tr class="separator:afc4b47c44ed06d5196c28f72b83ff8bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename Default, template&lt; typename... &gt; typename Operation, typename... Arguments&gt;<br />
+struct iffl::mpl::details::detector&lt; Default, void_t&lt; Operation&lt; Arguments... &gt; &gt;, Operation, Arguments... &gt;</h3>
+
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Arguments</td><td>- arguments to be passed to the metafunction</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structiffl_1_1mpl_1_1details_1_1detector.html#aa8d7eadddc0eaa6f4f0f2e800c663712" title="In this template specialization it is always false_type.">detector::value_type</a> is std::true_type and <a class="el" href="structiffl_1_1mpl_1_1details_1_1detector.html#a4f5cf9457d17f7cb53bb081eebb73f76" title="In this template specialization it is Default type.">detector::type</a> is Opration&lt;Arguments...&gt;</dd></dl>
+<p>If Operation&lt;Arguments...&gt; is well formed then this specialization is prefered otherwise we fall-back to the default </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>include/<a class="el" href="iffl__mpl_8h_source.html">iffl_mpl.h</a></li>
 </ul>
 </div><!-- contents -->

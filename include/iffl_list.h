@@ -23,9 +23,36 @@
 //! Examples:
 //!
 //! [FILE_FULL_EA_INFORMATION](https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/wdm/ns-wdm-_file_full_ea_information)
+//! @code
+//! typedef struct _FILE_FULL_EA_INFORMATION {
+//!     ULONG  NextEntryOffset;
+//!     UCHAR  Flags;
+//!     UCHAR  EaNameLength;
+//!     USHORT EaValueLength;
+//!     CHAR   EaName[1];
+//! } FILE_FULL_EA_INFORMATION, *PFILE_FULL_EA_INFORMATION;
 //!
+//! @endcode
 //! [FILE_NOTIFY_EXTENDED_INFORMATION](https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_file_notify_extended_information)
+//! @code
+//! typedef struct _FILE_NOTIFY_EXTENDED_INFORMATION {
+//!     DWORD         NextEntryOffset;
+//!     DWORD         Action;
+//!     LARGE_INTEGER CreationTime;
+//!     LARGE_INTEGER LastModificationTime;
+//!     LARGE_INTEGER LastChangeTime;
+//!     LARGE_INTEGER LastAccessTime;
+//!     LARGE_INTEGER AllocatedLength;
+//!     LARGE_INTEGER FileSize;
+//!     DWORD         FileAttributes;
+//!     DWORD         ReparsePointTag;
+//!     LARGE_INTEGER FileId;
+//!     LARGE_INTEGER ParentFileId;
+//!     DWORD         FileNameLength;
+//!     WCHAR         FileName[1];
+//! } FILE_NOTIFY_EXTENDED_INFORMATION, *PFILE_NOTIFY_EXTENDED_INFORMATION;
 //!
+//! @endcode
 //! [FILE_INFO_BY_HANDLE_CLASS](https://msdn.microsoft.com/en-us/8f02e824-ca41-48c1-a5e8-5b12d81886b5)
 //!   output for the following information classes
 //! @code
@@ -41,7 +68,26 @@
 //!        FileIdExtdDirectoryInfo
 //!        FileIdExtdDirectoryRestartInfo
 //! @endcode
+//!
 //! Output of [NtQueryDirectoryFile](https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/ns-ntifs-_file_both_dir_information)
+//! @code
+//! typedef struct _FILE_BOTH_DIR_INFORMATION {
+//!     ULONG         NextEntryOffset;
+//!     ULONG         FileIndex;
+//!     LARGE_INTEGER CreationTime;
+//!     LARGE_INTEGER LastAccessTime;
+//!     LARGE_INTEGER LastWriteTime;
+//!     LARGE_INTEGER ChangeTime;
+//!     LARGE_INTEGER EndOfFile;
+//!     LARGE_INTEGER AllocationSize;
+//!     ULONG         FileAttributes;
+//!     ULONG         FileNameLength;
+//!     ULONG         EaSize;
+//!     CCHAR         ShortNameLength;
+//!     WCHAR         ShortName[12];
+//!     WCHAR         FileName[1];
+//! } FILE_BOTH_DIR_INFORMATION, *PFILE_BOTH_DIR_INFORMATION;
+//! @endcode
 //!
 //! Or types that do not have next element offset, but it can be calculated.
 //!
@@ -58,8 +104,11 @@
 //!
 //! CLUSPROP_SYNTAX
 //!   [property list](https://docs.microsoft.com/en-us/previous-versions/windows/desktop/mscs/property-lists)
+//!
 //!   [data structures](https://docs.microsoft.com/en-us/previous-versions/windows/desktop/mscs/data-structures)
+//!
 //!   [cluster property syntax](https://docs.microsoft.com/en-us/windows/desktop/api/clusapi/ns-clusapi-clusprop_syntax)
+//!
 //! @code
 //! typedef union CLUSPROP_SYNTAX {
 //!   DWORD  dw;
@@ -69,6 +118,7 @@
 //!   } DUMMYSTRUCTNAME;
 //! } CLUSPROP_SYNTAX;
 //! @endcode
+//!
 //! [CLUSPROP_VALUE](https://docs.microsoft.com/en-us/windows/desktop/api/clusapi/ns-clusapi-clusprop_value)
 //! @code
 //! typedef struct CLUSPROP_VALUE {
@@ -100,16 +150,18 @@
 //!
 //!  Since we are implementing intrusive container, user have to give us a 
 //!  helper class that implements folowing methods 
+//!   - Specifies alignment requirements for the type
+//!          @code constexpr static size_t const alignment{ TYPE_ALIGNMENT }; @endcode 
 //!   - tell minimum required size am element must have to be able to query element size
-//!          constexpr static size_t minimum_size() noexcept
+//!          @code constexpr static size_t minimum_size() noexcept @endcode 
 //!   - query offset to next element 
-//!          constexpr static size_t get_next_offset(char const *buffer) noexcept
+//!          @code  constexpr static size_t get_next_offset(char const *buffer) noexcept @endcode 
 //!   - update offset to the next element
-//!          constexpr static void set_next_offset(char *buffer, size_t size) noexcept
+//!          @code  constexpr static void set_next_offset(char *buffer, size_t size) noexcept @endcode 
 //!   - calculate element size from data
-//!          constexpr static size_t get_size(char const *buffer) noexcept
+//!          @code  constexpr static size_t get_size(char const *buffer) noexcept @endcode 
 //!   - validate that data fit into the buffer
-//!          constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept
+//!          @code  constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept @endcode 
 //!
 //!  By default algorithms and conteiners in this library are looking for specialization 
 //!  of flat_forward_list_traits for the element type.
@@ -118,6 +170,7 @@
 //!    namespace iffl {
 //!        template <>
 //!        struct flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> {
+//!            constexpr static size_t const alignment{ TYPE_ALIGNMENT };
 //!            constexpr static size_t minimum_size() noexcept { <implementation> }
 //!            constexpr static size_t get_next_offset(char const *buffer) noexcept { <implementation> }
 //!            constexpr static void set_next_offset(char *buffer, size_t size) noexcept { <implementation> }
@@ -163,6 +216,9 @@
 namespace iffl {
 
 //!
+//! @class flat_forward_list_traits
+//! @brief traits for an elements that are in the 
+//! @details
 //! For example see flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> @ test\iffl_test_cases.cpp
 //! 
 //! Specialize this class for the tipe that is an element header for your
@@ -173,24 +229,32 @@ namespace iffl {
 //!
 //! This is the only method required by flat_forward_list_iterator.
 //! Returns offset to the next element or 0 if this is the last element.
-//!
+//! @code
 //! constexpr static size_t get_next_offset(char const *buffer) noexcept;
-//!
+//! @endcode
 //! This method is requiered for flat_forward_list_validate algorithm
 //! Minimum number of bytes to be able to safely query offset to next 
 //! and safely examine other fields.
-//!
+//! @code
 //! constexpr static size_t minimum_size() noexcept;
-//!
+//! @endcode
 //! This method is required for flat_forward_list_validate algorithm
 //! Validates that variable data fits in the buffer
-//!
+//! @code
 //! constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept;
-//!
+//! @endcode
 //! This method is used by flat_forward_list container to update offset to the
 //! next element. size can be 0 if this element is last or above zero for any other element. 
-//!
+//! @code
 //! constexpr static void set_next_offset(char *buffer, size_t size) noexcept
+//! @endcode
+//! Specifies alignment requirements for the type. When provided then
+//! every newly added element will have proper alignment. Elements that
+//! already were in the buffer can be not propertly alligned.
+//! If this member does not exist then alligned is assumed to be 1 byte
+//! @code 
+//! constexpr static size_t const alignment{ TYPE_ALIGNMENT };
+//! @endcode 
 //!
 //! This method is used by flat_forward_list. It calculates size of element, but it should
 //! not use next element offset, and instead it should calculate size based on the data this 
@@ -198,13 +262,17 @@ namespace iffl {
 //! update offset to the next on the element that used to be last. In that case offset to 
 //! the next is determined by calling this method. 
 //! Another example that uses this method is shrink_to_fit.
-//!
+//! @code
 //! constexpr static size_t get_size(char const *buffer) noexcept 
+//! @endcode
 //!
 template <typename T>
 struct flat_forward_list_traits;
 
 //!
+//! @class flat_forward_list_traits_traits
+//! @brief traits for flat_forward_list_traits
+//! @details
 //! I know, traits of traits does sounds redicules,
 //! but this is exactly what this class is.
 //! Given flat_forward_list_traits instantiation,
@@ -215,20 +283,20 @@ struct flat_forward_list_traits;
 //! same complicated and nusty machinery.
 //!
 //! How to use:
-//!
+//! @code
 //! using my_traits_traits = flat_forward_list_traits_traits<my_traits>;
-//!
+//! @endcode
 //! If traits provide us a way to get value of the next element offset for a type
 //! then use it, otherwise ask it to calculate next element offset from its own
 //! size
-//!
+//! @code
 //! if constexpr (my_traits_traits::has_next_offset_v) {
 //!      my_traits::get_next_offset(buffer)
 //! } else {
 //!      my_traits::get_size(buffer)
 //! }
+//! @endcode
 //!
-
 template <typename TT>
 struct flat_forward_list_traits_traits {
 
@@ -316,11 +384,11 @@ public:
     using has_alignment_t = iffl::mpl::is_detected < has_alignment_mfn, type_traits>;
     constexpr static auto const has_alignment_v{ iffl::mpl::is_detected_v < has_alignment_mfn, type_traits> };
 
-    static constexpr size_t minimum_size() noexcept {
+    constexpr static size_t minimum_size() noexcept {
         return type_traits::minimum_size();
     }
 
-    static constexpr size_t get_alignment() noexcept {
+    constexpr static size_t get_alignment() noexcept {
         if constexpr (has_alignment_v) {
             return type_traits::alignment;
         } else {
@@ -334,7 +402,7 @@ public:
     using size_with_padding_t    = size_with_padding<alignment>;
     using offset_with_aligment_t = offset_with_aligment<alignment>;
 
-    static constexpr size_t roundup_to_alignment(size_t s) noexcept {
+    constexpr static size_t roundup_to_alignment(size_t s) noexcept {
         if constexpr (has_alignment_v && 0 != alignment) {
             return roundup_size_to_alignment(s, alignment);
         } else {
@@ -342,11 +410,11 @@ public:
         }
     }
 
-    static constexpr size_with_padding_t get_size(char const *buffer) noexcept {
+    constexpr static size_with_padding_t get_size(char const *buffer) noexcept {
         return size_with_padding_t{ type_traits::get_size(buffer) };
     }
 
-    static constexpr bool validate(size_t buffer_size, char const *buffer) noexcept {
+    constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {
         if constexpr (can_validate_v) {
             return type_traits::validate(buffer_size, buffer);
         } else {
@@ -364,7 +432,7 @@ public:
     //! If you want a simple function that selects correct one then simply use
     //! get_next_offset instead of ex version.
     //!
-    static constexpr offset_with_aligment_t get_next_offset_ex(char const *buffer) noexcept {
+    constexpr static offset_with_aligment_t get_next_offset_ex(char const *buffer) noexcept {
         if constexpr (has_next_offset_v) {
             offset_with_aligment_t o{};
             o.offset_unaligned =  type_traits::get_next_offset(buffer);
@@ -379,7 +447,7 @@ public:
     //! Returns offset to the next element from the beginning of the current
     //! element
     //!
-    static constexpr size_t get_next_offset(char const *buffer) noexcept {
+    constexpr static size_t get_next_offset(char const *buffer) noexcept {
         if constexpr (has_next_offset_v) {
             return type_traits::get_next_offset(buffer);
         } else {
@@ -388,7 +456,7 @@ public:
         }
     }
 
-    static constexpr void set_next_offset(char *buffer, size_t size) noexcept {
+    constexpr static void set_next_offset(char *buffer, size_t size) noexcept {
         static_assert(has_next_offset_v,
                       "set_next_offset is not supported for type that does not have get_next_offset");
         if constexpr (has_alignment_v) {

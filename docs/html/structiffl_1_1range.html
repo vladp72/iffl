@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iffl: iffl::range Struct Reference</title>
+<title>iffl: iffl::range Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>iffl</b></li><li class="navelem"><a class="el" href="structiffl_1_1range.html">range</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespaceiffl.html">iffl</a></li><li class="navelem"><a class="el" href="structiffl_1_1range.html">range</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -72,68 +72,420 @@ $(function() {
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structiffl_1_1range-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">iffl::range Struct Reference</div>  </div>
+<div class="title">iffl::range Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Vocabulary type that describes a subbuffer in a larger buffer, and portion of that subbuffer actuallu used by the data.  
+ <a href="structiffl_1_1range.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="iffl__common_8h_source.html">iffl_common.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for iffl::range:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="structiffl_1_1range.png" usemap="#iffl::range_map" alt=""/>
   <map id="iffl::range_map" name="iffl::range_map">
-<area href="structiffl_1_1range__with__alighment.html" alt="iffl::range_with_alighment&lt; ALIGNMENT_V &gt;" shape="rect" coords="0,56,266,80"/>
+<area href="structiffl_1_1range__with__alighment.html" title="Vocabulary type that describes a subbuffer in a larger buffer and portion of that subbuffer actuallu ..." alt="iffl::range_with_alighment&lt; ALIGNMENT_V &gt;" shape="rect" coords="0,56,266,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9986c5579959bc7ef7e5a825474b4f2d"><td class="memItemLeft" align="right" valign="top"><a id="a9986c5579959bc7ef7e5a825474b4f2d"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> () const</td></tr>
+<tr class="memitem:a9986c5579959bc7ef7e5a825474b4f2d"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html#a9986c5579959bc7ef7e5a825474b4f2d">begin</a> () const</td></tr>
+<tr class="memdesc:a9986c5579959bc7ef7e5a825474b4f2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">offst of the buffer abd data begin  <a href="#a9986c5579959bc7ef7e5a825474b4f2d">More...</a><br /></td></tr>
 <tr class="separator:a9986c5579959bc7ef7e5a825474b4f2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99565cbd2b3c771493d8557df57c8f0f"><td class="memItemLeft" align="right" valign="top"><a id="a99565cbd2b3c771493d8557df57c8f0f"></a>
-constexpr void&#160;</td><td class="memItemRight" valign="bottom"><b>verify</b> () const noexcept</td></tr>
+constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html#a99565cbd2b3c771493d8557df57c8f0f">verify</a> () const noexcept</td></tr>
+<tr class="memdesc:a99565cbd2b3c771493d8557df57c8f0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fail fast if range invariants are broken. <br /></td></tr>
 <tr class="separator:a99565cbd2b3c771493d8557df57c8f0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a541b3d5ceb6fc72f245648cda6d27bc0"><td class="memItemLeft" align="right" valign="top"><a id="a541b3d5ceb6fc72f245648cda6d27bc0"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>data_size</b> () const noexcept</td></tr>
+<tr class="memitem:a541b3d5ceb6fc72f245648cda6d27bc0"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html#a541b3d5ceb6fc72f245648cda6d27bc0">data_size</a> () const noexcept</td></tr>
+<tr class="memdesc:a541b3d5ceb6fc72f245648cda6d27bc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data size.  <a href="#a541b3d5ceb6fc72f245648cda6d27bc0">More...</a><br /></td></tr>
 <tr class="separator:a541b3d5ceb6fc72f245648cda6d27bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fe308e7d1656d2de6b7e0e1cbab42d4"><td class="memItemLeft" align="right" valign="top"><a id="a8fe308e7d1656d2de6b7e0e1cbab42d4"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_size</b> () const noexcept</td></tr>
+<tr class="memitem:a8fe308e7d1656d2de6b7e0e1cbab42d4"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html#a8fe308e7d1656d2de6b7e0e1cbab42d4">buffer_size</a> () const noexcept</td></tr>
+<tr class="memdesc:a8fe308e7d1656d2de6b7e0e1cbab42d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Buffer size.  <a href="#a8fe308e7d1656d2de6b7e0e1cbab42d4">More...</a><br /></td></tr>
 <tr class="separator:a8fe308e7d1656d2de6b7e0e1cbab42d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1eb433e38c4c8828992dfad76a01e5a"><td class="memItemLeft" align="right" valign="top"><a id="ab1eb433e38c4c8828992dfad76a01e5a"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>unused_capacity</b> () const noexcept</td></tr>
+<tr class="memitem:ab1eb433e38c4c8828992dfad76a01e5a"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html#ab1eb433e38c4c8828992dfad76a01e5a">unused_capacity</a> () const noexcept</td></tr>
+<tr class="memdesc:ab1eb433e38c4c8828992dfad76a01e5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of unused buffer.  <a href="#ab1eb433e38c4c8828992dfad76a01e5a">More...</a><br /></td></tr>
 <tr class="separator:ab1eb433e38c4c8828992dfad76a01e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a772b98a66c57d12704d2fdbd51e614d3"><td class="memItemLeft" align="right" valign="top"><a id="a772b98a66c57d12704d2fdbd51e614d3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>fill_unused_capacity_data_ptr</b> (char *data_ptr, int fill_byte) const noexcept</td></tr>
+<tr class="memitem:a772b98a66c57d12704d2fdbd51e614d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html#a772b98a66c57d12704d2fdbd51e614d3">fill_unused_capacity_data_ptr</a> (char *data_ptr, int fill_byte) const noexcept</td></tr>
+<tr class="memdesc:a772b98a66c57d12704d2fdbd51e614d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills unused part of buffer with fill_byte.  <a href="#a772b98a66c57d12704d2fdbd51e614d3">More...</a><br /></td></tr>
 <tr class="separator:a772b98a66c57d12704d2fdbd51e614d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3011b6d9673d83905d7e06990384433f"><td class="memItemLeft" align="right" valign="top"><a id="a3011b6d9673d83905d7e06990384433f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>zero_unused_capacity_data_ptr</b> (char *data_ptr) const noexcept</td></tr>
+<tr class="memitem:a3011b6d9673d83905d7e06990384433f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html#a3011b6d9673d83905d7e06990384433f">zero_unused_capacity_data_ptr</a> (char *data_ptr) const noexcept</td></tr>
+<tr class="memdesc:a3011b6d9673d83905d7e06990384433f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zeroes unused part of buffer.  <a href="#a3011b6d9673d83905d7e06990384433f">More...</a><br /></td></tr>
 <tr class="separator:a3011b6d9673d83905d7e06990384433f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1171d7838a8f66cadf210b43874b84a"><td class="memItemLeft" align="right" valign="top"><a id="ac1171d7838a8f66cadf210b43874b84a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>fill_unused_capacity_container_ptr</b> (char *container_ptr, int fill_byte) const noexcept</td></tr>
+<tr class="memitem:ac1171d7838a8f66cadf210b43874b84a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html#ac1171d7838a8f66cadf210b43874b84a">fill_unused_capacity_container_ptr</a> (char *container_ptr, int fill_byte) const noexcept</td></tr>
+<tr class="memdesc:ac1171d7838a8f66cadf210b43874b84a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills unused part of buffer with fill_byte.  <a href="#ac1171d7838a8f66cadf210b43874b84a">More...</a><br /></td></tr>
 <tr class="separator:ac1171d7838a8f66cadf210b43874b84a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbb8626fb7dd00373a3dfb5b4913f5c1"><td class="memItemLeft" align="right" valign="top"><a id="abbb8626fb7dd00373a3dfb5b4913f5c1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>zero_unused_capacity_container_ptr</b> (char *container_ptr) const noexcept</td></tr>
+<tr class="memitem:abbb8626fb7dd00373a3dfb5b4913f5c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html#abbb8626fb7dd00373a3dfb5b4913f5c1">zero_unused_capacity_container_ptr</a> (char *container_ptr) const noexcept</td></tr>
+<tr class="memdesc:abbb8626fb7dd00373a3dfb5b4913f5c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zeroes unused part of buffer.  <a href="#abbb8626fb7dd00373a3dfb5b4913f5c1">More...</a><br /></td></tr>
 <tr class="separator:abbb8626fb7dd00373a3dfb5b4913f5c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca1d7ec78308aa70f2e755600c9d12b0"><td class="memItemLeft" align="right" valign="top"><a id="aca1d7ec78308aa70f2e755600c9d12b0"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_contains</b> (size_t position) const noexcept</td></tr>
+<tr class="memitem:aca1d7ec78308aa70f2e755600c9d12b0"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html#aca1d7ec78308aa70f2e755600c9d12b0">buffer_contains</a> (size_t position) const noexcept</td></tr>
+<tr class="memdesc:aca1d7ec78308aa70f2e755600c9d12b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells if position falls into the buffer.  <a href="#aca1d7ec78308aa70f2e755600c9d12b0">More...</a><br /></td></tr>
 <tr class="separator:aca1d7ec78308aa70f2e755600c9d12b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb29370e9e4b881c9c03169c0b564aaf"><td class="memItemLeft" align="right" valign="top"><a id="afb29370e9e4b881c9c03169c0b564aaf"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>data_contains</b> (size_t position) const noexcept</td></tr>
+<tr class="memitem:afb29370e9e4b881c9c03169c0b564aaf"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html#afb29370e9e4b881c9c03169c0b564aaf">data_contains</a> (size_t position) const noexcept</td></tr>
+<tr class="memdesc:afb29370e9e4b881c9c03169c0b564aaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells if position falls into the data buffer.  <a href="#afb29370e9e4b881c9c03169c0b564aaf">More...</a><br /></td></tr>
 <tr class="separator:afb29370e9e4b881c9c03169c0b564aaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a1edf4a4d42434bd44f157c255a184eb4"><td class="memItemLeft" align="right" valign="top"><a id="a1edf4a4d42434bd44f157c255a184eb4"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_begin</b> { 0 }</td></tr>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html#a1edf4a4d42434bd44f157c255a184eb4">buffer_begin</a> { 0 }</td></tr>
+<tr class="memdesc:a1edf4a4d42434bd44f157c255a184eb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starting offset of element in a buffer Element always starts at the beginning of the buffer. <br /></td></tr>
 <tr class="separator:a1edf4a4d42434bd44f157c255a184eb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0760e5632a29e1fe439fa16f9deffc4"><td class="memItemLeft" align="right" valign="top"><a id="ab0760e5632a29e1fe439fa16f9deffc4"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>data_end</b> { 0 }</td></tr>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html#ab0760e5632a29e1fe439fa16f9deffc4">data_end</a> { 0 }</td></tr>
+<tr class="memdesc:ab0760e5632a29e1fe439fa16f9deffc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset in the buffer where data end. <br /></td></tr>
 <tr class="separator:ab0760e5632a29e1fe439fa16f9deffc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96a61750b811a30d69453f160fde6fbc"><td class="memItemLeft" align="right" valign="top"><a id="a96a61750b811a30d69453f160fde6fbc"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_end</b> { 0 }</td></tr>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html#a96a61750b811a30d69453f160fde6fbc">buffer_end</a> { 0 }</td></tr>
+<tr class="memdesc:a96a61750b811a30d69453f160fde6fbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of the end of the buffer Next element of the flat list starts at this offset. <br /></td></tr>
 <tr class="separator:a96a61750b811a30d69453f160fde6fbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Vocabulary type that describes a subbuffer in a larger buffer, and portion of that subbuffer actuallu used by the data. </p>
+<p>Following picture explains that concept</p>
+<div class="fragment"><div class="line"> <a class="code" href="structiffl_1_1range.html#a1edf4a4d42434bd44f157c255a184eb4">buffer_begin</a>       <a class="code" href="structiffl_1_1range.html#ab0760e5632a29e1fe439fa16f9deffc4">data_end</a>       <a class="code" href="structiffl_1_1range.html#a96a61750b811a30d69453f160fde6fbc">buffer_end</a></div><div class="line">       |                |                |</div><div class="line">       V                V                V</div><div class="line">---------------------------------------------------------------</div><div class="line">| .... | &lt;element data&gt; | &lt;unused space&gt; | [next element] ... |</div><div class="line">---------------------------------------------------------------</div></div><!-- fragment --><p>unused space between data_end and buffer_end is either thace between elements in the buffer and/or padding. This vocabulary type is a convinient building block for flat list. When we move elements in the buffer it is more convinient to operate on relative offsets in the buffer. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9986c5579959bc7ef7e5a825474b4f2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9986c5579959bc7ef7e5a825474b4f2d">&#9670;&nbsp;</a></span>begin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t iffl::range::begin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>offst of the buffer abd data begin </p>
+<dl class="section return"><dt>Returns</dt><dd>current value of buffer_begin </dd></dl>
+
+</div>
+</div>
+<a id="aca1d7ec78308aa70f2e755600c9d12b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca1d7ec78308aa70f2e755600c9d12b0">&#9670;&nbsp;</a></span>buffer_contains()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool iffl::range::buffer_contains </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>position</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tells if position falls into the buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td>- position offset in the parent buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8fe308e7d1656d2de6b7e0e1cbab42d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fe308e7d1656d2de6b7e0e1cbab42d4">&#9670;&nbsp;</a></span>buffer_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t iffl::range::buffer_size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Buffer size. </p>
+<dl class="section return"><dt>Returns</dt><dd>Returns size of buffer in bytes </dd></dl>
+
+</div>
+</div>
+<a id="afb29370e9e4b881c9c03169c0b564aaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb29370e9e4b881c9c03169c0b564aaf">&#9670;&nbsp;</a></span>data_contains()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool iffl::range::data_contains </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>position</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tells if position falls into the data buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td>- position offset in the parent buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a541b3d5ceb6fc72f245648cda6d27bc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a541b3d5ceb6fc72f245648cda6d27bc0">&#9670;&nbsp;</a></span>data_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t iffl::range::data_size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Data size. </p>
+<dl class="section return"><dt>Returns</dt><dd>Returns number of bytes used by the element data </dd></dl>
+
+</div>
+</div>
+<a id="ac1171d7838a8f66cadf210b43874b84a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1171d7838a8f66cadf210b43874b84a">&#9670;&nbsp;</a></span>fill_unused_capacity_container_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void iffl::range::fill_unused_capacity_container_ptr </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>container_ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fill_byte</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fills unused part of buffer with fill_byte. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">container_ptr</td><td>- a pointer to the buffer start </td></tr>
+    <tr><td class="paramname">fill_byte</td><td>- a value to fill bytes with </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a772b98a66c57d12704d2fdbd51e614d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a772b98a66c57d12704d2fdbd51e614d3">&#9670;&nbsp;</a></span>fill_unused_capacity_data_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void iffl::range::fill_unused_capacity_data_ptr </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>data_ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fill_byte</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fills unused part of buffer with fill_byte. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data_ptr</td><td>- a pointer to the element start </td></tr>
+    <tr><td class="paramname">fill_byte</td><td>- a value to fill bytes with </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab1eb433e38c4c8828992dfad76a01e5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1eb433e38c4c8828992dfad76a01e5a">&#9670;&nbsp;</a></span>unused_capacity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t iffl::range::unused_capacity </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Size of unused buffer. </p>
+<dl class="section return"><dt>Returns</dt><dd>Returns size of buffer not ued by the data </dd></dl>
+
+</div>
+</div>
+<a id="abbb8626fb7dd00373a3dfb5b4913f5c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbb8626fb7dd00373a3dfb5b4913f5c1">&#9670;&nbsp;</a></span>zero_unused_capacity_container_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void iffl::range::zero_unused_capacity_container_ptr </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>container_ptr</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Zeroes unused part of buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">container_ptr</td><td>- a pointer to the buffer start </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3011b6d9673d83905d7e06990384433f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3011b6d9673d83905d7e06990384433f">&#9670;&nbsp;</a></span>zero_unused_capacity_data_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void iffl::range::zero_unused_capacity_data_ptr </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>data_ptr</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Zeroes unused part of buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data_ptr</td><td>- a pointer to the element start </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/<a class="el" href="iffl__common_8h_source.html">iffl_common.h</a></li>
 </ul>
 </div><!-- contents -->

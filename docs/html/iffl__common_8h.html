@@ -96,109 +96,442 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html">iffl::scope_guard&lt; G &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">template class that can be parametrised with a functor or a lambda that it will call in distructor.  <a href="classiffl_1_1scope__guard.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1attach__buffer.html">iffl::attach_buffer</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1attach__buffer.html">iffl::attach_buffer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper class used as a parameter in <a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a> constructor to designate that it should take ownership of the buffer rather than make a copy.  <a href="structiffl_1_1attach__buffer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1as__pointers.html">iffl::as_pointers</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1as__pointers.html">iffl::as_pointers</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html">iffl::range</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html">iffl::range</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vocabulary type that describes a subbuffer in a larger buffer, and portion of that subbuffer actuallu used by the data.  <a href="structiffl_1_1range.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range__with__alighment.html">iffl::range_with_alighment&lt; ALIGNMENT_V &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range__with__alighment.html">iffl::range_with_alighment&lt; ALIGNMENT_V &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vocabulary type that describes a subbuffer in a larger buffer and portion of that subbuffer actuallu used by the data.  <a href="structiffl_1_1range__with__alighment.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1offset__with__aligment.html">iffl::offset_with_aligment&lt; ALIGNMENT_V &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1offset__with__aligment.html">iffl::offset_with_aligment&lt; ALIGNMENT_V &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vocabulary type that describes an offset in a larger buffer and template parameter that specifies element's type alignment requirements.  <a href="structiffl_1_1offset__with__aligment.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1size__with__padding.html">iffl::size_with_padding&lt; ALIGNMENT_V &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1size__with__padding.html">iffl::size_with_padding&lt; ALIGNMENT_V &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vocabulary type that describes an size and template parameter that specifies element's type alignment requirements.  <a href="structiffl_1_1size__with__padding.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespaceintrusive"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceintrusive.html">intrusive</a></td></tr>
+<tr class="memitem:namespaceiffl_1_1mpl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl_1_1mpl.html">iffl::mpl</a></td></tr>
+<tr class="memdesc:namespaceiffl_1_1mpl"><td class="mdescLeft">&#160;</td><td class="mdescRight">intrusive flat forward list <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceiffl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html">iffl</a></td></tr>
+<tr class="memdesc:namespaceiffl"><td class="mdescLeft">&#160;</td><td class="mdescRight">intrusive flat forward list <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a8904ab7b6f57ac0e6cb55f24b4403280"><td class="memItemLeft" align="right" valign="top"><a id="a8904ab7b6f57ac0e6cb55f24b4403280"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FFL_FAST_FAIL</b>(EC)&#160;&#160;&#160;{__debugbreak();__fastfail(EC);}</td></tr>
+<tr class="memitem:a8904ab7b6f57ac0e6cb55f24b4403280"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#a8904ab7b6f57ac0e6cb55f24b4403280">FFL_FAST_FAIL</a>(EC)&#160;&#160;&#160;{__debugbreak();__fastfail(EC);}</td></tr>
+<tr class="memdesc:a8904ab7b6f57ac0e6cb55f24b4403280"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fail fast with error code.  <a href="#a8904ab7b6f57ac0e6cb55f24b4403280">More...</a><br /></td></tr>
 <tr class="separator:a8904ab7b6f57ac0e6cb55f24b4403280"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a710dc9d70c4e7dc8a0ab7b7fa7735d06"><td class="memItemLeft" align="right" valign="top"><a id="a710dc9d70c4e7dc8a0ab7b7fa7735d06"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FFL_CRASH_APPLICATION</b>()&#160;&#160;&#160;FFL_FAST_FAIL(ENOTRECOVERABLE)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#a710dc9d70c4e7dc8a0ab7b7fa7735d06">FFL_CRASH_APPLICATION</a>()&#160;&#160;&#160;<a class="el" href="iffl__common_8h.html#a8904ab7b6f57ac0e6cb55f24b4403280">FFL_FAST_FAIL</a>(ENOTRECOVERABLE)</td></tr>
+<tr class="memdesc:a710dc9d70c4e7dc8a0ab7b7fa7735d06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fail fast with error ENOTRECOVERABLE(127 or 0x7f) <br /></td></tr>
 <tr class="separator:a710dc9d70c4e7dc8a0ab7b7fa7735d06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af681733b928ffab5833f66ef12589474"><td class="memItemLeft" align="right" valign="top"><a id="af681733b928ffab5833f66ef12589474"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FFL_CODDING_ERROR_IF</b>(C)&#160;&#160;&#160;if (C) {FFL_FAST_FAIL(ENOTRECOVERABLE);} else {;}</td></tr>
+<tr class="memitem:af681733b928ffab5833f66ef12589474"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#af681733b928ffab5833f66ef12589474">FFL_CODDING_ERROR_IF</a>(C)&#160;&#160;&#160;if (C) {<a class="el" href="iffl__common_8h.html#a8904ab7b6f57ac0e6cb55f24b4403280">FFL_FAST_FAIL</a>(ENOTRECOVERABLE);} else {;}</td></tr>
+<tr class="memdesc:af681733b928ffab5833f66ef12589474"><td class="mdescLeft">&#160;</td><td class="mdescRight">If expression is true then fail fast with error ENOTRECOVERABLE(127 or 0x7f)  <a href="#af681733b928ffab5833f66ef12589474">More...</a><br /></td></tr>
 <tr class="separator:af681733b928ffab5833f66ef12589474"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a810e6f97c8afdfc1c59235d8a0b04584"><td class="memItemLeft" align="right" valign="top"><a id="a810e6f97c8afdfc1c59235d8a0b04584"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FFL_CODDING_ERROR_IF_NOT</b>(C)&#160;&#160;&#160;if (C) {;} else {FFL_FAST_FAIL(ENOTRECOVERABLE);}</td></tr>
+<tr class="memitem:a810e6f97c8afdfc1c59235d8a0b04584"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#a810e6f97c8afdfc1c59235d8a0b04584">FFL_CODDING_ERROR_IF_NOT</a>(C)&#160;&#160;&#160;if (C) {;} else {<a class="el" href="iffl__common_8h.html#a8904ab7b6f57ac0e6cb55f24b4403280">FFL_FAST_FAIL</a>(ENOTRECOVERABLE);}</td></tr>
+<tr class="memdesc:a810e6f97c8afdfc1c59235d8a0b04584"><td class="mdescLeft">&#160;</td><td class="mdescRight">If expression is false then fail fast with error ENOTRECOVERABLE(127 or 0x7f)  <a href="#a810e6f97c8afdfc1c59235d8a0b04584">More...</a><br /></td></tr>
 <tr class="separator:a810e6f97c8afdfc1c59235d8a0b04584"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb5e0fe369df1ba98b13b497e0cf1860"><td class="memItemLeft" align="right" valign="top"><a id="acb5e0fe369df1ba98b13b497e0cf1860"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FFL_FIELD_OFFSET</b>(T,  F)&#160;&#160;&#160;(((char const *)(&amp;((T *)NULL)-&gt;F)) - (char const *)NULL)</td></tr>
+<tr class="memitem:acb5e0fe369df1ba98b13b497e0cf1860"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T,  F)&#160;&#160;&#160;(((char const *)(&amp;((T *)NULL)-&gt;F)) - (char const *)NULL)</td></tr>
+<tr class="memdesc:acb5e0fe369df1ba98b13b497e0cf1860"><td class="mdescLeft">&#160;</td><td class="mdescRight">Field offset in the structure.  <a href="#acb5e0fe369df1ba98b13b497e0cf1860">More...</a><br /></td></tr>
 <tr class="separator:acb5e0fe369df1ba98b13b497e0cf1860"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cbf58e5d7148a9c14be9397079f2c53"><td class="memItemLeft" align="right" valign="top"><a id="a6cbf58e5d7148a9c14be9397079f2c53"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FFL_SIZE_THROUGH_FIELD</b>(T,  F)&#160;&#160;&#160;(FFL_FIELD_OFFSET(T, F) + sizeof(((T *)NULL)-&gt;F))</td></tr>
+<tr class="memitem:a6cbf58e5d7148a9c14be9397079f2c53"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#a6cbf58e5d7148a9c14be9397079f2c53">FFL_SIZE_THROUGH_FIELD</a>(T,  F)&#160;&#160;&#160;(<a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F) + sizeof(((T *)NULL)-&gt;F))</td></tr>
+<tr class="memdesc:a6cbf58e5d7148a9c14be9397079f2c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Field offset in the structure plus field size. Offset to the start of padding [if any] for the next field [if any].  <a href="#a6cbf58e5d7148a9c14be9397079f2c53">More...</a><br /></td></tr>
 <tr class="separator:a6cbf58e5d7148a9c14be9397079f2c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0002c633fc1a2007f916a3c5a2140ec"><td class="memItemLeft" align="right" valign="top"><a id="ac0002c633fc1a2007f916a3c5a2140ec"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FFL_PADDING_OFFSET_AFTER_FIELD</b>(T,  F)&#160;&#160;&#160;FFL_SIZE_THROUGH_FIELD(T, F)</td></tr>
+<tr class="memitem:ac0002c633fc1a2007f916a3c5a2140ec"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#ac0002c633fc1a2007f916a3c5a2140ec">FFL_PADDING_OFFSET_AFTER_FIELD</a>(T,  F)&#160;&#160;&#160;<a class="el" href="iffl__common_8h.html#a6cbf58e5d7148a9c14be9397079f2c53">FFL_SIZE_THROUGH_FIELD</a>(T, F)</td></tr>
+<tr class="memdesc:ac0002c633fc1a2007f916a3c5a2140ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset to the start of padding [if any] for the next field [if any].  <a href="#ac0002c633fc1a2007f916a3c5a2140ec">More...</a><br /></td></tr>
 <tr class="separator:ac0002c633fc1a2007f916a3c5a2140ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3f6492bc2fc29864bf3b8c23d85b56c"><td class="memItemLeft" align="right" valign="top"><a id="ad3f6492bc2fc29864bf3b8c23d85b56c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FFL_PADDING_BETWEEN_FIELDS_UNSAFE</b>(T,  F1,  F2)&#160;&#160;&#160;(FFL_FIELD_OFFSET(T, F2) - FFL_SIZE_THROUGH_FIELD(T, F1))</td></tr>
+<tr class="memitem:ad3f6492bc2fc29864bf3b8c23d85b56c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#ad3f6492bc2fc29864bf3b8c23d85b56c">FFL_PADDING_BETWEEN_FIELDS_UNSAFE</a>(T,  F1,  F2)&#160;&#160;&#160;(<a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F2) - <a class="el" href="iffl__common_8h.html#a6cbf58e5d7148a9c14be9397079f2c53">FFL_SIZE_THROUGH_FIELD</a>(T, F1))</td></tr>
+<tr class="memdesc:ad3f6492bc2fc29864bf3b8c23d85b56c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of padding [if any] between two fields. Does not validate that F2 is following after F1 in the structure.  <a href="#ad3f6492bc2fc29864bf3b8c23d85b56c">More...</a><br /></td></tr>
 <tr class="separator:ad3f6492bc2fc29864bf3b8c23d85b56c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c4af653d8907a676c21682475c92caf"><td class="memItemLeft" align="right" valign="top"><a id="a9c4af653d8907a676c21682475c92caf"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FFL_PADDING_BETWEEN_FIELDS</b>(T,  F1,  F2)&#160;&#160;&#160;([] {static_assert(FFL_FIELD_OFFSET(T, F1) &lt;= FFL_FIELD_OFFSET(T, F2), &quot;F1 must have lower offset in structure than F2&quot;); }, FFL_PADDING_BETWEEN_FIELDS_UNSAFE(T, F1, F2))</td></tr>
+<tr class="memitem:a9c4af653d8907a676c21682475c92caf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#a9c4af653d8907a676c21682475c92caf">FFL_PADDING_BETWEEN_FIELDS</a>(T,  F1,  F2)&#160;&#160;&#160;([] {static_assert(<a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F1) &lt;= <a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F2), &quot;F1 must have lower offset in structure than F2&quot;); }, FFL_PADDING_BETWEEN_FIELDS_UNSAFE(T, F1, F2))</td></tr>
+<tr class="memdesc:a9c4af653d8907a676c21682475c92caf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of padding [if any] between two fields. Validate that F2 is following after F1 in the structure.  <a href="#a9c4af653d8907a676c21682475c92caf">More...</a><br /></td></tr>
 <tr class="separator:a9c4af653d8907a676c21682475c92caf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a828264d7e8453d034bfaeebfed0ccbc5"><td class="memItemLeft" align="right" valign="top"><a id="a828264d7e8453d034bfaeebfed0ccbc5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>FFL_FIELD_PTR_TO_OBJ_PTR</b>(T,  F,  P)&#160;&#160;&#160;((T *)((char const *)(P) - FFL_FIELD_OFFSET(T, F)))</td></tr>
+<tr class="memitem:a828264d7e8453d034bfaeebfed0ccbc5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#a828264d7e8453d034bfaeebfed0ccbc5">FFL_FIELD_PTR_TO_OBJ_PTR</a>(T,  F,  P)&#160;&#160;&#160;((T *)((char const *)(P) - <a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F)))</td></tr>
+<tr class="memdesc:a828264d7e8453d034bfaeebfed0ccbc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates pointer to the beginnig of the structure from the pointer to a field in that structure.  <a href="#a828264d7e8453d034bfaeebfed0ccbc5">More...</a><br /></td></tr>
 <tr class="separator:a828264d7e8453d034bfaeebfed0ccbc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a74b25575152028e6785daff889608baa"><td class="memItemLeft" align="right" valign="top"><a id="a74b25575152028e6785daff889608baa"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>iffl::ptr_to_size</b> (void const *const ptr)</td></tr>
+<tr class="memitem:a74b25575152028e6785daff889608baa"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a74b25575152028e6785daff889608baa">iffl::ptr_to_size</a> (void const *const ptr)</td></tr>
+<tr class="memdesc:a74b25575152028e6785daff889608baa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore saved min and max definition.  <a href="namespaceiffl.html#a74b25575152028e6785daff889608baa">More...</a><br /></td></tr>
 <tr class="separator:a74b25575152028e6785daff889608baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42809efec1dceee6007ebca220fe0ba3"><td class="memItemLeft" align="right" valign="top"><a id="a42809efec1dceee6007ebca220fe0ba3"></a>
-constexpr void *const&#160;</td><td class="memItemRight" valign="bottom"><b>iffl::size_to_ptr</b> (size_t size)</td></tr>
+<tr class="memitem:a42809efec1dceee6007ebca220fe0ba3"><td class="memItemLeft" align="right" valign="top">constexpr void *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a42809efec1dceee6007ebca220fe0ba3">iffl::size_to_ptr</a> (size_t size)</td></tr>
+<tr class="memdesc:a42809efec1dceee6007ebca220fe0ba3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinterprets size_t value as pointer to void.  <a href="namespaceiffl.html#a42809efec1dceee6007ebca220fe0ba3">More...</a><br /></td></tr>
 <tr class="separator:a42809efec1dceee6007ebca220fe0ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32e6c55d3f8fcdb53f64debbbf4a5c7d"><td class="memItemLeft" align="right" valign="top"><a id="a32e6c55d3f8fcdb53f64debbbf4a5c7d"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>iffl::roundup_size_to_alignment</b> (size_t size, size_t alignment) noexcept</td></tr>
+<tr class="memitem:a32e6c55d3f8fcdb53f64debbbf4a5c7d"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a32e6c55d3f8fcdb53f64debbbf4a5c7d">iffl::roundup_size_to_alignment</a> (size_t size, size_t alignment) noexcept</td></tr>
+<tr class="memdesc:a32e6c55d3f8fcdb53f64debbbf4a5c7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up size to specified alignment.  <a href="namespaceiffl.html#a32e6c55d3f8fcdb53f64debbbf4a5c7d">More...</a><br /></td></tr>
 <tr class="separator:a32e6c55d3f8fcdb53f64debbbf4a5c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa12acd05702a4128b55949434f988286"><td class="memTemplParams" colspan="2"><a id="aa12acd05702a4128b55949434f988286"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aa12acd05702a4128b55949434f988286"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>iffl::roundup_size_to_alignment</b> (size_t size) noexcept</td></tr>
+<tr class="memitem:aa12acd05702a4128b55949434f988286"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aa12acd05702a4128b55949434f988286"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#aa12acd05702a4128b55949434f988286">iffl::roundup_size_to_alignment</a> (size_t size) noexcept</td></tr>
+<tr class="memdesc:aa12acd05702a4128b55949434f988286"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up size to specified alignment.  <a href="namespaceiffl.html#aa12acd05702a4128b55949434f988286">More...</a><br /></td></tr>
 <tr class="separator:aa12acd05702a4128b55949434f988286"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2711d44b2c5f29fc8d25a08e5c63cb51"><td class="memItemLeft" align="right" valign="top"><a id="a2711d44b2c5f29fc8d25a08e5c63cb51"></a>
-constexpr char *&#160;</td><td class="memItemRight" valign="bottom"><b>iffl::roundup_ptr_to_alignment</b> (char *ptr, size_t alignment) noexcept</td></tr>
+<tr class="memitem:a2711d44b2c5f29fc8d25a08e5c63cb51"><td class="memItemLeft" align="right" valign="top">constexpr char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a2711d44b2c5f29fc8d25a08e5c63cb51">iffl::roundup_ptr_to_alignment</a> (char *ptr, size_t alignment) noexcept</td></tr>
+<tr class="memdesc:a2711d44b2c5f29fc8d25a08e5c63cb51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up pointer to specified alignment.  <a href="namespaceiffl.html#a2711d44b2c5f29fc8d25a08e5c63cb51">More...</a><br /></td></tr>
 <tr class="separator:a2711d44b2c5f29fc8d25a08e5c63cb51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad1b2db11c2e8779de5ee513948cd9d6"><td class="memTemplParams" colspan="2"><a id="aad1b2db11c2e8779de5ee513948cd9d6"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aad1b2db11c2e8779de5ee513948cd9d6"><td class="memTemplItemLeft" align="right" valign="top">constexpr char *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>iffl::roundup_ptr_to_alignment</b> (char *ptr) noexcept</td></tr>
+<tr class="memitem:aad1b2db11c2e8779de5ee513948cd9d6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aad1b2db11c2e8779de5ee513948cd9d6"><td class="memTemplItemLeft" align="right" valign="top">constexpr char *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#aad1b2db11c2e8779de5ee513948cd9d6">iffl::roundup_ptr_to_alignment</a> (char *ptr) noexcept</td></tr>
+<tr class="memdesc:aad1b2db11c2e8779de5ee513948cd9d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up pointer to specified alignment.  <a href="namespaceiffl.html#aad1b2db11c2e8779de5ee513948cd9d6">More...</a><br /></td></tr>
 <tr class="separator:aad1b2db11c2e8779de5ee513948cd9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af68beb46a3d4f1531f668d835ecf1328"><td class="memItemLeft" align="right" valign="top"><a id="af68beb46a3d4f1531f668d835ecf1328"></a>
-constexpr char const  *&#160;</td><td class="memItemRight" valign="bottom"><b>iffl::roundup_ptr_to_alignment</b> (char const *ptr, size_t alignment) noexcept</td></tr>
+<tr class="memitem:af68beb46a3d4f1531f668d835ecf1328"><td class="memItemLeft" align="right" valign="top">constexpr char const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#af68beb46a3d4f1531f668d835ecf1328">iffl::roundup_ptr_to_alignment</a> (char const *ptr, size_t alignment) noexcept</td></tr>
+<tr class="memdesc:af68beb46a3d4f1531f668d835ecf1328"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up pointer to specified alignment.  <a href="namespaceiffl.html#af68beb46a3d4f1531f668d835ecf1328">More...</a><br /></td></tr>
 <tr class="separator:af68beb46a3d4f1531f668d835ecf1328"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4941a5ebaa9516677bee86d04a191ca"><td class="memTemplParams" colspan="2"><a id="ac4941a5ebaa9516677bee86d04a191ca"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ac4941a5ebaa9516677bee86d04a191ca"><td class="memTemplItemLeft" align="right" valign="top">constexpr char const  *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>iffl::roundup_ptr_to_alignment</b> (char const *ptr) noexcept</td></tr>
+<tr class="memitem:ac4941a5ebaa9516677bee86d04a191ca"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ac4941a5ebaa9516677bee86d04a191ca"><td class="memTemplItemLeft" align="right" valign="top">constexpr char const  *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#ac4941a5ebaa9516677bee86d04a191ca">iffl::roundup_ptr_to_alignment</a> (char const *ptr) noexcept</td></tr>
+<tr class="memdesc:ac4941a5ebaa9516677bee86d04a191ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up pointer to specified alignment.  <a href="namespaceiffl.html#ac4941a5ebaa9516677bee86d04a191ca">More...</a><br /></td></tr>
 <tr class="separator:ac4941a5ebaa9516677bee86d04a191ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad07072ae8b15c3cb89c45049f070b7c"><td class="memItemLeft" align="right" valign="top"><a id="aad07072ae8b15c3cb89c45049f070b7c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>iffl::copy_data</b> (char *to_buffer, char const *from_buffer, size_t length) noexcept</td></tr>
+<tr class="memitem:aad07072ae8b15c3cb89c45049f070b7c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#aad07072ae8b15c3cb89c45049f070b7c">iffl::copy_data</a> (char *to_buffer, char const *from_buffer, size_t length) noexcept</td></tr>
+<tr class="memdesc:aad07072ae8b15c3cb89c45049f070b7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">copies length bytes from from_buffer to to_buffer. source and destination buffers cannot overlap  <a href="namespaceiffl.html#aad07072ae8b15c3cb89c45049f070b7c">More...</a><br /></td></tr>
 <tr class="separator:aad07072ae8b15c3cb89c45049f070b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab18f9699312805dc2f72a5d4a00ef790"><td class="memItemLeft" align="right" valign="top"><a id="ab18f9699312805dc2f72a5d4a00ef790"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>iffl::move_data</b> (char *to_buffer, char const *from_buffer, size_t length) noexcept</td></tr>
+<tr class="memitem:ab18f9699312805dc2f72a5d4a00ef790"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#ab18f9699312805dc2f72a5d4a00ef790">iffl::move_data</a> (char *to_buffer, char const *from_buffer, size_t length) noexcept</td></tr>
+<tr class="memdesc:ab18f9699312805dc2f72a5d4a00ef790"><td class="mdescLeft">&#160;</td><td class="mdescRight">copies length bytes from from_buffer to to_buffer. source and destination buffers can overlap  <a href="namespaceiffl.html#ab18f9699312805dc2f72a5d4a00ef790">More...</a><br /></td></tr>
 <tr class="separator:ab18f9699312805dc2f72a5d4a00ef790"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8bf093b969e4bf780b6d0347a942a2e"><td class="memItemLeft" align="right" valign="top"><a id="ac8bf093b969e4bf780b6d0347a942a2e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>iffl::fill_buffer</b> (char *buffer, int value, size_t length) noexcept</td></tr>
+<tr class="memitem:ac8bf093b969e4bf780b6d0347a942a2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#ac8bf093b969e4bf780b6d0347a942a2e">iffl::fill_buffer</a> (char *buffer, int value, size_t length) noexcept</td></tr>
+<tr class="memdesc:ac8bf093b969e4bf780b6d0347a942a2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">sets "length" consequative bytes of "to_buffer" to "value".  <a href="namespaceiffl.html#ac8bf093b969e4bf780b6d0347a942a2e">More...</a><br /></td></tr>
 <tr class="separator:ac8bf093b969e4bf780b6d0347a942a2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a395800a3bee8537b31af93bbba3927ac"><td class="memItemLeft" align="right" valign="top"><a id="a395800a3bee8537b31af93bbba3927ac"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>iffl::zero_buffer</b> (char *buffer, size_t length) noexcept</td></tr>
+<tr class="memitem:a395800a3bee8537b31af93bbba3927ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a395800a3bee8537b31af93bbba3927ac">iffl::zero_buffer</a> (char *buffer, size_t length) noexcept</td></tr>
+<tr class="memdesc:a395800a3bee8537b31af93bbba3927ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">sets "length" consequative bytes of "to_buffer" to 0.  <a href="namespaceiffl.html#a395800a3bee8537b31af93bbba3927ac">More...</a><br /></td></tr>
 <tr class="separator:a395800a3bee8537b31af93bbba3927ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b398fb9f25e87b28239b8cd37adc324"><td class="memTemplParams" colspan="2"><a id="a9b398fb9f25e87b28239b8cd37adc324"></a>
-template&lt;typename G &gt; </td></tr>
-<tr class="memitem:a9b398fb9f25e87b28239b8cd37adc324"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><b>iffl::make_scope_guard</b> (G &amp;&amp;g)</td></tr>
+<tr class="memitem:a9b398fb9f25e87b28239b8cd37adc324"><td class="memTemplParams" colspan="2">template&lt;typename G &gt; </td></tr>
+<tr class="memitem:a9b398fb9f25e87b28239b8cd37adc324"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a9b398fb9f25e87b28239b8cd37adc324">iffl::make_scope_guard</a> (G &amp;&amp;g)</td></tr>
+<tr class="memdesc:a9b398fb9f25e87b28239b8cd37adc324"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory method for scoped_guard.  <a href="namespaceiffl.html#a9b398fb9f25e87b28239b8cd37adc324">More...</a><br /></td></tr>
 <tr class="separator:a9b398fb9f25e87b28239b8cd37adc324"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Common definitions, utility functions and vocabulary types. </p>
 <dl class="section author"><dt>Author</dt><dd>Vladimir Petter</dd></dl>
 <p><a href="https://github.com/vladp72/iffl">iffl github</a> </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="af681733b928ffab5833f66ef12589474"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af681733b928ffab5833f66ef12589474">&#9670;&nbsp;</a></span>FFL_CODDING_ERROR_IF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FFL_CODDING_ERROR_IF</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">C</td><td>)</td>
+          <td>&#160;&#160;&#160;if (C) {<a class="el" href="iffl__common_8h.html#a8904ab7b6f57ac0e6cb55f24b4403280">FFL_FAST_FAIL</a>(ENOTRECOVERABLE);} else {;}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If expression is true then fail fast with error ENOTRECOVERABLE(127 or 0x7f) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">C</td><td>expression that we are asserting </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a810e6f97c8afdfc1c59235d8a0b04584"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a810e6f97c8afdfc1c59235d8a0b04584">&#9670;&nbsp;</a></span>FFL_CODDING_ERROR_IF_NOT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FFL_CODDING_ERROR_IF_NOT</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">C</td><td>)</td>
+          <td>&#160;&#160;&#160;if (C) {;} else {<a class="el" href="iffl__common_8h.html#a8904ab7b6f57ac0e6cb55f24b4403280">FFL_FAST_FAIL</a>(ENOTRECOVERABLE);}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If expression is false then fail fast with error ENOTRECOVERABLE(127 or 0x7f) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">C</td><td>expression that we are asserting </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8904ab7b6f57ac0e6cb55f24b4403280"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8904ab7b6f57ac0e6cb55f24b4403280">&#9670;&nbsp;</a></span>FFL_FAST_FAIL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FFL_FAST_FAIL</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">EC</td><td>)</td>
+          <td>&#160;&#160;&#160;{__debugbreak();__fastfail(EC);}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fail fast with error code. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">EC</td><td>- fail fast error code </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acb5e0fe369df1ba98b13b497e0cf1860"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb5e0fe369df1ba98b13b497e0cf1860">&#9670;&nbsp;</a></span>FFL_FIELD_OFFSET</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FFL_FIELD_OFFSET</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">T, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">F&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;(((char const *)(&amp;((T *)NULL)-&gt;F)) - (char const *)NULL)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Field offset in the structure. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>type field is member of </td></tr>
+    <tr><td class="paramname">F</td><td>field name </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a828264d7e8453d034bfaeebfed0ccbc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a828264d7e8453d034bfaeebfed0ccbc5">&#9670;&nbsp;</a></span>FFL_FIELD_PTR_TO_OBJ_PTR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FFL_FIELD_PTR_TO_OBJ_PTR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">T, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">F, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">P&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;((T *)((char const *)(P) - <a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F)))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculates pointer to the beginnig of the structure from the pointer to a field in that structure. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>type fields are members of </td></tr>
+    <tr><td class="paramname">F</td><td>field name </td></tr>
+    <tr><td class="paramname">P</td><td>pointer to the field </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9c4af653d8907a676c21682475c92caf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c4af653d8907a676c21682475c92caf">&#9670;&nbsp;</a></span>FFL_PADDING_BETWEEN_FIELDS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FFL_PADDING_BETWEEN_FIELDS</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">T, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">F1, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">F2&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;([] {static_assert(<a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F1) &lt;= <a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F2), &quot;F1 must have lower offset in structure than F2&quot;); }, FFL_PADDING_BETWEEN_FIELDS_UNSAFE(T, F1, F2))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Size of padding [if any] between two fields. Validate that F2 is following after F1 in the structure. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>type fields are members of </td></tr>
+    <tr><td class="paramname">F1</td><td>firt field name </td></tr>
+    <tr><td class="paramname">F2</td><td>second field name </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad3f6492bc2fc29864bf3b8c23d85b56c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3f6492bc2fc29864bf3b8c23d85b56c">&#9670;&nbsp;</a></span>FFL_PADDING_BETWEEN_FIELDS_UNSAFE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FFL_PADDING_BETWEEN_FIELDS_UNSAFE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">T, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">F1, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">F2&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;(<a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F2) - <a class="el" href="iffl__common_8h.html#a6cbf58e5d7148a9c14be9397079f2c53">FFL_SIZE_THROUGH_FIELD</a>(T, F1))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Size of padding [if any] between two fields. Does not validate that F2 is following after F1 in the structure. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>type fields are members of </td></tr>
+    <tr><td class="paramname">F1</td><td>firt field name </td></tr>
+    <tr><td class="paramname">F2</td><td>second field name </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac0002c633fc1a2007f916a3c5a2140ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0002c633fc1a2007f916a3c5a2140ec">&#9670;&nbsp;</a></span>FFL_PADDING_OFFSET_AFTER_FIELD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FFL_PADDING_OFFSET_AFTER_FIELD</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">T, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">F&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;<a class="el" href="iffl__common_8h.html#a6cbf58e5d7148a9c14be9397079f2c53">FFL_SIZE_THROUGH_FIELD</a>(T, F)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Offset to the start of padding [if any] for the next field [if any]. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>type field is member of </td></tr>
+    <tr><td class="paramname">F</td><td>field name </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6cbf58e5d7148a9c14be9397079f2c53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cbf58e5d7148a9c14be9397079f2c53">&#9670;&nbsp;</a></span>FFL_SIZE_THROUGH_FIELD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FFL_SIZE_THROUGH_FIELD</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">T, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">F&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;(<a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F) + sizeof(((T *)NULL)-&gt;F))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Field offset in the structure plus field size. Offset to the start of padding [if any] for the next field [if any]. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>type field is member of </td></tr>
+    <tr><td class="paramname">F</td><td>field name </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

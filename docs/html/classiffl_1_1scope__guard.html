@@ -63,7 +63,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>iffl</b></li><li class="navelem"><a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespaceiffl.html">iffl</a></li><li class="navelem"><a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -74,6 +74,11 @@ $(function() {
 <div class="title">iffl::scope_guard&lt; G &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>template class that can be parametrised with a functor or a lambda that it will call in distructor.  
+ <a href="classiffl_1_1scope__guard.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="iffl__common_8h_source.html">iffl_common.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for iffl::scope_guard&lt; G &gt;:</div>
 <div class="dyncontent">
@@ -83,37 +88,197 @@ Inheritance diagram for iffl::scope_guard&lt; G &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa4a4627d185b5be598b3a2b48e3caf86"><td class="memItemLeft" align="right" valign="top"><a id="aa4a4627d185b5be598b3a2b48e3caf86"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>scope_guard</b> (G g)</td></tr>
-<tr class="separator:aa4a4627d185b5be598b3a2b48e3caf86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dabd850eaf8bec638dc39828b1378d9"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html#a1dabd850eaf8bec638dc39828b1378d9">scope_guard</a> (G const &amp;g)</td></tr>
+<tr class="memdesc:a1dabd850eaf8bec638dc39828b1378d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor from an instance of functor.  <a href="#a1dabd850eaf8bec638dc39828b1378d9">More...</a><br /></td></tr>
+<tr class="separator:a1dabd850eaf8bec638dc39828b1378d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb3788ece4485dc6a52087944352790b"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html#abb3788ece4485dc6a52087944352790b">scope_guard</a> (G &amp;&amp;g)</td></tr>
+<tr class="memdesc:abb3788ece4485dc6a52087944352790b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor from an instance of functor.  <a href="#abb3788ece4485dc6a52087944352790b">More...</a><br /></td></tr>
+<tr class="separator:abb3788ece4485dc6a52087944352790b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4cc70cc13b69cca52d4cbe1990e7642"><td class="memItemLeft" align="right" valign="top"><a id="ae4cc70cc13b69cca52d4cbe1990e7642"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>scope_guard</b> (<a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> &amp;&amp;)=default</td></tr>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html#ae4cc70cc13b69cca52d4cbe1990e7642">scope_guard</a> (<a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> &amp;&amp;)=default</td></tr>
+<tr class="memdesc:ae4cc70cc13b69cca52d4cbe1990e7642"><td class="mdescLeft">&#160;</td><td class="mdescRight">Guard supports moving between scopes. <br /></td></tr>
 <tr class="separator:ae4cc70cc13b69cca52d4cbe1990e7642"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbcd3854642945a8fd429dc65e9af0fb"><td class="memItemLeft" align="right" valign="top"><a id="afbcd3854642945a8fd429dc65e9af0fb"></a>
-constexpr <a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> &amp;&amp;)=default</td></tr>
+constexpr <a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html#afbcd3854642945a8fd429dc65e9af0fb">operator=</a> (<a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> &amp;&amp;)=default</td></tr>
+<tr class="memdesc:afbcd3854642945a8fd429dc65e9af0fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Guard supports moving between scopes. <br /></td></tr>
 <tr class="separator:afbcd3854642945a8fd429dc65e9af0fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab440bacc6d648d758adb2e28addc15df"><td class="memItemLeft" align="right" valign="top"><a id="ab440bacc6d648d758adb2e28addc15df"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>scope_guard</b> (<a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> &amp;)=delete</td></tr>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html#ab440bacc6d648d758adb2e28addc15df">scope_guard</a> (<a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> &amp;)=delete</td></tr>
+<tr class="memdesc:ab440bacc6d648d758adb2e28addc15df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Guard does not support copy. <br /></td></tr>
 <tr class="separator:ab440bacc6d648d758adb2e28addc15df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accd2651a97baa0227ee2dc8949208ee5"><td class="memItemLeft" align="right" valign="top"><a id="accd2651a97baa0227ee2dc8949208ee5"></a>
-constexpr <a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> &amp;)=delete</td></tr>
+constexpr <a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html#accd2651a97baa0227ee2dc8949208ee5">operator=</a> (<a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> &amp;)=delete</td></tr>
+<tr class="memdesc:accd2651a97baa0227ee2dc8949208ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Guard does not support copy. <br /></td></tr>
 <tr class="separator:accd2651a97baa0227ee2dc8949208ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa08842b7a5ef1abea5028aa6c459f99"><td class="memItemLeft" align="right" valign="top"><a id="afa08842b7a5ef1abea5028aa6c459f99"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html#afa08842b7a5ef1abea5028aa6c459f99">~scope_guard</a> () noexcept</td></tr>
+<tr class="memdesc:afa08842b7a5ef1abea5028aa6c459f99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distructor attempts to call functor if guard was not disarmed. <br /></td></tr>
+<tr class="separator:afa08842b7a5ef1abea5028aa6c459f99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3570a333c8317d0077253b57c406fc50"><td class="memItemLeft" align="right" valign="top"><a id="a3570a333c8317d0077253b57c406fc50"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>discharge</b> () noexcept</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html#a3570a333c8317d0077253b57c406fc50">discharge</a> () noexcept</td></tr>
+<tr class="memdesc:a3570a333c8317d0077253b57c406fc50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this method to discharge guard now. <br /></td></tr>
 <tr class="separator:a3570a333c8317d0077253b57c406fc50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af38bd5f45a30b2ba63ea9bd2b218c05f"><td class="memItemLeft" align="right" valign="top"><a id="af38bd5f45a30b2ba63ea9bd2b218c05f"></a>
-constexpr void&#160;</td><td class="memItemRight" valign="bottom"><b>disarm</b> () noexcept</td></tr>
+constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html#af38bd5f45a30b2ba63ea9bd2b218c05f">disarm</a> () noexcept</td></tr>
+<tr class="memdesc:af38bd5f45a30b2ba63ea9bd2b218c05f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disarming guard tells it not discharge during destruction. <br /></td></tr>
 <tr class="separator:af38bd5f45a30b2ba63ea9bd2b218c05f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1161b0d05ecb53f9c859b4abde564f47"><td class="memItemLeft" align="right" valign="top"><a id="a1161b0d05ecb53f9c859b4abde564f47"></a>
-constexpr void&#160;</td><td class="memItemRight" valign="bottom"><b>arm</b> () noexcept</td></tr>
+constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html#a1161b0d05ecb53f9c859b4abde564f47">arm</a> () noexcept</td></tr>
+<tr class="memdesc:a1161b0d05ecb53f9c859b4abde564f47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can be used to re-arm guard after prior disarm or discharge. <br /></td></tr>
 <tr class="separator:a1161b0d05ecb53f9c859b4abde564f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f49f2424afbb6b9d72ffc44bd631005"><td class="memItemLeft" align="right" valign="top"><a id="a3f49f2424afbb6b9d72ffc44bd631005"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_armed</b> () const noexcept</td></tr>
+<tr class="memitem:a3f49f2424afbb6b9d72ffc44bd631005"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html#a3f49f2424afbb6b9d72ffc44bd631005">is_armed</a> () const noexcept</td></tr>
+<tr class="memdesc:a3f49f2424afbb6b9d72ffc44bd631005"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells if guard is armed.  <a href="#a3f49f2424afbb6b9d72ffc44bd631005">More...</a><br /></td></tr>
 <tr class="separator:a3f49f2424afbb6b9d72ffc44bd631005"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ba50e2bc538b3275536f25c8b8fd99b"><td class="memItemLeft" align="right" valign="top"><a id="a6ba50e2bc538b3275536f25c8b8fd99b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const noexcept</td></tr>
-<tr class="separator:a6ba50e2bc538b3275536f25c8b8fd99b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e31258ff0f0bfec82e0fd5ebb792bbe"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html#a0e31258ff0f0bfec82e0fd5ebb792bbe">operator bool</a> () const noexcept</td></tr>
+<tr class="memdesc:a0e31258ff0f0bfec82e0fd5ebb792bbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implicit conversion to bool.  <a href="#a0e31258ff0f0bfec82e0fd5ebb792bbe">More...</a><br /></td></tr>
+<tr class="separator:a0e31258ff0f0bfec82e0fd5ebb792bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename G&gt;<br />
+class iffl::scope_guard&lt; G &gt;</h3>
+
+<p>template class that can be parametrised with a functor or a lambda that it will call in distructor. </p>
+<p>Used to execute functor as we are leaving scope, unless it was explicitely disarmed. <a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a> uses this helper to deallocate memory on failures. scoped_guald inherits from the functor to minimize tyoe size when functor is emty type. For more information see Empty Base Class Optimization (EBCO).</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">G</td><td>type of functor or a lambda </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a1dabd850eaf8bec638dc39828b1378d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1dabd850eaf8bec638dc39828b1378d9">&#9670;&nbsp;</a></span>scope_guard() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename G &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1scope__guard.html">iffl::scope_guard</a>&lt; G &gt;::<a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> </td>
+          <td>(</td>
+          <td class="paramtype">G const &amp;&#160;</td>
+          <td class="paramname"><em>g</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor from an instance of functor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">g</td><td>- guard we are syncing to the guard </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abb3788ece4485dc6a52087944352790b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb3788ece4485dc6a52087944352790b">&#9670;&nbsp;</a></span>scope_guard() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename G &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1scope__guard.html">iffl::scope_guard</a>&lt; G &gt;::<a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> </td>
+          <td>(</td>
+          <td class="paramtype">G &amp;&amp;&#160;</td>
+          <td class="paramname"><em>g</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor from an instance of functor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">g</td><td>- guard we are syncing to the guard </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3f49f2424afbb6b9d72ffc44bd631005"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f49f2424afbb6b9d72ffc44bd631005">&#9670;&nbsp;</a></span>is_armed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename G &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="classiffl_1_1scope__guard.html">iffl::scope_guard</a>&lt; G &gt;::is_armed </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tells if guard is armed. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if guard is armed and false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a0e31258ff0f0bfec82e0fd5ebb792bbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e31258ff0f0bfec82e0fd5ebb792bbe">&#9670;&nbsp;</a></span>operator bool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename G &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1scope__guard.html">iffl::scope_guard</a>&lt; G &gt;::operator bool </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implicit conversion to bool. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if guard is armed and false otherwise </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/<a class="el" href="iffl__common_8h_source.html">iffl_common.h</a></li>
 </ul>

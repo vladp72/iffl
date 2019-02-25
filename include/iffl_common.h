@@ -392,7 +392,7 @@ struct as_pointers {};
 //! @details Following picture explains that concept
 //!
 //! @code
-//!   buffer_begin      data_end        buffer_end
+//!  buffer_begin       data_end       buffer_end
 //!        |                |                |
 //!        V                V                V
 //! ---------------------------------------------------------------
@@ -519,7 +519,7 @@ struct range_with_alighment : public range {
     //!
     //! Element's type alignment requirements
     //!
-    static constexpr size_t const alignment{ ALIGNMENT_V };
+    constexpr static size_t const alignment{ ALIGNMENT_V };
     //!
     //! @return Offset of the end of the data not padded to
     //! element type alignment
@@ -606,7 +606,7 @@ struct offset_with_aligment {
     //!
     //! Element's type alignment requirements
     //!
-    static constexpr size_t const alignment{ ALIGNMENT_V };
+    constexpr static size_t const alignment{ ALIGNMENT_V };
     //!
     //! @brief Not padded offset in a buffer
     //!
@@ -639,9 +639,9 @@ struct offset_with_aligment {
 template<size_t ALIGNMENT_V>
 struct size_with_padding {
     //!
-    //! Element's type alignment requirements
+    //! @brief Element's type alignment requirements
     //!
-    static constexpr size_t const alignment{ ALIGNMENT_V };
+    constexpr static size_t const alignment{ ALIGNMENT_V };
     //!
     //! @brief Not padded size
     //!
@@ -659,7 +659,7 @@ struct size_with_padding {
         return roundup_size_to_alignment(size, ALIGNMENT_V);
     }
     //!
-    //! Returns size of padding
+    //! @return Returns size of padding
     //!
     constexpr size_t padding_size() const noexcept {
         return size_padded() - size;
