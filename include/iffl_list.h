@@ -96,6 +96,8 @@
 //! @code
 //!                      -----------------------------------
 //!                      |                                 |
+//!     (next element offset = sizeof(this element)        |
+//!                      |   + padding)                    |
 //!                      |                                 V
 //! | <fields> | <offsets of data> | [data] | [padding] || [next element] ...
 //! |       header                 | [data] | [padding] || [next element] ...
@@ -217,41 +219,51 @@ namespace iffl {
 
 //!
 //! @class flat_forward_list_traits
-//! @brief traits for an elements that are in the 
+//! @brief traits for an elements that are in the flat forward list
 //! @details
-//! For example see flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> @ test\iffl_test_cases.cpp
-//! 
-//! Specialize this class for the tipe that is an element header for your
-//! flat forward list
-//!
-//! Example:
-//! See flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> @ test\iffl_tests.cpp
+//! Flat forward list element types are PODs defined in the headers that
+//! we often times cannot change, like OS headers, but we need to be able
+//! to define methods that would help container operate on them. For instance
+//! we need a universal way how to find offset of the next element regardless
+//! of how it is calculated for a particular type. Spacialization of this calss
+//! provides a group of functions that help with that. User of the collection 
+//! is responsible for defining traits for the type he wants to use in the
+//! container.
 //!
 //! This is the only method required by flat_forward_list_iterator.
 //! Returns offset to the next element or 0 if this is the last element.
+//!
 //! @code
 //! constexpr static size_t get_next_offset(char const *buffer) noexcept;
 //! @endcode
+//!
 //! This method is requiered for flat_forward_list_validate algorithm
 //! Minimum number of bytes to be able to safely query offset to next 
 //! and safely examine other fields.
+//!
 //! @code
 //! constexpr static size_t minimum_size() noexcept;
 //! @endcode
+//!
 //! This method is required for flat_forward_list_validate algorithm
 //! Validates that variable data fits in the buffer
+//!
 //! @code
 //! constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept;
 //! @endcode
+//!
 //! This method is used by flat_forward_list container to update offset to the
 //! next element. size can be 0 if this element is last or above zero for any other element. 
+//!
 //! @code
 //! constexpr static void set_next_offset(char *buffer, size_t size) noexcept
 //! @endcode
+//!
 //! Specifies alignment requirements for the type. When provided then
 //! every newly added element will have proper alignment. Elements that
 //! already were in the buffer can be not propertly alligned.
 //! If this member does not exist then alligned is assumed to be 1 byte
+//!
 //! @code 
 //! constexpr static size_t const alignment{ TYPE_ALIGNMENT };
 //! @endcode 
@@ -262,9 +274,15 @@ namespace iffl {
 //! update offset to the next on the element that used to be last. In that case offset to 
 //! the next is determined by calling this method. 
 //! Another example that uses this method is shrink_to_fit.
+//!
 //! @code
 //! constexpr static size_t get_size(char const *buffer) noexcept 
 //! @endcode
+//!
+//! Examples:
+//! flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> @ test\iffl_tests.cpp
+//! flat_forward_list_traits<FILE_FULL_EA_INFORMATION> @ test\iffl_es_usecase.cpp
+//! flat_forward_list_traits<long_long_array_list_entry> @ test\iffl_c_api_usecase.cpp
 //!
 template <typename T>
 struct flat_forward_list_traits;
@@ -272,6 +290,8 @@ struct flat_forward_list_traits;
 //!
 //! @class flat_forward_list_traits_traits
 //! @brief traits for flat_forward_list_traits
+//! @tparam TT type traits
+//!
 //! @details
 //! I know, traits of traits does sounds redicules,
 //! but this is exactly what this class is.
@@ -281,14 +301,24 @@ struct flat_forward_list_traits;
 //! are implemented by this trait so in the rest of algorithms
 //! and containers we can use this helper, and avoid rewriting
 //! same complicated and nusty machinery.
+//! In other words traits might be missing some methods, and
+//! traits_traits will implement these missing parts providing
+//! a uniformal interface.
 //!
 //! How to use:
+//!
 //! @code
 //! using my_traits_traits = flat_forward_list_traits_traits<my_traits>;
 //! @endcode
+//!
+//! For example:
+//!
 //! If traits provide us a way to get value of the next element offset for a type
 //! then use it, otherwise ask it to calculate next element offset from its own
 //! size
+//! If traits provides alignment member then we will use in calculation of padding, 
+//! otherwise calculations of padding will use 1 byte alignment. 
+//!
 //! @code
 //! if constexpr (my_traits_traits::has_next_offset_v) {
 //!      my_traits::get_next_offset(buffer)
@@ -301,107 +331,185 @@ template <typename TT>
 struct flat_forward_list_traits_traits {
 
 private:
+    //
+    // Metafunctions that we will use with detect-idiom to find
+    // properties of TT without triggering a compile time error
+    //
     //!
-    //! Metafunctions that we will use with detect-idiom to find
-    //! properties of TT without triggering a compile time error
-    //!
-    //!
-    //! Metafunction that detects if traits include minimum_size
+    //! @typedef has_minimum_size_mfn
+    //! @tparam P - type we will evaluate this metafunction for. 
+    //!             Traits type should be used here.
+    //! !brief Metafunction that detects if traits include minimum_size
     //!
     template <typename P>
     using has_minimum_size_mfn = decltype(std::declval<P &>().minimum_size()); 
     //!
-    //! Metafunction that detects if traits include get_size
+    //! @typedef has_get_size_mfn
+    //! @tparam P - type we will evaluate this metafunction for. 
+    //!             Traits type should be used here.
+    //! !brief Metafunction that detects if traits include get_size
     //!
     template <typename P>
     using has_get_size_mfn = decltype(std::declval<P &>().get_size(nullptr));
     //!
-    //! Metafunction that detects if traits include get_next_offset
+    //! @typedef has_next_offset_mfn
+    //! @tparam P - type we will evaluate this metafunction for. 
+    //!             Traits type should be used here.
+    //! !brief Metafunction that detects if traits include get_next_offset
     //!
     template <typename P>
     using has_next_offset_mfn = decltype(std::declval<P &>().get_next_offset(nullptr));
     //!
-    //! Metafunction that detects if traits include set_next_offset
+    //! @typedef can_set_next_offset_mfn
+    //! @tparam P - type we will evaluate this metafunction for. 
+    //!             Traits type should be used here.
+    //! !brief Metafunction that detects if traits include set_next_offset
     //!
     template <typename P>
     using can_set_next_offset_mfn = decltype(std::declval<P &>().set_next_offset(nullptr, 0));
     //!
-    //! Metafunction that detects if traits include validate
+    //! @typedef can_validate_mfn
+    //! @tparam P - type we will evaluate this metafunction for. 
+    //!             Traits type should be used here.
+    //! !brief Metafunction that detects if traits include validate
     //!
     template <typename P>
     using can_validate_mfn = decltype(std::declval<P &>().validate(0, nullptr));
     //!
-    //! Metafunction that detects if traits define function that should be used to
+    //! @typedef has_alignment_mfn
+    //! @tparam P - type we will evaluate this metafunction for. 
+    //!             Traits type should be used here.
+    //! !brief Metafunction that detects if traits define function that should be used to
     //! pad next element offset
     //!
     template <typename P>
     using has_alignment_mfn = decltype(std::declval<P &>().alignment);
 
 public:
-
+    //!
+    //! @typedef type_traits
+    //! !brief alias for the traits
+    //!
     using type_traits = TT;
 
     //!
-    //! If traits have minimum_size then 
+    //! @typedef has_minimum_size_mfn
+    //! @brief Uses detect idiom with has_minimum_size_mfn to
+    //! find if traits implemented minimum_size
+    //! @details If traits have minimum_size then 
     //! has_minimum_size_t is std::true_type otherwise std::false_type
-    //! has_minimum_size_v is std::true_type{} otherwise std::false_type{}
     //!
     using has_minimum_size_t = iffl::mpl::is_detected < has_minimum_size_mfn, type_traits>;
+    //!
+    //! @brief Instance of has_minimum_size_t 
+    //! @details has_minimum_size_v is std::true_type{} otherwise std::false_type{}
+    //!
     constexpr static auto const has_minimum_size_v{ iffl::mpl::is_detected_v < has_minimum_size_mfn, type_traits> };
     //!
-    //! If traits have get_size then 
+    //! @typedef has_get_size_t
+    //! @brief Uses detect idiom with has_get_size_mfn to
+    //! find if traits implemented get_size
+    //! @details If traits have get_size then 
     //! has_get_size_t is std::true_type otherwise std::false_type
-    //! has_get_size_v is std::true_type{} otherwise std::false_type{}
     //!
     using has_get_size_t = iffl::mpl::is_detected < has_get_size_mfn, type_traits>;
+    //!
+    //! @brief Instance of has_get_size_t 
+    //! @details has_get_size_v is std::true_type{} otherwise std::false_type{}
+    //!
     constexpr static auto const has_get_size_v{ iffl::mpl::is_detected_v < has_get_size_mfn, type_traits> };
     //!
-    //! If traits have get_next_offset then 
+    //! @typedef has_next_offset_t
+    //! @brief Uses detect idiom with has_next_offset_mfn to
+    //! find if traits implemented get_next_offset
+    //! @details If traits have get_next_offset then 
     //! has_next_offset_t is std::true_type otherwise std::false_type
-    //! has_next_offset_v is std::true_type{} otherwise std::false_type{}
     //!
     using has_next_offset_t = iffl::mpl::is_detected < has_next_offset_mfn, type_traits>;
+    //!
+    //! @brief Instance of has_next_offset_t 
+    //! @details has_next_offset_v is std::true_type{} otherwise std::false_type{}
+    //!
     constexpr static auto const has_next_offset_v{ iffl::mpl::is_detected_v < has_next_offset_mfn, type_traits> };
     //!
-    //! If traits have set_next_offset then 
+    //! @typedef can_set_next_offset_t
+    //! @brief Uses detect idiom with can_set_next_offset_mfn to
+    //! find if traits implemented set_next_offset
+    //! @details If traits have get_next_offset then 
     //! can_set_next_offset_t is std::true_type otherwise std::false_type
-    //! can_set_next_offset_v is std::true_type{} otherwise std::false_type{}
     //!
     using can_set_next_offset_t = iffl::mpl::is_detected < can_set_next_offset_mfn, type_traits>;
+    //!
+    //! @brief Instance of can_set_next_offset_t 
+    //! @details can_set_next_offset_v is std::true_type{} otherwise std::false_type{}
+    //!
     constexpr static auto const can_set_next_offset_v{ iffl::mpl::is_detected_v < can_set_next_offset_mfn, type_traits> };
     //!
-    //! If traits have validate then 
+    //! @typedef can_validate_t
+    //! @brief Uses detect idiom with can_validate_mfn to
+    //! find if traits implemented validate
+    //! @details If traits have get_next_offset then 
     //! can_validate_t is std::true_type otherwise std::false_type
-    //! can_validate_v is std::true_type{} otherwise std::false_type{}
     //!
     using can_validate_t = iffl::mpl::is_detected < can_validate_mfn, type_traits>;
+    //!
+    //! @brief Instance of can_validate_t 
+    //! @details can_validate_v is std::true_type{} otherwise std::false_type{}
+    //!
     constexpr static auto const can_validate_v{ iffl::mpl::is_detected_v < can_validate_mfn, type_traits> };
     //!
-    //! If traits have validate then 
+    //! @typedef has_alignment_t
+    //! @brief Uses detect idiom with has_alignment_mfn to
+    //! find if traits implemented validate
+    //! @details If traits have traits::alignment static variable then 
     //! has_alignment_t is std::true_type otherwise std::false_type
-    //! has_alignment_v is std::true_type{} otherwise std::false_type{}
     //!
     using has_alignment_t = iffl::mpl::is_detected < has_alignment_mfn, type_traits>;
+    //!
+    //! @brief Instance of has_alignment_t 
+    //! @details has_alignment_v is std::true_type{} otherwise std::false_type{}
+    //!
     constexpr static auto const has_alignment_v{ iffl::mpl::is_detected_v < has_alignment_mfn, type_traits> };
-
+    //!
+    //! @brief returns minimum valid element size
+    //!
     constexpr static size_t minimum_size() noexcept {
         return type_traits::minimum_size();
     }
-
+    //!
+    //! @brief If traits defined allignment then size of
+    //! alignment, and 1 otherwise
+    //!
     constexpr static size_t get_alignment() noexcept {
         if constexpr (has_alignment_v) {
             return type_traits::alignment;
         } else {
-            return 0;
+            return 1;
         }
     }
-
+    //!
+    //! @brief Defines static constexpr member that
+    //! with value that has alignment requirements of elements
+    //!
     constexpr static size_t const alignment{ get_alignment() };
-
+    //!
+    //! @typedef Specialization of range_with_alighment fo this type alignment
+    //!
     using range_t                = range_with_alighment<alignment>;
+    //!
+    //! @typedef Specialization of size_with_padding fo this type alignment
+    //!
     using size_with_padding_t    = size_with_padding<alignment>;
+    //!
+    //! @typedef Specialization of offset_with_aligment fo this type alignment
+    //!
     using offset_with_aligment_t = offset_with_aligment<alignment>;
-
+    //!
+    //! @brief If traits defined allignment then s padded
+    //! to alignment, or unchanged value of s otherwise
+    //! @param s - value that we are rounding up
+    //! @return Value of s padded to alignment
+    //!
     constexpr static size_t roundup_to_alignment(size_t s) noexcept {
         if constexpr (has_alignment_v && 0 != alignment) {
             return roundup_size_to_alignment(s, alignment);
@@ -409,11 +517,20 @@ public:
             return s;
         }
     }
-
+    //!
+    //! @brief Asks type traits to calculate element size
+    //! @param buffer - pointer to the begining of the element
+    //! @return element size wrapped into size_with_padding_t
+    //!
     constexpr static size_with_padding_t get_size(char const *buffer) noexcept {
         return size_with_padding_t{ type_traits::get_size(buffer) };
     }
-
+    //!
+    //! @brief Asks type traits to validate element. 
+    //! @details If traits do not have validate method
+    //! @param buffer - pointer to the begining of the element
+    //! @return element size wrapped into size_with_padding_t
+    //!
     constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {
         if constexpr (can_validate_v) {
             return type_traits::validate(buffer_size, buffer);
@@ -422,30 +539,10 @@ public:
         }
     }
     //!
-    //! Returns both alligned and unaligned offset to the next element
-    //! for types that have next element offset we should always use 
-    //! unaligned offset to get to the start position of the next element
-    //!
-    //! For types without offset to the next element we should use alligned
-    //! offset.
-    //!
-    //! If you want a simple function that selects correct one then simply use
-    //! get_next_offset instead of ex version.
-    //!
-    constexpr static offset_with_aligment_t get_next_offset_ex(char const *buffer) noexcept {
-        if constexpr (has_next_offset_v) {
-            offset_with_aligment_t o{};
-            o.offset_unaligned =  type_traits::get_next_offset(buffer);
-            o.offset_aligned = roundup_to_alignment(o.offset_unaligned);
-            return o;
-        } else {
-            size_with_padding_t s{ get_size(buffer) };
-            return offset_with_aligment_t{ s.size_not_padded, s.size_padded };
-        }
-    }
-    //!
-    //! Returns offset to the next element from the beginning of the current
-    //! element
+    //! @brief Returns next element offset. 
+    //! @param buffer - pointer to the begining of the element
+    //! @return For the types that support query for the next element offset
+    //! method returns get_next_offset, otherwise it returns element size
     //!
     constexpr static size_t get_next_offset(char const *buffer) noexcept {
         if constexpr (has_next_offset_v) {
@@ -455,7 +552,13 @@ public:
             return s.size_padded;
         }
     }
-
+    //!
+    //! @brief Sets next element offset. 
+    //! @details Types that support setting next element offset
+    //! must also support get_next_offset.
+    //! @param buffer - pointer to the begining of the element
+    //! @param size - offset of the next element
+    //!
     constexpr static void set_next_offset(char *buffer, size_t size) noexcept {
         static_assert(has_next_offset_v,
                       "set_next_offset is not supported for type that does not have get_next_offset");
@@ -469,7 +572,10 @@ public:
         }
         return type_traits::set_next_offset(buffer, size);
     }
-
+    //!
+    //! @brief Prints information about what traits_traits discovered
+    //! about traits class. 
+    //!
     static void print_traits_info() noexcept {
         type_info const & ti = typeid(type_traits);
 
@@ -512,32 +618,52 @@ public:
         }
         printf("}\n");
     }
-
 };
 
 //!
-//! Default element validation functor.
-//! Calls flat_forward_list_traits<T>::validate(...)
+//! @class default_validate_element_fn
+//! @tparam T - element type
+//! @tparam TT - element type traits. Detaulted to 
+//! specialization flat_forward_list_traits<T>
+//! @details
+//! Calls flat_forward_list_traits::validate(...)
 //!
 template<typename T,
          typename TT = flat_forward_list_traits<T>>
 struct default_validate_element_fn {
+    //!
+    //! @brief Function call iterator that validates element
+    //! @param buffer_size - size of the buffer used by the element
+    //! @param buffer - pointer to the buffer used by the element
+    //!
     bool operator() (size_t buffer_size, char const *buffer) const noexcept {
         return TT::validate(buffer_size, buffer);
     }
 };
-
 //!
-//! Use this functor if you want to noop element validation
+//! @class noop_validate_element_fn
+//! @details Does nothing
 //!
 struct noop_validate_element_fn {
+    //!
+    //! @brief Function call iterator that validates element
+    //! @details This functor noops validation 
+    //!
     bool operator() (size_t, char const *) const noexcept {
         return true;
     }
 };
 
 //!
-//! See below commment for flat_forward_list_validate.
+//! @brief flat_forward_list_validate_has_next_offset
+//! @tparam T - element type
+//! @tparam TT - element type traits. Detaulted to 
+//! specialization flat_forward_list_traits<T>
+//! @tparam F - functor used to validate element
+//! by default uses default_validate_element_fn<T, TT>
+//! @details
+//! Validates if buffer contains a valid intrusive flat forward list
+//! See commment for flat_forward_list_validate.
 //! Users are not expected to use this function directly,
 //! instead use flat_forward_list_validate, which will call
 //! flat_forward_list_validate_has_next_offset if TT::get_next_offset
@@ -624,12 +750,19 @@ constexpr inline std::pair<bool, char const *> flat_forward_list_validate_has_ne
 }
 
 //!
-//! See below commment for flat_forward_list_validate.
+//! @brief flat_forward_list_validate_no_next_offset
+//! @tparam T - element type
+//! @tparam TT - element type traits. Detaulted to 
+//! specialization flat_forward_list_traits<T>
+//! @tparam F - functor used to validate element
+//! by default uses default_validate_element_fn<T, TT>
+//! @details
+//! Validates if buffer contains a valid intrusive flat forward list
+//! See commment for flat_forward_list_validate.
 //! Users are not expected to use this function directly,
 //! instead prefer to use flat_forward_list_validate, which will call
 //! flat_forward_list_validate_no_next_offset if TT::get_next_offset
 //! is NOT defined.
-//!
 //! You can call this function directly IFF TT::get_next_offset is 
 //! defined, but you want to run validation as if it is not defined.
 //!
@@ -717,43 +850,30 @@ constexpr inline std::pair<bool, char const *> flat_forward_list_validate_no_nex
     return std::make_pair(result, last_valid);
 }
 //!
-//! Validates that buffer contains valid flat forward list
+//! @brief Validates that buffer contains valid flat forward list
 //! and returns a pointer to the last element.
 //!
-//! Template parameters:
-//!      T  - type of element header
-//!      TT - type trait for T.
-//!           algorithms expects following methods
-//!              - get_next_offset
-//!              - minimum_size
-//!              - validate
-//!      F -  functor type that should be used to validate
-//!           element data.
+//! @tparam T - element type
+//! @tparam TT - element type traits. Detaulted to 
+//!              algorithms expects following methods
+//!                - get_next_offset
+//!                - minimum_size
+//!                - validate
+//! specialization flat_forward_list_traits<T>
+//! @tparam F - functor used to validate element
+//! by default uses default_validate_element_fn<T, TT>
 //!
-//! Note:
-//!     When TT has get_next_offset we will use
-//!     flat_forward_list_validate_has_next_offset, otherwise
-//!     we call flat_forward_list_validate_no_next_offset
-//!     - flat_forward_list_validate_has_next_offset stops
-//!       when next element offset is 0
-//!     - flat_forward_list_validate_no_next_offset stops
-//!       when buffer cannot fit next element
-//!
-//!
-//!
-//! Input:
-//!      first - start of buffer we are validating
-//!      end - first byte pass the buffer we are validation
+//! @param first - start of buffer we are validating
+//! @param end - first byte pass the buffer we are validation
 //!      buffer size == end - first
-//!      validate_element_fn - a functor that is used to validate
+//! @param validate_element_fn - a functor that is used to validate
 //!      element. For instance if element contains offset to variable
 //!      lengths data, it can check that these data are in bound of 
 //!      the buffer. Default dunctor calls TT::validate.
 //!      You can use noop_validate_element_fn if you do not want 
 //!      validate element
 //!
-//! Output:
-//!      pair
+//! @return std::pair<id_valid, last_element_offset>
 //!          first - result of validation
 //!                - true if buffer is null
 //!                - true if buffer is empty
@@ -761,8 +881,6 @@ constexpr inline std::pair<bool, char const *> flat_forward_list_validate_no_nex
 //!                - false is all other cases
 //!          second - pointer to the last valid element
 //!                 - null if no valid elements were found
-//!
-//! Examples:
 //!         <true, nullptr>  - buffer is NULL or empty
 //!                            It is safe to use iterators.
 //!         <false, nullptr> - buffer is too small to query next element offset,
@@ -779,7 +897,15 @@ constexpr inline std::pair<bool, char const *> flat_forward_list_validate_no_nex
 //!         <true, ptr>      - buffer contains a valid flat forward list, it is safe
 //!                            to use iterators
 //!
-
+//! @details
+//!     When TT has get_next_offset we will use
+//!     flat_forward_list_validate_has_next_offset, otherwise
+//!     we call flat_forward_list_validate_no_next_offset
+//!     - flat_forward_list_validate_has_next_offset stops
+//!       when next element offset is 0
+//!     - flat_forward_list_validate_no_next_offset stops
+//!       when buffer cannot fit next element
+//!
 template<typename T,
          typename TT = flat_forward_list_traits<T>,
          typename F = default_validate_element_fn<T, TT>>
@@ -801,6 +927,9 @@ constexpr inline std::pair<bool, char const *> flat_forward_list_validate(char c
     }
 }
 
+//!
+//! @brief Overload that takes non-const pointers to buffers
+//!
 template<typename T,
          typename TT = flat_forward_list_traits<T>,
          typename F = default_validate_element_fn<T, TT>>
@@ -812,7 +941,9 @@ constexpr inline std::pair<bool, char *> flat_forward_list_validate(char *first,
                                                                  validate_element_fn);
     return std::make_pair(result, (char *)last_valid);
 }
-
+//!
+//! @brief Overload that takes pointers to element types
+//!
 template<typename T,
          typename TT = flat_forward_list_traits<T>,
          typename F = default_validate_element_fn<T, TT>>
@@ -824,7 +955,9 @@ constexpr inline std::pair<bool, T*> flat_forward_list_validate(T *first,
                                                                  validate_element_fn);
     return std::make_pair(result, (T *)last_valid);
 }
-
+//!
+//! @brief Overload that takes unsigned char const pointers
+//!
 template<typename T,
          typename TT = flat_forward_list_traits<T>,
          typename F = default_validate_element_fn<T, TT>>
@@ -836,7 +969,9 @@ constexpr inline std::pair<bool, unsigned char const*> flat_forward_list_validat
                                                                  validate_element_fn);
     return std::make_pair(result, (unsigned char const *)last_valid);
 }
-
+//!
+//! @brief Overload that takes unsigned char pointers
+//!
 template<typename T,
          typename TT = flat_forward_list_traits<T>,
          typename F = default_validate_element_fn<T, TT>>
@@ -848,7 +983,9 @@ constexpr inline std::pair<bool, unsigned char*> flat_forward_list_validate(unsi
                                                                  validate_element_fn);
     return std::make_pair(result, (unsigned char *)last_valid);
 }
-
+//!
+//! @brief Overload that takes void const pointers
+//!
 template<typename T,
          typename TT = flat_forward_list_traits<T>,
          typename F = default_validate_element_fn<T, TT>>
@@ -860,7 +997,9 @@ constexpr inline std::pair<bool, void const*> flat_forward_list_validate(void co
                                                                  validate_element_fn);
     return std::make_pair(result, (void const *)last_valid);
 }
-
+//!
+//! @brief Overload that takes void pointers
+//!
 template<typename T,
          typename TT = flat_forward_list_traits<T>,
          typename F = default_validate_element_fn<T, TT>>
@@ -874,13 +1013,14 @@ constexpr inline std::pair<bool, void*> flat_forward_list_validate(void *first,
 }
 
 //!
-//! Iterator for flat forward list
-//! T  - type of element header
-//! TT - type trait for T that is used to get offset to the
+//! @class flat_forward_list_iterator_t
+//! @brief THis class implements forward iterator for intrusive flat forward list
+//! @tparam T  - type of element header
+//! @tparam TT - type trait for T that is used to get offset to the
 //!      next element in the flat list. It must implement
 //!      get_next_offset method.
 //!
-//! Once iterator is incremented pass last element it becomes equal
+//! @details Once iterator is incremented pass last element it becomes equal
 //! to default initialized iterator so you can use
 //! flat_forward_list_iterator_t{} as a sentinel that can be used as an
 //! end iterator.
@@ -889,36 +1029,88 @@ template<typename T,
          typename TT = flat_forward_list_traits<T>>
 class flat_forward_list_iterator_t {
 public:
-
+    //!
+    //! @typedef iterator_category
+    //! @brief Marks iterator as a forward iterator
+    //!
     using iterator_category = std::forward_iterator_tag;
+    //!
+    //! @typedef value_type
+    //! @brief Element value type
+    //!
     using value_type = T;
+    //!
+    //! @typedef difference_type
+    //! @brief Element pointers difference type
+    //!
     using difference_type = ptrdiff_t;
+    //!
+    //! @typedef pointer
+    //! @brief Element pointers type
+    //!
     using pointer = T*;
+    //!
+    //! @typedef reference
+    //! @brief Element reference type
+    //!
     using reference = T&;
+    //!
+    //! @typedef traits
+    //! @brief Element traits type
+    //!
     using traits = TT;
+    //!
+    //! @typedef traits_traits
+    //! @brief Element traits traits type
+    //!
     using traits_traits = flat_forward_list_traits_traits<TT>;
     //!
-    //! Selects between constant and non-constant pointer to the buffer
+    //! @typedef buffer_char_pointer
+    //! @details Selects between constant and non-constant pointer to the buffer
     //! depending if T is const
     //!
     using buffer_char_pointer = std::conditional_t<std::is_const_v<T>, char const *, char *>;
+    //!
+    //! @typedef buffer_unsigned_char_pointer
+    //! @details Selects between constant and non-constant pointer to the buffer
+    //! depending if T is const
+    //!
     using buffer_unsigned_char_pointer = std::conditional_t<std::is_const_v<T>, unsigned char const *, unsigned char *>;
+    //!
+    //! @typedef buffer_void_pointer
+    //! @details Selects between constant and non-constant pointer to the buffer
+    //! depending if T is const
+    //!
     using buffer_void_pointer = std::conditional_t<std::is_const_v<T>, void const *, void *>;
-
+    //!
+    //! @brief Default initialize iterator.
+    //! @details For the types that support get_next_offset
+    //! default initialized iterator is an end iterator.
+    //! For the types that do not support get_next_offset
+    //! it creates an invalid iterator.
+    //!
     constexpr flat_forward_list_iterator_t() noexcept = default;
+    //!
+    //! @brief Copy constructs an iterator
+    //!
     constexpr flat_forward_list_iterator_t(flat_forward_list_iterator_t const &) noexcept = default;
+    //!
+    //! @brief Move constructs iterator
+    //! @param other - instance of iterator we are moving from
+    //!
     constexpr flat_forward_list_iterator_t(flat_forward_list_iterator_t && other) noexcept
         : p_{other.p_} {
         other.p_ = nullptr;
     }
     //!
-    //! copy constructor of const iterator from non-const iterator
+    //! @brief Copy constructor const iterator from non-const iterator
+    //! @tparam I - iterator type we are constructing from
     //!
     template< typename I,
               typename = std::enable_if_t<std::is_const_v<T> &&
                                           std::is_same_v<std::remove_cv_t<I>,
                                                          flat_forward_list_iterator_t< std::remove_cv_t<T>, TT>>>>
-    constexpr flat_forward_list_iterator_t(I & other) noexcept
+    constexpr flat_forward_list_iterator_t(I const & other) noexcept
         : p_{ other.get_ptr() } {
     }   
     //!
@@ -1121,15 +1313,26 @@ public:
 private:
     buffer_char_pointer p_{ nullptr };
 };
+
 //!
-//! non-const iterator
+//! @typedef flat_forward_list_iterator
+//! @brief non-const iterator
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @details Default initialized to specialization 
+//! of flat_forward_list_traits for T
 //!
 template<typename T,
          typename TT = flat_forward_list_traits<T>>
 using flat_forward_list_iterator = flat_forward_list_iterator_t<T, TT>;
 
 //!
-//! const_iteartor
+//! @typedef flat_forward_list_const_iterator
+//! @brief const iterator
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @details Default initialized to specialization 
+//! of flat_forward_list_traits for T
 //!
 template<typename T,
          typename TT = flat_forward_list_traits<T>>
