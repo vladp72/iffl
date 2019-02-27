@@ -393,7 +393,7 @@ public:
     using type_traits = TT;
 
     //!
-    //! @typedef has_minimum_size_mfn
+    //! @typedef has_minimum_size_t
     //! @brief Uses detect idiom with has_minimum_size_mfn to
     //! find if traits implemented minimum_size
     //! @details If traits have minimum_size then 
@@ -493,15 +493,18 @@ public:
     //!
     constexpr static size_t const alignment{ get_alignment() };
     //!
-    //! @typedef Specialization of range_with_alighment fo this type alignment
+    //! @typedef range_t
+    //! @brief Specialization of range_with_alighment fo this type alignment
     //!
-    using range_t                = range_with_alighment<alignment>;
+    using range_t = range_with_alighment<alignment>;
     //!
-    //! @typedef Specialization of size_with_padding fo this type alignment
+    //! @typedef size_with_padding_t
+    //! @brief Specialization of size_with_padding fo this type alignment
     //!
-    using size_with_padding_t    = size_with_padding<alignment>;
+    using size_with_padding_t = size_with_padding<alignment>;
     //!
-    //! @typedef Specialization of offset_with_aligment fo this type alignment
+    //! @typedef offset_with_aligment_t
+    //! @brief Specialization of offset_with_aligment fo this type alignment
     //!
     using offset_with_aligment_t = offset_with_aligment<alignment>;
     //!
@@ -528,6 +531,7 @@ public:
     //!
     //! @brief Asks type traits to validate element. 
     //! @details If traits do not have validate method
+    //! @param buffer_size - size of the buffer used by this element
     //! @param buffer - pointer to the begining of the element
     //! @return element size wrapped into size_with_padding_t
     //!
@@ -1103,46 +1107,134 @@ public:
         other.p_ = nullptr;
     }
     //!
-    //! @brief Copy constructor const iterator from non-const iterator
+    //! @typedef const_iterator
+    //! @brief Const iterator is an iterator for a T const
+    //! @details This type is used as helper for SFINAE expressions
+    //!
+    using const_iterator = flat_forward_list_iterator_t< std::add_const_t<T>, TT>;
+    //!
+    //! @typedef non_const_iterator
+    //! @brief [Non-const] iterator is an iterator for a T with no const qualifiers
+    //! @details This type is used as a helper for SFINAE expressions
+    //!
+    using non_const_iterator = flat_forward_list_iterator_t< std::remove_cv_t<T>, TT>;
+    //!
+    //! @brief Is std::true_type{} if this iterator is an iterator for a T const,
+    //! and std::false_type{} otherwise
+    //!
+    constexpr static auto const is_const_iterator{ std::is_const_v<T> };
+    //!
+    //! @tparam Iterator - any type
+    //! @brief Is std::true_type{} if Iterator is same as non-const equivalent of the current iterator
+    //! non-const equivalent is constructed by removing CV qualifiers from T.
+    //! non_const_iterator defines non-const equivalent for this iterator so we just need
+    //! to make sure Iterator is the same type as non_const_iterator
+    //!
+    template <typename Iterator>
+    constexpr static auto const is_non_const_iterator_v{ std::is_same_v < std::remove_cv_t<Iterator>,
+                                                                          non_const_iterator > };
+    //!
+    //! @tparam Iterator - any type
+    //! @brief Is std::true_type{} if Iterator is same as const equivalent of the current iterator
+    //! non-const equivalent is constructed by adding CV qualifiers to T.
+    //! const_iterator defines const equivalent for this iterator so we just need
+    //! to make sure Iterator is the same type as const_iterator
+    //!
+    template <typename Iterator>
+    constexpr static auto const is_const_iterator_v{ std::is_same_v < std::remove_cv_t<Iterator>,
+                                                                      const_iterator > };
+    //!
+    //! @tparam Iterator - any type
+    //! @brief Is std::true_type{} if Iterator is a const or non-const equivalent of this
+    //! iterator and std::false_type otherwise. Comparable iterator can be used in relation
+    //! operators
+    //!
+    template <typename Iterator>
+    constexpr static auto const is_comparable_iterator_v{ is_non_const_iterator_v<Iterator> ||
+                                                          is_const_iterator_v<Iterator> };
+    //!
+    //! @brief Unittest that is_non_const_iterator_v returns expected result
+    //!
+    static_assert(!is_non_const_iterator_v<const_iterator>,
+                  "This is a const iterator");
+    //!
+    //! @brief Unittest that is_non_const_iterator_v returns expected result
+    //!
+    static_assert(is_non_const_iterator_v<non_const_iterator>,
+                  "This is a non-const iterator");
+
+    //!
+    //! @brief Copy constructor for const iterator from non-const iterator
     //! @tparam I - iterator type we are constructing from
+    //! @param other - iterator we are constructing from
+    //! @details We are relying on SFINAE to disable this constructor if
+    //! - this is not a const iterator
+    //! - I not a non-const iterator
     //!
     template< typename I,
-              typename = std::enable_if_t<std::is_const_v<T> &&
-                                          std::is_same_v<std::remove_cv_t<I>,
-                                                         flat_forward_list_iterator_t< std::remove_cv_t<T>, TT>>>>
+              typename = std::enable_if_t<is_const_iterator && is_non_const_iterator_v<I>>>
     constexpr flat_forward_list_iterator_t(I const & other) noexcept
         : p_{ other.get_ptr() } {
     }   
     //!
-    //! move constructor of const iterator from non-const iterator
+    //! @brief Perfect forwarding constructor for const iterator from non-const iterator
+    //! @tparam I - iterator type we are constructing from
+    //! @param other - iterator we are constructing from
+    //! @details We are relying on SFINAE to disable this constructor if
+    //! - this is not a const iterator
+    //! - I not a non-const iterator
+    //! If other is an rvalue then it can play a role of move constructor.
+    //! On move we will copy data other interator is pointing to, but we
+    //! are not going to null it out. Nulling is not required because this type
+    //! is not a RAII wrapper, and there is no harm in leaving other pointing to
+    //! the same element.
     //!
     template< typename I,
-              typename = std::enable_if_t<std::is_const_v<T> &&
-                                          std::is_same_v<std::remove_cv_t<I>,
-                                                         flat_forward_list_iterator_t< std::remove_cv_t<T>, TT>>>>
+              typename = std::enable_if_t<is_const_iterator && is_non_const_iterator_v<I>>>
     constexpr flat_forward_list_iterator_t(I && other) noexcept
         : p_{ other.get_ptr() } {
-        other.reset_ptr(nullptr);
+        //other.reset_ptr(nullptr);
     }
-
+    //!
+    //! @brief Explicit constructor from char * or char const *, depending on T being const
+    //! @param p - pointer to the buffer that contains element
+    //!
     constexpr explicit flat_forward_list_iterator_t(buffer_char_pointer p) noexcept
         : p_(p) {
     }
-
+    //!
+    //! @brief Explicit constructor from T *
+    //! @param p - pointer to element
+    //!
     constexpr explicit flat_forward_list_iterator_t(T *p) noexcept
         : p_((buffer_char_pointer)p) {
     }
-
+    //!
+    //! @brief Explicit constructor from unsigned char * or unsigned char const *,
+    //! depending on T being const
+    //! @param p - pointer to the buffer that contains element
+    //!
     constexpr explicit flat_forward_list_iterator_t(buffer_unsigned_char_pointer p) noexcept
         : p_((buffer_char_pointer )p) {
     }
-    
+    //!
+    //! @brief Explicit constructor from void * or void const *,
+    //! depending on T being const
+    //! @param p - pointer to the buffer that contains element
+    //!
     constexpr explicit flat_forward_list_iterator_t(buffer_void_pointer p) noexcept
         : p_((buffer_char_pointer )p) {
     }
-
+    //!
+    //! @brief Default generated copy constructor
+    //! @returns reference to this object
+    //!
     constexpr flat_forward_list_iterator_t &operator= (flat_forward_list_iterator_t const &) noexcept = default;
-    
+    //!
+    //! @brief Move constructor
+    //! @param other - iterator we are moving from
+    //! @returns reference to this object
+    //!
     constexpr flat_forward_list_iterator_t & operator= (flat_forward_list_iterator_t && other) noexcept {
         if (this != &other) {
             p_ = other.p_;
@@ -1151,119 +1243,188 @@ public:
         return *this;
     }
     //!
-    //! copy assignment operator to const iterator from non-const iterator
+    //! @brief Assignment operator for const iterator from non-const iterator
+    //! @tparam I - iterator type we are assigning from
+    //! @param other - iterator we are constructing from
+    //! @return reference to this object
+    //! @details We are relying on SFINAE to disable this assignment operator if
+    //! - this is not a const iterator
+    //! - I not a non-const iterator
     //!
     template <typename I,
-              typename = std::enable_if_t<std::is_const_v<T> &&
-                                          std::is_same_v<std::remove_cv_t<I>,
-                                                         flat_forward_list_iterator_t< std::remove_cv_t<T>, TT>>>>
-    constexpr flat_forward_list_iterator_t & operator= (I & other) noexcept {
+              typename = std::enable_if_t<is_const_iterator && is_non_const_iterator_v<I>>>
+    constexpr flat_forward_list_iterator_t & operator= (I const & other) noexcept {
         p_ = other.get_ptr();
         return *this;
     }
     //!
-    //! move assignment operator to const iterator from non-const iterator
+    //! @brief Perfect forwarding assignment operator for const iterator from non-const iterator
+    //! @tparam I - iterator type we are assigningg from
+    //! @param other - iterator we are assigning from
+    //! @return reference to this object
+    //! @details We are relying on SFINAE to disable this assignment operator if
+    //! - this is not a const iterator
+    //! - I not a non-const iterator
+    //! If other is an rvalue then it can play a role of move assignment operator.
+    //! On move we will copy data other interator is pointing to, but we
+    //! are not going to null it out. Nulling is not required because this type
+    //! is not a RAII wrapper, and there is no harm in leaving other pointing to
+    //! the same element.
     //!
     template <typename I,
-              typename = std::enable_if_t<std::is_const_v<T> &&
-                                          std::is_same_v<std::remove_cv_t<I>,
-                                                         flat_forward_list_iterator_t< std::remove_cv_t<T>, TT>>>>
+              typename = std::enable_if_t<is_const_iterator && is_non_const_iterator_v<I>>>
     constexpr flat_forward_list_iterator_t & operator= (I && other) noexcept {
         p_ = other.get_ptr();
-        other.reset_ptr(nullptr);
+        //other.reset_ptr(nullptr);
         return *this;
     }
-
+    //!
+    //! @brief asignment operator from char * 
+    //! @param p - pointer to the buffer that contains element
+    //! @return returns a reference to this object
+    //!
     constexpr flat_forward_list_iterator_t &operator= (buffer_char_pointer p) noexcept {
         p_ = p;
         return *this;
     }
-
+    //!
+    //! @brief asignment operator from T * 
+    //! @param p - pointer to the element
+    //! @return returns a reference to this object
+    //!
     constexpr flat_forward_list_iterator_t &operator= (T *p) noexcept {
         p_ = (buffer_char_pointer)p;
         return *this;
     }
-
+    //!
+    //! @brief asignment operator from unsigned char * 
+    //! @param p - pointer to the buffer that contains element
+    //! @return returns a reference to this object
+    //!
     constexpr flat_forward_list_iterator_t &operator= (buffer_unsigned_char_pointer p) noexcept {
         p_ = (buffer_char_pointer )p;
         return *this;
     }
-    
+    //!
+    //! @brief asignment operator from void * 
+    //! @param p - pointer to the buffer that contains element
+    //! @return returns a reference to this object
+    //!
     constexpr flat_forward_list_iterator_t &operator= (buffer_void_pointer p) noexcept {
         p_ = (buffer_char_pointer )p;
         return *this;
     }
-
+    //!
+    //! @brief whaps this iterator and the other iterator
+    //! @param other - reference to the other iterator
+    //!
     constexpr void swap(flat_forward_list_iterator_t & other) noexcept {
         buffer_char_pointer *tmp = p_;
         p_ = other.p_;
         other.p_ = tmp;
     }
-
+    //!
+    //! @brief Explicit conversion iterator to bool
+    //! @return false if it is null initialized and true otherwise
+    //!
     constexpr explicit operator bool() const {
         return p_ != nullptr;
     }
     //!
-    //! equality between iterator, iterator const,
-    //! const_iterator and const_iterator const
+    //! @brief Equals operator used to compare to another iterator
+    //! @tparam I - type of the other iterator
+    //! @param other - other iterator we are comparing to
+    //! @return true if both iterators point to the 
+    //! same element and false otherwise
+    //! @details We are using SFINAE to enable this operator
+    //! only for const and non-const iterator types for the same 
+    //! element type
     //!
     template <typename I,
-              typename = std::enable_if_t<std::is_same_v<std::remove_cv_t<I>, 
-                                                         flat_forward_list_iterator_t< std::remove_cv_t<T>, TT>> ||
-                                          std::is_same_v<std::remove_cv_t<I>, 
-                                                         flat_forward_list_iterator_t< std::add_const_t<T>, TT>>>>
+              typename = std::enable_if_t<is_comparable_iterator_v<I>>>
     constexpr bool operator == (I const &other) const noexcept {
         return p_ == other.get_ptr();
     }
     //!
-    //! enequality between iterator, iterator const,
-    //! const_iterator and const_iterator const
+    //! @brief Not equals operator used to compare to another iterator
+    //! @tparam I - type of the other iterator
+    //! @param other - other iterator we are comparing to
+    //! @return false if both iterators point to the 
+    //! same element and true otherwise
+    //! @details We are using SFINAE to enable this operator
+    //! only for const and non-const iterator types for the same 
+    //! element type
     //!
     template <typename I,
-              typename = std::enable_if_t<std::is_same_v<std::remove_cv_t<I>, 
-                                                         flat_forward_list_iterator_t< std::remove_cv_t<T>, TT>> ||
-                                          std::is_same_v<std::remove_cv_t<I>, 
-                                                         flat_forward_list_iterator_t< std::add_const_t<T>, TT>>>>
+              typename = std::enable_if_t<is_comparable_iterator_v<I>>>
     constexpr bool operator != (I const &other) const noexcept {
         return !this->operator==(other);
     }
-
+    //!
+    //! @brief Less than operator used to compare to another iterator
+    //! @tparam I - type of the other iterator
+    //! @param other - other iterator we are comparing to
+    //! @return false if address of element pointed by this iterator is 
+    //! less than address of element pointed by another iterator
+    //! @details We are using SFINAE to enable this operator
+    //! only for const and non-const iterator types for the same 
+    //! element type
+    //!
     template <typename I,
-              typename = std::enable_if_t<std::is_same_v<std::remove_cv_t<I>, 
-                                                         flat_forward_list_iterator_t< std::remove_cv_t<T>, TT>> ||
-                                          std::is_same_v<std::remove_cv_t<I>, 
-                                                         flat_forward_list_iterator_t< std::add_const_t<T>, TT>>>>
+              typename = std::enable_if_t<is_comparable_iterator_v<I>>>
     constexpr bool operator < (I const &other) const noexcept {
         return p_ < other.get_ptr();
     }
-
+    //!
+    //! @brief Less than or equals operator used to compare to another iterator
+    //! @tparam I - type of the other iterator
+    //! @param other - other iterator we are comparing to
+    //! @return false if address of element pointed by this iterator is 
+    //! less or equal than address of element pointed by another iterator
+    //! @details We are using SFINAE to enable this operator
+    //! only for const and non-const iterator types for the same 
+    //! element type
+    //!
     template <typename I,
-              typename = std::enable_if_t<std::is_same_v<std::remove_cv_t<I>, 
-                                                         flat_forward_list_iterator_t< std::remove_cv_t<T>, TT>> ||
-                                          std::is_same_v<std::remove_cv_t<I>, 
-                                                         flat_forward_list_iterator_t< std::add_const_t<T>, TT>>>>
+              typename = std::enable_if_t<is_comparable_iterator_v<I>>>
     constexpr bool operator <= (I const &other) const noexcept {
         return p_ <= other.get_ptr();
     }
-
+    //!
+    //! @brief Greater than operator used to compare to another iterator
+    //! @tparam I - type of the other iterator
+    //! @param other - other iterator we are comparing to
+    //! @return true if address of element pointed by this iterator is 
+    //! greater than address of element pointed by another iterator
+    //! @details We are using SFINAE to enable this operator
+    //! only for const and non-const iterator types for the same 
+    //! element type
+    //!
     template <typename I,
-              typename = std::enable_if_t<std::is_same_v<std::remove_cv_t<I>, 
-                                                         flat_forward_list_iterator_t< std::remove_cv_t<T>, TT>> ||
-                                          std::is_same_v<std::remove_cv_t<I>, 
-                                                         flat_forward_list_iterator_t< std::add_const_t<T>, TT>>>>
+              typename = std::enable_if_t<is_comparable_iterator_v<I>>>
     constexpr bool operator > (I const &other) const noexcept {
         return !this->operator<=(other);
     }
-
+    //!
+    //! @brief Greater or equals than operator used to compare to another iterator
+    //! @tparam I - type of the other iterator
+    //! @param other - other iterator we are comparing to
+    //! @return true if address of element pointed by this iterator is 
+    //! greater or equals than address of element pointed by another iterator
+    //! @details We are using SFINAE to enable this operator
+    //! only for const and non-const iterator types for the same 
+    //! element type
+    //!
     template <typename I,
-              typename = std::enable_if_t<std::is_same_v<std::remove_cv_t<I>, 
-                                                         flat_forward_list_iterator_t< std::remove_cv_t<T>, TT>> ||
-                                          std::is_same_v<std::remove_cv_t<I>, 
-                                                         flat_forward_list_iterator_t< std::add_const_t<T>, TT>>>>
+              typename = std::enable_if_t<is_comparable_iterator_v<I>>>
     constexpr bool operator >= (I const &other) const noexcept {
         return !this->operator<(other);
     }
-
+    //!
+    //! @brief Prefix increment operator
+    //! @returns reference to this iterator
+    //! @details Advances iterator to the next element
+    //!
     constexpr flat_forward_list_iterator_t &operator++() noexcept {
         size_t next_offset = traits_traits::get_next_offset(p_);
         if (0 == next_offset) {
@@ -1273,7 +1434,12 @@ public:
         }
         return *this;
     }
-
+    //!
+    //! @brief Postfix increment operator
+    //! @return value of iterator before it was advanced
+    //! to the next element
+    //! @details Advances iterator to the next element
+    //!
     constexpr flat_forward_list_iterator_t operator++(int) noexcept {
         flat_forward_list_iterator_t tmp{ p_ };
         size_t next_offset = traits_traits::get_next_offset(p_);
@@ -1284,7 +1450,15 @@ public:
         }
         return tmp;
     }
-
+    //!
+    //! @brief Add operator. Advances iterator specified number of times
+    //! @param advance_by - number of times this iterator should be advanced
+    //! @return value of iterator after it was advanced
+    //! @details Advances iterator specified number of times
+    //! caller is responsible for making sure iterator would not get
+    //! advanced beyond container's end, if that happen then beheviour is 
+    //! undefined.
+    //!
     constexpr flat_forward_list_iterator_t operator+(unsigned int advance_by) const noexcept {
         flat_forward_list_iterator_t result{ get_ptr() };
         while (nullptr != result.get_ptr() && 0 != advance_by) {
@@ -1293,24 +1467,41 @@ public:
         }
         return result;
     }
-
+    //!
+    //! @brief Dereference operator. 
+    //! @return Returns a reference to the element pointed by iterator
+    //!
     constexpr T &operator*() const noexcept {
         return *(T *)(p_);
     }
-    
+    //!
+    //! @brief pointer operator. 
+    //! @return Returns a pointer to the element pointed by iterator
+    //!
     constexpr T *operator->() const noexcept {
         return (T *)(p_);
     }
-
+    //!
+    //! @return Returns a pointer to the buffer conteining element. 
+    //!
     constexpr buffer_char_pointer get_ptr() const noexcept {
         return p_;
     }
-
+    //!
+    //! @brief Assigns iterator to point to the new element
+    //! @param p - pointer to the new element 
+    //! @return Returns pointer to the previous element. 
+    //!
     constexpr buffer_char_pointer reset_ptr(buffer_char_pointer p) noexcept {
-        return p_ = p;
+        buffer_char_pointer tmp{ p_ };
+        p_ = p;
+        return tmp;
     }
 
 private:
+    //!
+    //! @brief pointer to the current element
+    //!
     buffer_char_pointer p_{ nullptr };
 };
 
@@ -1338,19 +1529,32 @@ template<typename T,
          typename TT = flat_forward_list_traits<T>>
 using flat_forward_list_const_iterator = flat_forward_list_iterator_t< std::add_const_t<T>, TT>;
 
+//!
+//! @class flat_forward_list
+//! @brief Intrusive flat forward list container
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//! Container is inherited from allocator to utilize
+//! Empty Base Class Optimization (EBCO).
+//!
 template <typename T,
           typename TT = flat_forward_list_traits<T>,
           typename A = std::allocator<char>>
 class flat_forward_list : private A {
 public:
 
-    //!
-    //! Technically we need T to be 
-    //! - trivialy destructable
-    //! - trivialy constructable
-    //! - trivialy movable
-    //! - trivialy copyable
-    //!
+    //
+    // Technically we need T to be 
+    // - trivialy destructable
+    // - trivialy constructable
+    // - trivialy movable
+    // - trivialy copyable
+    //
     static_assert(std::is_pod_v<T>, "T must be a Plain Old Definition");
 
     using value_type = T;
