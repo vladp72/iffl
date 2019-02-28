@@ -116,7 +116,7 @@ namespace iffl {
 #undef max
 #endif
 //!
-//! @brief Constand value that represents invalid position/offset
+//! @brief Constant value that represents invalid position/offset
 //! once numeric_limits are anotated as constexpr we should make
 //! this variable constexpr
 //!

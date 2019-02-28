@@ -1050,12 +1050,12 @@ public:
     using difference_type = ptrdiff_t;
     //!
     //! @typedef pointer
-    //! @brief Element pointers type
+    //! @brief Pointer to element type
     //!
     using pointer = T*;
     //!
     //! @typedef reference
-    //! @brief Element reference type
+    //! @brief Reference to the element type
     //!
     using reference = T&;
     //!
@@ -1556,63 +1556,188 @@ public:
     // - trivialy copyable
     //
     static_assert(std::is_pod_v<T>, "T must be a Plain Old Definition");
-
+    //!
+    //! @typedef value_type
+    //! @brief Element value type
+    //!
     using value_type = T;
+    //!
+    //! @typedef pointer
+    //! @brief Pointer to element type
+    //!
     using pointer = T * ;
+    //!
+    //! @typedef const_pointer
+    //! @brief Pointer to const element type
+    //!
     using const_pointer = T const *;
+    //!
+    //! @typedef reference
+    //! @brief Reference to the element type
+    //!
     using reference = T & ;
+    //!
+    //! @typedef const_reference
+    //! @brief Reference to the const element type
+    //!
     using const_reference = T const &;
+    //!
+    //! @typedef size_type
+    //! @brief Size type
+    //!
     using size_type = std::size_t;
+    //!
+    //! @typedef difference_type
+    //! @brief Element pointers difference type
+    //!
     using difference_type = std::ptrdiff_t;
-    using buffer_value_type = char;
-    using const_buffer_value_type = char const;
+    //!
+    //! @typedef traits
+    //! @brief Element traits type
+    //!
     using traits = TT;
+    //!
+    //! @typedef traits_traits
+    //! @brief Element traits traits type
+    //!
     using traits_traits = flat_forward_list_traits_traits<TT>;
+    //!
+    //! @typedef range_t
+    //! @brief Vocabulary type used to describe
+    //! buffer used by the element and how much
+    //! of this buffer is used by the data.
+    //! Type also includes information about 
+    //! required alignment.
+    //!
     using range_t = typename traits_traits::range_t;
+    //!
+    //! @typedef size_with_padding_t
+    //! @brief Vocabulary type used to describe size with padding
+    //! 
     using size_with_padding_t = typename traits_traits::size_with_padding_t;
+    //!
+    //! @typedef offset_with_aligment_t
+    //! @brief Vocabulary type used to describe size with alignment
+    //! 
     using offset_with_aligment_t = typename traits_traits::offset_with_aligment_t;
+    //!
+    //! @typedef allocator_type
+    //! @brief Type of allocator
+    //! 
     using allocator_type = A ;
+    //!
+    //! @typedef allocator_type_traits
+    //! @brief Type of allocator traits
+    //! 
     using allocator_type_traits = std::allocator_traits<A>;
+    //!
+    //! @typedef buffer_value_type
+    //! @brief Since we have variable size elementa,
+    //! and we cannot express it in the C++ type system
+    //! we treat buffer with elements as a bag of chars
+    //! and cast to the element type when nessesary.
+    //!
+    using buffer_value_type = char;
+    //!
+    //! @typedef const_buffer_value_type
+    //! @brief When we do not intend to modify buffer 
+    //! we can treat it as a bag of const characters
+    //!
+    using const_buffer_value_type = char const;
+    //!
+    //! @typedef buffer_pointer
+    //! @brief Type used as a buffer pointer.
+    //!
     using buffer_pointer = char *;
+    //!
+    //! @typedef const_buffer_pointer
+    //! @brief Type used as a pointer ot the const buffer.
+    //!
     using const_buffer_pointer = char const *;
-    using buffer_reference = char & ;
-    using const_buffer_reference = char const &;
 
     //!
-    //! pointer to the start of buffer,
-    //! used buffer size,
-    //! total buffer size
+    //! @typedef detach_type_as_size
+    //! @brief A tuple that contains 
+    //! - A pointer to the start of buffer,
+    //! - Used buffer size 
+    //! - Total buffer size
     //!
     using detach_type_as_size = std::tuple<char *, size_t, size_t>;
     //!
-    //! pointer to the start of buffer,
-    //! pointer to the start of last element,
-    //! pointer to the buffer end
+    //! @typedef detach_type_as_pointers
+    //! @brief A tuple that contians 
+    //! - A pointer to the start of buffer,
+    //! - A pointer to the start of last element,
+    //! - A pointer to the buffer end
     //!
     using detach_type_as_pointers = std::tuple<char *, char *, char *>;
 
+    //!
+    //! @typedef iterator
+    //! @brief Type of iterator
+    //!
     using iterator = flat_forward_list_iterator<T, TT>;
+    //!
+    //! @typedef const_iterator
+    //! @brief Type of const iterator
+    //!
     using const_iterator = flat_forward_list_const_iterator<T, TT>;
-
+    //!
+    //! @brief Constant that represents and invalid 
+    //! or non-existent position
+    //!
     inline static size_type const npos = iffl_npos;
-
+    //!
+    //! @brief Default constructor for container
+    //!
     flat_forward_list() noexcept {
     }
-
-    explicit flat_forward_list(A a) noexcept 
+    //!
+    //! @brief Constructs an empty container with an instance of
+    //! provided allocator
+    //!
+    explicit flat_forward_list(A a) noexcept
         : A( a ) {
     }
-
+    //!
+    //! @brief Move constructor. Moves allocator and content
+    //! of other container to this container
+    //! @param other - container we are moving from
+    //!
     flat_forward_list(flat_forward_list && other) noexcept
         : A(std::move(other).get_allocator()) {
         move_from(std::move(other));
     }
-
+    //!
+    //! @brief Copy constructor. Copies allocator if supprted and 
+    //! copies content of other container to this container
+    //! @param other - container we are copying from
+    //! @throw std::bad_alloc if buffer allocation fails
+    //!
     flat_forward_list(flat_forward_list const &other)
         : A(allocator_type_traits::select_on_container_copy_construction(other.get_allocator())) {
         copy_from(other);
     }
-
+    //!
+    //! @brief Constructor that takes ownership of a buffer
+    //! @tparam AA - type of allocator.
+    //! @param buffer_begin - pointer to the start of the buffer
+    //! that contains list.
+    //! @param buffer_end - pointer to the address right 
+    //! after last byte in the buffer.
+    //! @param last_element - pointers to the last element of the
+    //! list in the buffer. If buffer does not contain any elements
+    //! then this parameter must be nullptr.
+    //! @param a - allocator that should be used by this container.
+    //! @details This constructor does not validate if this is
+    //! a valid flat forward list. It assumes that
+    //! caller validated buffer before using this constructor.
+    //! The first parameter is an empty vocabulary type to help
+    //! with overload resolution and code redability.
+    //! @code
+    //! iffl::flat_forward_list<my_type> new_owner{iffl::attach_buffer{}, begin, last, end};
+    //! @endcode
+    //!
     template <typename AA = A>
     flat_forward_list(attach_buffer,
                       char *buffer_begin,
@@ -1622,7 +1747,22 @@ public:
         : A(std::forward<AA>(a)) {
         attach(buffer_begin, last_element, buffer_end);
     }
-
+    //!
+    //! @brief Constructor that copies list from a buffer
+    //! @tparam AA - type of allocator.
+    //! @param buffer_begin - pointer to the start of the buffer
+    //! that contains list.
+    //! @param buffer_end - pointer to the address right 
+    //! after last byte in the buffer.
+    //! @param last_element - pointers to the last element of the
+    //! list in the buffer. If buffer does not contain any elements
+    //! then this parameter must be nullptr.
+    //! @param a - allocator that should be used by this container.
+    //! @throw std::bad_alloc if buffer allocation fails
+    //! @details This constructor does not validate if this is
+    //! a valid flat forward list. It assumes that
+    //! caller validated buffer before using this constructor.
+    //!
     template <typename AA = A>
     flat_forward_list(char const *buffer_begin,
                       char const *last_element,
@@ -1631,7 +1771,23 @@ public:
         : A( std::forward<AA>(a) ) {
         copy_from_buffer(buffer_begin, last_element, buffer_end);
     }
-
+    //!
+    //! @brief Constructor that takes ownership of a buffer
+    //! and attempts to find last element of the list.
+    //! @tparam AA - type of allocator.
+    //! @param buffer_begin - pointer to the start of the buffer
+    //! that might contains list.
+    //! @param buffer_size - buffer size.
+    //! @param a - allocator that should be used by this container.
+    //! @details This constructor adopts buffer, and searches for the last
+    //! valid element in the buffer. If buffer validation fails then
+    //! container will treat it as if it has no elements.
+    //! Ths first parameter is an empty vocabulary type to help
+    //! with overload resolution and code redability.
+    //! @code
+    //! iffl::flat_forward_list<my_type> new_owner{iffl::attach_buffer{}, begin, size};
+    //! @endcode
+    //!
     template <typename AA = A>
     flat_forward_list(attach_buffer,
                       char *buffer,
@@ -1640,11 +1796,23 @@ public:
         : A( std::forward<AA>(a) ) {
         attach(buffer, buffer_size);
     }
-
+    //!
+    //! @brief Constructor that checks if buffer contains a valid list
+    //! and if it does then copies that list.
+    //! @tparam AA - type of allocator.
+    //! @param buffer_begin - pointer to the start of the buffer
+    //! that might contains list.
+    //! @param buffer_size - bufer size.
+    //! @param a - allocator that should be used by this container.
+    //! @throw std::bad_alloc if buffer allocation fails
+    //! @details This constructor searches for the last
+    //! valid element in the buffer, and is buffer is valid then it
+    //! copies elements to the new buffer.
+    //!
     template <typename AA = A>
     flat_forward_list(char const *buffer,
                       size_t buffer_size,
-                      AA &&a = AA{}) noexcept
+                      AA &&a = AA{})
         : A(std::forward<AA>(a)) {
         copy_from_buffer(buffer, buffer_size);
     }
@@ -3588,7 +3756,15 @@ private:
     char *last_element_{ nullptr };
     char *buffer_end_{ nullptr };
 };
-
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
 template <typename T,
           typename TT,
           typename A>
@@ -3599,7 +3775,10 @@ void swap(flat_forward_list<T, TT, A> &lhs, flat_forward_list<T, TT, A> &rhs)
 }
 
 //!
-//! Use this typedef if you want to use container with polimorfic allocator
+//! @typedef pmr_flat_forward_list
+//! @brief Use this typedef if you want to use container with polimorfic allocator
+//! @tparam T - element type
+//! @tparam TT - element type traits
 //!
 template <typename T,
           typename TT = flat_forward_list_traits<T>>
