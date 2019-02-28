@@ -1816,7 +1816,16 @@ public:
         : A(std::forward<AA>(a)) {
         copy_from_buffer(buffer, buffer_size);
     }
-
+    //!
+    //! @brief Move assignment operator.
+    //! @param other - linked list we are moving from
+    //! @throw noexcept if allocator is propagate_on_container_move_assignment
+    //! @details If allocator is propagate_on_container_move_assignment then
+    //! it moves allocator, and moves buffer ownership.
+    //! Otherwise if allocator are equivalent then data are moves.
+    //! If allocators are not equivalent then new buffer is allocated and 
+    //! list is copied. In the last case this function might throw std::bad_alloc
+    //!
     flat_forward_list &operator= (flat_forward_list && other) noexcept (allocator_type_traits::propagate_on_container_move_assignment::value) {
         if (this != &other) {
             if constexpr (allocator_type_traits::propagate_on_container_move_assignment::value) {
@@ -1828,7 +1837,14 @@ public:
         }
         return *this;
     }
-
+    //!
+    //! @brief Copy assignment operator.
+    //! @param other - linked list we are copying from
+    //! @throw std::bad_alloc when allocating buffer fails
+    //! @details This function first attempts to copy allocator, 
+    //! if it is supported, and after that allocates new buffer
+    //! and copies all elements to the new buffer.
+    //!
     flat_forward_list &operator= (flat_forward_list const &other) {
         if (this != &other) {
             //
@@ -1844,7 +1860,10 @@ public:
         }
         return *this;
     }
-
+    //!
+    //! @brief Destructor.
+    //! @details Deallocates buffer owned by container.
+    //!
     ~flat_forward_list() noexcept {
         clear();
     }
