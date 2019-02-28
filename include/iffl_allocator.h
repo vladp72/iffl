@@ -118,6 +118,7 @@ private:
     //! @brief Overrides memory resource virtual method that performs allocation.
     //! @param bytes - number of bytes to be allocated.
     //! @param alignement - alignment requirements for the allocated buffer.
+    //! @throws std::bad_alloc if allocation fails
     //! @return On success return a pointer to the buffer of requested size.
     //!         On failure throws std::bad_alloc.
     //!
