@@ -1737,6 +1737,11 @@ public:
     //! @code
     //! iffl::flat_forward_list<my_type> new_owner{iffl::attach_buffer{}, begin, last, end};
     //! @endcode
+    //! After this call container is responsible for deallocating 
+    //! the buffer.
+    //! It is responsibility of the caller to make sure that buffer
+    //! was allocated using method compatible with allocator used by 
+    //! this container.
     //!
     template <typename AA = A>
     flat_forward_list(attach_buffer,
@@ -1775,18 +1780,23 @@ public:
     //! @brief Constructor that takes ownership of a buffer
     //! and attempts to find last element of the list.
     //! @tparam AA - type of allocator.
-    //! @param buffer_begin - pointer to the start of the buffer
+    //! @param buffer - pointer to the start of the buffer
     //! that might contains list.
     //! @param buffer_size - buffer size.
     //! @param a - allocator that should be used by this container.
     //! @details This constructor adopts buffer, and searches for the last
     //! valid element in the buffer. If buffer validation fails then
     //! container will treat it as if it has no elements.
-    //! Ths first parameter is an empty vocabulary type to help
+    //! The first parameter is an empty vocabulary type to help
     //! with overload resolution and code redability.
     //! @code
     //! iffl::flat_forward_list<my_type> new_owner{iffl::attach_buffer{}, begin, size};
     //! @endcode
+    //! After this call container is responsible for deallocating 
+    //! the buffer.
+    //! It is responsibility of the caller to make sure that buffer
+    //! was allocated using method compatible with allocator used by 
+    //! this container.
     //!
     template <typename AA = A>
     flat_forward_list(attach_buffer,
@@ -1800,7 +1810,7 @@ public:
     //! @brief Constructor that checks if buffer contains a valid list
     //! and if it does then copies that list.
     //! @tparam AA - type of allocator.
-    //! @param buffer_begin - pointer to the start of the buffer
+    //! @param buffer - pointer to the start of the buffer
     //! that might contains list.
     //! @param buffer_size - bufer size.
     //! @param a - allocator that should be used by this container.
@@ -1867,7 +1877,21 @@ public:
     ~flat_forward_list() noexcept {
         clear();
     }
-
+    //!
+    //! @brief Container releases ownership of the buffer.
+    //! @details After the call completes, container is empty.
+    //! @return Returns buffer information to the caller.
+    //! Caller is responsible for deallocating returned buffer.
+    //! Information oabout the buffer is returned using a tuple 
+    //! that consists
+    //! - Pointer to the buffer start. Nullptr if container 
+    //!   has no buffer.
+    //! - Used buffer capacity. Distance from the start of 
+    //!   buffer to the end of the last element.
+    //!   0 if buffer has no elements.
+    //! - Buffer size. 0 if container has no allocated buffer.
+    //!   
+    //!
     detach_type_as_size detach() noexcept {
         auto result{ std::make_tuple( buffer_begin_,  used_capacity(), total_capacity() ) };
         buffer_begin_ = nullptr;
@@ -1875,7 +1899,23 @@ public:
         last_element_ = nullptr;
         return result;
     }
-
+    //!
+    //! @brief Container releases ownership of the buffer.
+    //! @details After the call completes, container is empty.
+    //! input parameter helps with selecting between overloads.
+    //! @return Returns buffer information to the caller.
+    //! Caller is responsible for deallocating returned buffer.
+    //! Information oabout the buffer is returned using a tuple 
+    //! that consists
+    //! - Pointer to the buffer start. Nullptr if container
+    //!   contains no buffer.
+    //! - Pointer to the start of the last elenet. Nullptr if
+    //!   if buffer is empty or contains no elements.
+    //! - Pointer to the end of the buffer
+    //! @code
+    //! detach_type_as_pointers buffer_info { list.detach(as_pointers{}) };
+    //! @endcode
+    //!
     detach_type_as_pointers detach(as_pointers) noexcept {
         auto result{ std::make_tuple( buffer_begin_,  last_element_, buffer_end_) };
         buffer_begin_ = nullptr;
@@ -1883,7 +1923,25 @@ public:
         last_element_ = nullptr;
         return result;
     }
-
+    //!
+    //! @brief Takes ownership of a buffer
+    //! @param buffer_begin - pointer to the start of the buffer
+    //! that contains list.
+    //! @param buffer_end - pointer to the address right 
+    //! after last byte in the buffer.
+    //! @param last_element - pointers to the last element of the
+    //! list in the buffer. If buffer does not contain any elements
+    //! then this parameter must be nullptr.
+    //! @details This method first clears existing content of 
+    //! the container. It does not validate if buffer contains
+    //! a valid flat forward list. It assumes that
+    //! caller validated buffer before using this constructor.
+    //! After this call container is responsible for deallocating 
+    //! the buffer.
+    //! It is responsibility of the caller to make sure that buffer
+    //! was allocated using method compatible with allocator used by 
+    //! this container.
+    //!
     void attach(char *buffer_begin,
                 char *last_element,
                 char *buffer_end) {
@@ -1899,7 +1957,21 @@ public:
         buffer_end_ = buffer_end;
         last_element_ = last_element;
     }
-
+    //!
+    //! @brief Takes ownership of a buffer
+    //! and attempts to find last element of the list.
+    //! @param buffer - pointer to the start of the buffer
+    //! that might contains list.
+    //! @param buffer_size - buffer size.
+    //! @details This method adopts buffer, and searches for the last
+    //! valid element in the buffer. If buffer validation fails then
+    //! container will treat it as if it has no elements.
+    //! After this call container is responsible for deallocating 
+    //! the buffer.
+    //! It is responsibility of the caller to make sure that buffer
+    //! was allocated using method compatible with allocator used by 
+    //! this container.
+    //!
     bool attach(char *buffer,
                 size_t buffer_size) noexcept {
         FFL_CODDING_ERROR_IF(buffer_begin_ == buffer);
@@ -1910,7 +1982,20 @@ public:
                buffer + buffer_size);
         return is_valid;
     }
-
+    //!
+    //! @brief Copies list from a buffer
+    //! @param buffer_begin - pointer to the start of the buffer
+    //! that contains list.
+    //! @param buffer_end - pointer to the address right 
+    //! after last byte in the buffer.
+    //! @param last_element - pointers to the last element of the
+    //! list in the buffer. If buffer does not contain any elements
+    //! then this parameter must be nullptr.
+    //! @throw std::bad_alloc if buffer allocation fails
+    //! @details This method does not validate if this is
+    //! a valid flat forward list. It assumes that
+    //! caller validated buffer before using this constructor.
+    //!
     void copy_from_buffer(char const *buffer_begin, 
                           char const *last_element, 
                           char const *buffer_end) {
@@ -1931,7 +2016,17 @@ public:
         l.last_element_ = l.buffer_begin_ + last_element_offset;
         swap(l);
     }
-
+    //!
+    //! @brief Checks if buffer contains a valid list
+    //! and if it does then copies that list.
+    //! @param buffer_begin - pointer to the start of the buffer
+    //! that might contains list.
+    //! @param buffer_end - pointer to the buffer end.
+    //! @throw std::bad_alloc if buffer allocation fails
+    //! @details This method searches for the last
+    //! valid element in the buffer, and is buffer is valid then it
+    //! copies elements to the new buffer.
+    //!
     bool copy_from_buffer(char const *buffer_begin, 
                           char const *buffer_end) {
 
@@ -1943,34 +2038,66 @@ public:
 
         return is_valid;
     }
-
+    //!
+    //! @brief Checks if buffer contains a valid list
+    //! and if it does then copies that list.
+    //! @param buffer - pointer to the start of the buffer
+    //! that might contains list.
+    //! @param buffer_size - bufer size.
+    //! @throw std::bad_alloc if buffer allocation fails
+    //! @details This method searches for the last
+    //! valid element in the buffer, and is buffer is valid then it
+    //! copies elements to the new buffer.
+    //!
     bool copy_from_buffer(char const *buffer,
                           size_type buffer_size) {
 
         return copy_from_buffer(buffer, buffer + buffer_size);
     }
-
+    //!
+    //! @brief Compares if allocator used by container is 
+    //! equivalent to the other alocator.
+    //! @param other_allocator - allocator we are comparing to
+    //! @return True if allocators are equivalent, and  false otherwise.
+    //!
     template<typename AA>
     bool is_compatible_allocator(AA const &other_allocator) const noexcept {
         return other_allocator == get_allocator();
     }
-
+    //!
+    //! @brief Returns reference to the allocator used by this container
+    //! @return Allocator reference.
+    //!
     A &get_allocator() & noexcept {
         return *this;
     }
-
+    //!
+    //! @brief Returns const reference to the allocator used by this container
+    //! @return Allocator const reference.
+    //!
     A const &get_allocator() const & noexcept {
         return *this;
     }
-
+    //!
+    //! @brief Returns rvalue reference to the allocator used by this container
+    //! @return Allocator rvalue reference.
+    //!
     A && get_allocator() && noexcept {
         return std::move(*this);
     }
-
+    //!
+    //! @brief Returns maximum size.
+    //! @return Maximum size.
+    //! @details For this container it is maximum number of bytes that can 
+    //! be allocated through allocator used by this container
+    //!
     size_type max_size() const noexcept {
         return allocator_type_traits::max_size(get_allocator());
     }
-
+    //!
+    //! @brief Deallocated buffer owned by this container.
+    //! @details After this call container is empty
+    //!
     void clear() noexcept {
         validate_pointer_invariants();
         if (buffer_begin_) {
@@ -1981,11 +2108,33 @@ public:
         }
         validate_pointer_invariants();
     }
-
+    //!
+    //! @brief Resizes buffer to the used capacity.
+    //! @details Allocates new buffer of exact size 
+    //! that is required to keep all elements, moves
+    //! all elements there and deallocates old buffer.
+    //! If buffer already has no unused capacity then
+    //! this call is noop.
+    //!
     void tail_shrink_to_fit() {
         resize_buffer(used_capacity());
     }
-
+    //!
+    //! @brief Resizes buffer.
+    //! @param size - new buffer size
+    //!               Passing 0 has same effect as clearing container
+    //!               Setting buffer size to the value smaller than first element size
+    //!               will produce empty list.
+    //! @throw std::bad_alloca if allocating new buffer fails
+    //! @details Allocates new buffer of specified size, and
+    //! copies all elements that can fit to the new buffer size.
+    //! all other elements will be erased.
+    //! Resizing buffer to the larger capacity will add unused capacity.
+    //! This can help reduce buffer reallocations when adding new elements to
+    //! the buffer.
+    //! Resizing to capacity smaller than used capacity will end up erasing
+    //! elements that do not fit to the new buffer size.
+    //!
     void resize_buffer(size_type size) {
         validate_pointer_invariants();
 
@@ -2061,6 +2210,23 @@ public:
         validate_pointer_invariants();
         validate_data_invariants();
     }
+
+    //!
+    //! @brief Adds new element to the end of the buffer.
+    //! @param size - new buffer size
+    //!               Passing 0 has same effect as clearing container
+    //!               Setting buffer size to the value smaller than first element size
+    //!               will produce empty list.
+    //! @throw std::bad_alloca if allocating new buffer fails
+    //! @details Allocates new buffer of specified size, and
+    //! copies all elements that can fit to the new buffer size.
+    //! all other elements will be erased.
+    //! Resizing buffer to the larger capacity will add unused capacity.
+    //! This can help reduce buffer reallocations when adding new elements to
+    //! the buffer.
+    //! Resizing to capacity smaller than used capacity will end up erasing
+    //! elements that do not fit to the new buffer size.
+    //!
 
     void push_back(size_type init_buffer_size,
                    char const *init_buffer = nullptr) {
