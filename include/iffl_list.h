@@ -1541,6 +1541,21 @@ using flat_forward_list_const_iterator = flat_forward_list_iterator_t< std::add_
 //! A is default initialized to std::allocator for T
 //! Container is inherited from allocator to utilize
 //! Empty Base Class Optimization (EBCO).
+//! Iterator invalidation notes:
+//! Begin iterator might get invalidated on any operation that
+//! causes buffer reallocation or erases last element of container
+//! Any other iterator, including an end iterator can get invalidated
+//! on any operation that causes buffer reallocation or adds, removes
+//! or resizes elements of container.
+//! Methods that take iterator as an input, and can invalidate it
+//! return new valid iterator as an output.
+//! Caller must refresh end iterator by explicitely calling [c]end().
+//! Debugging nodes:
+//! Defining FFL_DBG_CHECK_ITERATOR_VALID will enable validation of
+//! that iterators passed in input parameters are valid and are pointing
+//! to an existing element. Cost of this validation is O(element count). 
+//! Defining FFL_DBG_CHECK_DATA_VALID will enable validation of container
+//! after every method that modifies container data.
 //!
 template <typename T,
           typename TT = flat_forward_list_traits<T>,
@@ -2079,13 +2094,6 @@ public:
         return *this;
     }
     //!
-    //! @brief Returns rvalue reference to the allocator used by this container
-    //! @return Allocator rvalue reference.
-    //!
-    A && get_allocator() && noexcept {
-        return std::move(*this);
-    }
-    //!
     //! @brief Returns maximum size.
     //! @return Maximum size.
     //! @details For this container it is maximum number of bytes that can 
@@ -2210,24 +2218,17 @@ public:
         validate_pointer_invariants();
         validate_data_invariants();
     }
-
     //!
-    //! @brief Adds new element to the end of the buffer.
-    //! @param size - new buffer size
-    //!               Passing 0 has same effect as clearing container
-    //!               Setting buffer size to the value smaller than first element size
-    //!               will produce empty list.
+    //! @brief Adds new elemnt to the end of the list. 
+    //! Element is initialized by coppying provided buffer.
+    //! @param init_buffer_size - size of the buffer that will be used for initialization 
+    //!                           size smaller than minimum element size will trigger a fail-fast.
+    //! @param init_buffer - a poiner to the buffer. If pointer to the buffer is nullptr then
+    //!                      element data are zero initialized.
     //! @throw std::bad_alloca if allocating new buffer fails
-    //! @details Allocates new buffer of specified size, and
-    //! copies all elements that can fit to the new buffer size.
-    //! all other elements will be erased.
-    //! Resizing buffer to the larger capacity will add unused capacity.
-    //! This can help reduce buffer reallocations when adding new elements to
-    //! the buffer.
-    //! Resizing to capacity smaller than used capacity will end up erasing
-    //! elements that do not fit to the new buffer size.
+    //! @details New element becomes a new last element and, if set_next offset is supported,
+    //! then it is called on the previous last element such that it points to the new one.
     //!
-
     void push_back(size_type init_buffer_size,
                    char const *init_buffer = nullptr) {
 
@@ -2243,8 +2244,20 @@ public:
                         }
                      });
     }
-
-    template <typename F 
+    //!
+    //! @brief Constructs new element at the end of the list. 
+    //! @tparam F - type of a functor
+    //! Element is initialized with a help of the functor passed as a parameter.
+    //! @param element_size - number of bytes required for the new element.
+    //! @param fn - a functor used to construct new element.
+    //! @throw std::bad_alloca if allocating new buffer fails.
+    //!        Any exceptions that might be raised by the functor.
+    //!        If functor raises then container remains in the state as if 
+    //!        call did not happen
+    //! @details Constructed element does not have to use up the entire buffer
+    //! unused space will become unused buffer capacity.
+    //!
+    template <typename F
              // ,typename ... P
              >
     void emplace_back(size_type element_size,
@@ -2316,7 +2329,15 @@ public:
         validate_pointer_invariants();
         validate_data_invariants();
     }
-
+    //!
+    //! @brief Removes last element from the list. 
+    //! @details Tnis method has cost O(number of elements). 
+    //! Cost comes from scanning buffer from beginning to find
+    //! element before the current last element. Since this is
+    //! a single linked list we have no faster way to locate it.
+    //! Element before current last element will become new last 
+    //! element.
+    //!
     void pop_back() noexcept {
         validate_pointer_invariants();
 
@@ -2348,7 +2369,25 @@ public:
         validate_pointer_invariants();
         validate_data_invariants();
     }
-
+    //!
+    //! @brief Inserts new element at the position described by iterator. 
+    //! Element is initialized by coppying provided buffer.
+    //! @param it - iterator pointing to the position new element should be inserte to.
+    //!             Iterator value must be a valid iterator pointing to one of the elements
+    //!             or an end iterator.
+    //!             If iterator is pointing to an element that is not propertly alligned then
+    //!             new element will not be propertly alligned.
+    //! @param init_buffer_size - size of the buffer that will be used for initialization 
+    //!                           size smaller than minimum element size will trigger a fail-fast.
+    //!                           When iterator in not then end then size is padded to make sure that if
+    //!                           this element is propertly alligned then next element is also property 
+    //!                           aligned.
+    //! @param init_buffer - a poiner to the buffer. If pointer to the buffer is nullptr then
+    //!                      element data are zero initialized.
+    //! @throw std::bad_alloca if allocating new buffer fails.
+    //! @details New element becomes a new last element and, if set_next offset is supported,
+    //! then it is called on the previous last element such that it points to the new one.
+    //!
     iterator insert(iterator const &it, size_type init_buffer_size, char const *init_buffer = nullptr) {
         emplace(it, 
                 init_buffer_size,
@@ -2363,7 +2402,27 @@ public:
                     }
                 });
     }
-
+    //!
+    //! @brief Constructs new element at the position described by iterator. 
+    //! Element is initialized with a help of the functor passed as a parameter.
+    //! @tparam F - type of a functor
+    //! @param it - iterator pointing to the position new element should be inserte to.
+    //!             Iterator value must be a valid iterator pointing to one of the elements
+    //!             or an end iterator.
+    //!             If iterator is pointing to an element that is not propertly alligned then
+    //!             new element will not be propertly alligned.
+    //!             When iterator in not then end then size is padded to make sure that if
+    //!             this element is propertly alligned then next element is also property 
+    //!             aligned.
+    //! @param new_element_size - number of bytes required for the new element.
+    //! @param fn - a functor used to construct new element.
+    //! @throw std::bad_alloca if allocating new buffer fails.
+    //!        Any exceptions that might be raised by the functor.
+    //!        If functor raises then container remains in the state as if 
+    //!        call did not happen
+    //! @details Constructed element does not have to use up the entire buffer
+    //! unused space will become unused buffer capacity.
+    //!
     template <typename F
               //, typename ... P
              >
@@ -2493,7 +2552,17 @@ public:
         //
         return iterator{ cur };
     }
-
+    //!
+    //! @brief Constructs new element at the beginnig of the container. 
+    //! Element is initialized by coppying provided buffer.
+    //! @param init_buffer_size - size of the buffer that will be used for initialization 
+    //!                           size smaller than minimum element size will trigger a fail-fast.
+    //!                           When container is not empty then size is padded to make sure that
+    //!                           next element is also property aligned.
+    //! @param init_buffer - a poiner to the buffer. If pointer to the buffer is nullptr then
+    //!                      element data are zero initialized.
+    //! @throw std::bad_alloca if allocating new buffer fails.
+    //!
     void push_front(size_type init_buffer_size, char const *init_buffer = nullptr) {
         emplace(begin(),
                 init_buffer_size,
@@ -2508,7 +2577,20 @@ public:
                     }
                 });
     }
-
+    //!
+    //! @brief Inserts new element at the beginnig of the container. 
+    //! Element is initialized with a help of the functor passed as a parameter.
+    //! @tparam F - type of a functor
+    //! @param element_size - size of the buffer that will be used for initialization 
+    //!                           size smaller than minimum element size will trigger a fail-fast.
+    //!                           When container is not empty then size is padded to make sure that
+    //!                           next element is also property aligned.
+    //! @param fn - a functor used to construct new element.
+    //! @throw std::bad_alloca if allocating new buffer fails.
+    //!        Any exceptions that might be raised by the functor.
+    //!        If functor raises then container remains in the state as if 
+    //!        call did not happen
+    //!
     template <typename F
               //,typename ... P
              >
@@ -2519,7 +2601,10 @@ public:
         //emplace(begin(), element_size, fn, std::forward<P>(p)...);
         emplace(begin(), element_size, fn);
     }
-
+    //!
+    //! @brief Removes first element from the container. 
+    //! @details Calling on empty container will trigger fail-fast
+    //!
     void pop_front() {
         validate_pointer_invariants();
 
@@ -2550,7 +2635,12 @@ public:
         validate_pointer_invariants();
         validate_data_invariants();
     }
-
+    //!
+    //! @brief Erases element after the element pointed by the iterator
+    //! @param it - iterator pointing to an element before the element
+    //! that will be erased. If iterator is pointing to the last element
+    //! of container then it will trigger fail-fast.
+    //!
     void erase_after(iterator const &it) noexcept {
         validate_pointer_invariants();
         //
@@ -2597,13 +2687,17 @@ public:
         validate_data_invariants();
     }
 
-    //
-    // Usualy pair of iterators define aa half opened range [start, end)
-    // Note that in this case our range is (start, last]. In other words
-    // we will erase all elements after start, including last.
-    // We give this method unusual name so people would stop and read
-    // this comment about range
-    //
+    //!
+    //! @brief Erases element in the range (before_start, last]
+    //! @param before_start - iterator pointing to an element before the first element
+    //! that will be erased. If iterator is pointing to the last element
+    //! of container then it will trigger fail-fast.
+    //! @param last - iterator pointing to the last element to be erased.
+    //! if this iterator is end then it will irase all elements after before_start.
+    //! @details Usualy pair of iterators define aa half opened range [start, end)
+    //! Note that in this case our range is (start, last]. In other words
+    //! we will erase all elements after start, including last.
+    //!
     void erase_after_half_closed(iterator const &before_start, iterator const &last) noexcept {
         validate_pointer_invariants();
         //
@@ -2659,7 +2753,12 @@ public:
         validate_pointer_invariants();
         validate_data_invariants();
     }
-
+    //!
+    //! @brief Erases element in the range (before_start, end)
+    //! @param it - iterator pointing to an element before the first element
+    //! that will be erased. If iterator is pointing to the last element
+    //! of container then it will trigger fail-fast.
+    //!
     void erase_all_after(iterator const &it) noexcept {
         validate_pointer_invariants();
         validate_iterator(it);
@@ -2675,7 +2774,13 @@ public:
             validate_data_invariants();
         }
     }
-
+    //!
+    //! @brief Erases element in the range [it, end)
+    //! @param it - iterator to the first element to be erased
+    //! @details This algorithm has complexity O(element count) because
+    //! to erase element pointed by it we need to locate element before 
+    //! and make it new last element.
+    //!
     iterator erase_all_from(iterator const &it) noexcept {
         validate_pointer_invariants();
         validate_iterator(it);
@@ -2703,16 +2808,21 @@ public:
 
         return end();
     }
-
+    //!
+    //! @brief Erases all elements in the buffer without deallocating buffer
+    //!
     void erase_all() noexcept {
         validate_pointer_invariants();
         last_element_ = nullptr;
     }
 
-    //
-    // This gives us erase semantics everyone is used to, but increases 
-    // complexity by O(n)
-    //
+    //!
+    //! @brief Erases element pointed by iterator.
+    //! @param it - iterator pointing to the element being erased.
+    //! @details This gives us erase semantics everyone is used to, but algorithm
+    //! complexity is O(element count) if we are erasing last element because we need to find
+    //! element before the element being erased, and make it last.
+    //!
     iterator erase(iterator const &it) noexcept {
         validate_pointer_invariants();
         validate_iterator_not_end(it);
@@ -2748,9 +2858,14 @@ public:
 
         return it;
     }
-    //
-    // This is an erase for an half opened range [start, end)
-    //
+    //!
+    //! @brief Erases element in the range [start, end).
+    //! @param start - first element to be erased.
+    //! @param end - one pass the last element that is being erased.
+    //! @details This gives us erase semantics everyone is used to, but algorithm
+    //! complexity is O(element count) if we are erasing all element till the end of container,
+    //! because we need to find element before the element being erased, and make it last.
+    //!
     iterator erase(iterator const &start, iterator const &end) noexcept {
         validate_pointer_invariants();
         validate_iterator_not_end(start);
@@ -2789,7 +2904,13 @@ public:
 
         return start;
     }
-
+    //!
+    //! @brief Swaps content of this container and the other container.
+    //! @param other - reference to the other container
+    //! @throws might throw std::bad_alloc if allocator swap throws or if
+    //! allocators do not suport swap, and we need to make a copy of elements,
+    //! which involves allocation.
+    //!
     void swap(flat_forward_list &other) noexcept (allocator_type_traits::propagate_on_container_swap::value ||
                                                   allocator_type_traits::propagate_on_container_move_assignment::value) {
         if constexpr (allocator_type_traits::propagate_on_container_swap::value) {
@@ -2803,7 +2924,13 @@ public:
             *this = std::move(tmp);
         }
     }
-
+    //!
+    //! @brief Sorts elements of container using comparator passed as a parameter
+    //! @tparam LESS_F - type of comparator
+    //! @param fn - instance of comparator
+    //! @details Algorithm complexity is O(n*log(n)+2*n)
+    //! @throws Might throw std::bad_alloc when allocation fails
+    //!
     template <typename LESS_F>
     void sort(LESS_F const &fn) {
         //
@@ -2838,7 +2965,10 @@ public:
         //
         swap(sorted_list);
     }
-
+    //!
+    //! @brief Reverses elements of the list
+    //! @throws Might throw std::bad_alloc when allocation fails
+    //!
     void reverse() {
         flat_forward_list reversed_list(get_allocator());
         reversed_list.resize_buffer(used_capacity());
@@ -2850,7 +2980,15 @@ public:
         //
         swap(reversed_list);
     }
-
+    //!
+    //! @brief Merges two linked list ordering lists using comparison functor
+    //! @tparam F - type of comparison functor
+    //! @param fn - comparison functor
+    //! @param other - the other list we are merging with
+    //! @throws Might throw std::bad_alloc when allocation fails.
+    //! @details if both lists are sorted, and we are merging using the same
+    //! compare functor, then merged list will be sorted.
+    //!
     template<class F>
     void merge(flat_forward_list &other, 
                F const &fn) {
@@ -2883,10 +3021,15 @@ public:
         swap(merged_list);
         other.clear();
     }
-
+    //!
+    //! @brief If there are multiple equivalent elements next to each other
+    //! then first one is kept, and all other are deleted.
+    //! @tparam F - type of comparison functor
+    //! @param fn - comparison functor
+    //!
     template<typename F>
-    void unique(F const &fn) {   
-        iterator first = begin();       
+    void unique(F const &fn) noexcept {
+        iterator first = begin();
         if (first != end()) {
             iterator last = end();
             iterator after = first;
@@ -2916,9 +3059,13 @@ public:
             }
         }
     }
-
+    //!
+    //! @brief Removes all elements that satisfy predicate.
+    //! @tparam F - type of predicate
+    //! @param fn - predicate functor
+    //!
     template<typename F>
-    void remove_if(F const &fn) {
+    void remove_if(F const &fn) noexcept {
         iterator first = end();
         for (iterator last = begin(); 
              last != end(); 
@@ -2934,37 +3081,55 @@ public:
             } 
         }
     }
-     
+    //!
+    //! @return Returns a reference to the first element in the container.
+    //! @details Calling this method on a empty container will trigger fail-fast
+    //!
     T &front() {
         validate_pointer_invariants();
         FFL_CODDING_ERROR_IF(last_element_ == nullptr || buffer_begin_ == nullptr);
         return *(T *)buffer_begin_;
     }
-
+    //!
+    //! @return Returns a const reference to the first element in the container.
+    //! @details Calling this method on a empty container will trigger fail-fast
+    //!
     T const &front() const {
         validate_pointer_invariants();
         FFL_CODDING_ERROR_IF(last_element_ == nullptr || buffer_begin_ == nullptr);
         return *(T *)buffer_begin_;
     }
-
+    //!
+    //! @return Returns a reference to the last element in the container.
+    //! @details Calling this method on a empty container will trigger fail-fast
+    //!
     T &back() {
         validate_pointer_invariants();
         FFL_CODDING_ERROR_IF(last_element_ == nullptr);
         return *(T *)last_element_;
     }
-
+    //!
+    //! @return Returns a const reference to the last element in the container.
+    //! @details Calling this method on a empty container will trigger fail-fast
+    //!
     T const &back() const {
         validate_pointer_invariants();
         FFL_CODDING_ERROR_IF(last_element_ == nullptr);
         return *(T *)last_element_;
     }
-
+    //!
+    //! @return Returns an iterator pointing to the first element of container.
+    //! @details Calling on an empty container returns end iterator
+    //!
     iterator begin() noexcept {
         validate_pointer_invariants();
         return last_element_ ? iterator{ buffer_begin_ }
                              : end();
     }
-
+    //!
+    //! @return Returns a const iterator pointing to the first element of container.
+    //! @details Calling on an empty container returns const end iterator
+    //!
     const_iterator begin() const noexcept {
         validate_pointer_invariants();
         return last_element_ ? const_iterator{ buffer_begin_ }
@@ -2981,18 +3146,31 @@ public:
     // iterator before_begin() noexcept {
     // }
 
+    //!
+    //! @return Returns an iterator pointing to the last element of container.
+    //! @details Calling on an empty container returns end iterator
+    //!
     iterator last() noexcept {
         validate_pointer_invariants();
         return last_element_ ? iterator{ last_element_ }
                              : end();
     }
-
+    //!
+    //! @return Returns a const iterator pointing to the last element of container.
+    //! @details Calling on an empty container returns end iterator
+    //!
     const_iterator last() const noexcept {
         validate_pointer_invariants();
         return last_element_ ? const_iterator{ last_element_ }
                              : cend();
     }
-
+    //!
+    //! @return Returns an end iterator.
+    //! @details For types that support get_next_offset offset or when container is empty, 
+    //! the end iterator is iterator{}.
+    //! For types that do not support get_next_offset an end iterator is pointing pass the last
+    //! element of container
+    //!
     iterator end() noexcept {
         validate_pointer_invariants();
         if (last_element_) {
@@ -3006,7 +3184,13 @@ public:
             return iterator{ };
         }
     }
-
+    //!
+    //! @return Returns an end const_iterator.
+    //! @details For types that support get_next_offset offset or when container is empty, 
+    //! the end iterator is const_iterator{}.
+    //! For types that do not support get_next_offset an end iterator is pointing pass the last
+    //! element of container
+    //!
     const_iterator end() const noexcept {
         validate_pointer_invariants();
         if (last_element_) {
@@ -3020,23 +3204,39 @@ public:
             return const_iterator{ };
         }
     }
-
+    //!
+    //! @return Returns a const iterator pointing to the first element of container.
+    //! @details Calling on an empty container returns const end iterator
+    //!
     const_iterator cbegin() const noexcept {
         return begin();
     }
-
+    //!
+    //! @return Returns a const iterator pointing to the last element of container.
+    //! @details Calling on an empty container returns end iterator
+    //!
     const_iterator clast() const noexcept {
         return last();
     }
-
+    //!
+    //! @return Returns an end const_iterator.
+    //! @details For types that support get_next_offset offset or when container is empty, 
+    //! the end iterator is const_iterator{}.
+    //! For types that do not support get_next_offset an end iterator is pointing pass the last
+    //! element of container
+    //!
     const_iterator cend() const noexcept {
         return end();
     }
-
+    //!
+    //! @return Pointer to the begging of the buffer or nullptr if bo buffer.
+    //!
     char *data() noexcept {
         return buffer_begin_;
     }
-
+    //!
+    //! @return Const pointer to the begging of the buffer or nullptr if bo buffer.
+    //!
     char const *data() const noexcept {
         return buffer_begin_;
     }
