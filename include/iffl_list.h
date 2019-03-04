@@ -3229,37 +3229,68 @@ public:
         return end();
     }
     //!
-    //! @return Pointer to the begging of the buffer or nullptr if bo buffer.
+    //! @return Pointer to the begging of the buffer or nullptr 
+    //! container has if no allocated buffer.
     //!
     char *data() noexcept {
         return buffer_begin_;
     }
     //!
-    //! @return Const pointer to the begging of the buffer or nullptr if bo buffer.
+    //! @return Const pointer to the begging of the buffer or nullptr 
+    //! container has if no allocated buffer.
     //!
     char const *data() const noexcept {
         return buffer_begin_;
     }
-
-    bool revalidate_data() {
+    //!
+    //! @brief Validates that buffer contains a valid list.
+    //! @return true if valid list was found and false otherwise.
+    //! @details You must call this method after passing pointer to 
+    //! container's buffer to a function that might change buffer content.
+    //! If valid list of found then last_element_ will be pointing to the
+    //! element element that was found. If no valid list was found then
+    //! last_element_ will be nullptr.
+    //!
+    bool revalidate_data() noexcept {
         auto[valid, last] = flat_forward_list_validate<T, TT>(buffer_begin_, buffer_end_);
         if (valid) {
             last_element_ = last;
         }
         return valid;
     }
-
+    //!
+    //! @brief Removes unused padding of each element and at the tail.
+    //! @throws std::bad_alloc if allocating new buffer fails.
+    //! @details This method also fixes alignment of each element and 
+    //! adds missing padding, so at the end used capacity might grow.
+    //! Once unused capacity of each element is removed, and missing 
+    //! padding added, this method method reallocates buffer to remove
+    //! any unused capacity at the tail.
+    //!
     void shrink_to_fit() {
         shrink_to_fit(begin(), end());
         tail_shrink_to_fit();
     }
-
+    //!
+    //! @brief Removes unused padding of each element in the range [first, end).
+    //! @param first - iterator that points to the first element to shrink.
+    //! @param end - iterator that points passt the last element.
+    //! @throws std::bad_alloc if allocating new buffer fails.
+    //! @details This method also fixes alignment of each element and 
+    //! adds missing padding, so at the end used capacity might grow.
+    //!
     void shrink_to_fit(iterator const &first, iterator const &end) {
         for (iterator i = first; i != end; ++i) {
             shrink_to_fit(i);
         }
     }
-
+    //!
+    //! @brief Removes unused padding of an element.
+    //! @param it - iterator that points to the element to shrink.
+    //! @throws std::bad_alloc if allocating new buffer fails.
+    //! @details This method also fixes alignment of element and 
+    //! adds missing padding, so at the end used capacity might grow.
+    //!
     void shrink_to_fit(iterator const &it) {
         validate_pointer_invariants();
         validate_iterator_not_end(it);
@@ -3295,7 +3326,16 @@ public:
         //
         FFL_CODDING_ERROR_IF_NOT(it == ret_it);
     }
-
+    //!
+    //! @brief Adds unused capacity to the element.
+    //! @param it - iterator that points to the element to grow.
+    //! @param size_to_add - bytes to add to the current element size
+    //! @throws std::bad_alloc if allocating new buffer fails.
+    //! @details This method also fixes alignment of element and 
+    //! adds missing padding.
+    //! added capacity becomes unused capacity that is reserved 
+    //! for future use. Unused capacity is zero initialized.
+    //!
     iterator element_add_size(iterator const &it,
                               size_type size_to_add) {
         validate_pointer_invariants();
@@ -3317,7 +3357,16 @@ public:
     }
 
     //!
-    //! Should take constructor
+    //! @brief Resizes element.
+    //! @tparam F - type of functor user to update element.
+    //! @param it - iterator that points to the element that is being resized.
+    //! @param new_size - new element size.
+    //! @param fn - functor used to update element after it was resized.
+    //! @throws std::bad_alloc if allocating new buffer fails.
+    //! @details Resizing to 0 will delete element.
+    //! Resizing to size smaller than minimum_size will trigger fail-fast.
+    //! Resizing to any other siz also fixes alignment of element and 
+    //! adds missing padding.
     //!
     template <typename F
              //,typename ... P
@@ -3529,20 +3578,35 @@ public:
         //
         return result_it;
     }
-
+    //!
+    //! @brief Returns capacity used by the element's data.
+    //! @param it - iterator pointing to the element we are returning size for.
+    //! @returns Returns size of the element without paddint
+    //!
     size_type required_size(const_iterator const &it) const noexcept {
         validate_pointer_invariants();
         validate_iterator_not_end(it);
         return size_unsafe(it).size_not_padded();
     }
-
+    //!
+    //! @param it - iterator pointing to the element we are returning size for.
+    //! @returns For any element except last returns distance from element start 
+    //! to the start of the next element. For the last element it returns used_capacity
+    //!
     size_type used_size(const_iterator const &it) const noexcept {
         validate_pointer_invariants();
         validate_iterator_not_end(it);
 
         return used_size_unsafe(it);
     }
-
+    //!
+    //! @param it - iterator pointing to the element we are returning size for.
+    //! @returns For any element except the last, it returns 
+    //! - start element offset.
+    //! - offset of element data end.
+    //! - offset of element buffer end.
+    //! For the last element data end and buffer point to the same position
+    //!
     range_t range(const_iterator const &it) const noexcept {
         validate_iterator_not_end(it);
 
