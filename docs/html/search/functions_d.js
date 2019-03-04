@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['required_5fbuffer_5fpadding',['required_buffer_padding',['../structiffl_1_1range__with__alighment.html#a0cd2545430a34188e7040584cae3b58a',1,'iffl::range_with_alighment']]],
-  ['required_5fdata_5fpadding',['required_data_padding',['../structiffl_1_1range__with__alighment.html#a453731aaaa3fc25fa0d5f18d5812b9ee',1,'iffl::range_with_alighment']]],
-  ['roundup_5fptr_5fto_5falignment',['roundup_ptr_to_alignment',['../namespaceiffl.html#a2711d44b2c5f29fc8d25a08e5c63cb51',1,'iffl::roundup_ptr_to_alignment(char *ptr, size_t alignment) noexcept'],['../namespaceiffl.html#aad1b2db11c2e8779de5ee513948cd9d6',1,'iffl::roundup_ptr_to_alignment(char *ptr) noexcept'],['../namespaceiffl.html#af68beb46a3d4f1531f668d835ecf1328',1,'iffl::roundup_ptr_to_alignment(char const *ptr, size_t alignment) noexcept'],['../namespaceiffl.html#ac4941a5ebaa9516677bee86d04a191ca',1,'iffl::roundup_ptr_to_alignment(char const *ptr) noexcept']]],
-  ['roundup_5fsize_5fto_5falignment',['roundup_size_to_alignment',['../namespaceiffl.html#a32e6c55d3f8fcdb53f64debbbf4a5c7d',1,'iffl::roundup_size_to_alignment(size_t size, size_t alignment) noexcept'],['../namespaceiffl.html#aa12acd05702a4128b55949434f988286',1,'iffl::roundup_size_to_alignment(size_t size) noexcept']]]
+  ['padding_5fsize',['padding_size',['../structiffl_1_1offset__with__aligment.html#af5e8946accaf935a2de0361c89c1b3f5',1,'iffl::offset_with_aligment::padding_size()'],['../structiffl_1_1size__with__padding.html#a6ff94db7b462063dfa95f212e0e7031d',1,'iffl::size_with_padding::padding_size()']]],
+  ['pop_5fback',['pop_back',['../classiffl_1_1flat__forward__list.html#aeafdb0311999b32801715649a1e436f0',1,'iffl::flat_forward_list']]],
+  ['pop_5ffront',['pop_front',['../classiffl_1_1flat__forward__list.html#a26e9b97a9cbd5ec426d0b2d3e4972fe3',1,'iffl::flat_forward_list']]],
+  ['print_5ftraits_5finfo',['print_traits_info',['../structiffl_1_1flat__forward__list__traits__traits.html#a7551d5f3bf716e50a2fd4bbd167a74ca',1,'iffl::flat_forward_list_traits_traits']]],
+  ['ptr_5fto_5fsize',['ptr_to_size',['../namespaceiffl.html#a74b25575152028e6785daff889608baa',1,'iffl']]],
+  ['push_5fback',['push_back',['../classiffl_1_1flat__forward__list.html#a21379e1564a876956ba65b185e5da02a',1,'iffl::flat_forward_list']]],
+  ['push_5ffront',['push_front',['../classiffl_1_1flat__forward__list.html#a8d78c2f471a13687e13e4cf327793e42',1,'iffl::flat_forward_list']]]
 ];

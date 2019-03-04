@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['buffer_5fchar_5fpointer',['buffer_char_pointer',['../classiffl_1_1flat__forward__list__iterator__t.html#abbe0eb5527c3be609bea116963555797',1,'iffl::flat_forward_list_iterator_t']]]
+  ['allocator_5ftype',['allocator_type',['../classiffl_1_1flat__forward__list.html#a48eff6c3870e8a47e546f9b3312b2d71',1,'iffl::flat_forward_list']]],
+  ['allocator_5ftype_5ftraits',['allocator_type_traits',['../classiffl_1_1flat__forward__list.html#a6fb8af508136a184801ff710cd6e2fcd',1,'iffl::flat_forward_list']]]
 ];

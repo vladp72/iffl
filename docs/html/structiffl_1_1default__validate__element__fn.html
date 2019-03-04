@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iffl: iffl::default_validate_element_fn&lt; T, TT &gt; Struct Template Reference</title>
+<title>iffl: iffl::default_validate_element_fn&lt; T, TT &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -71,7 +71,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="structiffl_1_1default__validate__element__fn-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">iffl::default_validate_element_fn&lt; T, TT &gt; Struct Template Reference</div>  </div>
+<div class="title">iffl::default_validate_element_fn&lt; T, TT &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -79,16 +79,71 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acb8d5f5d2eb20bfb48ca07a71dbf3ff3"><td class="memItemLeft" align="right" valign="top"><a id="acb8d5f5d2eb20bfb48ca07a71dbf3ff3"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (size_t buffer_size, char const *buffer) const noexcept</td></tr>
+<tr class="memitem:acb8d5f5d2eb20bfb48ca07a71dbf3ff3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1default__validate__element__fn.html#acb8d5f5d2eb20bfb48ca07a71dbf3ff3">operator()</a> (size_t buffer_size, char const *buffer) const noexcept</td></tr>
+<tr class="memdesc:acb8d5f5d2eb20bfb48ca07a71dbf3ff3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function call iterator that validates element.  <a href="#acb8d5f5d2eb20bfb48ca07a71dbf3ff3">More...</a><br /></td></tr>
 <tr class="separator:acb8d5f5d2eb20bfb48ca07a71dbf3ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt;<br />
-struct iffl::default_validate_element_fn&lt; T, TT &gt;</h3>
+class iffl::default_validate_element_fn&lt; T, TT &gt;</h3>
 
-<p>Default element validation functor. Calls flat_forward_list_traits&lt;T&gt;::validate(...) </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>- element type </td></tr>
+    <tr><td class="paramname">TT</td><td>- element type traits. Detaulted to specialization flat_forward_list_traits&lt;T&gt;</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Calls flat_forward_list_traits::validate(...) </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="acb8d5f5d2eb20bfb48ca07a71dbf3ff3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb8d5f5d2eb20bfb48ca07a71dbf3ff3">&#9670;&nbsp;</a></span>operator()()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structiffl_1_1default__validate__element__fn.html">iffl::default_validate_element_fn</a>&lt; T, TT &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>buffer_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>buffer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function call iterator that validates element. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer_size</td><td>- size of the buffer used by the element </td></tr>
+    <tr><td class="paramname">buffer</td><td>- pointer to the buffer used by the element </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/<a class="el" href="iffl__list_8h_source.html">iffl_list.h</a></li>
 </ul>
 </div><!-- contents -->

@@ -70,155 +70,205 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classiffl_1_1flat__forward__list__iterator__t-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">iffl::flat_forward_list_iterator_t&lt; T, TT &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
+<p>THis class implements forward iterator for intrusive flat forward list.  
+ <a href="classiffl_1_1flat__forward__list__iterator__t.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="iffl__list_8h_source.html">iffl_list.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aa48a7dd358ac7a54f0764b2393ef3ea2"><td class="memItemLeft" align="right" valign="top"><a id="aa48a7dd358ac7a54f0764b2393ef3ea2"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>iterator_category</b> = std::forward_iterator_tag</td></tr>
-<tr class="separator:aa48a7dd358ac7a54f0764b2393ef3ea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33676838721412352ee7d07ad5419430"><td class="memItemLeft" align="right" valign="top"><a id="a33676838721412352ee7d07ad5419430"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = T</td></tr>
-<tr class="separator:a33676838721412352ee7d07ad5419430"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a650bf324ae76350fab80613359729096"><td class="memItemLeft" align="right" valign="top"><a id="a650bf324ae76350fab80613359729096"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>difference_type</b> = ptrdiff_t</td></tr>
-<tr class="separator:a650bf324ae76350fab80613359729096"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75a35165b7192861cc9b9d195784ef06"><td class="memItemLeft" align="right" valign="top"><a id="a75a35165b7192861cc9b9d195784ef06"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>pointer</b> = T *</td></tr>
-<tr class="separator:a75a35165b7192861cc9b9d195784ef06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd56c37ded8b131f33f839c038c56259"><td class="memItemLeft" align="right" valign="top"><a id="acd56c37ded8b131f33f839c038c56259"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>reference</b> = T &amp;</td></tr>
-<tr class="separator:acd56c37ded8b131f33f839c038c56259"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8de89f2ee4d5173aa6bc6bf269267c65"><td class="memItemLeft" align="right" valign="top"><a id="a8de89f2ee4d5173aa6bc6bf269267c65"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>traits</b> = TT</td></tr>
-<tr class="separator:a8de89f2ee4d5173aa6bc6bf269267c65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75af46cabd463edb36165bf3e6549148"><td class="memItemLeft" align="right" valign="top"><a id="a75af46cabd463edb36165bf3e6549148"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>traits_traits</b> = <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">flat_forward_list_traits_traits</a>&lt; TT &gt;</td></tr>
-<tr class="separator:a75af46cabd463edb36165bf3e6549148"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbe0eb5527c3be609bea116963555797"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbe0eb5527c3be609bea116963555797">buffer_char_pointer</a> = std::conditional_t&lt; std::is_const_v&lt; T &gt;, char const *, char * &gt;</td></tr>
-<tr class="separator:abbe0eb5527c3be609bea116963555797"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a331e1638a9037c535b5fac4fe4aff6"><td class="memItemLeft" align="right" valign="top"><a id="a3a331e1638a9037c535b5fac4fe4aff6"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_unsigned_char_pointer</b> = std::conditional_t&lt; std::is_const_v&lt; T &gt;, unsigned char const *, unsigned char * &gt;</td></tr>
-<tr class="separator:a3a331e1638a9037c535b5fac4fe4aff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14324fd7688f7c88dd6fd4c53781d2e5"><td class="memItemLeft" align="right" valign="top"><a id="a14324fd7688f7c88dd6fd4c53781d2e5"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_void_pointer</b> = std::conditional_t&lt; std::is_const_v&lt; T &gt;, void const *, void * &gt;</td></tr>
-<tr class="separator:a14324fd7688f7c88dd6fd4c53781d2e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa756dbdb3271bd802803cfc6560c9f76"><td class="memItemLeft" align="right" valign="top"><a id="aa756dbdb3271bd802803cfc6560c9f76"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#aa756dbdb3271bd802803cfc6560c9f76">iterator_category</a> = std::forward_iterator_tag</td></tr>
+<tr class="memdesc:aa756dbdb3271bd802803cfc6560c9f76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks iterator as a forward iterator. <br /></td></tr>
+<tr class="separator:aa756dbdb3271bd802803cfc6560c9f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab14d56fcbc4706aab195347b6a6c9a16"><td class="memItemLeft" align="right" valign="top"><a id="ab14d56fcbc4706aab195347b6a6c9a16"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#ab14d56fcbc4706aab195347b6a6c9a16">value_type</a> = T</td></tr>
+<tr class="memdesc:ab14d56fcbc4706aab195347b6a6c9a16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element value type. <br /></td></tr>
+<tr class="separator:ab14d56fcbc4706aab195347b6a6c9a16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea614980aa339b69ff3f9088ba006052"><td class="memItemLeft" align="right" valign="top"><a id="aea614980aa339b69ff3f9088ba006052"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#aea614980aa339b69ff3f9088ba006052">difference_type</a> = ptrdiff_t</td></tr>
+<tr class="memdesc:aea614980aa339b69ff3f9088ba006052"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element pointers difference type. <br /></td></tr>
+<tr class="separator:aea614980aa339b69ff3f9088ba006052"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f319a62778eb2a1da0f2f2c36da25e7"><td class="memItemLeft" align="right" valign="top"><a id="a2f319a62778eb2a1da0f2f2c36da25e7"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a2f319a62778eb2a1da0f2f2c36da25e7">pointer</a> = T *</td></tr>
+<tr class="memdesc:a2f319a62778eb2a1da0f2f2c36da25e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to element type. <br /></td></tr>
+<tr class="separator:a2f319a62778eb2a1da0f2f2c36da25e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebbeb9abb2797c3576be154bc95ea63b"><td class="memItemLeft" align="right" valign="top"><a id="aebbeb9abb2797c3576be154bc95ea63b"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#aebbeb9abb2797c3576be154bc95ea63b">reference</a> = T &amp;</td></tr>
+<tr class="memdesc:aebbeb9abb2797c3576be154bc95ea63b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the element type. <br /></td></tr>
+<tr class="separator:aebbeb9abb2797c3576be154bc95ea63b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af26544755dd4f52b71dcb404ac444629"><td class="memItemLeft" align="right" valign="top"><a id="af26544755dd4f52b71dcb404ac444629"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#af26544755dd4f52b71dcb404ac444629">traits</a> = TT</td></tr>
+<tr class="memdesc:af26544755dd4f52b71dcb404ac444629"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element traits type. <br /></td></tr>
+<tr class="separator:af26544755dd4f52b71dcb404ac444629"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2101345654e0bc396ef982d0242e3ed9"><td class="memItemLeft" align="right" valign="top"><a id="a2101345654e0bc396ef982d0242e3ed9"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a2101345654e0bc396ef982d0242e3ed9">traits_traits</a> = <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">flat_forward_list_traits_traits</a>&lt; TT &gt;</td></tr>
+<tr class="memdesc:a2101345654e0bc396ef982d0242e3ed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element traits traits type. <br /></td></tr>
+<tr class="separator:a2101345654e0bc396ef982d0242e3ed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbc6f1648392706a15b395fd4c540824"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbc6f1648392706a15b395fd4c540824">buffer_char_pointer</a> = std::conditional_t&lt; std::is_const_v&lt; T &gt;, char const *, char * &gt;</td></tr>
+<tr class="separator:abbc6f1648392706a15b395fd4c540824"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9944bb14a46a4f9dae62f90cdc4a788"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#af9944bb14a46a4f9dae62f90cdc4a788">buffer_unsigned_char_pointer</a> = std::conditional_t&lt; std::is_const_v&lt; T &gt;, unsigned char const *, unsigned char * &gt;</td></tr>
+<tr class="separator:af9944bb14a46a4f9dae62f90cdc4a788"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabfb679ceed40f849266dfaf8e1450d4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#aabfb679ceed40f849266dfaf8e1450d4">buffer_void_pointer</a> = std::conditional_t&lt; std::is_const_v&lt; T &gt;, void const *, void * &gt;</td></tr>
+<tr class="separator:aabfb679ceed40f849266dfaf8e1450d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2304062a6d197a511b46fa0b0366cf7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#ad2304062a6d197a511b46fa0b0366cf7">const_iterator</a> = <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&lt; std::add_const_t&lt; T &gt;, TT &gt;</td></tr>
+<tr class="memdesc:ad2304062a6d197a511b46fa0b0366cf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Const iterator is an iterator for a T const.  <a href="#ad2304062a6d197a511b46fa0b0366cf7">More...</a><br /></td></tr>
+<tr class="separator:ad2304062a6d197a511b46fa0b0366cf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2638492ba7efcef86662f0a6b98e3a4a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a2638492ba7efcef86662f0a6b98e3a4a">non_const_iterator</a> = <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&lt; std::remove_cv_t&lt; T &gt;, TT &gt;</td></tr>
+<tr class="memdesc:a2638492ba7efcef86662f0a6b98e3a4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">[Non-const] iterator is an iterator for a T with no const qualifiers  <a href="#a2638492ba7efcef86662f0a6b98e3a4a">More...</a><br /></td></tr>
+<tr class="separator:a2638492ba7efcef86662f0a6b98e3a4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:af6a73e7a97da80cb3690f9783c93fb02"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#af6a73e7a97da80cb3690f9783c93fb02">flat_forward_list_iterator_t</a> () noexcept=default</td></tr>
+<tr class="memdesc:af6a73e7a97da80cb3690f9783c93fb02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default initialize iterator.  <a href="#af6a73e7a97da80cb3690f9783c93fb02">More...</a><br /></td></tr>
+<tr class="separator:af6a73e7a97da80cb3690f9783c93fb02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e65628921b53ef6b8f8a3158bdbc5e1"><td class="memItemLeft" align="right" valign="top"><a id="a7e65628921b53ef6b8f8a3158bdbc5e1"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>flat_forward_list_iterator_t</b> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> const &amp;) noexcept=default</td></tr>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a7e65628921b53ef6b8f8a3158bdbc5e1">flat_forward_list_iterator_t</a> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> const &amp;) noexcept=default</td></tr>
+<tr class="memdesc:a7e65628921b53ef6b8f8a3158bdbc5e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructs an iterator. <br /></td></tr>
 <tr class="separator:a7e65628921b53ef6b8f8a3158bdbc5e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1c9ed8bc1eef911936f95414b4d99e1"><td class="memItemLeft" align="right" valign="top"><a id="af1c9ed8bc1eef911936f95414b4d99e1"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>flat_forward_list_iterator_t</b> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&amp;other) noexcept</td></tr>
+<tr class="memitem:af1c9ed8bc1eef911936f95414b4d99e1"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#af1c9ed8bc1eef911936f95414b4d99e1">flat_forward_list_iterator_t</a> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&amp;other) noexcept</td></tr>
+<tr class="memdesc:af1c9ed8bc1eef911936f95414b4d99e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructs iterator.  <a href="#af1c9ed8bc1eef911936f95414b4d99e1">More...</a><br /></td></tr>
 <tr class="separator:af1c9ed8bc1eef911936f95414b4d99e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06ef7b41ed13a226a627ec788bc175da"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt; &amp;&amp;                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                         flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a06ef7b41ed13a226a627ec788bc175da"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a06ef7b41ed13a226a627ec788bc175da">flat_forward_list_iterator_t</a> (I &amp;other) noexcept</td></tr>
-<tr class="separator:a06ef7b41ed13a226a627ec788bc175da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add8b40d9ef5eb69790db53b5229097e7"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt; &amp;&amp;                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                         flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </td></tr>
+<tr class="memitem:ab06b8036d95b8d846429a9a9454c6d76"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;is_const_iterator &amp;&amp; is_non_const_iterator_v&lt;I&gt;&gt;&gt; </td></tr>
+<tr class="memitem:ab06b8036d95b8d846429a9a9454c6d76"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#ab06b8036d95b8d846429a9a9454c6d76">flat_forward_list_iterator_t</a> (I const &amp;other) noexcept</td></tr>
+<tr class="memdesc:ab06b8036d95b8d846429a9a9454c6d76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unittest that is_non_const_iterator_v returns expected result.  <a href="#ab06b8036d95b8d846429a9a9454c6d76">More...</a><br /></td></tr>
+<tr class="separator:ab06b8036d95b8d846429a9a9454c6d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add8b40d9ef5eb69790db53b5229097e7"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;is_const_iterator &amp;&amp; is_non_const_iterator_v&lt;I&gt;&gt;&gt; </td></tr>
 <tr class="memitem:add8b40d9ef5eb69790db53b5229097e7"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#add8b40d9ef5eb69790db53b5229097e7">flat_forward_list_iterator_t</a> (I &amp;&amp;other) noexcept</td></tr>
+<tr class="memdesc:add8b40d9ef5eb69790db53b5229097e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perfect forwarding constructor for const iterator from non-const iterator.  <a href="#add8b40d9ef5eb69790db53b5229097e7">More...</a><br /></td></tr>
 <tr class="separator:add8b40d9ef5eb69790db53b5229097e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9d6e38ab03cad642a7b6372a1ef5f44"><td class="memItemLeft" align="right" valign="top"><a id="af9d6e38ab03cad642a7b6372a1ef5f44"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>flat_forward_list_iterator_t</b> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbe0eb5527c3be609bea116963555797">buffer_char_pointer</a> p) noexcept</td></tr>
+<tr class="memitem:af9d6e38ab03cad642a7b6372a1ef5f44"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#af9d6e38ab03cad642a7b6372a1ef5f44">flat_forward_list_iterator_t</a> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbc6f1648392706a15b395fd4c540824">buffer_char_pointer</a> p) noexcept</td></tr>
+<tr class="memdesc:af9d6e38ab03cad642a7b6372a1ef5f44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicit constructor from char * or char const *, depending on T being const.  <a href="#af9d6e38ab03cad642a7b6372a1ef5f44">More...</a><br /></td></tr>
 <tr class="separator:af9d6e38ab03cad642a7b6372a1ef5f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ceb8bb9d762a5cfc939798f4e0e210a"><td class="memItemLeft" align="right" valign="top"><a id="a6ceb8bb9d762a5cfc939798f4e0e210a"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>flat_forward_list_iterator_t</b> (T *p) noexcept</td></tr>
+<tr class="memitem:a6ceb8bb9d762a5cfc939798f4e0e210a"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a6ceb8bb9d762a5cfc939798f4e0e210a">flat_forward_list_iterator_t</a> (T *p) noexcept</td></tr>
+<tr class="memdesc:a6ceb8bb9d762a5cfc939798f4e0e210a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicit constructor from T *.  <a href="#a6ceb8bb9d762a5cfc939798f4e0e210a">More...</a><br /></td></tr>
 <tr class="separator:a6ceb8bb9d762a5cfc939798f4e0e210a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cf7cbc07401af4831ec286f0dccd446"><td class="memItemLeft" align="right" valign="top"><a id="a0cf7cbc07401af4831ec286f0dccd446"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>flat_forward_list_iterator_t</b> (buffer_unsigned_char_pointer p) noexcept</td></tr>
+<tr class="memitem:a0cf7cbc07401af4831ec286f0dccd446"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a0cf7cbc07401af4831ec286f0dccd446">flat_forward_list_iterator_t</a> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#af9944bb14a46a4f9dae62f90cdc4a788">buffer_unsigned_char_pointer</a> p) noexcept</td></tr>
+<tr class="memdesc:a0cf7cbc07401af4831ec286f0dccd446"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicit constructor from unsigned char * or unsigned char const *, depending on T being const.  <a href="#a0cf7cbc07401af4831ec286f0dccd446">More...</a><br /></td></tr>
 <tr class="separator:a0cf7cbc07401af4831ec286f0dccd446"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b29bb9b63b7fd7d3b673af8a8fc8365"><td class="memItemLeft" align="right" valign="top"><a id="a9b29bb9b63b7fd7d3b673af8a8fc8365"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>flat_forward_list_iterator_t</b> (buffer_void_pointer p) noexcept</td></tr>
+<tr class="memitem:a9b29bb9b63b7fd7d3b673af8a8fc8365"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a9b29bb9b63b7fd7d3b673af8a8fc8365">flat_forward_list_iterator_t</a> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#aabfb679ceed40f849266dfaf8e1450d4">buffer_void_pointer</a> p) noexcept</td></tr>
+<tr class="memdesc:a9b29bb9b63b7fd7d3b673af8a8fc8365"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicit constructor from void * or void const *, depending on T being const.  <a href="#a9b29bb9b63b7fd7d3b673af8a8fc8365">More...</a><br /></td></tr>
 <tr class="separator:a9b29bb9b63b7fd7d3b673af8a8fc8365"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab47d3e918b29967d2cedbb23e617971a"><td class="memItemLeft" align="right" valign="top"><a id="ab47d3e918b29967d2cedbb23e617971a"></a>
-constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> const &amp;) noexcept=default</td></tr>
+<tr class="memitem:ab47d3e918b29967d2cedbb23e617971a"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#ab47d3e918b29967d2cedbb23e617971a">operator=</a> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> const &amp;) noexcept=default</td></tr>
+<tr class="memdesc:ab47d3e918b29967d2cedbb23e617971a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default generated copy constructor.  <a href="#ab47d3e918b29967d2cedbb23e617971a">More...</a><br /></td></tr>
 <tr class="separator:ab47d3e918b29967d2cedbb23e617971a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8964dcb95d9b902a61b2bc6d938b266e"><td class="memItemLeft" align="right" valign="top"><a id="a8964dcb95d9b902a61b2bc6d938b266e"></a>
-constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&amp;other) noexcept</td></tr>
+<tr class="memitem:a8964dcb95d9b902a61b2bc6d938b266e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a8964dcb95d9b902a61b2bc6d938b266e">operator=</a> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&amp;other) noexcept</td></tr>
+<tr class="memdesc:a8964dcb95d9b902a61b2bc6d938b266e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor.  <a href="#a8964dcb95d9b902a61b2bc6d938b266e">More...</a><br /></td></tr>
 <tr class="separator:a8964dcb95d9b902a61b2bc6d938b266e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8eb59c351f87bfa2bb7e39644faddc0e"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt; &amp;&amp;                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                         flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a8eb59c351f87bfa2bb7e39644faddc0e"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a8eb59c351f87bfa2bb7e39644faddc0e">operator=</a> (I &amp;other) noexcept</td></tr>
-<tr class="separator:a8eb59c351f87bfa2bb7e39644faddc0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e316b110de7b0ac7579df16361d286a"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt; &amp;&amp;                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                         flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a5f187e40b46af8d47018e10e98236a50"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;is_const_iterator &amp;&amp; is_non_const_iterator_v&lt;I&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a5f187e40b46af8d47018e10e98236a50"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a5f187e40b46af8d47018e10e98236a50">operator=</a> (I const &amp;other) noexcept</td></tr>
+<tr class="memdesc:a5f187e40b46af8d47018e10e98236a50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator for const iterator from non-const iterator.  <a href="#a5f187e40b46af8d47018e10e98236a50">More...</a><br /></td></tr>
+<tr class="separator:a5f187e40b46af8d47018e10e98236a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e316b110de7b0ac7579df16361d286a"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;is_const_iterator &amp;&amp; is_non_const_iterator_v&lt;I&gt;&gt;&gt; </td></tr>
 <tr class="memitem:a7e316b110de7b0ac7579df16361d286a"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a7e316b110de7b0ac7579df16361d286a">operator=</a> (I &amp;&amp;other) noexcept</td></tr>
+<tr class="memdesc:a7e316b110de7b0ac7579df16361d286a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perfect forwarding assignment operator for const iterator from non-const iterator.  <a href="#a7e316b110de7b0ac7579df16361d286a">More...</a><br /></td></tr>
 <tr class="separator:a7e316b110de7b0ac7579df16361d286a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ee139bc41541ceb38a6047e1cfe670d"><td class="memItemLeft" align="right" valign="top"><a id="a5ee139bc41541ceb38a6047e1cfe670d"></a>
-constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbe0eb5527c3be609bea116963555797">buffer_char_pointer</a> p) noexcept</td></tr>
+<tr class="memitem:a5ee139bc41541ceb38a6047e1cfe670d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a5ee139bc41541ceb38a6047e1cfe670d">operator=</a> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbc6f1648392706a15b395fd4c540824">buffer_char_pointer</a> p) noexcept</td></tr>
+<tr class="memdesc:a5ee139bc41541ceb38a6047e1cfe670d"><td class="mdescLeft">&#160;</td><td class="mdescRight">asignment operator from char *  <a href="#a5ee139bc41541ceb38a6047e1cfe670d">More...</a><br /></td></tr>
 <tr class="separator:a5ee139bc41541ceb38a6047e1cfe670d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6974557bec0d8708cea2070dbfe15447"><td class="memItemLeft" align="right" valign="top"><a id="a6974557bec0d8708cea2070dbfe15447"></a>
-constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (T *p) noexcept</td></tr>
+<tr class="memitem:a6974557bec0d8708cea2070dbfe15447"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a6974557bec0d8708cea2070dbfe15447">operator=</a> (T *p) noexcept</td></tr>
+<tr class="memdesc:a6974557bec0d8708cea2070dbfe15447"><td class="mdescLeft">&#160;</td><td class="mdescRight">asignment operator from T *  <a href="#a6974557bec0d8708cea2070dbfe15447">More...</a><br /></td></tr>
 <tr class="separator:a6974557bec0d8708cea2070dbfe15447"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a780da95fefd772324e7726062ccace57"><td class="memItemLeft" align="right" valign="top"><a id="a780da95fefd772324e7726062ccace57"></a>
-constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (buffer_unsigned_char_pointer p) noexcept</td></tr>
+<tr class="memitem:a780da95fefd772324e7726062ccace57"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a780da95fefd772324e7726062ccace57">operator=</a> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#af9944bb14a46a4f9dae62f90cdc4a788">buffer_unsigned_char_pointer</a> p) noexcept</td></tr>
+<tr class="memdesc:a780da95fefd772324e7726062ccace57"><td class="mdescLeft">&#160;</td><td class="mdescRight">asignment operator from unsigned char *  <a href="#a780da95fefd772324e7726062ccace57">More...</a><br /></td></tr>
 <tr class="separator:a780da95fefd772324e7726062ccace57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adeb0044a2c27f15058bf2d21ec7ee8f0"><td class="memItemLeft" align="right" valign="top"><a id="adeb0044a2c27f15058bf2d21ec7ee8f0"></a>
-constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (buffer_void_pointer p) noexcept</td></tr>
+<tr class="memitem:adeb0044a2c27f15058bf2d21ec7ee8f0"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#adeb0044a2c27f15058bf2d21ec7ee8f0">operator=</a> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#aabfb679ceed40f849266dfaf8e1450d4">buffer_void_pointer</a> p) noexcept</td></tr>
+<tr class="memdesc:adeb0044a2c27f15058bf2d21ec7ee8f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">asignment operator from void *  <a href="#adeb0044a2c27f15058bf2d21ec7ee8f0">More...</a><br /></td></tr>
 <tr class="separator:adeb0044a2c27f15058bf2d21ec7ee8f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5637f07b04fa3a753a7337343d9fbf12"><td class="memItemLeft" align="right" valign="top"><a id="a5637f07b04fa3a753a7337343d9fbf12"></a>
-constexpr void&#160;</td><td class="memItemRight" valign="bottom"><b>swap</b> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;other) noexcept</td></tr>
+<tr class="memitem:a5637f07b04fa3a753a7337343d9fbf12"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a5637f07b04fa3a753a7337343d9fbf12">swap</a> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;other) noexcept</td></tr>
+<tr class="memdesc:a5637f07b04fa3a753a7337343d9fbf12"><td class="mdescLeft">&#160;</td><td class="mdescRight">whaps this iterator and the other iterator  <a href="#a5637f07b04fa3a753a7337343d9fbf12">More...</a><br /></td></tr>
 <tr class="separator:a5637f07b04fa3a753a7337343d9fbf12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeabf384aac0164448e7e6cec8faeb6ad"><td class="memItemLeft" align="right" valign="top"><a id="aeabf384aac0164448e7e6cec8faeb6ad"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
+<tr class="memitem:aeabf384aac0164448e7e6cec8faeb6ad"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#aeabf384aac0164448e7e6cec8faeb6ad">operator bool</a> () const</td></tr>
+<tr class="memdesc:aeabf384aac0164448e7e6cec8faeb6ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicit conversion iterator to bool.  <a href="#aeabf384aac0164448e7e6cec8faeb6ad">More...</a><br /></td></tr>
 <tr class="separator:aeabf384aac0164448e7e6cec8faeb6ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf267eded2883ada7a9012fc45f7b43b"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt; ||                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::add_const_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </td></tr>
+<tr class="memitem:adf267eded2883ada7a9012fc45f7b43b"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;is_comparable_iterator_v&lt;I&gt;&gt;&gt; </td></tr>
 <tr class="memitem:adf267eded2883ada7a9012fc45f7b43b"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#adf267eded2883ada7a9012fc45f7b43b">operator==</a> (I const &amp;other) const noexcept</td></tr>
+<tr class="memdesc:adf267eded2883ada7a9012fc45f7b43b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equals operator used to compare to another iterator.  <a href="#adf267eded2883ada7a9012fc45f7b43b">More...</a><br /></td></tr>
 <tr class="separator:adf267eded2883ada7a9012fc45f7b43b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25bfdf23691cb8228c2c3246300a2dfa"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt; ||                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::add_const_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a25bfdf23691cb8228c2c3246300a2dfa"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;is_comparable_iterator_v&lt;I&gt;&gt;&gt; </td></tr>
 <tr class="memitem:a25bfdf23691cb8228c2c3246300a2dfa"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a25bfdf23691cb8228c2c3246300a2dfa">operator !=</a> (I const &amp;other) const noexcept</td></tr>
+<tr class="memdesc:a25bfdf23691cb8228c2c3246300a2dfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not equals operator used to compare to another iterator.  <a href="#a25bfdf23691cb8228c2c3246300a2dfa">More...</a><br /></td></tr>
 <tr class="separator:a25bfdf23691cb8228c2c3246300a2dfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49bd6ecdb6444fb4a94c3896ca81b49b"><td class="memTemplParams" colspan="2"><a id="a49bd6ecdb6444fb4a94c3896ca81b49b"></a>
-template&lt;typename I , typename  = std::enable_if_t&lt;std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt; ||                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::add_const_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a49bd6ecdb6444fb4a94c3896ca81b49b"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;</b> (I const &amp;other) const noexcept</td></tr>
+<tr class="memitem:a49bd6ecdb6444fb4a94c3896ca81b49b"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;is_comparable_iterator_v&lt;I&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a49bd6ecdb6444fb4a94c3896ca81b49b"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a49bd6ecdb6444fb4a94c3896ca81b49b">operator&lt;</a> (I const &amp;other) const noexcept</td></tr>
+<tr class="memdesc:a49bd6ecdb6444fb4a94c3896ca81b49b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less than operator used to compare to another iterator.  <a href="#a49bd6ecdb6444fb4a94c3896ca81b49b">More...</a><br /></td></tr>
 <tr class="separator:a49bd6ecdb6444fb4a94c3896ca81b49b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad67784e4147d41c924921e3bb3d620c9"><td class="memTemplParams" colspan="2"><a id="ad67784e4147d41c924921e3bb3d620c9"></a>
-template&lt;typename I , typename  = std::enable_if_t&lt;std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt; ||                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::add_const_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </td></tr>
-<tr class="memitem:ad67784e4147d41c924921e3bb3d620c9"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;=</b> (I const &amp;other) const noexcept</td></tr>
+<tr class="memitem:ad67784e4147d41c924921e3bb3d620c9"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;is_comparable_iterator_v&lt;I&gt;&gt;&gt; </td></tr>
+<tr class="memitem:ad67784e4147d41c924921e3bb3d620c9"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#ad67784e4147d41c924921e3bb3d620c9">operator&lt;=</a> (I const &amp;other) const noexcept</td></tr>
+<tr class="memdesc:ad67784e4147d41c924921e3bb3d620c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Less than or equals operator used to compare to another iterator.  <a href="#ad67784e4147d41c924921e3bb3d620c9">More...</a><br /></td></tr>
 <tr class="separator:ad67784e4147d41c924921e3bb3d620c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06ece8135aca2735dc62a6f08845d1bf"><td class="memTemplParams" colspan="2"><a id="a06ece8135aca2735dc62a6f08845d1bf"></a>
-template&lt;typename I , typename  = std::enable_if_t&lt;std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt; ||                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::add_const_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </td></tr>
-<tr class="memitem:a06ece8135aca2735dc62a6f08845d1bf"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator &gt;</b> (I const &amp;other) const noexcept</td></tr>
+<tr class="memitem:a06ece8135aca2735dc62a6f08845d1bf"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;is_comparable_iterator_v&lt;I&gt;&gt;&gt; </td></tr>
+<tr class="memitem:a06ece8135aca2735dc62a6f08845d1bf"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a06ece8135aca2735dc62a6f08845d1bf">operator &gt;</a> (I const &amp;other) const noexcept</td></tr>
+<tr class="memdesc:a06ece8135aca2735dc62a6f08845d1bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater than operator used to compare to another iterator.  <a href="#a06ece8135aca2735dc62a6f08845d1bf">More...</a><br /></td></tr>
 <tr class="separator:a06ece8135aca2735dc62a6f08845d1bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed4d177621c040d326add3fe94bce026"><td class="memTemplParams" colspan="2"><a id="aed4d177621c040d326add3fe94bce026"></a>
-template&lt;typename I , typename  = std::enable_if_t&lt;std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt; ||                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::add_const_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </td></tr>
-<tr class="memitem:aed4d177621c040d326add3fe94bce026"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator &gt;=</b> (I const &amp;other) const noexcept</td></tr>
+<tr class="memitem:aed4d177621c040d326add3fe94bce026"><td class="memTemplParams" colspan="2">template&lt;typename I , typename  = std::enable_if_t&lt;is_comparable_iterator_v&lt;I&gt;&gt;&gt; </td></tr>
+<tr class="memitem:aed4d177621c040d326add3fe94bce026"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#aed4d177621c040d326add3fe94bce026">operator &gt;=</a> (I const &amp;other) const noexcept</td></tr>
+<tr class="memdesc:aed4d177621c040d326add3fe94bce026"><td class="mdescLeft">&#160;</td><td class="mdescRight">Greater or equals than operator used to compare to another iterator.  <a href="#aed4d177621c040d326add3fe94bce026">More...</a><br /></td></tr>
 <tr class="separator:aed4d177621c040d326add3fe94bce026"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4579c3de1e705b96a2be442e56c60bab"><td class="memItemLeft" align="right" valign="top"><a id="a4579c3de1e705b96a2be442e56c60bab"></a>
-constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator++</b> () noexcept</td></tr>
+<tr class="memitem:a4579c3de1e705b96a2be442e56c60bab"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a4579c3de1e705b96a2be442e56c60bab">operator++</a> () noexcept</td></tr>
+<tr class="memdesc:a4579c3de1e705b96a2be442e56c60bab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prefix increment operator.  <a href="#a4579c3de1e705b96a2be442e56c60bab">More...</a><br /></td></tr>
 <tr class="separator:a4579c3de1e705b96a2be442e56c60bab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72fa9d01905bbfff78ef6fae921016d8"><td class="memItemLeft" align="right" valign="top"><a id="a72fa9d01905bbfff78ef6fae921016d8"></a>
-constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator++</b> (int) noexcept</td></tr>
+<tr class="memitem:a72fa9d01905bbfff78ef6fae921016d8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a72fa9d01905bbfff78ef6fae921016d8">operator++</a> (int) noexcept</td></tr>
+<tr class="memdesc:a72fa9d01905bbfff78ef6fae921016d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postfix increment operator.  <a href="#a72fa9d01905bbfff78ef6fae921016d8">More...</a><br /></td></tr>
 <tr class="separator:a72fa9d01905bbfff78ef6fae921016d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32e1359b0091202121fb7eb08a807d28"><td class="memItemLeft" align="right" valign="top"><a id="a32e1359b0091202121fb7eb08a807d28"></a>
-constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (unsigned int advance_by) const noexcept</td></tr>
+<tr class="memitem:a32e1359b0091202121fb7eb08a807d28"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a32e1359b0091202121fb7eb08a807d28">operator+</a> (unsigned int advance_by) const noexcept</td></tr>
+<tr class="memdesc:a32e1359b0091202121fb7eb08a807d28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add operator. Advances iterator specified number of times.  <a href="#a32e1359b0091202121fb7eb08a807d28">More...</a><br /></td></tr>
 <tr class="separator:a32e1359b0091202121fb7eb08a807d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac01b82728530e9f30993df7e4f50ea08"><td class="memItemLeft" align="right" valign="top"><a id="ac01b82728530e9f30993df7e4f50ea08"></a>
-constexpr T &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator *</b> () const noexcept</td></tr>
+<tr class="memitem:ac01b82728530e9f30993df7e4f50ea08"><td class="memItemLeft" align="right" valign="top">constexpr T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#ac01b82728530e9f30993df7e4f50ea08">operator *</a> () const noexcept</td></tr>
+<tr class="memdesc:ac01b82728530e9f30993df7e4f50ea08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dereference operator.  <a href="#ac01b82728530e9f30993df7e4f50ea08">More...</a><br /></td></tr>
 <tr class="separator:ac01b82728530e9f30993df7e4f50ea08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17b059b2a730666ca1b826f42845339d"><td class="memItemLeft" align="right" valign="top"><a id="a17b059b2a730666ca1b826f42845339d"></a>
-constexpr T *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const noexcept</td></tr>
+<tr class="memitem:a17b059b2a730666ca1b826f42845339d"><td class="memItemLeft" align="right" valign="top">constexpr T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a17b059b2a730666ca1b826f42845339d">operator-&gt;</a> () const noexcept</td></tr>
+<tr class="memdesc:a17b059b2a730666ca1b826f42845339d"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer operator.  <a href="#a17b059b2a730666ca1b826f42845339d">More...</a><br /></td></tr>
 <tr class="separator:a17b059b2a730666ca1b826f42845339d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc78119d2ec98a3b4c78b75374be94c0"><td class="memItemLeft" align="right" valign="top"><a id="afc78119d2ec98a3b4c78b75374be94c0"></a>
-constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbe0eb5527c3be609bea116963555797">buffer_char_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get_ptr</b> () const noexcept</td></tr>
+<tr class="memitem:afc78119d2ec98a3b4c78b75374be94c0"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbc6f1648392706a15b395fd4c540824">buffer_char_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#afc78119d2ec98a3b4c78b75374be94c0">get_ptr</a> () const noexcept</td></tr>
 <tr class="separator:afc78119d2ec98a3b4c78b75374be94c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1f5a30439a5699d2c8327718a239bf1"><td class="memItemLeft" align="right" valign="top"><a id="ae1f5a30439a5699d2c8327718a239bf1"></a>
-constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbe0eb5527c3be609bea116963555797">buffer_char_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>reset_ptr</b> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbe0eb5527c3be609bea116963555797">buffer_char_pointer</a> p) noexcept</td></tr>
+<tr class="memitem:ae1f5a30439a5699d2c8327718a239bf1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbc6f1648392706a15b395fd4c540824">buffer_char_pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#ae1f5a30439a5699d2c8327718a239bf1">reset_ptr</a> (<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbc6f1648392706a15b395fd4c540824">buffer_char_pointer</a> p) noexcept</td></tr>
+<tr class="memdesc:ae1f5a30439a5699d2c8327718a239bf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns iterator to point to the new element.  <a href="#ae1f5a30439a5699d2c8327718a239bf1">More...</a><br /></td></tr>
 <tr class="separator:ae1f5a30439a5699d2c8327718a239bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a4ac376108e54bd094bb7ea3b57305ac4"><td class="memItemLeft" align="right" valign="top"><a id="a4ac376108e54bd094bb7ea3b57305ac4"></a>
+static constexpr auto const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a4ac376108e54bd094bb7ea3b57305ac4">is_const_iterator</a> { std::is_const_v&lt;T&gt; }</td></tr>
+<tr class="memdesc:a4ac376108e54bd094bb7ea3b57305ac4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is std::true_type{} if this iterator is an iterator for a T const, and std::false_type{} otherwise. <br /></td></tr>
+<tr class="separator:a4ac376108e54bd094bb7ea3b57305ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59acdc5720d1d999d280feb639ce68f4"><td class="memTemplParams" colspan="2">template&lt;typename Iterator &gt; </td></tr>
+<tr class="memitem:a59acdc5720d1d999d280feb639ce68f4"><td class="memTemplItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a59acdc5720d1d999d280feb639ce68f4">is_non_const_iterator_v</a></td></tr>
+<tr class="memdesc:a59acdc5720d1d999d280feb639ce68f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is std::true_type{} if Iterator is same as non-const equivalent of the current iterator non-const equivalent is constructed by removing CV qualifiers from T. non_const_iterator defines non-const equivalent for this iterator so we just need to make sure Iterator is the same type as non_const_iterator.  <a href="#a59acdc5720d1d999d280feb639ce68f4">More...</a><br /></td></tr>
+<tr class="separator:a59acdc5720d1d999d280feb639ce68f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa89752067ce94d001a2e1c51b6829a02"><td class="memTemplParams" colspan="2">template&lt;typename Iterator &gt; </td></tr>
+<tr class="memitem:aa89752067ce94d001a2e1c51b6829a02"><td class="memTemplItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#aa89752067ce94d001a2e1c51b6829a02">is_const_iterator_v</a></td></tr>
+<tr class="memdesc:aa89752067ce94d001a2e1c51b6829a02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is std::true_type{} if Iterator is same as const equivalent of the current iterator non-const equivalent is constructed by adding CV qualifiers to T. const_iterator defines const equivalent for this iterator so we just need to make sure Iterator is the same type as const_iterator.  <a href="#aa89752067ce94d001a2e1c51b6829a02">More...</a><br /></td></tr>
+<tr class="separator:aa89752067ce94d001a2e1c51b6829a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4b1d4180db1f9513cf6562020309d8c"><td class="memTemplParams" colspan="2">template&lt;typename Iterator &gt; </td></tr>
+<tr class="memitem:af4b1d4180db1f9513cf6562020309d8c"><td class="memTemplItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#af4b1d4180db1f9513cf6562020309d8c">is_comparable_iterator_v</a></td></tr>
+<tr class="memdesc:af4b1d4180db1f9513cf6562020309d8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is std::true_type{} if Iterator is a const or non-const equivalent of this iterator and std::false_type otherwise. Comparable iterator can be used in relation operators.  <a href="#af4b1d4180db1f9513cf6562020309d8c">More...</a><br /></td></tr>
+<tr class="separator:af4b1d4180db1f9513cf6562020309d8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt;<br />
 class iffl::flat_forward_list_iterator_t&lt; T, TT &gt;</h3>
 
-<p>Iterator for flat forward list T - type of element header TT - type trait for T that is used to get offset to the next element in the flat list. It must implement get_next_offset method.</p>
-<p>Once iterator is incremented pass last element it becomes equal to default initialized iterator so you can use <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>{} as a sentinel that can be used as an end iterator. </p>
+<p>THis class implements forward iterator for intrusive flat forward list. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>- type of element header </td></tr>
+    <tr><td class="paramname">TT</td><td>- type trait for T that is used to get offset to the next element in the flat list. It must implement get_next_offset method.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Once iterator is incremented pass last element it becomes equal to default initialized iterator so you can use <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html" title="THis class implements forward iterator for intrusive flat forward list.">flat_forward_list_iterator_t</a>{} as a sentinel that can be used as an end iterator. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="abbe0eb5527c3be609bea116963555797"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abbe0eb5527c3be609bea116963555797">&#9670;&nbsp;</a></span>buffer_char_pointer</h2>
+<a id="abbc6f1648392706a15b395fd4c540824"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbc6f1648392706a15b395fd4c540824">&#9670;&nbsp;</a></span>buffer_char_pointer</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -226,7 +276,7 @@ class iffl::flat_forward_list_iterator_t&lt; T, TT &gt;</h3>
 template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbe0eb5527c3be609bea116963555797">buffer_char_pointer</a> =  std::conditional_t&lt;std::is_const_v&lt;T&gt;, char const *, char *&gt;</td>
+          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbc6f1648392706a15b395fd4c540824">buffer_char_pointer</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -234,16 +284,86 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </di
 
 </div>
 </div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a06ef7b41ed13a226a627ec788bc175da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06ef7b41ed13a226a627ec788bc175da">&#9670;&nbsp;</a></span>flat_forward_list_iterator_t() <span class="overload">[1/2]</span></h2>
+<a id="af9944bb14a46a4f9dae62f90cdc4a788"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9944bb14a46a4f9dae62f90cdc4a788">&#9670;&nbsp;</a></span>buffer_unsigned_char_pointer</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#af9944bb14a46a4f9dae62f90cdc4a788">buffer_unsigned_char_pointer</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Selects between constant and non-constant pointer to the buffer depending if T is const </p>
+
+</div>
+</div>
+<a id="aabfb679ceed40f849266dfaf8e1450d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabfb679ceed40f849266dfaf8e1450d4">&#9670;&nbsp;</a></span>buffer_void_pointer</h2>
+
+<div class="memitem">
+<div class="memproto">
 <div class="memtemplate">
-template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt; &amp;&amp;                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                         flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#aabfb679ceed40f849266dfaf8e1450d4">buffer_void_pointer</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Selects between constant and non-constant pointer to the buffer depending if T is const </p>
+
+</div>
+</div>
+<a id="ad2304062a6d197a511b46fa0b0366cf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2304062a6d197a511b46fa0b0366cf7">&#9670;&nbsp;</a></span>const_iterator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#ad2304062a6d197a511b46fa0b0366cf7">const_iterator</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Const iterator is an iterator for a T const. </p>
+<p>This type is used as helper for SFINAE expressions </p>
+
+</div>
+</div>
+<a id="a2638492ba7efcef86662f0a6b98e3a4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2638492ba7efcef86662f0a6b98e3a4a">&#9670;&nbsp;</a></span>non_const_iterator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#a2638492ba7efcef86662f0a6b98e3a4a">non_const_iterator</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>[Non-const] iterator is an iterator for a T with no const qualifiers </p>
+<p>This type is used as a helper for SFINAE expressions </p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="af6a73e7a97da80cb3690f9783c93fb02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6a73e7a97da80cb3690f9783c93fb02">&#9670;&nbsp;</a></span>flat_forward_list_iterator_t() <span class="overload">[1/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -251,7 +371,37 @@ template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt
         <tr>
           <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> </td>
           <td>(</td>
-          <td class="paramtype">I &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default initialize iterator. </p>
+<p>For the types that support get_next_offset default initialized iterator is an end iterator. For the types that do not support get_next_offset it creates an invalid iterator. </p>
+
+</div>
+</div>
+<a id="af1c9ed8bc1eef911936f95414b4d99e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1c9ed8bc1eef911936f95414b4d99e1">&#9670;&nbsp;</a></span>flat_forward_list_iterator_t() <span class="overload">[2/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&lt; T, TT &gt; &amp;&amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
           <td></td>
         </tr>
@@ -262,19 +412,74 @@ template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt
   </tr>
 </table>
 </div><div class="memdoc">
-<p>copy constructor of const iterator from non-const iterator </p>
+
+<p>Move constructs iterator. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>- instance of iterator we are moving from </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="add8b40d9ef5eb69790db53b5229097e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add8b40d9ef5eb69790db53b5229097e7">&#9670;&nbsp;</a></span>flat_forward_list_iterator_t() <span class="overload">[2/2]</span></h2>
+<a id="ab06b8036d95b8d846429a9a9454c6d76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab06b8036d95b8d846429a9a9454c6d76">&#9670;&nbsp;</a></span>flat_forward_list_iterator_t() <span class="overload">[3/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <div class="memtemplate">
-template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt; &amp;&amp;                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                         flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </div>
+template&lt;typename I , typename  = std::enable_if_t&lt;is_const_iterator &amp;&amp; is_non_const_iterator_v&lt;I&gt;&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> </td>
+          <td>(</td>
+          <td class="paramtype">I const &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Unittest that is_non_const_iterator_v returns expected result. </p>
+<p>Unittest that is_non_const_iterator_v returns expected resultCopy constructor for const iterator from non-const iterator </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">I</td><td>- iterator type we are constructing from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>- iterator we are constructing from</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>We are relying on SFINAE to disable this constructor if</p><ul>
+<li>this is not a const iterator</li>
+<li>I not a non-const iterator </li>
+</ul>
+
+</div>
+</div>
+<a id="add8b40d9ef5eb69790db53b5229097e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add8b40d9ef5eb69790db53b5229097e7">&#9670;&nbsp;</a></span>flat_forward_list_iterator_t() <span class="overload">[4/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename I , typename  = std::enable_if_t&lt;is_const_iterator &amp;&amp; is_non_const_iterator_v&lt;I&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -293,11 +498,200 @@ template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt
   </tr>
 </table>
 </div><div class="memdoc">
-<p>move constructor of const iterator from non-const iterator </p>
+
+<p>Perfect forwarding constructor for const iterator from non-const iterator. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">I</td><td>- iterator type we are constructing from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>- iterator we are constructing from</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>We are relying on SFINAE to disable this constructor if</p><ul>
+<li>this is not a const iterator</li>
+<li>I not a non-const iterator If other is an rvalue then it can play a role of move constructor. On move we will copy data other interator is pointing to, but we are not going to null it out. Nulling is not required because this type is not a RAII wrapper, and there is no harm in leaving other pointing to the same element. </li>
+</ul>
+
+</div>
+</div>
+<a id="af9d6e38ab03cad642a7b6372a1ef5f44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9d6e38ab03cad642a7b6372a1ef5f44">&#9670;&nbsp;</a></span>flat_forward_list_iterator_t() <span class="overload">[5/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbc6f1648392706a15b395fd4c540824">buffer_char_pointer</a>&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Explicit constructor from char * or char const *, depending on T being const. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>- pointer to the buffer that contains element </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6ceb8bb9d762a5cfc939798f4e0e210a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ceb8bb9d762a5cfc939798f4e0e210a">&#9670;&nbsp;</a></span>flat_forward_list_iterator_t() <span class="overload">[6/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Explicit constructor from T *. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>- pointer to element </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0cf7cbc07401af4831ec286f0dccd446"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cf7cbc07401af4831ec286f0dccd446">&#9670;&nbsp;</a></span>flat_forward_list_iterator_t() <span class="overload">[7/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#af9944bb14a46a4f9dae62f90cdc4a788">buffer_unsigned_char_pointer</a>&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Explicit constructor from unsigned char * or unsigned char const *, depending on T being const. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>- pointer to the buffer that contains element </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9b29bb9b63b7fd7d3b673af8a8fc8365"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b29bb9b63b7fd7d3b673af8a8fc8365">&#9670;&nbsp;</a></span>flat_forward_list_iterator_t() <span class="overload">[8/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::<a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#aabfb679ceed40f849266dfaf8e1450d4">buffer_void_pointer</a>&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Explicit constructor from void * or void const *, depending on T being const. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>- pointer to the buffer that contains element </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="afc78119d2ec98a3b4c78b75374be94c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc78119d2ec98a3b4c78b75374be94c0">&#9670;&nbsp;</a></span>get_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbc6f1648392706a15b395fd4c540824">buffer_char_pointer</a> <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::get_ptr </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Returns a pointer to the buffer conteining element. </dd></dl>
+
+</div>
+</div>
 <a id="a25bfdf23691cb8228c2c3246300a2dfa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a25bfdf23691cb8228c2c3246300a2dfa">&#9670;&nbsp;</a></span>operator !=()</h2>
 
@@ -306,7 +700,7 @@ template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt
 <div class="memtemplate">
 template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <div class="memtemplate">
-template&lt;typename I , typename  = std::enable_if_t&lt;std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt; ||                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::add_const_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </div>
+template&lt;typename I , typename  = std::enable_if_t&lt;is_comparable_iterator_v&lt;I&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -325,19 +719,407 @@ template&lt;typename I , typename  = std::enable_if_t&lt;std::is_same_v&lt;std::
   </tr>
 </table>
 </div><div class="memdoc">
-<p>enequality between iterator, iterator const, const_iterator and const_iterator const </p>
+
+<p>Not equals operator used to compare to another iterator. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">I</td><td>- type of the other iterator </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>- other iterator we are comparing to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>false if both iterators point to the same element and true otherwise</dd></dl>
+<p>We are using SFINAE to enable this operator only for const and non-const iterator types for the same element type </p>
 
 </div>
 </div>
-<a id="a8eb59c351f87bfa2bb7e39644faddc0e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8eb59c351f87bfa2bb7e39644faddc0e">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+<a id="ac01b82728530e9f30993df7e4f50ea08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac01b82728530e9f30993df7e4f50ea08">&#9670;&nbsp;</a></span>operator *()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr T&amp; <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator * </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Dereference operator. </p>
+<dl class="section return"><dt>Returns</dt><dd>Returns a reference to the element pointed by iterator </dd></dl>
+
+</div>
+</div>
+<a id="a06ece8135aca2735dc62a6f08845d1bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06ece8135aca2735dc62a6f08845d1bf">&#9670;&nbsp;</a></span>operator &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <div class="memtemplate">
-template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt; &amp;&amp;                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                         flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </div>
+template&lt;typename I , typename  = std::enable_if_t&lt;is_comparable_iterator_v&lt;I&gt;&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator &gt; </td>
+          <td>(</td>
+          <td class="paramtype">I const &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Greater than operator used to compare to another iterator. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">I</td><td>- type of the other iterator </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>- other iterator we are comparing to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if address of element pointed by this iterator is greater than address of element pointed by another iterator</dd></dl>
+<p>We are using SFINAE to enable this operator only for const and non-const iterator types for the same element type </p>
+
+</div>
+</div>
+<a id="aed4d177621c040d326add3fe94bce026"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed4d177621c040d326add3fe94bce026">&#9670;&nbsp;</a></span>operator &gt;=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename I , typename  = std::enable_if_t&lt;is_comparable_iterator_v&lt;I&gt;&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator &gt;= </td>
+          <td>(</td>
+          <td class="paramtype">I const &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Greater or equals than operator used to compare to another iterator. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">I</td><td>- type of the other iterator </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>- other iterator we are comparing to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if address of element pointed by this iterator is greater or equals than address of element pointed by another iterator</dd></dl>
+<p>We are using SFINAE to enable this operator only for const and non-const iterator types for the same element type </p>
+
+</div>
+</div>
+<a id="aeabf384aac0164448e7e6cec8faeb6ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeabf384aac0164448e7e6cec8faeb6ad">&#9670;&nbsp;</a></span>operator bool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator bool </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Explicit conversion iterator to bool. </p>
+<dl class="section return"><dt>Returns</dt><dd>false if it is null initialized and true otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a32e1359b0091202121fb7eb08a807d28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32e1359b0091202121fb7eb08a807d28">&#9670;&nbsp;</a></span>operator+()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator+ </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>advance_by</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add operator. Advances iterator specified number of times. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">advance_by</td><td>- number of times this iterator should be advanced </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>value of iterator after it was advanced</dd></dl>
+<p>Advances iterator specified number of times caller is responsible for making sure iterator would not get advanced beyond container's end, if that happen then beheviour is undefined. </p>
+
+</div>
+</div>
+<a id="a4579c3de1e705b96a2be442e56c60bab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4579c3de1e705b96a2be442e56c60bab">&#9670;&nbsp;</a></span>operator++() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&amp; <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator++ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Prefix increment operator. </p>
+<dl class="section return"><dt>Returns</dt><dd>reference to this iterator</dd></dl>
+<p>Advances iterator to the next element </p>
+
+</div>
+</div>
+<a id="a72fa9d01905bbfff78ef6fae921016d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72fa9d01905bbfff78ef6fae921016d8">&#9670;&nbsp;</a></span>operator++() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a> <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator++ </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Postfix increment operator. </p>
+<dl class="section return"><dt>Returns</dt><dd>value of iterator before it was advanced to the next element</dd></dl>
+<p>Advances iterator to the next element </p>
+
+</div>
+</div>
+<a id="a17b059b2a730666ca1b826f42845339d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17b059b2a730666ca1b826f42845339d">&#9670;&nbsp;</a></span>operator-&gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr T* <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator-&gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>pointer operator. </p>
+<dl class="section return"><dt>Returns</dt><dd>Returns a pointer to the element pointed by iterator </dd></dl>
+
+</div>
+</div>
+<a id="a49bd6ecdb6444fb4a94c3896ca81b49b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49bd6ecdb6444fb4a94c3896ca81b49b">&#9670;&nbsp;</a></span>operator&lt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename I , typename  = std::enable_if_t&lt;is_comparable_iterator_v&lt;I&gt;&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator&lt; </td>
+          <td>(</td>
+          <td class="paramtype">I const &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Less than operator used to compare to another iterator. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">I</td><td>- type of the other iterator </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>- other iterator we are comparing to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>false if address of element pointed by this iterator is less than address of element pointed by another iterator</dd></dl>
+<p>We are using SFINAE to enable this operator only for const and non-const iterator types for the same element type </p>
+
+</div>
+</div>
+<a id="ad67784e4147d41c924921e3bb3d620c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad67784e4147d41c924921e3bb3d620c9">&#9670;&nbsp;</a></span>operator&lt;=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename I , typename  = std::enable_if_t&lt;is_comparable_iterator_v&lt;I&gt;&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator&lt;= </td>
+          <td>(</td>
+          <td class="paramtype">I const &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Less than or equals operator used to compare to another iterator. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">I</td><td>- type of the other iterator </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>- other iterator we are comparing to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>false if address of element pointed by this iterator is less or equal than address of element pointed by another iterator</dd></dl>
+<p>We are using SFINAE to enable this operator only for const and non-const iterator types for the same element type </p>
+
+</div>
+</div>
+<a id="ab47d3e918b29967d2cedbb23e617971a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab47d3e918b29967d2cedbb23e617971a">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -345,7 +1127,38 @@ template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt
         <tr>
           <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&amp; <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator= </td>
           <td>(</td>
-          <td class="paramtype">I &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&lt; T, TT &gt; const &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default generated copy constructor. </p>
+<dl class="section return"><dt>Returns</dt><dd>reference to this object </dd></dl>
+
+</div>
+</div>
+<a id="a8964dcb95d9b902a61b2bc6d938b266e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8964dcb95d9b902a61b2bc6d938b266e">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&amp; <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&lt; T, TT &gt; &amp;&amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
           <td></td>
         </tr>
@@ -356,19 +1169,76 @@ template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt
   </tr>
 </table>
 </div><div class="memdoc">
-<p>copy assignment operator to const iterator from non-const iterator </p>
+
+<p>Move constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>- iterator we are moving from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>reference to this object </dd></dl>
 
 </div>
 </div>
-<a id="a7e316b110de7b0ac7579df16361d286a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e316b110de7b0ac7579df16361d286a">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+<a id="a5f187e40b46af8d47018e10e98236a50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f187e40b46af8d47018e10e98236a50">&#9670;&nbsp;</a></span>operator=() <span class="overload">[3/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <div class="memtemplate">
-template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt; &amp;&amp;                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                         flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </div>
+template&lt;typename I , typename  = std::enable_if_t&lt;is_const_iterator &amp;&amp; is_non_const_iterator_v&lt;I&gt;&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&amp; <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">I const &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assignment operator for const iterator from non-const iterator. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">I</td><td>- iterator type we are assigning from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>- iterator we are constructing from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>reference to this object</dd></dl>
+<p>We are relying on SFINAE to disable this assignment operator if</p><ul>
+<li>this is not a const iterator</li>
+<li>I not a non-const iterator </li>
+</ul>
+
+</div>
+</div>
+<a id="a7e316b110de7b0ac7579df16361d286a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e316b110de7b0ac7579df16361d286a">&#9670;&nbsp;</a></span>operator=() <span class="overload">[4/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename I , typename  = std::enable_if_t&lt;is_const_iterator &amp;&amp; is_non_const_iterator_v&lt;I&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -387,7 +1257,173 @@ template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt
   </tr>
 </table>
 </div><div class="memdoc">
-<p>move assignment operator to const iterator from non-const iterator </p>
+
+<p>Perfect forwarding assignment operator for const iterator from non-const iterator. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">I</td><td>- iterator type we are assigningg from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>- iterator we are assigning from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>reference to this object</dd></dl>
+<p>We are relying on SFINAE to disable this assignment operator if</p><ul>
+<li>this is not a const iterator</li>
+<li>I not a non-const iterator If other is an rvalue then it can play a role of move assignment operator. On move we will copy data other interator is pointing to, but we are not going to null it out. Nulling is not required because this type is not a RAII wrapper, and there is no harm in leaving other pointing to the same element. </li>
+</ul>
+
+</div>
+</div>
+<a id="a5ee139bc41541ceb38a6047e1cfe670d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ee139bc41541ceb38a6047e1cfe670d">&#9670;&nbsp;</a></span>operator=() <span class="overload">[5/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&amp; <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbc6f1648392706a15b395fd4c540824">buffer_char_pointer</a>&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>asignment operator from char * </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>- pointer to the buffer that contains element </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns a reference to this object </dd></dl>
+
+</div>
+</div>
+<a id="a6974557bec0d8708cea2070dbfe15447"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6974557bec0d8708cea2070dbfe15447">&#9670;&nbsp;</a></span>operator=() <span class="overload">[6/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&amp; <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>asignment operator from T * </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>- pointer to the element </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns a reference to this object </dd></dl>
+
+</div>
+</div>
+<a id="a780da95fefd772324e7726062ccace57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a780da95fefd772324e7726062ccace57">&#9670;&nbsp;</a></span>operator=() <span class="overload">[7/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&amp; <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#af9944bb14a46a4f9dae62f90cdc4a788">buffer_unsigned_char_pointer</a>&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>asignment operator from unsigned char * </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>- pointer to the buffer that contains element </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns a reference to this object </dd></dl>
+
+</div>
+</div>
+<a id="adeb0044a2c27f15058bf2d21ec7ee8f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adeb0044a2c27f15058bf2d21ec7ee8f0">&#9670;&nbsp;</a></span>operator=() <span class="overload">[8/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&amp; <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#aabfb679ceed40f849266dfaf8e1450d4">buffer_void_pointer</a>&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>asignment operator from void * </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>- pointer to the buffer that contains element </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns a reference to this object </dd></dl>
 
 </div>
 </div>
@@ -399,7 +1435,7 @@ template&lt;typename I , typename  = std::enable_if_t&lt;std::is_const_v&lt;T&gt
 <div class="memtemplate">
 template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <div class="memtemplate">
-template&lt;typename I , typename  = std::enable_if_t&lt;std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::remove_cv_t&lt;T&gt;, TT&gt;&gt; ||                                          std::is_same_v&lt;std::remove_cv_t&lt;I&gt;,                                                          flat_forward_list_iterator_t&lt; std::add_const_t&lt;T&gt;, TT&gt;&gt;&gt;&gt; </div>
+template&lt;typename I , typename  = std::enable_if_t&lt;is_comparable_iterator_v&lt;I&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -418,7 +1454,198 @@ template&lt;typename I , typename  = std::enable_if_t&lt;std::is_same_v&lt;std::
   </tr>
 </table>
 </div><div class="memdoc">
-<p>equality between iterator, iterator const, const_iterator and const_iterator const </p>
+
+<p>Equals operator used to compare to another iterator. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">I</td><td>- type of the other iterator </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>- other iterator we are comparing to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if both iterators point to the same element and false otherwise</dd></dl>
+<p>We are using SFINAE to enable this operator only for const and non-const iterator types for the same element type </p>
+
+</div>
+</div>
+<a id="ae1f5a30439a5699d2c8327718a239bf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1f5a30439a5699d2c8327718a239bf1">&#9670;&nbsp;</a></span>reset_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbc6f1648392706a15b395fd4c540824">buffer_char_pointer</a> <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::reset_ptr </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html#abbc6f1648392706a15b395fd4c540824">buffer_char_pointer</a>&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assigns iterator to point to the new element. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>- pointer to the new element </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns pointer to the previous element. </dd></dl>
+
+</div>
+</div>
+<a id="a5637f07b04fa3a753a7337343d9fbf12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5637f07b04fa3a753a7337343d9fbf12">&#9670;&nbsp;</a></span>swap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">flat_forward_list_iterator_t</a>&lt; T, TT &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>whaps this iterator and the other iterator </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>- reference to the other iterator </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="af4b1d4180db1f9513cf6562020309d8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4b1d4180db1f9513cf6562020309d8c">&#9670;&nbsp;</a></span>is_comparable_iterator_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename Iterator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto const <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::is_comparable_iterator_v</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">{ is_non_const_iterator_v&lt;Iterator&gt; ||</div><div class="line">                                                          is_const_iterator_v&lt;Iterator&gt; }</div></div><!-- fragment -->
+<p>Is std::true_type{} if Iterator is a const or non-const equivalent of this iterator and std::false_type otherwise. Comparable iterator can be used in relation operators. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Iterator</td><td>- any type </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa89752067ce94d001a2e1c51b6829a02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa89752067ce94d001a2e1c51b6829a02">&#9670;&nbsp;</a></span>is_const_iterator_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename Iterator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto const <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::is_const_iterator_v</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">{ std::is_same_v &lt; std::remove_cv_t&lt;Iterator&gt;,</div><div class="line">                                                                      <a class="code" href="classiffl_1_1flat__forward__list__iterator__t.html#ad2304062a6d197a511b46fa0b0366cf7">const_iterator</a> &gt; }</div></div><!-- fragment -->
+<p>Is std::true_type{} if Iterator is same as const equivalent of the current iterator non-const equivalent is constructed by adding CV qualifiers to T. const_iterator defines const equivalent for this iterator so we just need to make sure Iterator is the same type as const_iterator. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Iterator</td><td>- any type </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a59acdc5720d1d999d280feb639ce68f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59acdc5720d1d999d280feb639ce68f4">&#9670;&nbsp;</a></span>is_non_const_iterator_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename Iterator &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto const <a class="el" href="classiffl_1_1flat__forward__list__iterator__t.html">iffl::flat_forward_list_iterator_t</a>&lt; T, TT &gt;::is_non_const_iterator_v</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">{ std::is_same_v &lt; std::remove_cv_t&lt;Iterator&gt;,</div><div class="line">                                                                          <a class="code" href="classiffl_1_1flat__forward__list__iterator__t.html#a2638492ba7efcef86662f0a6b98e3a4a">non_const_iterator</a> &gt; }</div></div><!-- fragment -->
+<p>Is std::true_type{} if Iterator is same as non-const equivalent of the current iterator non-const equivalent is constructed by removing CV qualifiers from T. non_const_iterator defines non-const equivalent for this iterator so we just need to make sure Iterator is the same type as non_const_iterator. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Iterator</td><td>- any type </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

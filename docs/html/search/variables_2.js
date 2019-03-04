@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['data_5fend',['data_end',['../structiffl_1_1range.html#ab0760e5632a29e1fe439fa16f9deffc4',1,'iffl::range']]],
-  ['detected_5for_5fv',['detected_or_v',['../namespaceiffl_1_1mpl.html#a15edcc4e958a5657140137db6e20015a',1,'iffl::mpl']]],
-  ['detected_5fv',['detected_v',['../namespaceiffl_1_1mpl.html#a0417b6e31dffc0e2da2659b75ed4769c',1,'iffl::mpl']]]
+  ['can_5fset_5fnext_5foffset_5fv',['can_set_next_offset_v',['../structiffl_1_1flat__forward__list__traits__traits.html#a98c92a8f60d412da34a653d26a6d5065',1,'iffl::flat_forward_list_traits_traits']]],
+  ['can_5fvalidate_5fv',['can_validate_v',['../structiffl_1_1flat__forward__list__traits__traits.html#a05b342e69b43a8275191df67211b6ca6',1,'iffl::flat_forward_list_traits_traits']]]
 ];

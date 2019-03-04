@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['make_5fscope_5fguard',['make_scope_guard',['../namespaceiffl.html#a9b398fb9f25e87b28239b8cd37adc324',1,'iffl']]],
-  ['move_5fdata',['move_data',['../namespaceiffl.html#ab18f9699312805dc2f72a5d4a00ef790',1,'iffl']]]
+  ['last',['last',['../classiffl_1_1flat__forward__list.html#a5e954cb6c473db357ea47abefb1fbf86',1,'iffl::flat_forward_list::last() noexcept'],['../classiffl_1_1flat__forward__list.html#a9532a6ff5f31fcdf2fb96e0bf8477532',1,'iffl::flat_forward_list::last() const noexcept']]]
 ];

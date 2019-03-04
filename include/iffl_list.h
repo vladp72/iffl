@@ -1541,6 +1541,7 @@ using flat_forward_list_const_iterator = flat_forward_list_iterator_t< std::add_
 //! A is default initialized to std::allocator for T
 //! Container is inherited from allocator to utilize
 //! Empty Base Class Optimization (EBCO).
+//!
 //! Iterator invalidation notes:
 //! Begin iterator might get invalidated on any operation that
 //! causes buffer reallocation or erases last element of container
@@ -1550,12 +1551,45 @@ using flat_forward_list_const_iterator = flat_forward_list_iterator_t< std::add_
 //! Methods that take iterator as an input, and can invalidate it
 //! return new valid iterator as an output.
 //! Caller must refresh end iterator by explicitely calling [c]end().
-//! Debugging nodes:
+//!
+//! Debugging notes:
 //! Defining FFL_DBG_CHECK_ITERATOR_VALID will enable validation of
 //! that iterators passed in input parameters are valid and are pointing
 //! to an existing element. Cost of this validation is O(element count). 
 //! Defining FFL_DBG_CHECK_DATA_VALID will enable validation of container
 //! after every method that modifies container data.
+//!
+//! Iterator names notes:
+//! begin or first - first element in a half-open [first, end) 
+//!       or closed [first, last] range.
+//! last - referes to the last element in half-closed (before_begin, last] 
+//!       or closed [first, last] range.
+//! end - referes to an element pass the last element. It is used with 
+//!       half open [begin, end) or open (before_begin, end) range.
+//! before_beging or before_first - referes to an element preceeding 
+//!       begin or first element. Is used in halfope (before_begin, last]
+//!       or open (before_begin, end) range.
+//!
+//! Security notes:
+//! One of the common directions for attack is to leak to the attacher 
+//! some uninitialized data that might contain addresses that might guide
+//! attacker how to bypass technics like Address Space Layout Randomization (ASLR).
+//! To prevent that consider using fill_padding that will fill any unused space
+//! with given pattern making sure we are not leaking any unintended information
+//! in the element padding and in the buffer's unused tail.
+//!
+//! Interop with API notes:
+//! When passing pointer to container's buffer to an API that can modify it
+//! it will invalidate container invariants. For instance pointer to the last 
+//! element will no longer be valid. User must call revalidate_data after this
+//! call to make sure invariants are fixed. The cal revalidate_data will 
+//! rescan buffer for valid list as if it is a non-trusted buffer.
+//!
+//! Allocator notes:
+//! COntainer supports adopting (attaching to) buffer that was allocated by
+//! someone else. This helps to minimize number of copies when interoping with 
+//! C API. It is responsibility of user to make sure that container uses allocator
+//! that is compatible with how adopted buffer was allocated.
 //!
 template <typename T,
           typename TT = flat_forward_list_traits<T>,
@@ -3600,12 +3634,16 @@ public:
         return used_size_unsafe(it);
     }
     //!
-    //! @param it - iterator pointing to the element we are returning size for.
-    //! @returns For any element except the last, it returns 
+    //! @brief Information about the buffer occupied by an element.
+    //! @param it - iterator pointing to an element.
+    //! @returns For any element except the last, it returns:
     //! - start element offset.
     //! - offset of element data end.
     //! - offset of element buffer end.
-    //! For the last element data end and buffer point to the same position
+    //! For the last element data end and buffer end point to the 
+    //! same position.
+    //! @details All offsets values are relative to the buffer 
+    //! owned by the container.
     //!
     range_t range(const_iterator const &it) const noexcept {
         validate_iterator_not_end(it);
@@ -3614,7 +3652,18 @@ public:
     }
 
     //!
-    //! closed range [begin, last]
+    //! @brief Information about the buffer occupied by elements in the range [begin, last].
+    //! @param begin - iterator pointing to the first element.
+    //! @param last - iterator pointing to the last element in the range.
+    //! @returns For any case, except when last element of range is last element of the collection,
+    //! it returns:
+    //! - start of the first element.
+    //! - offset of the last element data end.
+    //! - offset of the last element buffer end.
+    //! If range last is last element of collection then data end and
+    //! buffer end point to the same position.
+    //! @details All offsets values are relative to the buffer 
+    //! owned by the container.
     //!
     range_t closed_range(const_iterator const &begin, const_iterator const &last) const noexcept {
         validate_iterator_not_end(begin);
@@ -3622,17 +3671,38 @@ public:
 
         return closed_range_unsafe(begin, last);
     }
-
     //!
-    //! half opened range [begin, end)
+    //! @brief Information about the buffer occupied by elements in the range [begin, end).
+    //! @param begin - iterator pointing to the first element.
+    //! @param end - iterator pointing to the past last element in the range.
+    //! @returns For any case, except when end element of range is the end element of the collection,
+    //! - start of the first element.
+    //! - offset of the element before end data end.
+    //! - offset of the element before end buffer end.
+    //! If range end is colelction end then data end and
+    //! buffer end point to the same position.
+    //! @details All offsets values are relative to the buffer 
+    //! owned by the container.
+    //! Algorithm has complexity O(number of elements in collection) because to find 
+    //! element before end we have to scan buffer from beginning.
     //!
     range_t half_open_range(const_iterator const &begin, const_iterator const &end) const noexcept {
         validate_iterator_not_end(begin);
         validate_iterator_not_end(end);
 
-        return half_closed_range_unsafe(begin, end);
+        return half_open_range_usafe(begin, end);
     }
-
+    //!
+    //! @brief Tells if given offset in the buffer falls into a 
+    //! buffer used by the element.
+    //! @param it - iterator pointing to an element
+    //! @param position - offset in the container's buffer.
+    //! @returns True if position is in the element's buffer. 
+    //! and false otherwise. Element's buffer is retrieved using 
+    //! range(it).
+    //! When iterator referes to container end or when position is npos
+    //! the result will be false.
+    //!
     bool contains(const_iterator const &it, size_type position) const noexcept {
         validate_iterator(it);
         if (cend() == it || npos == position) {
@@ -3641,7 +3711,16 @@ public:
         range_t const r{ range_unsafe(it) };
         return r.buffer_contains(position);
     }
-
+    //!
+    //! @brief Searches for an element before the element that containes 
+    //! given position.
+    //! @param position - offset in the conteiner's buffer
+    //! @returns Iterator to the found element, if it was found, and
+    //! container's end iterator otherwise.
+    //! @details Cost of this algorithm is O(nuber of elements in container)
+    //! because we have to performa linear search for an element from the start
+    //! of container's buffer.
+    //!
     iterator find_element_before(size_type position) noexcept {
         validate_pointer_invariants();
         if (empty()) {
@@ -3653,7 +3732,16 @@ public:
         }
         return end();
     }
-
+    //!
+    //! @brief Searches for an element before the element that containes 
+    //! given position.
+    //! @param position - offset in the conteiner's buffer
+    //! @returns Const iterator to the found element, if it was found, and
+    //! container's end const iterator otherwise.
+    //! @details Cost of this algorithm is O(nuber of elements in container)
+    //! because we have to performa linear search for an element from the start
+    //! of container's buffer.
+    //!
     const_iterator find_element_before(size_type position) const noexcept {
         validate_pointer_invariants();
         if (empty()) {
@@ -3666,7 +3754,15 @@ public:
         }
         return end();
     }
-
+    //!
+    //! @brief Searches for an element that containes given position.
+    //! @param position - offset in the conteiner's buffer
+    //! @returns Iterator to the found element, if it was found, and
+    //! container's end iterator otherwise.
+    //! @details Cost of this algorithm is O(nuber of elements in container)
+    //! because we have to performa linear search for an element from the start
+    //! of container's buffer.
+    //!
     iterator find_element_at(size_type position) noexcept {
         iterator it = find_element_before(position);
         if (end() != it) {
@@ -3678,7 +3774,15 @@ public:
         }
         return end();
     }
-
+    //!
+    //! @brief Searches for an element that containes given position.
+    //! @param position - offset in the conteiner's buffer
+    //! @returns Const iterator to the found element, if it was found, and
+    //! container's end const iterator otherwise.
+    //! @details Cost of this algorithm is O(nuber of elements in container)
+    //! because we have to performa linear search for an element from the start
+    //! of container's buffer.
+    //!
     const_iterator find_element_at(size_type position) const noexcept {
         const_iterator it = find_element_before(position);
         if (cend() != it) {
@@ -3690,7 +3794,16 @@ public:
         }
         return end();
     }
-
+    //!
+    //! @brief Searches for an element after the element that containes 
+    //! given position.
+    //! @param position - offset in the conteiner's buffer
+    //! @returns Iterator to the found element, if it was found, and
+    //! container's end iterator otherwise.
+    //! @details Cost of this algorithm is O(nuber of elements in container)
+    //! because we have to performa linear search for an element from the start
+    //! of container's buffer.
+    //!
     iterator find_element_after(size_type position) noexcept {
         iterator it = find_element_at(position);
         if (end() != it) {
@@ -3701,7 +3814,16 @@ public:
         }
         return end();
     }
-
+    //!
+    //! @brief Searches for an element after the element that containes 
+    //! given position.
+    //! @param position - offset in the conteiner's buffer
+    //! @returns Const iterator to the found element, if it was found, and
+    //! container's end const iterator otherwise.
+    //! @details Cost of this algorithm is O(nuber of elements in container)
+    //! because we have to performa linear search for an element from the start
+    //! of container's buffer.
+    //!
     const_iterator find_element_after(size_type position) const noexcept {
         const_iterator it = find_element_at(position);
         if (cend() != it) {
@@ -3712,7 +3834,13 @@ public:
         }
         return end();
     }
-
+    //!
+    //! @brief Number of elements in the container.
+    //! @returns Number of elements in the container.
+    //! @details Cost of this algorithm is O(nuber of elements in container).
+    //! Container does not actively cache/updates element count so we need to
+    //! scan list to find number of elements.
+    //!
     size_type size() const noexcept {
         validate_pointer_invariants();
         size_type s = 0;
@@ -3721,29 +3849,50 @@ public:
         });
         return s;
     }
-
+    //!
+    //! @brief Tells if container contains no elements.
+    //! @returns False when containe contains at least one element
+    //! and true otherwise.
+    //! @details Both container with no buffer as well as container
+    //! that has buffer that does not contain any valid elements will
+    //! return true.
+    //!
     bool empty() const noexcept {
         validate_pointer_invariants();
         return  last_element_ == nullptr;
     }
-
+    //!
+    //! @returns Number of bytes in the bufer used
+    //! by existing elements.
+    //!
     size_type used_capacity() const noexcept {
         validate_pointer_invariants();
         all_sizes s{ get_all_sizes() };
         return s.used_capacity_unaligned;
     }
-
+    //!
+    //! @returns Buffer size.
+    //!
     size_type total_capacity() const noexcept {
         validate_pointer_invariants();
         return buffer_end_ - buffer_begin_;
     }
-
+    //!
+    //! @returns Number of bytes in the buffer not used
+    //! by the existing elements.
+    //!
     size_type remaining_capacity() const noexcept {
         validate_pointer_invariants();
         all_sizes s{ get_all_sizes() };
         return s.remaining_capacity;
     }
-
+    //!
+    //! @brief Fills parts of the buffer not used by element data with 
+    //! fill_byte.
+    //! @param fill_byte - pattern to use
+    //! @param zero_unused_capacity - also fill container unused capacity
+    //!                               true by default.
+    //!
     void fill_padding(int fill_byte = 0, 
                       bool zero_unused_capacity = true) noexcept {
         validate_pointer_invariants();
