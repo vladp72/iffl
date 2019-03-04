@@ -1578,7 +1578,7 @@ using flat_forward_list_const_iterator = flat_forward_list_iterator_t< std::add_
 //! with given pattern making sure we are not leaking any unintended information
 //! in the element padding and in the buffer's unused tail.
 //!
-//! Interop with API notes:
+//! Interop with C API notes:
 //! When passing pointer to container's buffer to an API that can modify it
 //! it will invalidate container invariants. For instance pointer to the last 
 //! element will no longer be valid. User must call revalidate_data after this
@@ -3399,7 +3399,7 @@ public:
     //! @throws std::bad_alloc if allocating new buffer fails.
     //! @details Resizing to 0 will delete element.
     //! Resizing to size smaller than minimum_size will trigger fail-fast.
-    //! Resizing to any other siz also fixes alignment of element and 
+    //! Resizing to any other size also fixes alignment of element and 
     //! adds missing padding.
     //!
     template <typename F
@@ -3928,7 +3928,16 @@ public:
 private:
 
     //!
-    //! Should take constructor
+    //! @brief Resizes last element of the container.
+    //! @tparam F - type of functor user to update element.
+    //! @param new_size - new element size.
+    //! @param fn - functor used to update element after it was resized.
+    //! @throws std::bad_alloc if allocating new buffer fails.
+    //! @details Resizing to 0 will delete element.
+    //! Resizing to size smaller than minimum_size will trigger fail-fast.
+    //! Resizing of the last element does not add extra padding to the buffer 
+    //! since there is no next element that needs to be padded.
+    //! 
     //!
     template <typename F
              //,typename ... P
@@ -3998,21 +4007,37 @@ private:
 
         return last();
     }
-
+    //!
+    //! @brief Returns true when container has no or exactly one entry
+    //! and false otherwise.
+    //!
     constexpr bool has_one_or_no_entry() const noexcept {
         return last_element_ == buffer_begin_;
     }
-
+    //!
+    //! @brief Returns true when container has exactly one entry
+    //! and false otherwise.
+    //!
     constexpr bool has_exactly_one_entry() const noexcept {
         return nullptr != last_element_ && 
                last_element_ == buffer_begin_;
     }
-
-
+    //!
+    //! @brief Helper routine that is used on element that just became
+    //! new last element of the container to set pointer to the next 
+    //! element to 0.
+    //! @param buffer - pointer to the element buffer start.
+    //!
     constexpr static void set_no_next_element(char *buffer) noexcept {
         set_next_offset(buffer, 0);
     }
-
+    //!
+    //! @brief Sets offset ot the next element.
+    //! @param buffer - pointer to the element buffer start.
+    //! @param size - new element size
+    //! @details This call is a noop for the types that do not support 
+    //! next element offset 
+    //!
     constexpr static void set_next_offset(char *buffer, size_t size) noexcept {
         if constexpr (traits_traits::has_next_offset_v) {
             traits_traits::set_next_offset(buffer, size);
@@ -4021,11 +4046,22 @@ private:
             size;
         }
     }
-
+    //!
+    //! @brief Moves allocator from the other instance of container.
+    //! @details Note that after we move allocator other container will
+    //! not be able to deallocate its buffer so this call can be used only
+    //! along with methods that also adopt other container data.
+    //! @param other - other container we are movig allocator from.
+    //!
     void move_allocator_from(flat_forward_list &&other) {
         *static_cast<A *>(this) = std::move(other).get_allocator();
     }
-
+    //!
+    //! @brief Cleans this container, and takes ownership of data
+    //! from the other container. Caller must make sure that this 
+    //! container has a compatible allocator.
+    //! @param other - other container we are movig data from.
+    //!
     void move_from(flat_forward_list &&other) noexcept {
         clear();
         buffer_begin_ = other.buffer_begin_;
@@ -4035,7 +4071,13 @@ private:
         other.buffer_end_ = nullptr;
         other.last_element_ = nullptr;
     }
-
+    //!
+    //! @brief Cleans this container, and if it is safe then moves 
+    //! data from the other container, otherwise it copies data.
+    //! @param other - other container we are movig or copying data from.
+    //! @details Data are moped if containers have equivalent allocators.
+    //! otherwise data are copied
+    //!
     void try_move_from(flat_forward_list &&other) {
         if (other.get_allocator() == get_allocator()) {
             move_from(std::move(other));
@@ -4043,7 +4085,10 @@ private:
             copy_from(other);
         }
     }
-
+    //!
+    //! @brief Copies data from the other container
+    //! @param other - other container we are movig or copying data from.
+    //! 
     void copy_from(flat_forward_list const &other) {
         clear();
         if (other.last_element_) {
@@ -4054,19 +4099,34 @@ private:
             last_element_ = buffer_begin_ + other_sizes.last_element_offset;
         }
     }
-
+    //!
+    //! @brief Allocates buffer of requested size using allocator owned 
+    //! by this container
+    //! @param buffer_size - size of the buffer that we are allocating
+    //!
     char *allocate_buffer(size_t buffer_size) {
-        char *ptr{ allocator_type_traits::allocate(*this, buffer_size, 0) };
+        char *ptr{ allocator_type_traits::allocate(*this, buffer_size) };
         FFL_CODDING_ERROR_IF(nullptr == ptr);
-        //FFL_CODDING_ERROR_IF(*reinterpret_cast<size_t const*>(&ptr) & 0xFFF);
         return ptr;
     }
-
+    //!
+    //! @brief Deallocates buffer using allocator owned 
+    //! by this container.
+    //! @param buffer - pointer to the buffer we are deallocating.
+    //! @param buffer_size - size of the buffer that we are deallocating
+    //!
     void deallocate_buffer(char *buffer, size_t buffer_size) {
         FFL_CODDING_ERROR_IF(0 == buffer_size || nullptr == buffer);
         allocator_type_traits::deallocate(*this, buffer, buffer_size);
     }
-
+    //!
+    //! @brief Swaps buffer owned by container with a new buffer.
+    //! @param buffer - Reference to the pointer to the new buffer
+    //! @param buffer_size - Reference to the buffer size
+    //! Both parameters are inout parameters. On input they describe
+    //! new buffer, and on output then contain information about the
+    //! old buffer.
+    //!
     void commit_new_buffer(char *&buffer, size_t &buffer_size) {
         char *old_begin = buffer_begin_;
         FFL_CODDING_ERROR_IF(buffer_end_ < buffer_begin_);
@@ -4078,7 +4138,16 @@ private:
         buffer = old_begin;
         buffer_size = old_size;
     }
-
+    //!
+    //! @brief Creates scoped deallocator that frees buffer described by
+    //! the pair **buffer and *buffer_size.
+    //! @param buffer - pointer to the pointer to the buffer.
+    //! @param buffer_size - pointer to the buffer size.
+    //! Both parameters are in-out . On input they contain information
+    //! about the buffer we are deallocating. Buffer can be nullptr.
+    //! On output they are nulled out, because theya re not pointing to a valid 
+    //! buffer any longer.
+    //!
     auto make_scoped_deallocator(char **buffer, size_t *buffer_size) {
         return make_scope_guard([this, buffer, buffer_size]() {
             if (*buffer) {
@@ -4088,7 +4157,10 @@ private:
             }
         });
     }
-
+    //!
+    //! @brief Validates that container information about buffer
+    //! matches to the actual buffer content.
+    //!
     void validate_data_invariants() const noexcept {
 #ifdef FFL_DBG_CHECK_DATA_VALID
         if (last_element_) {
@@ -4115,7 +4187,9 @@ private:
         }
 #endif //FFL_DBG_CHECK_DATA_VALID
     }
-
+    //!
+    //! @brief Validates that container pointer invariants.
+    //!
     void validate_pointer_invariants() const noexcept {
         //
         // empty() calls this method so we canot call it here
@@ -4126,7 +4200,10 @@ private:
             FFL_CODDING_ERROR_IF_NOT(buffer_begin_ <= last_element_ && last_element_ <= buffer_end_);
         }
     }
-
+    //!
+    //! @brief Validates iterator invariants.
+    //! @param it - iterator that we are verifying
+    //!
     void validate_iterator(const_iterator const &it) const noexcept {
         //
         // If we do not have any valid elements then
@@ -4142,7 +4219,11 @@ private:
             validate_compare_to_all_valid_elements(it);
         }
     }
-
+    //!
+    //! @brief Validates iterator invariants, as well as asserts 
+    //! that iterator is not an end iterator.
+    //! @param it - iterator that we are verifying
+    //!
     void validate_iterator_not_end(const_iterator const &it) const noexcept {
         //
         // Used in case when end iterator is meaningless.
@@ -4155,7 +4236,11 @@ private:
         FFL_CODDING_ERROR_IF_NOT(buffer_begin_ <= it.get_ptr() && it.get_ptr() <= last_element_);
         validate_compare_to_all_valid_elements(it);
     }
-
+    //!
+    //! @brief Validates iterator points to a valid element 
+    //! in the container 
+    //! @param it - iterator that we are verifying
+    //!
     void validate_compare_to_all_valid_elements(const_iterator const &it) const noexcept {
 #ifdef FFL_DBG_CHECK_ITERATOR_VALID
         //
