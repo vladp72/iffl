@@ -4260,12 +4260,27 @@ private:
         it;
 #endif //FFL_DBG_CHECK_ITERATOR_VALID
     }
-
+    //!
+    //! @brief Size used by an element data
+    //! @param it - iterator for the element user queries size for
+    //! @returns Returns size that is required for element data
+    //!
     size_with_padding_t size_unsafe(const_iterator const &it) const noexcept {
         return  traits_traits::get_size(it.get_ptr());
     }
-
-
+    //!
+    //! @brief Size used by an element data and padding
+    //! @param it - iterator for the element user queries size for
+    //! @returns For types that support get_next_offset it should
+    //! return value of offset to the next element from the start of 
+    //! the element pointer by the iterator. If this is last element of the 
+    //! list then it returns element data size without padding.
+    //! For types that do not support get_next_offset it returns padded
+    //! element size, except the last element. For the last element we return
+    //! size without padding.
+    //! @details Last element is treated differently because container 
+    //! buffer might not include space for the last element padding.
+    //!
     size_type used_size_unsafe(const_iterator const &it) const noexcept {
         if constexpr (traits_traits::has_next_offset_v) {
             size_type next_offset = traits::get_next_offset(it.get_ptr());
@@ -4282,14 +4297,30 @@ private:
             //
             // buffer might end without including padding for the last element
             //
-            if (end == it) {
+            if (last() == it) {
                 return s.size_not_padded();
             } else {
                 return s.size_padded();
             }
         }
     }
-
+    //!
+    //! @brief Returns offsets in the container buffer that describe
+    //! part of the buffer used by this element.
+    //! @param it - iterator for the element user queries range for
+    //! @returns Range that describes part of the container buffer used
+    //! by the element
+    //! @details For the last element of the buffer end of the data and
+    //! end of the buffer have the same value.
+    //! For any element data end is calculated using size of data used by element.
+    //! For any element except last buffer size is calculated using
+    //!  - Value of offset to the next element if type supports get_next_offset
+    //!  - If get_next_offset is not suported then it is calculated as padded 
+    //!    element data size
+    //! This method assumes that iterator is pointing to an element, and is not an
+    //! end iterator. It assumes that caller verified that iterator satisfies 
+    //! these preconditions.
+    //!
     range_t range_unsafe(const_iterator const &it) const noexcept {
         size_with_padding_t s{ traits_traits::get_size(it.get_ptr()) };
         range_t r{};
@@ -4299,12 +4330,12 @@ private:
             size_type next_offset = traits::get_next_offset(it.get_ptr());
             if (0 == next_offset) {
                 FFL_CODDING_ERROR_IF(last() != it);
-                r.buffer_end = r.begin() + s.size_padded();
+                r.buffer_end = r.begin() + s.size_not_padded();
             } else {
                 r.buffer_end = r.begin() + next_offset;
             }
         } else {
-            if (end() == it) {
+            if (last() == it) {
                 r.buffer_end = r.begin() + s.size_not_padded();
             } else {
                 r.buffer_end = r.begin() + s.size_padded();
@@ -4312,9 +4343,9 @@ private:
         }
         return r;
     }
-
     //!
-    //! closed range [first, last]
+    //! @returns information about the pasrt of container 
+    //! buffer used by elements in the range [first, last]
     //!
     range_t closed_range_unsafe(const_iterator const &first, const_iterator const &last) const noexcept {
         if (first == last) {
@@ -4328,11 +4359,14 @@ private:
                             last_element_range.buffer_end };
         }
     }
-
     //!
-    //! half closed range [first, end)
+    //! @returns information about the pasrt of container 
+    //! buffer used by elements in the range [first, end)
+    //! @details Algorithm complexity is O(number of elements in the niffer)
+    //! because we need to scan container from the beginning to find element 
+    //! before end.
     //!
-    range_t half_open_range_usafe(const_iterator const &first, 
+    range_t half_open_range_usafe(const_iterator const &first,
                                   const_iterator const &end) const noexcept {
         validate_iterator_not_end(first);
         validate_iterator(end);
@@ -4346,7 +4380,10 @@ private:
 
         return closed_range_usafe(first, last);
     }
-
+    //!
+    //! @class all_sizes
+    //! @brief Describes buffer used by container
+    //! 
     struct all_sizes {
         //!
         //! Starting offset of the last element
@@ -4386,6 +4423,12 @@ private:
         size_type remaining_capacity_for_insert{ 0 };
     };
 
+    //!
+    //! @returns Information about containers buffer
+    //! @details Most algorithms that modify container
+    //! use this method to buffer information in a single 
+    //! snapshot.
+    //!
     all_sizes get_all_sizes() const noexcept {
         all_sizes s;
 
@@ -4408,12 +4451,6 @@ private:
         //
         FFL_CODDING_ERROR_IF(s.total_capacity < s.used_capacity_unaligned);
         s.remaining_capacity_for_insert = s.total_capacity - s.used_capacity_unaligned;
-        // 
-        // if (s.total_capacity > s.used_capacity_unaligned) {
-        //     s.remaining_capacity_for_insert = s.total_capacity - s.used_capacity_unaligned;
-        // } else {
-        //     s.remaining_capacity_for_insert = 0;
-        // }
         //
         // If we are appending then we need to padd current last element, but new inserted 
         // element does not have to be padded
@@ -4427,16 +4464,21 @@ private:
         return s;
     }
 
-    static void raise_invalid_buffer_exception(char const *message) {
-        throw std::system_error{ std::make_error_code(std::errc::invalid_argument), message };
-    }
-
     //!
-    //! pointer to the beginninng of buffer
-    //! and first element if we have any
+    //! @brief Pointer to the beginning of buffer
+    //! nullptr if container owns no buffer
     //!
     char *buffer_begin_{ nullptr };
+    //!
+    //! @brief Pointer to the last element in the list
+    //! nullptr if container owns no buffer or if 
+    //! there is no elements in the list.
+    //!
     char *last_element_{ nullptr };
+    //!
+    //! @brief Pointer to the end of buffer
+    //! nullptr if container owns no buffer
+    //!
     char *buffer_end_{ nullptr };
 };
 //!
