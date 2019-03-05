@@ -562,7 +562,7 @@ struct range_with_alighment : public range {
         // current element size if we also add padding
         // to keep next element alligned
         //
-        return data_end_unaligned() - begin();
+        return data_end_aligned() - begin();
     }
     //!
     //! @return Data padding size
