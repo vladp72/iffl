@@ -224,13 +224,13 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
 }
 
 void print([[maybe_unused]] long_long_array_list_entry const &e) {
-    printf("arr[%zi] = {", e.length);
+    std::printf("arr[%zi] = {", e.length);
     std::for_each(e.arr, 
                   e.arr + e.length,
                   [](long long v) {
-                     printf("%I64i ", v);
+                     std::printf("%I64i ", v);
                   });
-    printf("}\n");
+    std::printf("}\n");
 }
 
 void process_data(long_long_array_list const &data) {

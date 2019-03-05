@@ -583,44 +583,44 @@ public:
     static void print_traits_info() noexcept {
         type_info const & ti = typeid(type_traits);
 
-        printf("type \"%s\" {\n", ti.name());
+        std::printf("type \"%s\" {\n", ti.name());
 
         if constexpr (has_minimum_size_v) {
-            printf("  minimum_size    : yes -> %zu\n", minimum_size());
+            std::printf("  minimum_size    : yes -> %zu\n", minimum_size());
         } else {
-            printf("  minimum_size    : no \n");
+            std::printf("  minimum_size    : no \n");
         }
 
         if constexpr (has_get_size_v) {
-            printf("  get_size        : yes\n");
+            std::printf("  get_size        : yes\n");
         } else {
-            printf("  get_size        : no \n");
+            std::printf("  get_size        : no \n");
         }
 
         if constexpr (has_next_offset_v) {
-            printf("  get_next_offset : yes\n");
+            std::printf("  get_next_offset : yes\n");
         } else {
-            printf("  get_next_offset : no \n");
+            std::printf("  get_next_offset : no \n");
         }
 
         if constexpr (can_set_next_offset_v) {
-            printf("  set_next_offset : yes\n");
+            std::printf("  set_next_offset : yes\n");
         } else {
-            printf("  set_next_offset : no \n");
+            std::printf("  set_next_offset : no \n");
         }
 
         if constexpr (can_validate_v) {
-            printf("  validate        : yes\n");
+            std::printf("  validate        : yes\n");
         } else {
-            printf("  validate        : no \n");
+            std::printf("  validate        : no \n");
         }
 
         if constexpr (has_alignment_v) {
-            printf("  alignment       : yes -> %zu\n", alignment);
+            std::printf("  alignment       : yes -> %zu\n", alignment);
         } else {
-            printf("  alignment       : no \n");
+            std::printf("  alignment       : no \n");
         }
-        printf("}\n");
+        std::printf("}\n");
     }
 };
 

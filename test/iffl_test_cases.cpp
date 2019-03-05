@@ -8,16 +8,16 @@ typedef struct _FLAT_FORWARD_LIST_TEST {
 } FLAT_FORWARD_LIST_TEST, *PFLAT_FORWARD_LIST_TEST;
 
 void print_element(FLAT_FORWARD_LIST_TEST const &e) {
-    printf("[NextEntryOffset %zu, Type %zu, DataLength %zu, Data {",
+    std::printf("[NextEntryOffset %zu, Type %zu, DataLength %zu, Data {",
            e.NextEntryOffset,
            e.Type,
            e.DataLength);
     unsigned char const *first = reinterpret_cast<unsigned char const *>(&e) + sizeof(FLAT_FORWARD_LIST_TEST);
     unsigned char const *end = first + e.DataLength;
     for (; first != end; ++first) {
-        printf("%x", *first);
+        std::printf("%x", *first);
     }
-    printf("}]\n");
+    std::printf("}]\n");
 }
 
 namespace iffl {
@@ -97,7 +97,7 @@ using ffl_iterator = iffl::flat_forward_list_iterator<FLAT_FORWARD_LIST_TEST>;
 using ffl_const_iterator = iffl::flat_forward_list_const_iterator<FLAT_FORWARD_LIST_TEST>;
 
 void flat_forward_list_validate_test1(char const * title, bool expected_to_be_valid, char const *first, char const *end) {
-    printf("-----\"%s\"-----\n", title);
+    std::printf("-----\"%s\"-----\n", title);
     auto[is_valid, last_valid] = iffl::flat_forward_list_validate<FLAT_FORWARD_LIST_TEST>(first, end);
     FFL_CODDING_ERROR_IF_NOT(is_valid == expected_to_be_valid);
     if (is_valid && last_valid) {
@@ -112,7 +112,7 @@ void flat_forward_list_validate_test1(char const * title, bool expected_to_be_va
 
 template<size_t N>
 void flat_forward_list_validate_array_test1(char const * title, bool expected_to_be_valid, FLAT_FORWARD_LIST_TEST const (&a)[N]) {
-    printf("-----\"%s\"-----\n", title);
+    std::printf("-----\"%s\"-----\n", title);
     auto[is_valid, last_valid] = iffl::flat_forward_list_validate(a, a + N);
     FFL_CODDING_ERROR_IF_NOT(is_valid == expected_to_be_valid);
 
@@ -295,7 +295,7 @@ inline void flat_forward_list_validate_test1() {
 }
 
 inline void flat_forward_list_iterator_test1() {
-    printf("----- flat_forward_list_iterator over \"ver1\"-----\n");
+    std::printf("----- flat_forward_list_iterator over \"ver1\"-----\n");
     iffl::flat_forward_list_iterator<FLAT_FORWARD_LIST_TEST> first{ ve1 };
     iffl::flat_forward_list_iterator<FLAT_FORWARD_LIST_TEST> end{};
 
@@ -1163,7 +1163,7 @@ FLAT_FORWARD_LIST_TEST const list_unordered1_len_2[] = {
 
 void print_flat_forward_list(char const * title, 
                              iffl::pmr_flat_forward_list<FLAT_FORWARD_LIST_TEST> const &container) {
-    printf("-----\"%s\"-----\n", title);
+    std::printf("-----\"%s\"-----\n", title);
     std::for_each(container.begin(), container.end(), [](FLAT_FORWARD_LIST_TEST const &e) {
         print_element(e);
     });

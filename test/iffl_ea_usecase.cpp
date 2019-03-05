@@ -157,31 +157,31 @@ char const ea_data2[] = { 1,2,3,4,5,6,7,8,9,0xa,0xb,0xc,0xd,0xf };
 void print_ea(size_t idx, 
               size_t offset,
               FILE_FULL_EA_INFORMATION const &e) {
-    printf("FILE_FULL_EA_INFORMATION[%zi] @ = 0x%p, buffer offset %zi\n",
+    std::printf("FILE_FULL_EA_INFORMATION[%zi] @ = 0x%p, buffer offset %zi\n",
            idx,
            &e,
            offset);
-    printf("FILE_FULL_EA_INFORMATION[%zi].NextEntryOffset = %u\n",
+    std::printf("FILE_FULL_EA_INFORMATION[%zi].NextEntryOffset = %u\n",
            idx,
            e.NextEntryOffset);
-    printf("FILE_FULL_EA_INFORMATION[%zi].Flags = %u\n",
+    std::printf("FILE_FULL_EA_INFORMATION[%zi].Flags = %u\n",
            idx,
            static_cast<int>(e.Flags));
-    printf("FILE_FULL_EA_INFORMATION[%zi].EaNameLength = %u \"%s\"\n",
+    std::printf("FILE_FULL_EA_INFORMATION[%zi].EaNameLength = %u \"%s\"\n",
            idx,
            static_cast<int>(e.EaNameLength),
            (e.EaNameLength ? std::string{ e.EaName, e.EaName + e.EaNameLength }
     : std::string{}).c_str());
-    printf("FILE_FULL_EA_INFORMATION[%zi].EaValueLength = %hu\n",
+    std::printf("FILE_FULL_EA_INFORMATION[%zi].EaValueLength = %hu\n",
            idx,
            e.EaValueLength);
     if (e.EaValueLength) {
         char const * data_first = e.EaName + e.EaNameLength;
         char const * const data_end = e.EaName + e.EaNameLength + e.EaValueLength;
         for (; data_first != data_end; ++data_first) {
-            printf("%x", static_cast<int>(*data_first));
+            std::printf("%x", static_cast<int>(*data_first));
         }
-        printf("\n");
+        std::printf("\n");
     }
 }
 
@@ -191,7 +191,7 @@ void print_ea(size_t idx,
 //
 void handle_ea1(char const *buffer, size_t buffer_lenght) {
 
-    printf("-----\"handle_ea1\"-----\n");
+    std::printf("-----\"handle_ea1\"-----\n");
 
     size_t idx{ 0 };
     char const *failed_validation{ nullptr };
@@ -232,13 +232,13 @@ void handle_ea1(char const *buffer, size_t buffer_lenght) {
                 return is_valid;
             });
 
-    printf("\n");
-    printf("valid                            : %s\n", is_valid ? "yes" : "no");
-    printf("found elements                   : %zi\n", idx);
-    printf("last valid element               : 0x%p\n", last_valid);
-    printf("element failed validation        : 0x%p\n", failed_validation);
-    printf("element failed validation length : %zi\n", invalid_element_length);
-    printf("\n");
+    std::printf("\n");
+    std::printf("valid                            : %s\n", is_valid ? "yes" : "no");
+    std::printf("found elements                   : %zi\n", idx);
+    std::printf("last valid element               : 0x%p\n", last_valid);
+    std::printf("element failed validation        : 0x%p\n", failed_validation);
+    std::printf("element failed validation length : %zi\n", invalid_element_length);
+    std::printf("\n");
 }
 
 //
@@ -247,7 +247,7 @@ void handle_ea1(char const *buffer, size_t buffer_lenght) {
 //
 void handle_ea2(char const *buffer, size_t buffer_lenght) {
 
-    printf("-----\"handle_ea2\"-----\n");
+    std::printf("-----\"handle_ea2\"-----\n");
 
     size_t idx{ 0 };
     //
@@ -269,11 +269,11 @@ void handle_ea2(char const *buffer, size_t buffer_lenght) {
                       });
     }
 
-    printf("\n");
-    printf("valid                            : %s\n", is_valid ? "yes" : "no");
-    printf("found elements                   : %zi\n", idx);
-    printf("last valid element               : 0x%p\n", last_element);
-    printf("\n");
+    std::printf("\n");
+    std::printf("valid                            : %s\n", is_valid ? "yes" : "no");
+    std::printf("found elements                   : %zi\n", idx);
+    std::printf("last valid element               : 0x%p\n", last_element);
+    std::printf("\n");
 }
 
 //

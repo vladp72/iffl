@@ -20,6 +20,7 @@
 #include <typeinfo>
 #include <memory>
 #include <memory_resource>
+#include <cstdio>
 #include <intrin.h>
 
 //!
