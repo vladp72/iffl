@@ -1279,7 +1279,7 @@ public:
         return *this;
     }
     //!
-    //! @brief asignment operator from char * 
+    //! @brief assignment operator from char * 
     //! @param p - pointer to the buffer that contains element
     //! @return returns a reference to this object
     //!
@@ -1288,7 +1288,7 @@ public:
         return *this;
     }
     //!
-    //! @brief asignment operator from T * 
+    //! @brief assignment operator from T * 
     //! @param p - pointer to the element
     //! @return returns a reference to this object
     //!
@@ -1297,7 +1297,7 @@ public:
         return *this;
     }
     //!
-    //! @brief asignment operator from unsigned char * 
+    //! @brief assignment operator from unsigned char * 
     //! @param p - pointer to the buffer that contains element
     //! @return returns a reference to this object
     //!
@@ -1306,7 +1306,7 @@ public:
         return *this;
     }
     //!
-    //! @brief asignment operator from void * 
+    //! @brief assignment operator from void * 
     //! @param p - pointer to the buffer that contains element
     //! @return returns a reference to this object
     //!
@@ -1823,7 +1823,7 @@ public:
                       char const *buffer_end,
                       AA &&a = AA{})
         : A( std::forward<AA>(a) ) {
-        copy_from_buffer(buffer_begin, last_element, buffer_end);
+        assign(buffer_begin, last_element, buffer_end);
     }
     //!
     //! @brief Constructor that takes ownership of a buffer
@@ -1873,7 +1873,7 @@ public:
                       size_t buffer_size,
                       AA &&a = AA{})
         : A(std::forward<AA>(a)) {
-        copy_from_buffer(buffer, buffer_size);
+        assign(buffer, buffer_size);
     }
     //!
     //! @brief Move assignment operator.
@@ -2045,9 +2045,9 @@ public:
     //! a valid flat forward list. It assumes that
     //! caller validated buffer before using this constructor.
     //!
-    void copy_from_buffer(char const *buffer_begin, 
-                          char const *last_element, 
-                          char const *buffer_end) {
+    void assign(char const *buffer_begin, 
+                char const *last_element, 
+                char const *buffer_end) {
         flat_forward_list l(get_allocator());
 
         if (last_element) {
@@ -2076,14 +2076,14 @@ public:
     //! valid element in the buffer, and is buffer is valid then it
     //! copies elements to the new buffer.
     //!
-    bool copy_from_buffer(char const *buffer_begin, 
-                          char const *buffer_end) {
+    bool assign(char const *buffer_begin, 
+                char const *buffer_end) {
 
         auto[is_valid, last_valid] = flat_forward_list_validate<T, TT>(buffer_begin,
                                                                        buffer_end);
-        copy_from_buffer(buffer_begin,
-                         is_valid ? last_valid : nullptr,
-                         buffer_end);
+        assign(buffer_begin,
+               is_valid ? last_valid : nullptr,
+               buffer_end);
 
         return is_valid;
     }
@@ -2098,10 +2098,10 @@ public:
     //! valid element in the buffer, and is buffer is valid then it
     //! copies elements to the new buffer.
     //!
-    bool copy_from_buffer(char const *buffer,
-                          size_type buffer_size) {
+    bool assign(char const *buffer,
+                size_type buffer_size) {
 
-        return copy_from_buffer(buffer, buffer + buffer_size);
+        return assign(buffer, buffer + buffer_size);
     }
     //!
     //! @brief Compares if allocator used by container is 
