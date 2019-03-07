@@ -2192,7 +2192,7 @@ public:
             new_buffer = allocate_buffer(size);
             new_buffer_size = size;
             if (nullptr != last_element_) {
-                copy_data(new_buffer, buffer_begin_, prev_sizes.used_capacity().size_not_padded());
+                copy_data(new_buffer, buffer_begin_, prev_sizes.used_capacity().size);
                 last_element_ = new_buffer + prev_sizes.last_element.begin();
             }
             commit_new_buffer(new_buffer, new_buffer_size);
@@ -2222,7 +2222,7 @@ public:
             // be removed, and we need to do linear search for the new last element 
             // that would fit new buffer size.
             //
-            if (prev_sizes.used_capacity().size_not_padded() > size) {
+            if (prev_sizes.used_capacity().size > size) {
                 std::tie(is_valid, last_valid) = flat_forward_list_validate<T, TT>(buffer_begin_, buffer_begin_ + size);
                 if (is_valid) {
                     FFL_CODDING_ERROR_IF_NOT(last_valid == last_element_);
@@ -2235,7 +2235,7 @@ public:
                 size_type new_last_element_offset = last_valid - buffer_begin_;
 
                 size_with_padding_t last_valid_element_size{ traits_traits::get_size(last_valid) };
-                size_type new_used_capacity = new_last_element_offset + last_valid_element_size.size_not_padded();;
+                size_type new_used_capacity = new_last_element_offset + last_valid_element_size.size;
                 
                 set_no_next_element(last_valid);
                 
@@ -2291,13 +2291,9 @@ public:
     //! @details Constructed element does not have to use up the entire buffer
     //! unused space will become unused buffer capacity.
     //!
-    template <typename F
-             // ,typename ... P
-             >
+    template <typename F>
     void emplace_back(size_type element_size,
-                      F const &fn
-                      //,P&& ... p
-                       ) {
+                      F const &fn) {
         validate_pointer_invariants();
 
         FFL_CODDING_ERROR_IF(element_size < traits_traits::minimum_size());
@@ -2324,7 +2320,6 @@ public:
             cur = buffer_begin_ + prev_sizes.used_capacity().size_padded();
         }
 
-        // fn(cur, element_size, std::forward<P>(p)...);
         fn(cur, element_size);
 
         set_no_next_element(cur);
@@ -2333,7 +2328,7 @@ public:
         // size requested for this element.
         //
         size_with_padding_t cur_element_size{ traits_traits::get_size(cur) };
-        FFL_CODDING_ERROR_IF(element_size < cur_element_size.size_not_padded());
+        FFL_CODDING_ERROR_IF(element_size < cur_element_size.size);
         //
         // element that used to be last becomes
         // an element in the middle so we need to change 
@@ -2351,7 +2346,7 @@ public:
             // elements to the new buffer. 
             //
             if (buffer_begin_) {
-                copy_data(new_buffer, buffer_begin_, prev_sizes.used_capacity().size_not_padded());
+                copy_data(new_buffer, buffer_begin_, prev_sizes.used_capacity().size);
             }
             commit_new_buffer(new_buffer, new_buffer_size);
         }
@@ -2457,14 +2452,10 @@ public:
     //! @details Constructed element does not have to use up the entire buffer
     //! unused space will become unused buffer capacity.
     //!
-    template <typename F
-              //, typename ... P
-             >
+    template <typename F>
     iterator emplace(iterator const &it,
                      size_type new_element_size, 
-                     F const &fn
-                     //, P&& ... p
-                     ) {
+                     F const &fn) {
 
         validate_pointer_invariants();
         validate_iterator(it);
@@ -2472,7 +2463,6 @@ public:
         FFL_CODDING_ERROR_IF(new_element_size < traits_traits::minimum_size());
 
         if (end() == it) {
-            //emplace_back(new_element_size, fn, std::forward<P>(p)...);
             emplace_back(new_element_size, fn);
             return last();
         }
@@ -2494,7 +2484,7 @@ public:
         // Note that in this case old element that was in that position
         // is a part of the tail
         //
-        size_type tail_size{ prev_sizes.used_capacity().size_not_padded() - element_range.begin() };
+        size_type tail_size{ prev_sizes.used_capacity().size - element_range.begin() };
 
         char *begin{ nullptr };
         char *cur{ nullptr };
@@ -2529,7 +2519,6 @@ public:
         // construct
         //
         try {
-            //fn(cur, new_element_size, std::forward<P>(p)...);
             //
             // Pass to the constructor requested size, not padded size
             //
@@ -2553,10 +2542,10 @@ public:
         //
         size_with_padding_t cur_element_size{ traits_traits::get_size(cur) };
         if constexpr (traits_traits::has_next_offset_v) {
-            FFL_CODDING_ERROR_IF(new_element_size < cur_element_size.size_not_padded() ||
+            FFL_CODDING_ERROR_IF(new_element_size < cur_element_size.size ||
                                  new_element_size_aligned < cur_element_size.size_padded());
         } else {
-            FFL_CODDING_ERROR_IF_NOT(new_element_size == cur_element_size.size_not_padded() &&
+            FFL_CODDING_ERROR_IF_NOT(new_element_size == cur_element_size.size &&
                                      new_element_size_aligned == cur_element_size.size_padded());
         }
         //
@@ -2625,14 +2614,9 @@ public:
     //!        If functor raises then container remains in the state as if 
     //!        call did not happen
     //!
-    template <typename F
-              //,typename ... P
-             >
+    template <typename F>
     void emplace_front(size_type element_size, 
-                       F const &fn
-                       //, P&& ... p
-                       ) {
-        //emplace(begin(), element_size, fn, std::forward<P>(p)...);
+                       F const &fn) {
         emplace(begin(), element_size, fn);
     }
     //!
@@ -2657,7 +2641,7 @@ public:
         iterator begin_it{ iterator{ buffer_begin_ } };
         iterator secont_element_it{ begin_it + 1 };
         range_t second_element_range{ this->range_unsafe(secont_element_it) };
-        size_type bytes_to_copy{ prev_sizes.used_capacity().size_not_padded() - second_element_range.begin() };
+        size_type bytes_to_copy{ prev_sizes.used_capacity().size - second_element_range.begin() };
         //
         // Shift all elements after the first element
         // to the start of buffer
@@ -2706,15 +2690,15 @@ public:
             //
             all_sizes_t prev_sizes{ get_all_sizes() };
             range_t element_to_erase_range{ this->range_unsafe(element_to_erase_it) };
-            size_type tail_size{ prev_sizes.used_capacity().size_not_padded() - element_to_erase_range.buffer_end_unaligned() };
+            size_type tail_size{ prev_sizes.used_capacity().size - element_to_erase_range.buffer_end };
             //
             // Shift all elements after the element that we are erasing
             // to the position where erased element used to be
             //
             move_data(buffer_begin_ + element_to_erase_range.begin(), 
-                      buffer_begin_ + element_to_erase_range.buffer_end_unaligned(), tail_size
+                      buffer_begin_ + element_to_erase_range.buffer_end, tail_size
             );
-            last_element_ -= element_to_erase_range.buffer_size_not_padded();
+            last_element_ -= element_to_erase_range.buffer_size();
         }
 
         validate_pointer_invariants();
@@ -2773,14 +2757,14 @@ public:
         // Note that element_range returns element size adjusted with padding
         // that is required for the next element to be propertly aligned.
         //
-        size_type bytes_to_copy{ prev_sizes.used_capacity().size_not_padded() - last_element_to_erase_range.buffer_end_unaligned() };
-        size_type bytes_erased{ last_element_to_erase_range.buffer_end_unaligned() - first_element_to_erase_range.begin() };
+        size_type bytes_to_copy{ prev_sizes.used_capacity().size - last_element_to_erase_range.buffer_end };
+        size_type bytes_erased{ last_element_to_erase_range.buffer_end - first_element_to_erase_range.begin() };
         //
         // Shift all elements after the last element that we are erasing
         // to the position where first erased element used to be
         //
         move_data(buffer_begin_ + first_element_to_erase_range.begin(),
-                  buffer_begin_ + last_element_to_erase_range.buffer_end_unaligned(),
+                  buffer_begin_ + last_element_to_erase_range.buffer_end,
                   bytes_to_copy);
         last_element_ -= bytes_erased;
 
@@ -2877,15 +2861,15 @@ public:
         // Size of all elements after element that we are erasing,
         // not counting padding after last element.
         //
-        size_type tail_size{ prev_sizes.used_capacity().size_not_padded() - element_range.buffer_end_unaligned() };
+        size_type tail_size{ prev_sizes.used_capacity().size - element_range.buffer_end };
         //
         // Shifting remaining elements will erase this element.
         //
         move_data(buffer_begin_ + element_range.begin(),
-                  buffer_begin_ + element_range.buffer_end_unaligned(),
+                  buffer_begin_ + element_range.buffer_end,
                   tail_size);
 
-        last_element_ -= element_range.buffer_size_not_padded();
+        last_element_ -= element_range.buffer_size();
 
         validate_pointer_invariants();
         validate_data_invariants();
@@ -2924,7 +2908,7 @@ public:
         
         range_t start_range = range_unsafe(start);
         range_t end_range = range_unsafe(end);
-        size_type bytes_to_copy{ prev_sizes.used_capacity().size_not_padded() - end_range.buffer_end_unaligned() };
+        size_type bytes_to_copy{ prev_sizes.used_capacity().size - end_range.buffer_end };
         size_type bytes_erased{ end_range.begin() - start_range.begin() };
 
         move_data(buffer_begin_ + start_range.begin(),
@@ -3402,14 +3386,10 @@ public:
     //! Resizing to any other size also fixes alignment of element and 
     //! adds missing padding.
     //!
-    template <typename F
-             //,typename ... P
-             >
+    template <typename F>
     iterator element_resize(iterator const &it, 
                             size_type new_size, 
-                            F const &fn
-                            //,P&& ... p
-                           ) noexcept {
+                            F const &fn) noexcept {
         //
         // Resize to 0 is same as erase
         //
@@ -3445,11 +3425,11 @@ public:
         //
         // Calculate tail size
         //
-        size_type tail_size{ prev_sizes.used_capacity().size_not_padded() - element_range_before.buffer_end_unaligned() };
+        size_type tail_size{ prev_sizes.used_capacity().size - element_range_before.buffer_end };
         //
         // By how much element size is changing
         //
-        difference_type element_size_diff{ static_cast<difference_type>(new_size_padded - element_range_before.buffer_size_not_padded()) };
+        difference_type element_size_diff{ static_cast<difference_type>(new_size_padded - element_range_before.buffer_size()) };
         //
         // This branch handles case when we do not need to reallocate buffer
         // and we have sufficiently large buffer.
@@ -3457,13 +3437,13 @@ public:
         if (element_size_diff < 0 ||
             prev_sizes.remaining_capacity_for_insert() >= static_cast<size_type>(element_size_diff)) {
 
-            size_type tail_start_offset = element_range_before.buffer_end_unaligned();
+            size_type tail_start_offset = element_range_before.buffer_end;
             //
             // If element is getting extended in size then shift tail to the 
             // right to make space for element data, and remember new tail 
             // position
             //
-            if (new_size_padded > element_range_before.buffer_size_not_padded()) {
+            if (new_size_padded > element_range_before.buffer_size()) {
                 move_data(buffer_begin_ + element_range_before.begin() + new_size_padded,
                           buffer_begin_ + tail_start_offset,
                           tail_size);
@@ -3491,43 +3471,43 @@ public:
                 // New element size must not be larget than size that it is 
                 // allowed to grow by
                 //
-                FFL_CODDING_ERROR_IF(element_size_after.size_not_padded() > new_size);
+                FFL_CODDING_ERROR_IF(element_size_after.size > new_size);
                 //
                 // If we have next pointer then next element should start after new_size_padded
                 // otherwise if should start after padded size of the element
                 //
                 range_t element_range_after{ element_range_before.begin(),
-                                             element_range_after.begin() + element_size_after.size_not_padded(),
+                                             element_range_after.begin() + element_size_after.size,
                                              element_range_after.begin() + new_size_padded };
                 element_range_after.verify();
                 //
                 // New evement end must not pass current tail position
                 //
-                FFL_CODDING_ERROR_IF(element_range_after.buffer_end_unaligned() > tail_start_offset);
+                FFL_CODDING_ERROR_IF(element_range_after.buffer_end > tail_start_offset);
                 //
                 // if size changed, then shift tal to the left
                 //
-                if (element_range_after.buffer_end_unaligned() != element_range_before.buffer_end_unaligned()) {
+                if (element_range_after.buffer_end != element_range_before.buffer_end) {
 
-                    move_data(buffer_begin_ + element_range_after.buffer_end_unaligned(),
+                    move_data(buffer_begin_ + element_range_after.buffer_end,
                               buffer_begin_ + tail_start_offset,
                               tail_size);
                     //
                     // calculate by how much tail moved
                     //
-                    difference_type tail_shift{ static_cast<difference_type>(element_range_after.buffer_size_not_padded() -
-                                                                             element_range_before.buffer_size_not_padded()) };
+                    difference_type tail_shift{ static_cast<difference_type>(element_range_after.buffer_size() -
+                                                                             element_range_before.buffer_size()) };
                     //
                     // Update pointer to last element
                     //
                     last_element_ += tail_shift;
                 }
 
-                this->set_next_offset(it.get_ptr(), element_range_after.buffer_size_not_padded());
+                this->set_next_offset(it.get_ptr(), element_range_after.buffer_size());
             }) };
 
             fn(it.get_ptr(), 
-               element_range_before.buffer_size_not_padded(),
+               element_range_before.buffer_size(),
                new_size);
 
             result_it = it;
@@ -3540,19 +3520,19 @@ public:
             size_type new_buffer_size{ 0 };
             auto deallocate_buffer{ make_scoped_deallocator(&new_buffer, &new_buffer_size) };
 
-            new_buffer_size = prev_sizes.used_capacity().size_not_padded() + new_size_padded - element_range_before.buffer_size_not_padded();
+            new_buffer_size = prev_sizes.used_capacity().size + new_size_padded - element_range_before.buffer_size();
             new_buffer = allocate_buffer(new_buffer_size);
             //
             // copy element that we are changing to the new buffer
             //
             copy_data(new_buffer + element_range_before.begin(),
                       buffer_begin_ + element_range_before.begin(),
-                      element_range_before.buffer_size_not_padded());
+                      element_range_before.buffer_size());
             //
             // change element
             //
             fn(new_buffer + element_range_before.begin(),
-               element_range_before.buffer_size_not_padded(),
+               element_range_before.buffer_size(),
                new_size);
             //
             // fn did not throw an exception, and remainder of 
@@ -3571,20 +3551,20 @@ public:
             // New element size must not be larget than size that it is 
             // allowed to grow by
             //
-            FFL_CODDING_ERROR_IF(element_size_after.size_not_padded() > new_size);
+            FFL_CODDING_ERROR_IF(element_size_after.size > new_size);
             //
             // If we have next pointer then next element should start after new_size_padded
             // otherwise if should start after padded size of the element
             //
             range_t element_range_after{ element_range_before.begin(),
-                                         element_range_after.begin() + element_size_after.size_not_padded(),
+                                         element_range_after.begin() + element_size_after.size,
                                          element_range_after.begin() + new_size_padded };
             element_range_after.verify();
             //
             // Copy tail
             //
-            move_data(new_buffer + element_range_after.buffer_end_unaligned(),
-                      buffer_begin_ + element_range_before.buffer_end_unaligned(),
+            move_data(new_buffer + element_range_after.buffer_end,
+                      buffer_begin_ + element_range_before.buffer_end,
                       tail_size);
             //
             // commit mew buffer
@@ -3593,8 +3573,8 @@ public:
             //
             // calculate by how much tail moved
             //
-            difference_type tail_shift{ static_cast<difference_type>(element_range_after.buffer_size_not_padded() -
-                                                                     element_range_before.buffer_size_not_padded()) };
+            difference_type tail_shift{ static_cast<difference_type>(element_range_after.buffer_size() -
+                                                                     element_range_before.buffer_size()) };
             //
             // Update pointer to last element
             //
@@ -3602,7 +3582,7 @@ public:
             //
             // fix offset to the next element
             //
-            this->set_next_offset(result_it.get_ptr(), element_range_after.buffer_size_not_padded());
+            this->set_next_offset(result_it.get_ptr(), element_range_after.buffer_size());
         }
 
         validate_pointer_invariants();
@@ -3620,7 +3600,7 @@ public:
     size_type required_size(const_iterator const &it) const noexcept {
         validate_pointer_invariants();
         validate_iterator_not_end(it);
-        return size_unsafe(it).size_not_padded();
+        return size_unsafe(it).size;
     }
     //!
     //! @param it - iterator pointing to the element we are returning size for.
@@ -3868,7 +3848,7 @@ public:
     size_type used_capacity() const noexcept {
         validate_pointer_invariants();
         all_sizes_t s{ get_all_sizes() };
-        return s.used_capacity().size_not_padded();
+        return s.used_capacity().size;
     }
     //!
     //! @returns Buffer size.
@@ -3912,8 +3892,8 @@ public:
         //
         if (zero_unused_capacity) {
             all_sizes_t prev_sizes{ get_all_sizes() };
-            if (prev_sizes.used_capacity().size_not_padded() > 0) {
-                size_type last_element_end{ prev_sizes.last_element.begin() + prev_sizes.last_element.data_size_not_padded() };
+            if (prev_sizes.used_capacity().size > 0) {
+                size_type last_element_end{ prev_sizes.last_element.begin() + prev_sizes.last_element.data_size() };
                 size_type unuset_tail_size{ prev_sizes.total_capacity - last_element_end };
                 fill_buffer(buffer_begin_ + last_element_end,
                             fill_byte,
@@ -3939,18 +3919,14 @@ private:
     //! since there is no next element that needs to be padded.
     //! 
     //!
-    template <typename F
-             //,typename ... P
-             >
+    template <typename F>
     iterator resize_last_element( size_type new_size, 
-                                  F const &fn
-                                  //,P&& ... p
-                                  ) noexcept {
+                                  F const &fn) noexcept {
 
         validate_pointer_invariants();
 
         all_sizes_t prev_sizes{ get_all_sizes() };
-        difference_type element_size_diff{ static_cast<difference_type>(new_size - prev_sizes.last_element.data_size_not_padded()) };
+        difference_type element_size_diff{ static_cast<difference_type>(new_size - prev_sizes.last_element.data_size()) };
         //
         // If last element is shrinking or 
         // if it does not reach capacity available in the buffer 
@@ -3966,7 +3942,7 @@ private:
             prev_sizes.remaining_capacity_for_insert() >= static_cast<size_type>(element_size_diff)) {
 
             fn(last_element_, 
-               prev_sizes.last_element.data_size_not_padded(),
+               prev_sizes.last_element.data_size(),
                new_size);
 
         } else {
@@ -3975,7 +3951,7 @@ private:
             size_type new_buffer_size{ 0 };
             auto deallocate_buffer{ make_scoped_deallocator(&new_buffer, &new_buffer_size) };
 
-            new_buffer_size = prev_sizes.used_capacity().size_not_padded() + new_size - prev_sizes.last_element.data_size_not_padded();
+            new_buffer_size = prev_sizes.used_capacity().size + new_size - prev_sizes.last_element.data_size();
             new_buffer = allocate_buffer(new_buffer_size);
 
             char *new_last_ptr{ new_buffer + prev_sizes.last_element.begin() };
@@ -3984,12 +3960,12 @@ private:
             //
             copy_data(new_last_ptr,
                       buffer_begin_ + prev_sizes.last_element.begin(),
-                      prev_sizes.last_element.data_size_not_padded());
+                      prev_sizes.last_element.data_size());
             //
             // change element
             //
             fn(new_last_ptr,
-               prev_sizes.last_element.data_size_not_padded(),
+               prev_sizes.last_element.data_size(),
                new_size);
             //
             // copy head
@@ -4093,9 +4069,9 @@ private:
         clear();
         if (other.last_element_) {
             all_sizes_t other_sizes{ other.get_all_sizes() };
-            buffer_begin_ = allocate_buffer(other_sizes.used_capacity().size_not_padded());
-            copy_data(buffer_begin_, other.buffer_begin_, other_sizes.used_capacity().size_not_padded());
-            buffer_end_ = buffer_begin_ + other_sizes.used_capacity().size_not_padded();
+            buffer_begin_ = allocate_buffer(other_sizes.used_capacity().size);
+            copy_data(buffer_begin_, other.buffer_begin_, other_sizes.used_capacity().size);
+            buffer_end_ = buffer_begin_ + other_sizes.used_capacity().size;
             last_element_ = buffer_begin_ + other_sizes.last_element.begin();
         }
     }
@@ -4172,8 +4148,8 @@ private:
             //
             size_type buffer_lenght{ static_cast<size_type>(buffer_end_ - buffer_begin_) };
             if constexpr (!traits_traits::has_next_offset_v) {
-                auto[last_element_size_not_padded, last_element_size_padded] = traits_traits::get_size(last_element_);
-                buffer_lenght = last_element_size_not_padded;
+                auto[last_element_size, last_element_size_padded] = traits_traits::get_size(last_element_);
+                buffer_lenght = last_element_size;
             }
             auto[valid, last] = flat_forward_list_validate<T, TT>(buffer_begin_, last_element_ + buffer_lenght);
             FFL_CODDING_ERROR_IF_NOT(valid);
@@ -4182,7 +4158,7 @@ private:
             if (last_element_) {
                 size_with_padding_t last_element_size = traits_traits::get_size(last_element_);
                 size_type last_element_offset{ static_cast<size_type>(last_element_ - buffer_begin_) };
-                FFL_CODDING_ERROR_IF(buffer_lenght < (last_element_offset + last_element_size.size_not_padded()));
+                FFL_CODDING_ERROR_IF(buffer_lenght < (last_element_offset + last_element_size.size));
             }
         }
 #endif //FFL_DBG_CHECK_DATA_VALID
@@ -4289,7 +4265,7 @@ private:
                 //
                 // Last element
                 //
-                next_offset = s.size_not_padded();
+                next_offset = s.size;
             }
             return next_offset;
         } else {
@@ -4298,7 +4274,7 @@ private:
             // buffer might end without including padding for the last element
             //
             if (last() == it) {
-                return s.size_not_padded();
+                return s.size;
             } else {
                 return s.size_padded();
             }
@@ -4325,18 +4301,18 @@ private:
         size_with_padding_t s{ traits_traits::get_size(it.get_ptr()) };
         range_t r{};
         r.buffer_begin = it.get_ptr() - buffer_begin_;
-        r.data_end = r.begin() + s.size_not_padded();
+        r.data_end = r.begin() + s.size;
         if constexpr (traits_traits::has_next_offset_v) {
             size_type next_offset = traits::get_next_offset(it.get_ptr());
             if (0 == next_offset) {
                 FFL_CODDING_ERROR_IF(last() != it);
-                r.buffer_end = r.begin() + s.size_not_padded();
+                r.buffer_end = r.begin() + s.size;
             } else {
                 r.buffer_end = r.begin() + next_offset;
             }
         } else {
             if (last() == it) {
-                r.buffer_end = r.begin() + s.size_not_padded();
+                r.buffer_end = r.begin() + s.size;
             } else {
                 r.buffer_end = r.begin() + s.size_padded();
             }
@@ -4398,14 +4374,14 @@ private:
         //! @brief Capacity used by elements in the buffer
         //!
         size_with_padding<ALIGNMENT_V> used_capacity() const {
-            return {last_element.data_end_unaligned()};
+            return {last_element.data_end};
         }
         //!
         //! @details When we are inserting new element in the middle we need to make sure inserted element
         //! is padded, but we do not need to padd tail element
         //!
         size_type remaining_capacity_for_insert() const {
-            return total_capacity - used_capacity().size_not_padded();
+            return total_capacity - used_capacity().size;
         }
         //!
         //! @details If we are appending then we need to padd current last element, but new inserted 
@@ -4436,7 +4412,7 @@ private:
         if (nullptr != last_element_) {          
             s.last_element = range_unsafe(const_iterator{ last_element_ });
         }
-        FFL_CODDING_ERROR_IF(s.total_capacity < s.used_capacity().size_not_padded());
+        FFL_CODDING_ERROR_IF(s.total_capacity < s.used_capacity().size);
 
         return s;
     }

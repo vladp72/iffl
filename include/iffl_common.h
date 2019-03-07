@@ -522,13 +522,6 @@ struct range_with_alighment : public range {
     //!
     constexpr static size_t const alignment{ ALIGNMENT_V };
     //!
-    //! @return Offset of the end of the data not padded to
-    //! element type alignment
-    //!
-    constexpr size_t data_end_unaligned() const noexcept {
-        return data_end;
-    }
-    //!
     //! @return Offset of the end of the data padded to
     //! element type alignment
     //!
@@ -536,24 +529,11 @@ struct range_with_alighment : public range {
         return roundup_size_to_alignment(data_end, ALIGNMENT_V);
     }
     //!
-    //! @return Offset of the end of the buffer not padded to
-    //! element type alignment
-    //!
-    constexpr size_t buffer_end_unaligned() const noexcept {
-        return buffer_end;
-    }
-    //!
     //! @return Offset of the end of the buffer padded to
     //! element type alignment
     //!
     constexpr size_t buffer_end_aligned() const noexcept {
         return roundup_size_to_alignment(buffer_end, ALIGNMENT_V);
-    }
-    //!
-    //! @return Data size not padded to element type alignment
-    //!
-    constexpr size_t data_size_not_padded() const noexcept {
-        return range::data_size();
     }
     //!
     //! @return Data size padded to element type alignment
@@ -572,7 +552,7 @@ struct range_with_alighment : public range {
         //
         // Size of required data padding
         //
-        return data_end_aligned() - data_end_unaligned();
+        return data_end_aligned() - data_end;
     }
     //!
     //! @return Buffer padding size
@@ -581,13 +561,7 @@ struct range_with_alighment : public range {
         //
         // Size of required data padding
         //
-        return buffer_end_aligned() - buffer_end_unaligned();
-    }
-    //!
-    //! @return Buffer size not padded to element type alignment
-    //!
-    constexpr size_t buffer_size_not_padded() const noexcept {
-        return range::buffer_size();
+        return buffer_end_aligned() - buffer_end;
     }
     //!
     //! @return Buffer size padded to element type alignment
@@ -612,12 +586,6 @@ struct offset_with_aligment {
     //! @brief Not padded offset in a buffer
     //!
     size_t offset{ 0 };
-    //!
-    //! @return Returns unaligned offset in a buffer
-    //!
-    constexpr size_t offset_unaligned() const noexcept {
-        return offset_aligned - offset_unaligned;
-    }
     //!
     //! @return Returns aligned offset in a buffer
     //!
@@ -647,12 +615,6 @@ struct size_with_padding {
     //! @brief Not padded size
     //!
     size_t size{ 0 };
-    //!
-    //! @return Returns size not padded to allignment
-    //!
-    constexpr size_t size_not_padded() const noexcept {
-        return size;
-    }
     //!
     //! @return Returns size padded to allignment
     //!
