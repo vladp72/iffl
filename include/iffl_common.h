@@ -629,100 +629,289 @@ struct size_with_padding {
     }
 };
 
-// CLASS TEMPLATE _Compressed_pair
-struct zero_then_variadic_args_t
-{// tag type for value-initializing first,
-};// constructing second from remaining args
+//!
+//! @class zero_then_variadic_args_t
+//! @brief Tag type for value - initializing first,
+//! constructing second from remaining args
+//!
+struct zero_then_variadic_args_t {
+};
 
-struct one_then_variadic_args_t
-{// tag type for constructing first from one arg,
-};// constructing second from remaining args
+//!
+//! @class one_then_variadic_args_t
+//! @brief Tag type for constructing first from one arg,
+//! constructing second from remaining args
+//!
+struct one_then_variadic_args_t {
+};
 
-
+//!
+//! @class compressed_pair
+//! @brief Empty Base Class Optimization EBCO helper.
+//! @tparam T1 - First type is inherited from
+//!              if it is possible, and if it safes space
+//! @tparam T2 - Second type is always a member
+//! @details Store a pair of values, deriving from empty first.
+//! This is a general template for the case when inheriting from T1
+//! would help.
+//! We use SFINAE on the 3rd parameter to fail this instantiation
+//! when EBCO would not help or would not work. Other specialization 
+//! should be used in that case.
+//! This is a nive implementation borrowed from
+//! the MSVC CRT. More complete implementation can 
+//! be found  in boost
+//!
 template<class T1,
          class T2,
          bool = std::is_empty_v<T1> && !std::is_final_v<T1>>
-class compressed_pair final : private T1 {// store a pair of values, deriving from empty first
-
-    using base_t = T1;// for visualization
-
+class compressed_pair final : private T1 {
 public:
-    template<class... Other>
+
+    //!
+    //! @brief Constructor
+    //! @tparam P - variadic parameter pack firwarded 
+    //!             to the constructor of T2
+    //! @param p - parameters for the T2 constructor
+    //! @details Value initialize first parameter,
+    //! and passes all other parameters to the 
+    //! constructor of second
+    //!
+    template<class... P>
     constexpr explicit compressed_pair(zero_then_variadic_args_t,
-                                       Other&&... v2)
+                                       P&&... p)
         : T1()
-        , v2_(std::forward<Other>(v2)...) {// construct from forwarded values
+        , v2_(std::forward<P>(p)...) {
     }
-
-    template<class Other1,
-             class... Other2>
+    //!
+    //! @brief Constructor
+    //! @tparam P1 - parameter used to initialize T1
+    //! @tparam P2 - variadic parameter pack forwarded 
+    //!              to the constructor of T2
+    //! @param p1 - parameter for the T1 constructor
+    //! @param p2 - parameters for the T2 constructor
+    //! @details Constructs first parameter from p1,
+    //! and passes all other parameters to the 
+    //! constructor of second.
+    //!
+    template<class P1,
+             class... P2>
     constexpr compressed_pair(one_then_variadic_args_t,
-                              Other1&& v1, 
-                              Other2&&... v2)
-        : T1(std::forward<Other1>(v1))
-        , v2_(std::forward<Other2>(v2)...) {// construct from forwarded values
+                              P1&& p1, 
+                              P2&&... p2)
+        : T1(std::forward<P1>(p1))
+        , v2_(std::forward<P2>(p2)...) {// construct from forwarded values
     }
-
-    constexpr T1& get_first() noexcept {// return reference to first
+    //!
+    //! @brief Returns a reference to the 
+    //! first element of compressed pair
+    //!
+    constexpr T1& get_first() noexcept {
         return (*this);
     }
-
-    constexpr T1 const & get_first() const noexcept {// return const reference to first
+    //!
+    //! @brief Returns a const reference to the 
+    //! first element of compressed pair
+    //!
+    constexpr T1 const & get_first() const noexcept {
         return (*this);
     }
-
-    constexpr T2& get_second() noexcept {// return reference to second
+    //!
+    //! @brief Returns a reference to the 
+    //! second element of compressed pair
+    //!
+    constexpr T2& get_second() noexcept {
         return (v2_);
     }
-
-    constexpr T2 const & get_second() const noexcept {// return const reference to second
+    //!
+    //! @brief Returns a const reference to the 
+    //! second element of compressed pair
+    //!
+    constexpr T2 const & get_second() const noexcept {
         return (v2_);
     }
 
 private:
+    //!
+    //! @details Second element of compressed pair is always 
+    //! contained by value
+    //!
     T2 v2_;
 };
 
+//!
+//! @class compressed_pair<T1, T2, false>
+//! @brief Specialization for the case when 
+//! Empty Base Class Optimization EBCO would not work. 
+//! @tparam T1 - First type. In this partial specialization 
+//!              it is a member.
+//! @tparam T2 - Second type is always a member
+//! @details Store a pair of values, deriving from empty first.
+//! This is a template specialization for the case when inheriting from T1
+//! would not help or work.
+//!
 template<class T1,
          class T2>
-class compressed_pair<T1, T2, false> final {// store a pair of values, not deriving from first
-
+class compressed_pair<T1, T2, false> final {
 public:
-    template<class... Other>
+
+    //!
+    //! @brief Constructor
+    //! @tparam P - variadic parameter pack firwarded 
+    //!             to the constructor of T2
+    //! @param p - parameters for the T2 constructor
+    //! @details Value initialize first parameter,
+    //! and passes all other parameters to the 
+    //! constructor of second
+    //!
+    template<class... P>
     constexpr explicit compressed_pair(zero_then_variadic_args_t,
-                                       Other&&... v2)
+                                       P&&... p)
         : v1_()
-        , v2_(std::forward<Other>(v2)...) {// construct from forwarded values
+        , v2_(std::forward<P>(p)...) {// construct from forwarded values
     }
 
-    template<class Other1,
-             class... Other2>
+    //!
+    //! @brief Constructor
+    //! @tparam P1 - parameter used to initialize T1
+    //! @tparam P2 - variadic parameter pack forwarded 
+    //!              to the constructor of T2
+    //! @param p1 - parameter for the T1 constructor
+    //! @param p2 - parameters for the T2 constructor
+    //! @details Constructs first parameter from p1,
+    //! and passes all other parameters to the 
+    //! constructor of second.
+    //!
+    template<class P1,
+             class... P2>
     constexpr compressed_pair(one_then_variadic_args_t,
-                              Other1&& v1, 
-                              Other2&&... v2)
-        : v1_(std::forward<Other1>(v1))
-        , v2_(std::forward<Other2>(v2)...) {// construct from forwarded values
+                              P1&& p1, 
+                              P2&&... p2)
+        : v1_(std::forward<P1>(p1))
+        , v2_(std::forward<P2>(p2)...) {
     }
-
-    constexpr T1& get_first() noexcept {// return reference to first
+    //!
+    //! @brief Returns a reference to the 
+    //! first element of compressed pair
+    //!
+    constexpr T1& get_first() noexcept {
         return (v1_);
     }
-
-    constexpr T1 const & get_first() const noexcept {// return const reference to first
+    //!
+    //! @brief Returns a const reference to the 
+    //! first element of compressed pair
+    //!
+    constexpr T1 const & get_first() const noexcept {
         return (v1_);
     }
-
-    constexpr T2& get_second() noexcept {// return reference to second
+    //!
+    //! @brief Returns a reference to the 
+    //! second element of compressed pair
+    //!
+    constexpr T2& get_second() noexcept {
         return (v2_);
     }
-
-    constexpr T2 const & get_second() const noexcept {// return const reference to second
+    //!
+    //! @brief Returns a const reference to the 
+    //! second element of compressed pair
+    //!
+    constexpr T2 const & get_second() const noexcept {
         return (v2_);
     }
 
 private:
     T1 v1_;
     T2 v2_;
+};
+
+
+struct flat_forward_list_buffer;
+struct flat_forward_list_buffer_alt;
+
+//!
+//! @class flat_forward_list_buffer
+//! @brief A set of pointers describing state of
+//! the buffer containing flat forward list.
+//!
+struct flat_forward_list_buffer {
+    //!
+    //! @brief Pointer to the beginning of buffer
+    //! nullptr if no buffer
+    //!
+    char *begin{ nullptr };
+    //!
+    //! @brief Pointer to the last element in the list
+    //! nullptr if no buffer or if there is no elements 
+    //! in the list.
+    //!
+    char *last{ nullptr };
+    //!
+    //! @brief Pointer to the end of buffer
+    //! nullptr if no buffer
+    //!
+    char *end{ nullptr };
+    //!
+    //! @brief Returns buffer size
+    //!
+    constexpr size_t size() const noexcept {
+        return end - begin;
+    }
+    //!
+    //! @brief Returns offset of the last element in the buffer
+    //!
+    constexpr size_t last_offset() const noexcept {
+        return last ? last - begin
+            : 0;
+    }
+};
+
+//!
+//! class flat_forward_list_buffer_alt
+//! @brief A set of pointers describing state of
+//! the buffer containing flat forward list.
+//!
+struct flat_forward_list_buffer_alt {
+    //!
+    //! @brief Pointer to the beginning of buffer
+    //! nullptr if no buffer
+    //!
+    char *begin{ nullptr };
+    //!
+    //! @brief Offset of the last element in the list
+    //! npos if no buffer or if there is no elements
+    //! in the list.
+    //!
+    size_t last_offset{ iffl::npos };
+    //!
+    //! @brief Buffer size
+    //! 0 if no buffer
+    //!
+    size_t size{ 0 };
+    //!
+    //! @brief Returns pointer to the end of the buffer
+    //!
+    constexpr char * end() noexcept {
+        return begin + size;
+    }
+    //!
+    //! @brief Returns pointer to the end of the buffer
+    //!
+    constexpr char const * end() const noexcept {
+        return begin + size;
+    }
+    //!
+    //! @brief Returns pointer to the last element
+    //!
+    constexpr char * last() noexcept {
+        return last_offset == iffl::npos ? nullptr
+            : begin + last_offset;
+    }
+    //!
+    //! @brief Returns pointer to the last element
+    //!
+    constexpr char const * last() const noexcept {
+        return last_offset == iffl::npos ? nullptr
+            : begin + last_offset;
+    }
 };
 
 } // namespace iffl
