@@ -217,6 +217,84 @@
 //!
 namespace iffl {
 
+struct flat_forward_list_buffer;
+struct flat_forward_list_buffer_alt;
+
+//!
+//! @class flat_forward_list_buffer
+//! @brief A set of pointers describing state of
+//! the buffer containing flat forward list.
+//!
+struct flat_forward_list_buffer {
+    //!
+    //! @brief Pointer to the beginning of buffer
+    //! nullptr if no buffer
+    //!
+    char *begin{ nullptr };
+    //!
+    //! @brief Pointer to the last element in the list
+    //! nullptr if no buffer or if there is no elements 
+    //! in the list.
+    //!
+    char *last{ nullptr };
+    //!
+    //! @brief Pointer to the end of buffer
+    //! nullptr if no buffer
+    //!
+    char *end{ nullptr };
+
+    constexpr size_t size() const noexcept {
+        return end - begin;
+    }
+
+    constexpr size_t last_offset() const noexcept {
+        return last ? last - begin
+                    : 0;
+    }
+};
+
+//!
+//! class flat_forward_list_buffer_alt
+//! @brief A set of pointers describing state of
+//! the buffer containing flat forward list.
+//!
+struct flat_forward_list_buffer_alt {
+    //!
+    //! @brief Pointer to the beginning of buffer
+    //! nullptr if no buffer
+    //!
+    char *begin{ nullptr };
+    //!
+    //! @brief Offset of the last element in the list
+    //! npos if no buffer or if there is no elements
+    //! in the list.
+    //!
+    size_t last_offset{ iffl::npos };
+    //!
+    //! @brief Buffer size
+    //! 0 if no buffer
+    //!
+    size_t size{ 0 };
+
+    constexpr char * end() noexcept {
+        return begin + size;
+    }
+
+    constexpr char const * end() const noexcept {
+        return begin + size;
+    }
+
+    constexpr char * last() noexcept {
+        return last_offset == iffl::npos ? nullptr
+                                         : begin + last_offset;
+    }
+
+    constexpr char const * last() const noexcept {
+        return last_offset == iffl::npos ? nullptr
+                                         : begin + last_offset;
+    }
+};
+
 //!
 //! @class flat_forward_list_traits
 //! @brief traits for an elements that are in the flat forward list
@@ -1031,7 +1109,7 @@ constexpr inline std::pair<bool, void*> flat_forward_list_validate(void *first,
 //!
 template<typename T,
          typename TT = flat_forward_list_traits<T>>
-class flat_forward_list_iterator_t {
+class flat_forward_list_iterator_t final {
 public:
     //!
     //! @typedef iterator_category
@@ -1594,7 +1672,7 @@ using flat_forward_list_const_iterator = flat_forward_list_iterator_t< std::add_
 template <typename T,
           typename TT = flat_forward_list_traits<T>,
           typename A = std::allocator<char>>
-class flat_forward_list : private A {
+class flat_forward_list final : private A {
 public:
 
     //
@@ -1713,15 +1791,6 @@ public:
     //!
     using detach_type_as_size = std::tuple<char *, size_t, size_t>;
     //!
-    //! @typedef detach_type_as_pointers
-    //! @brief A tuple that contians 
-    //! - A pointer to the start of buffer,
-    //! - A pointer to the start of last element,
-    //! - A pointer to the buffer end
-    //!
-    using detach_type_as_pointers = std::tuple<char *, char *, char *>;
-
-    //!
     //! @typedef iterator
     //! @brief Type of iterator
     //!
@@ -1735,7 +1804,7 @@ public:
     //! @brief Constant that represents and invalid 
     //! or non-existent position
     //!
-    inline static size_type const npos = iffl_npos;
+    inline static size_type const npos = iffl::npos;
     //!
     //! @brief Default constructor for container
     //!
@@ -1941,11 +2010,14 @@ public:
     //! - Buffer size. 0 if container has no allocated buffer.
     //!   
     //!
-    detach_type_as_size detach() noexcept {
-        auto result{ std::make_tuple( buffer_begin_,  used_capacity(), total_capacity() ) };
-        buffer_begin_ = nullptr;
-        buffer_end_ = nullptr;
-        last_element_ = nullptr;
+    flat_forward_list_buffer_alt detach() noexcept {
+        flat_forward_list_buffer_alt result{ buffer_.begin,  
+                                             buffer_.last ? used_capacity()
+                                                          : npos, 
+                                             total_capacity() };
+        buffer_.begin = nullptr;
+        buffer_.end = nullptr;
+        buffer_.last = nullptr;
         return result;
     }
     //!
@@ -1962,14 +2034,14 @@ public:
     //!   if buffer is empty or contains no elements.
     //! - Pointer to the end of the buffer
     //! @code
-    //! detach_type_as_pointers buffer_info { list.detach(as_pointers{}) };
+    //! flat_forward_list_buffer buffer_info { list.detach(as_pointers{}) };
     //! @endcode
     //!
-    detach_type_as_pointers detach(as_pointers) noexcept {
-        auto result{ std::make_tuple( buffer_begin_,  last_element_, buffer_end_) };
-        buffer_begin_ = nullptr;
-        buffer_end_ = nullptr;
-        last_element_ = nullptr;
+    flat_forward_list_buffer detach(as_pointers) noexcept {
+        auto result{ buffer_ };
+        buffer_.begin = nullptr;
+        buffer_.end = nullptr;
+        buffer_.last = nullptr;
         return result;
     }
     //!
@@ -1995,16 +2067,16 @@ public:
                 char *last_element,
                 char *buffer_end) {
 
-        FFL_CODDING_ERROR_IF(buffer_begin_ == buffer_begin);
+        FFL_CODDING_ERROR_IF(buffer_.begin == buffer_begin);
         if (last_element) {
             FFL_CODDING_ERROR_IF_NOT(buffer_begin < last_element && last_element < buffer_end);
         } else {
             FFL_CODDING_ERROR_IF_NOT(buffer_begin < buffer_end);
         }
         clear();
-        buffer_begin_ = buffer_begin;
-        buffer_end_ = buffer_end;
-        last_element_ = last_element;
+        buffer_.begin = buffer_begin;
+        buffer_.end = buffer_end;
+        buffer_.last = last_element;
     }
     //!
     //! @brief Takes ownership of a buffer
@@ -2023,7 +2095,7 @@ public:
     //!
     bool attach(char *buffer,
                 size_t buffer_size) noexcept {
-        FFL_CODDING_ERROR_IF(buffer_begin_ == buffer);
+        FFL_CODDING_ERROR_IF(buffer_.begin == buffer);
         auto[is_valid, last_valid] = flat_forward_list_validate<T, TT>(buffer, 
                                                                        buffer + buffer_size);
         attach(buffer, 
@@ -2059,10 +2131,10 @@ public:
         size_type buffer_size = buffer_end - buffer_begin;
         size_type last_element_offset = last_element - buffer_begin;
 
-        l.buffer_begin_ = allocate_buffer(buffer_size);
-        copy_data(l.buffer_begin_, buffer_begin, buffer_size);
-        l.buffer_end_ = l.buffer_begin_ + buffer_size;
-        l.last_element_ = l.buffer_begin_ + last_element_offset;
+        l.buffer_.begin = allocate_buffer(buffer_size);
+        copy_data(l.buffer_.begin, buffer_begin, buffer_size);
+        l.buffer_.end = l.buffer_.begin + buffer_size;
+        l.buffer_.last = l.buffer_.begin + last_element_offset;
         swap(l);
     }
     //!
@@ -2142,11 +2214,11 @@ public:
     //!
     void clear() noexcept {
         validate_pointer_invariants();
-        if (buffer_begin_) {
-            deallocate_buffer(buffer_begin_, total_capacity());
-            buffer_begin_ = nullptr;
-            buffer_end_ = nullptr;
-            last_element_ = nullptr;
+        if (buffer_.begin) {
+            deallocate_buffer(buffer_.begin, total_capacity());
+            buffer_.begin = nullptr;
+            buffer_.end = nullptr;
+            buffer_.last = nullptr;
         }
         validate_pointer_invariants();
     }
@@ -2191,12 +2263,12 @@ public:
         if (prev_sizes.total_capacity < size) {
             new_buffer = allocate_buffer(size);
             new_buffer_size = size;
-            if (nullptr != last_element_) {
-                copy_data(new_buffer, buffer_begin_, prev_sizes.used_capacity().size);
-                last_element_ = new_buffer + prev_sizes.last_element.begin();
+            if (nullptr != buffer_.last) {
+                copy_data(new_buffer, buffer_.begin, prev_sizes.used_capacity().size);
+                buffer_.last = new_buffer + prev_sizes.last_element.begin();
             }
             commit_new_buffer(new_buffer, new_buffer_size);
-            buffer_end_ = buffer_begin_ + size;
+            buffer_.end = buffer_.begin + size;
         //
         // shrinking to 0 is simple
         //
@@ -2216,37 +2288,37 @@ public:
             new_buffer_size = size;
 
             bool is_valid{ true };
-            char *last_valid{ last_element_ };
+            char *last_valid{ buffer_.last };
             //
             // If we are shrinking below used capacity then last element will
             // be removed, and we need to do linear search for the new last element 
             // that would fit new buffer size.
             //
             if (prev_sizes.used_capacity().size > size) {
-                std::tie(is_valid, last_valid) = flat_forward_list_validate<T, TT>(buffer_begin_, buffer_begin_ + size);
+                std::tie(is_valid, last_valid) = flat_forward_list_validate<T, TT>(buffer_.begin, buffer_.begin + size);
                 if (is_valid) {
-                    FFL_CODDING_ERROR_IF_NOT(last_valid == last_element_);
+                    FFL_CODDING_ERROR_IF_NOT(last_valid == buffer_.last);
                 } else {
-                    FFL_CODDING_ERROR_IF_NOT(last_valid != last_element_);
+                    FFL_CODDING_ERROR_IF_NOT(last_valid != buffer_.last);
                 }
             }
 
             if (last_valid) {
-                size_type new_last_element_offset = last_valid - buffer_begin_;
+                size_type new_last_element_offset = last_valid - buffer_.begin;
 
                 size_with_padding_t last_valid_element_size{ traits_traits::get_size(last_valid) };
                 size_type new_used_capacity = new_last_element_offset + last_valid_element_size.size;
                 
                 set_no_next_element(last_valid);
                 
-                copy_data(new_buffer, buffer_begin_, new_used_capacity);
-                last_element_ = new_buffer + new_last_element_offset;
+                copy_data(new_buffer, buffer_.begin, new_used_capacity);
+                buffer_.last = new_buffer + new_last_element_offset;
             } else {
-                last_element_ = nullptr;
+                buffer_.last = nullptr;
             }
 
             commit_new_buffer(new_buffer, new_buffer_size);
-            buffer_end_ = buffer_begin_ + size;
+            buffer_.end = buffer_.begin + size;
         }
 
         validate_pointer_invariants();
@@ -2317,7 +2389,7 @@ public:
             new_buffer = allocate_buffer(new_buffer_size);
             cur = new_buffer + prev_sizes.used_capacity().size_padded();
         } else {
-            cur = buffer_begin_ + prev_sizes.used_capacity().size_padded();
+            cur = buffer_.begin + prev_sizes.used_capacity().size_padded();
         }
 
         fn(cur, element_size);
@@ -2334,8 +2406,8 @@ public:
         // an element in the middle so we need to change 
         // its next element pointer
         //
-        if (last_element_) {
-            set_next_offset(last_element_, prev_sizes.last_element.data_size_padded());
+        if (buffer_.last) {
+            set_next_offset(buffer_.last, prev_sizes.last_element.data_size_padded());
         }
         //
         // swap new buffer and new buffer
@@ -2345,15 +2417,15 @@ public:
             // If we are reallocating buffer then move existing 
             // elements to the new buffer. 
             //
-            if (buffer_begin_) {
-                copy_data(new_buffer, buffer_begin_, prev_sizes.used_capacity().size);
+            if (buffer_.begin) {
+                copy_data(new_buffer, buffer_.begin, prev_sizes.used_capacity().size);
             }
             commit_new_buffer(new_buffer, new_buffer_size);
         }
         //
         // Element that we've just addede is the new last element
         //
-        last_element_ = cur;
+        buffer_.last = cur;
 
         validate_pointer_invariants();
         validate_data_invariants();
@@ -2376,12 +2448,12 @@ public:
             //
             // The last element is also the first element
             //
-            last_element_ = nullptr;
+            buffer_.last = nullptr;
         } else {
             //
             // Find element before last
             //
-            size_t last_element_start_offset{ static_cast<size_t>(last_element_ - buffer_begin_) };
+            size_t last_element_start_offset{ static_cast<size_t>(buffer_.last - buffer_.begin) };
             iterator element_before_it{ find_element_before(last_element_start_offset) };
             //
             // We already handled the case when last element is first element.
@@ -2392,7 +2464,7 @@ public:
             // Element before last is the new last
             //
             set_no_next_element(element_before_it.get_ptr());
-            last_element_ = element_before_it.get_ptr();
+            buffer_.last = element_before_it.get_ptr();
         }
         
         validate_pointer_invariants();
@@ -2502,7 +2574,7 @@ public:
             begin = new_buffer;
         } else {
             cur = it.get_ptr();
-            begin = buffer_begin_;
+            begin = buffer_.begin;
         }
         char *new_tail_start{ nullptr };
         //
@@ -2557,8 +2629,8 @@ public:
             // If we are reallocating buffer then move all elements
             // before and after position that we are inserting to
             //
-            if (buffer_begin_) {
-                copy_data(new_buffer, buffer_begin_, element_range.begin());
+            if (buffer_.begin) {
+                copy_data(new_buffer, buffer_.begin, element_range.begin());
                 copy_data(cur + new_element_size_aligned, it.get_ptr(), tail_size);
             }
             commit_new_buffer(new_buffer, new_buffer_size);
@@ -2566,7 +2638,7 @@ public:
         //
         // Last element moved ahead by the size of the new inserted element
         //
-        last_element_ = buffer_begin_ + prev_sizes.last_element.begin() + new_element_size_aligned;
+        buffer_.last = buffer_.begin + prev_sizes.last_element.begin() + new_element_size_aligned;
 
         validate_pointer_invariants();
         validate_data_invariants();
@@ -2631,14 +2703,14 @@ public:
         // If we have only one element then simply forget it
         //
         if (has_one_or_no_entry()) {
-            last_element_ = nullptr;
+            buffer_.last = nullptr;
             return;
         }
         //
         // Otherwise calculate sizes and offsets
         //
         all_sizes_t prev_sizes{ get_all_sizes() };
-        iterator begin_it{ iterator{ buffer_begin_ } };
+        iterator begin_it{ iterator{ buffer_.begin } };
         iterator secont_element_it{ begin_it + 1 };
         range_t second_element_range{ this->range_unsafe(secont_element_it) };
         size_type bytes_to_copy{ prev_sizes.used_capacity().size - second_element_range.begin() };
@@ -2646,9 +2718,9 @@ public:
         // Shift all elements after the first element
         // to the start of buffer
         //
-        move_data(buffer_begin_, buffer_begin_ + second_element_range.begin(), bytes_to_copy);
+        move_data(buffer_.begin, buffer_.begin + second_element_range.begin(), bytes_to_copy);
 
-        last_element_ -= second_element_range.begin();
+        buffer_.last -= second_element_range.begin();
 
         validate_pointer_invariants();
         validate_data_invariants();
@@ -2683,7 +2755,7 @@ public:
             // is becoming last
             //
             set_no_next_element(it.get_ptr());
-            last_element_ = it.get_ptr();
+            buffer_.last = it.get_ptr();
         } else {
             //
             // calculate sizes and offsets
@@ -2695,10 +2767,10 @@ public:
             // Shift all elements after the element that we are erasing
             // to the position where erased element used to be
             //
-            move_data(buffer_begin_ + element_to_erase_range.begin(), 
-                      buffer_begin_ + element_to_erase_range.buffer_end, tail_size
+            move_data(buffer_.begin + element_to_erase_range.begin(),
+                      buffer_.begin + element_to_erase_range.buffer_end, tail_size
             );
-            last_element_ -= element_to_erase_range.buffer_size();
+            buffer_.last -= element_to_erase_range.buffer_size();
         }
 
         validate_pointer_invariants();
@@ -2763,10 +2835,10 @@ public:
         // Shift all elements after the last element that we are erasing
         // to the position where first erased element used to be
         //
-        move_data(buffer_begin_ + first_element_to_erase_range.begin(),
-                  buffer_begin_ + last_element_to_erase_range.buffer_end,
+        move_data(buffer_.begin + first_element_to_erase_range.begin(),
+                  buffer_.begin + last_element_to_erase_range.buffer_end,
                   bytes_to_copy);
-        last_element_ -= bytes_erased;
+        buffer_.last -= bytes_erased;
 
         validate_pointer_invariants();
         validate_data_invariants();
@@ -2785,8 +2857,8 @@ public:
         // erasing after end iterator is a noop
         //
         if (end() != it) {
-            last_element_ = it.get_ptr();
-            set_no_next_element(last_element_);
+            buffer_.last = it.get_ptr();
+            set_no_next_element(buffer_.last);
 
             validate_pointer_invariants();
             validate_data_invariants();
@@ -2809,7 +2881,7 @@ public:
         if (end() != it) {
 
             if (it == begin()) {
-                last_element_ = nullptr;
+                buffer_.last = nullptr;
                 return end();
             }
 
@@ -2831,7 +2903,7 @@ public:
     //!
     void erase_all() noexcept {
         validate_pointer_invariants();
-        last_element_ = nullptr;
+        buffer_.last = nullptr;
     }
 
     //!
@@ -2865,11 +2937,11 @@ public:
         //
         // Shifting remaining elements will erase this element.
         //
-        move_data(buffer_begin_ + element_range.begin(),
-                  buffer_begin_ + element_range.buffer_end,
+        move_data(buffer_.begin + element_range.begin(),
+                  buffer_.begin + element_range.buffer_end,
                   tail_size);
 
-        last_element_ -= element_range.buffer_size();
+        buffer_.last -= element_range.buffer_size();
 
         validate_pointer_invariants();
         validate_data_invariants();
@@ -2911,11 +2983,11 @@ public:
         size_type bytes_to_copy{ prev_sizes.used_capacity().size - end_range.buffer_end };
         size_type bytes_erased{ end_range.begin() - start_range.begin() };
 
-        move_data(buffer_begin_ + start_range.begin(),
-                  buffer_begin_ + end_range.begin(),
+        move_data(buffer_.begin + start_range.begin(),
+                  buffer_.begin + end_range.begin(),
                   bytes_to_copy);
 
-        last_element_ -= bytes_erased;
+        buffer_.last -= bytes_erased;
 
         validate_pointer_invariants();
         validate_data_invariants();
@@ -2933,9 +3005,9 @@ public:
                                                   allocator_type_traits::propagate_on_container_move_assignment::value) {
         if constexpr (allocator_type_traits::propagate_on_container_swap::value) {
             std::swap(get_allocator(), other.get_allocator());
-            std::swap(buffer_begin_, other.buffer_begin_);
-            std::swap(buffer_end_, other.buffer_end_);
-            std::swap(last_element_, other.last_element_);
+            std::swap(buffer_.begin, other.buffer_.begin);
+            std::swap(buffer_.end, other.buffer_.end);
+            std::swap(buffer_.last, other.buffer_.last);
         } else {
             flat_forward_list tmp{ std::move(other) };
             other = std::move(*this);
@@ -3105,8 +3177,8 @@ public:
     //!
     T &front() {
         validate_pointer_invariants();
-        FFL_CODDING_ERROR_IF(last_element_ == nullptr || buffer_begin_ == nullptr);
-        return *(T *)buffer_begin_;
+        FFL_CODDING_ERROR_IF(buffer_.last == nullptr || buffer_.begin == nullptr);
+        return *(T *)buffer_.begin;
     }
     //!
     //! @return Returns a const reference to the first element in the container.
@@ -3114,8 +3186,8 @@ public:
     //!
     T const &front() const {
         validate_pointer_invariants();
-        FFL_CODDING_ERROR_IF(last_element_ == nullptr || buffer_begin_ == nullptr);
-        return *(T *)buffer_begin_;
+        FFL_CODDING_ERROR_IF(buffer_.last == nullptr || buffer_.begin == nullptr);
+        return *(T *)buffer_.begin;
     }
     //!
     //! @return Returns a reference to the last element in the container.
@@ -3123,8 +3195,8 @@ public:
     //!
     T &back() {
         validate_pointer_invariants();
-        FFL_CODDING_ERROR_IF(last_element_ == nullptr);
-        return *(T *)last_element_;
+        FFL_CODDING_ERROR_IF(buffer_.last == nullptr);
+        return *(T *)buffer_.last;
     }
     //!
     //! @return Returns a const reference to the last element in the container.
@@ -3132,8 +3204,8 @@ public:
     //!
     T const &back() const {
         validate_pointer_invariants();
-        FFL_CODDING_ERROR_IF(last_element_ == nullptr);
-        return *(T *)last_element_;
+        FFL_CODDING_ERROR_IF(buffer_.last == nullptr);
+        return *(T *)buffer_.last;
     }
     //!
     //! @return Returns an iterator pointing to the first element of container.
@@ -3141,8 +3213,8 @@ public:
     //!
     iterator begin() noexcept {
         validate_pointer_invariants();
-        return last_element_ ? iterator{ buffer_begin_ }
-                             : end();
+        return buffer_.last ? iterator{ buffer_.begin }
+                            : end();
     }
     //!
     //! @return Returns a const iterator pointing to the first element of container.
@@ -3150,8 +3222,8 @@ public:
     //!
     const_iterator begin() const noexcept {
         validate_pointer_invariants();
-        return last_element_ ? const_iterator{ buffer_begin_ }
-                             : cend();
+        return buffer_.last ? const_iterator{ buffer_.begin }
+                            : cend();
     }
 
     //
@@ -3170,8 +3242,8 @@ public:
     //!
     iterator last() noexcept {
         validate_pointer_invariants();
-        return last_element_ ? iterator{ last_element_ }
-                             : end();
+        return buffer_.last ? iterator{ buffer_.last }
+                            : end();
     }
     //!
     //! @return Returns a const iterator pointing to the last element of container.
@@ -3179,8 +3251,8 @@ public:
     //!
     const_iterator last() const noexcept {
         validate_pointer_invariants();
-        return last_element_ ? const_iterator{ last_element_ }
-                             : cend();
+        return buffer_.last ? const_iterator{ buffer_.last }
+                            : cend();
     }
     //!
     //! @return Returns an end iterator.
@@ -3191,12 +3263,12 @@ public:
     //!
     iterator end() noexcept {
         validate_pointer_invariants();
-        if (last_element_) {
+        if (buffer_.last) {
             if (traits_traits::has_next_offset_v) {
                 return iterator{ };
             } else {
-                size_with_padding_t last_element_size{ traits_traits::get_size(last_element_) };
-                return iterator{ last_element_ + last_element_size.size_padded() };
+                size_with_padding_t last_element_size{ traits_traits::get_size(buffer_.last) };
+                return iterator{ buffer_.last + last_element_size.size_padded() };
             }
         } else {
             return iterator{ };
@@ -3211,12 +3283,12 @@ public:
     //!
     const_iterator end() const noexcept {
         validate_pointer_invariants();
-        if (last_element_) {
+        if (buffer_.last) {
             if constexpr (traits_traits::has_next_offset_v) {
                 return const_iterator{ };
             } else {
-                size_with_padding_t last_element_size{ traits_traits::get_size(last_element_) };
-                return const_iterator{ last_element_ + last_element_size.size_padded() };
+                size_with_padding_t last_element_size{ traits_traits::get_size(buffer_.last) };
+                return const_iterator{ buffer_.last + last_element_size.size_padded() };
             }
         } else {
             return const_iterator{ };
@@ -3251,28 +3323,28 @@ public:
     //! container has if no allocated buffer.
     //!
     char *data() noexcept {
-        return buffer_begin_;
+        return buffer_.begin;
     }
     //!
     //! @return Const pointer to the begging of the buffer or nullptr 
     //! container has if no allocated buffer.
     //!
     char const *data() const noexcept {
-        return buffer_begin_;
+        return buffer_.begin;
     }
     //!
     //! @brief Validates that buffer contains a valid list.
     //! @return true if valid list was found and false otherwise.
     //! @details You must call this method after passing pointer to 
     //! container's buffer to a function that might change buffer content.
-    //! If valid list of found then last_element_ will be pointing to the
+    //! If valid list of found then buffer_.last will be pointing to the
     //! element element that was found. If no valid list was found then
-    //! last_element_ will be nullptr.
+    //! buffer_.last will be nullptr.
     //!
     bool revalidate_data() noexcept {
-        auto[valid, last] = flat_forward_list_validate<T, TT>(buffer_begin_, buffer_end_);
+        auto[valid, last] = flat_forward_list_validate<T, TT>(buffer_.begin, buffer_.end);
         if (valid) {
-            last_element_ = last;
+            buffer_.last = last;
         }
         return valid;
     }
@@ -3444,8 +3516,8 @@ public:
             // position
             //
             if (new_size_padded > element_range_before.buffer_size()) {
-                move_data(buffer_begin_ + element_range_before.begin() + new_size_padded,
-                          buffer_begin_ + tail_start_offset,
+                move_data(buffer_.begin + element_range_before.begin() + new_size_padded,
+                          buffer_.begin + tail_start_offset,
                           tail_size);
 
                 tail_start_offset = element_range_before.begin() + new_size_padded;
@@ -3489,8 +3561,8 @@ public:
                 //
                 if (element_range_after.buffer_end != element_range_before.buffer_end) {
 
-                    move_data(buffer_begin_ + element_range_after.buffer_end,
-                              buffer_begin_ + tail_start_offset,
+                    move_data(buffer_.begin + element_range_after.buffer_end,
+                              buffer_.begin + tail_start_offset,
                               tail_size);
                     //
                     // calculate by how much tail moved
@@ -3500,7 +3572,7 @@ public:
                     //
                     // Update pointer to last element
                     //
-                    last_element_ += tail_shift;
+                    buffer_.last += tail_shift;
                 }
 
                 this->set_next_offset(it.get_ptr(), element_range_after.buffer_size());
@@ -3526,7 +3598,7 @@ public:
             // copy element that we are changing to the new buffer
             //
             copy_data(new_buffer + element_range_before.begin(),
-                      buffer_begin_ + element_range_before.begin(),
+                      buffer_.begin + element_range_before.begin(),
                       element_range_before.buffer_size());
             //
             // change element
@@ -3542,7 +3614,7 @@ public:
             //
             // copy head
             //
-            copy_data(new_buffer, buffer_begin_, element_range_before.begin());
+            copy_data(new_buffer, buffer_.begin, element_range_before.begin());
             //
             // See how much space elements consumes now
             //
@@ -3564,7 +3636,7 @@ public:
             // Copy tail
             //
             move_data(new_buffer + element_range_after.buffer_end,
-                      buffer_begin_ + element_range_before.buffer_end,
+                      buffer_.begin + element_range_before.buffer_end,
                       tail_size);
             //
             // commit mew buffer
@@ -3578,7 +3650,7 @@ public:
             //
             // Update pointer to last element
             //
-            last_element_ = buffer_begin_ + prev_sizes.last_element.begin() + tail_shift;
+            buffer_.last = buffer_.begin + prev_sizes.last_element.begin() + tail_shift;
             //
             // fix offset to the next element
             //
@@ -3706,7 +3778,7 @@ public:
         if (empty()) {
             return end();
         }
-        auto[is_valid, last_valid] = flat_forward_list_validate<T, TT>(buffer_begin_, buffer_begin_ + position);
+        auto[is_valid, last_valid] = flat_forward_list_validate<T, TT>(buffer_.begin, buffer_.begin + position);
         if (last_valid) {
             return iterator{ const_cast<char *>(last_valid) };
         }
@@ -3727,8 +3799,8 @@ public:
         if (empty()) {
             return end();
         }
-        auto[is_valid, last_valid] = flat_forward_list_validate<T, TT>(buffer_begin_, 
-                                                                       buffer_begin_ + position);
+        auto[is_valid, last_valid] = flat_forward_list_validate<T, TT>(buffer_.begin,
+                                                                       buffer_.begin + position);
         if (last_valid) {
             return const_iterator{ last_valid };
         }
@@ -3839,7 +3911,7 @@ public:
     //!
     bool empty() const noexcept {
         validate_pointer_invariants();
-        return  last_element_ == nullptr;
+        return  buffer_.last == nullptr;
     }
     //!
     //! @returns Number of bytes in the bufer used
@@ -3855,7 +3927,7 @@ public:
     //!
     size_type total_capacity() const noexcept {
         validate_pointer_invariants();
-        return buffer_end_ - buffer_begin_;
+        return buffer_.end - buffer_.begin;
     }
     //!
     //! @returns Number of bytes in the buffer not used
@@ -3895,7 +3967,7 @@ public:
             if (prev_sizes.used_capacity().size > 0) {
                 size_type last_element_end{ prev_sizes.last_element.begin() + prev_sizes.last_element.data_size() };
                 size_type unuset_tail_size{ prev_sizes.total_capacity - last_element_end };
-                fill_buffer(buffer_begin_ + last_element_end,
+                fill_buffer(buffer_.begin + last_element_end,
                             fill_byte,
                             unuset_tail_size);
             }
@@ -3941,7 +4013,7 @@ private:
         if (element_size_diff < 0 ||
             prev_sizes.remaining_capacity_for_insert() >= static_cast<size_type>(element_size_diff)) {
 
-            fn(last_element_, 
+            fn(buffer_.last,
                prev_sizes.last_element.data_size(),
                new_size);
 
@@ -3959,7 +4031,7 @@ private:
             // copy element
             //
             copy_data(new_last_ptr,
-                      buffer_begin_ + prev_sizes.last_element.begin(),
+                      buffer_.begin + prev_sizes.last_element.begin(),
                       prev_sizes.last_element.data_size());
             //
             // change element
@@ -3970,12 +4042,12 @@ private:
             //
             // copy head
             //
-            copy_data(new_buffer, buffer_begin_, prev_sizes.last_element.begin());
+            copy_data(new_buffer, buffer_.begin, prev_sizes.last_element.begin());
             //
             // commit mew buffer
             //
             commit_new_buffer(new_buffer, new_buffer_size);
-            last_element_ = new_last_ptr;
+            buffer_.last = new_last_ptr;
         }
 
         validate_pointer_invariants();
@@ -3988,15 +4060,15 @@ private:
     //! and false otherwise.
     //!
     constexpr bool has_one_or_no_entry() const noexcept {
-        return last_element_ == buffer_begin_;
+        return buffer_.last == buffer_.begin;
     }
     //!
     //! @brief Returns true when container has exactly one entry
     //! and false otherwise.
     //!
     constexpr bool has_exactly_one_entry() const noexcept {
-        return nullptr != last_element_ && 
-               last_element_ == buffer_begin_;
+        return nullptr != buffer_.last &&
+               buffer_.last == buffer_.begin;
     }
     //!
     //! @brief Helper routine that is used on element that just became
@@ -4040,12 +4112,12 @@ private:
     //!
     void move_from(flat_forward_list &&other) noexcept {
         clear();
-        buffer_begin_ = other.buffer_begin_;
-        buffer_end_ = other.buffer_end_;
-        last_element_ = other.last_element_;
-        other.buffer_begin_ = nullptr;
-        other.buffer_end_ = nullptr;
-        other.last_element_ = nullptr;
+        buffer_.begin = other.buffer_.begin;
+        buffer_.end = other.buffer_.end;
+        buffer_.last = other.buffer_.last;
+        other.buffer_.begin = nullptr;
+        other.buffer_.end = nullptr;
+        other.buffer_.last = nullptr;
     }
     //!
     //! @brief Cleans this container, and if it is safe then moves 
@@ -4067,12 +4139,12 @@ private:
     //! 
     void copy_from(flat_forward_list const &other) {
         clear();
-        if (other.last_element_) {
+        if (other.buffer_.last) {
             all_sizes_t other_sizes{ other.get_all_sizes() };
-            buffer_begin_ = allocate_buffer(other_sizes.used_capacity().size);
-            copy_data(buffer_begin_, other.buffer_begin_, other_sizes.used_capacity().size);
-            buffer_end_ = buffer_begin_ + other_sizes.used_capacity().size;
-            last_element_ = buffer_begin_ + other_sizes.last_element.begin();
+            buffer_.begin = allocate_buffer(other_sizes.used_capacity().size);
+            copy_data(buffer_.begin, other.buffer_.begin, other_sizes.used_capacity().size);
+            buffer_.end = buffer_.begin + other_sizes.used_capacity().size;
+            buffer_.last = buffer_.begin + other_sizes.last_element.begin();
         }
     }
     //!
@@ -4104,13 +4176,13 @@ private:
     //! old buffer.
     //!
     void commit_new_buffer(char *&buffer, size_t &buffer_size) {
-        char *old_begin = buffer_begin_;
-        FFL_CODDING_ERROR_IF(buffer_end_ < buffer_begin_);
-        size_type old_size = buffer_end_ - buffer_begin_;
+        char *old_begin = buffer_.begin;
+        FFL_CODDING_ERROR_IF(buffer_.end < buffer_.begin);
+        size_type old_size = buffer_.end - buffer_.begin;
         FFL_CODDING_ERROR_IF(buffer == nullptr && buffer_size != 0);
         FFL_CODDING_ERROR_IF(buffer != nullptr && buffer_size == 0);
-        buffer_begin_ = buffer;
-        buffer_end_ = buffer_begin_ + buffer_size;
+        buffer_.begin = buffer;
+        buffer_.end = buffer_.begin + buffer_size;
         buffer = old_begin;
         buffer_size = old_size;
     }
@@ -4139,25 +4211,25 @@ private:
     //!
     void validate_data_invariants() const noexcept {
 #ifdef FFL_DBG_CHECK_DATA_VALID
-        if (last_element_) {
+        if (buffer_.last) {
             //
             // For element types that have offset of next element use entire buffer for validation
             // for element types that do not we have to limit by the end of the last element.
             // If there is sufficient reservation after last element then validate would not know 
             // where to stop, and might fail.
             //
-            size_type buffer_lenght{ static_cast<size_type>(buffer_end_ - buffer_begin_) };
+            size_type buffer_lenght{ static_cast<size_type>(buffer_.end - buffer_.begin) };
             if constexpr (!traits_traits::has_next_offset_v) {
-                auto[last_element_size, last_element_size_padded] = traits_traits::get_size(last_element_);
+                auto[last_element_size, last_element_size_padded] = traits_traits::get_size(buffer_.last);
                 buffer_lenght = last_element_size;
             }
-            auto[valid, last] = flat_forward_list_validate<T, TT>(buffer_begin_, last_element_ + buffer_lenght);
+            auto[valid, last] = flat_forward_list_validate<T, TT>(buffer_.begin, buffer_.last + buffer_lenght);
             FFL_CODDING_ERROR_IF_NOT(valid);
-            FFL_CODDING_ERROR_IF_NOT(last == last_element_);
+            FFL_CODDING_ERROR_IF_NOT(last == buffer_.last);
 
-            if (last_element_) {
-                size_with_padding_t last_element_size = traits_traits::get_size(last_element_);
-                size_type last_element_offset{ static_cast<size_type>(last_element_ - buffer_begin_) };
+            if (buffer_.last) {
+                size_with_padding_t last_element_size = traits_traits::get_size(buffer_.last);
+                size_type last_element_offset{ static_cast<size_type>(buffer_.last - buffer_.begin) };
                 FFL_CODDING_ERROR_IF(buffer_lenght < (last_element_offset + last_element_size.size));
             }
         }
@@ -4170,10 +4242,10 @@ private:
         //
         // empty() calls this method so we canot call it here
         //
-        if (nullptr == last_element_) {
-            FFL_CODDING_ERROR_IF_NOT(buffer_begin_ <= buffer_end_);
+        if (nullptr == buffer_.last) {
+            FFL_CODDING_ERROR_IF_NOT(buffer_.begin <= buffer_.end);
         } else {
-            FFL_CODDING_ERROR_IF_NOT(buffer_begin_ <= last_element_ && last_element_ <= buffer_end_);
+            FFL_CODDING_ERROR_IF_NOT(buffer_.begin <= buffer_.last && buffer_.last <= buffer_.end);
         }
     }
     //!
@@ -4191,7 +4263,7 @@ private:
             FFL_CODDING_ERROR_IF_NOT(cend() == it);
         } else {
             FFL_CODDING_ERROR_IF_NOT(cend() == it ||
-                                     buffer_begin_ <= it.get_ptr() && it.get_ptr() <= last_element_);
+                                     buffer_.begin <= it.get_ptr() && it.get_ptr() <= buffer_.last);
             validate_compare_to_all_valid_elements(it);
         }
     }
@@ -4209,7 +4281,7 @@ private:
         //
         FFL_CODDING_ERROR_IF(cend() == it);
         FFL_CODDING_ERROR_IF(const_iterator{} == it);
-        FFL_CODDING_ERROR_IF_NOT(buffer_begin_ <= it.get_ptr() && it.get_ptr() <= last_element_);
+        FFL_CODDING_ERROR_IF_NOT(buffer_.begin <= it.get_ptr() && it.get_ptr() <= buffer_.last);
         validate_compare_to_all_valid_elements(it);
     }
     //!
@@ -4300,7 +4372,7 @@ private:
     range_t range_unsafe(const_iterator const &it) const noexcept {
         size_with_padding_t s{ traits_traits::get_size(it.get_ptr()) };
         range_t r{};
-        r.buffer_begin = it.get_ptr() - buffer_begin_;
+        r.buffer_begin = it.get_ptr() - buffer_.begin;
         r.data_end = r.begin() + s.size;
         if constexpr (traits_traits::has_next_offset_v) {
             size_type next_offset = traits::get_next_offset(it.get_ptr());
@@ -4351,7 +4423,7 @@ private:
             return closed_range_usafe(first, last());
         }
 
-        size_t end_begin{ static_cast<size_t>(end->get_ptr() - buffer_begin_) };
+        size_t end_begin{ static_cast<size_t>(end->get_ptr() - buffer_.begin) };
         iterator last{ find_element_before(end_begin) };
 
         return closed_range_usafe(first, last);
@@ -4407,10 +4479,10 @@ private:
     all_sizes_t get_all_sizes() const noexcept {
         all_sizes_t s;
 
-        s.total_capacity = buffer_end_ - buffer_begin_;
+        s.total_capacity = buffer_.end - buffer_.begin;
 
-        if (nullptr != last_element_) {          
-            s.last_element = range_unsafe(const_iterator{ last_element_ });
+        if (nullptr != buffer_.last) {
+            s.last_element = range_unsafe(const_iterator{ buffer_.last });
         }
         FFL_CODDING_ERROR_IF(s.total_capacity < s.used_capacity().size);
 
@@ -4418,21 +4490,10 @@ private:
     }
 
     //!
-    //! @brief Pointer to the beginning of buffer
-    //! nullptr if container owns no buffer
+    //! @brief Set of pointers describing state of
+    //! of the buffer
     //!
-    char *buffer_begin_{ nullptr };
-    //!
-    //! @brief Pointer to the last element in the list
-    //! nullptr if container owns no buffer or if 
-    //! there is no elements in the list.
-    //!
-    char *last_element_{ nullptr };
-    //!
-    //! @brief Pointer to the end of buffer
-    //! nullptr if container owns no buffer
-    //!
-    char *buffer_end_{ nullptr };
+    flat_forward_list_buffer buffer_;
 };
 //!
 //! @tparam T - element type

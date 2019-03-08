@@ -121,7 +121,7 @@ namespace iffl {
 //! once numeric_limits are anotated as constexpr we should make
 //! this variable constexpr
 //!
-inline static size_t const iffl_npos = std::numeric_limits<size_t>::max();
+inline static size_t const npos = std::numeric_limits<size_t>::max();
 
 //!
 //! @brief Restore saved min and max definition
@@ -627,6 +627,102 @@ struct size_with_padding {
     constexpr size_t padding_size() const noexcept {
         return size_padded() - size;
     }
+};
+
+// CLASS TEMPLATE _Compressed_pair
+struct zero_then_variadic_args_t
+{// tag type for value-initializing first,
+};// constructing second from remaining args
+
+struct one_then_variadic_args_t
+{// tag type for constructing first from one arg,
+};// constructing second from remaining args
+
+
+template<class T1,
+         class T2,
+         bool = std::is_empty_v<T1> && !std::is_final_v<T1>>
+class compressed_pair final : private T1 {// store a pair of values, deriving from empty first
+
+    using base_t = T1;// for visualization
+
+public:
+    template<class... Other>
+    constexpr explicit compressed_pair(zero_then_variadic_args_t,
+                                       Other&&... v2)
+        : T1()
+        , v2_(std::forward<Other>(v2)...) {// construct from forwarded values
+    }
+
+    template<class Other1,
+             class... Other2>
+    constexpr compressed_pair(one_then_variadic_args_t,
+                              Other1&& v1, 
+                              Other2&&... v2)
+        : T1(std::forward<Other1>(v1))
+        , v2_(std::forward<Other2>(v2)...) {// construct from forwarded values
+    }
+
+    constexpr T1& get_first() noexcept {// return reference to first
+        return (*this);
+    }
+
+    constexpr T1 const & get_first() const noexcept {// return const reference to first
+        return (*this);
+    }
+
+    constexpr T2& get_second() noexcept {// return reference to second
+        return (v2_);
+    }
+
+    constexpr T2 const & get_second() const noexcept {// return const reference to second
+        return (v2_);
+    }
+
+private:
+    T2 v2_;
+};
+
+template<class T1,
+         class T2>
+class compressed_pair<T1, T2, false> final {// store a pair of values, not deriving from first
+
+public:
+    template<class... Other>
+    constexpr explicit compressed_pair(zero_then_variadic_args_t,
+                                       Other&&... v2)
+        : v1_()
+        , v2_(std::forward<Other>(v2)...) {// construct from forwarded values
+    }
+
+    template<class Other1,
+             class... Other2>
+    constexpr compressed_pair(one_then_variadic_args_t,
+                              Other1&& v1, 
+                              Other2&&... v2)
+        : v1_(std::forward<Other1>(v1))
+        , v2_(std::forward<Other2>(v2)...) {// construct from forwarded values
+    }
+
+    constexpr T1& get_first() noexcept {// return reference to first
+        return (v1_);
+    }
+
+    constexpr T1 const & get_first() const noexcept {// return const reference to first
+        return (v1_);
+    }
+
+    constexpr T2& get_second() noexcept {// return reference to second
+        return (v2_);
+    }
+
+    constexpr T2 const & get_second() const noexcept {// return const reference to second
+        return (v2_);
+    }
+
+private:
+    T1 v1_;
+    T2 v2_;
 };
 
 } // namespace iffl

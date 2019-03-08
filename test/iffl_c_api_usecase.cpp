@@ -211,11 +211,10 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
                               e.length = array_size;
                               std::fill(e.arr, e.arr + e.length, pattern);
                           });
-        //
-        // Pass ownershipt of the buffer to the caller
-        //
-        size_t last_element_offset{ 0 };
-        std::tie(*buffer, last_element_offset, *buffer_size) = data.detach();
+
+        iffl::flat_forward_list_buffer_alt detached_buffer{ data.detach() };
+        *buffer = detached_buffer.begin;
+        *buffer_size = detached_buffer.size;
 
     } catch (...) {
         return false;

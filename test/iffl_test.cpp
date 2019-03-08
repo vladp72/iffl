@@ -5,6 +5,9 @@
 #include <cstdio>
 
 int main() {
+
+    //std::vector<int> foo;
+
     std::printf("\n--------- Starting tests ----------\n\n");
     run_all_flat_forward_list_tests();
     std::printf("\n------ Starting EA usecase --------\n\n");
