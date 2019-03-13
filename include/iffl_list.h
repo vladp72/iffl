@@ -1593,7 +1593,7 @@ using flat_forward_list_const_iterator = flat_forward_list_iterator_t< std::add_
 template <typename T,
           typename TT = flat_forward_list_traits<T>,
           typename A = std::allocator<char>>
-class flat_forward_list final : private A {
+class flat_forward_list final {
 public:
 
     //
@@ -1672,12 +1672,12 @@ public:
     //! @typedef allocator_type
     //! @brief Type of allocator
     //! 
-    using allocator_type = A ;
+    using allocator_type = typename std::allocator_traits<A>::template rebind_alloc<char>;
     //!
     //! @typedef allocator_type_traits
     //! @brief Type of allocator traits
     //! 
-    using allocator_type_traits = std::allocator_traits<A>;
+    using allocator_type_traits = std::allocator_traits<allocator_type>;
     //!
     //! @typedef buffer_value_type
     //! @brief Since we have variable size elementa,
@@ -1729,14 +1729,15 @@ public:
     //!
     //! @brief Default constructor for container
     //!
-    flat_forward_list() noexcept {
+    flat_forward_list() noexcept 
+        : buffer_( zero_then_variadic_args_t{} ) {
     }
     //!
     //! @brief Constructs an empty container with an instance of
     //! provided allocator
     //!
-    explicit flat_forward_list(A a) noexcept
-        : A( a ) {
+    explicit flat_forward_list(allocator_type a) noexcept
+        : buffer_( one_then_variadic_args_t{}, a ) {
     }
     //!
     //! @brief Move constructor. Moves allocator and content
@@ -1744,7 +1745,7 @@ public:
     //! @param other - container we are moving from
     //!
     flat_forward_list(flat_forward_list && other) noexcept
-        : A(std::move(other).get_allocator()) {
+        : buffer_( one_then_variadic_args_t{}, std::move(other.alloc()) ) {
         move_from(std::move(other));
     }
     //!
@@ -1754,8 +1755,52 @@ public:
     //! @throw std::bad_alloc if buffer allocation fails
     //!
     flat_forward_list(flat_forward_list const &other)
-        : A(allocator_type_traits::select_on_container_copy_construction(other.get_allocator())) {
+        : buffer_( one_then_variadic_args_t{}, allocator_type_traits::select_on_container_copy_construction(other.get_allocator()) ) {
         copy_from(other);
+    }
+    //!
+    //! @brief Constructor that takes ownership of a buffer
+    //! @tparam A - type of allocator.
+    //! @param other_buff - pointer to the start of the buffer
+    //! that contains list.
+    //! @param a - allocator that should be used by this container.
+    //! @details This constructor does not validate if this is
+    //! a valid flat forward list. It assumes that
+    //! caller validated buffer before using this constructor.
+    //! The first parameter is an empty vocabulary type to help
+    //! with overload resolution and code redability.
+    //! @code
+    //! iffl::flat_forward_list<my_type> new_owner{iffl::attach_buffer{}, begin, last, end};
+    //! @endcode
+    //! After this call container is responsible for deallocating 
+    //! the buffer.
+    //! It is responsibility of the caller to make sure that buffer
+    //! was allocated using method compatible with allocator used by 
+    //! this container.
+    //!
+    template <typename AA = allocator_type>
+    flat_forward_list(attach_buffer,
+                      flat_forward_list_buffer const &other_buff,
+                      AA &&a = AA{}) noexcept
+        : buffer_( one_then_variadic_args_t{}, std::forward<AA>(a) ) {
+        attach(other_buff);
+    }
+    //!
+    //! @brief Constructor that copies list from a buffer
+    //! @tparam AA - type of allocator.
+    //! @param other_buff - pointer to the start of the buffer
+    //! that contains list.
+    //! @param a - allocator that should be used by this container.
+    //! @throw std::bad_alloc if buffer allocation fails
+    //! @details This constructor does not validate if this is
+    //! a valid flat forward list. It assumes that
+    //! caller validated buffer before using this constructor.
+    //!
+    template <typename AA = allocator_type>
+    explicit flat_forward_list(flat_forward_list_buffer const &other_buff,
+                               AA &&a = AA{})
+        : buffer_( one_then_variadic_args_t{}, std::forward<AA>(a) ) {
+        assign(other_buff);
     }
     //!
     //! @brief Constructor that takes ownership of a buffer
@@ -1782,13 +1827,13 @@ public:
     //! was allocated using method compatible with allocator used by 
     //! this container.
     //!
-    template <typename AA = A>
+    template <typename AA = allocator_type>
     flat_forward_list(attach_buffer,
                       char *buffer_begin,
                       char *last_element,
                       char *buffer_end,
                       AA &&a = AA{}) noexcept
-        : A(std::forward<AA>(a)) {
+        : buffer_( one_then_variadic_args_t{}, std::forward<AA>(a) ) {
         attach(buffer_begin, last_element, buffer_end);
     }
     //!
@@ -1807,12 +1852,12 @@ public:
     //! a valid flat forward list. It assumes that
     //! caller validated buffer before using this constructor.
     //!
-    template <typename AA = A>
+    template <typename AA = allocator_type>
     flat_forward_list(char const *buffer_begin,
                       char const *last_element,
                       char const *buffer_end,
                       AA &&a = AA{})
-        : A( std::forward<AA>(a) ) {
+        : buffer_( one_then_variadic_args_t{}, std::forward<AA>(a) ) {
         assign(buffer_begin, last_element, buffer_end);
     }
     //!
@@ -1837,12 +1882,12 @@ public:
     //! was allocated using method compatible with allocator used by 
     //! this container.
     //!
-    template <typename AA = A>
+    template <typename AA = allocator_type>
     flat_forward_list(attach_buffer,
                       char *buffer,
                       size_t buffer_size,
                       AA &&a = AA{}) noexcept
-        : A( std::forward<AA>(a) ) {
+        : buffer_( one_then_variadic_args_t{}, std::forward<AA>(a) ) {
         attach(buffer, buffer_size);
     }
     //!
@@ -1858,11 +1903,11 @@ public:
     //! valid element in the buffer, and is buffer is valid then it
     //! copies elements to the new buffer.
     //!
-    template <typename AA = A>
+    template <typename AA = allocator_type>
     flat_forward_list(char const *buffer,
                       size_t buffer_size,
                       AA &&a = AA{})
-        : A(std::forward<AA>(a)) {
+        : buffer_( one_then_variadic_args_t{}, std::forward<AA>(a)) {
         assign(buffer, buffer_size);
     }
     //!
@@ -1902,11 +1947,23 @@ public:
             //
             if constexpr (allocator_type_traits::propagate_on_container_copy_assignment::value) {
                 clear();
-                *static_cast<A *>(this) = allocator_type_traits::select_on_container_copy_construction(other.get_allocator());
+                *static_cast<allocator_type *>(this) = allocator_type_traits::select_on_container_copy_construction(other.get_allocator());
             }
             
             copy_from(other);
         }
+        return *this;
+    }
+    //!
+    //! @brief Copy assignment operator.
+    //! @param other_buff - linked list we are copying from
+    //! @throw std::bad_alloc when allocating buffer fails
+    //! @details This function first attempts to copy allocator, 
+    //! if it is supported, and after that allocates new buffer
+    //! and copies all elements to the new buffer.
+    //!
+    flat_forward_list &operator= (flat_forward_list_buffer const &other_buff) {
+        assign(other_buff);
         return *this;
     }
     //!
@@ -1923,47 +1980,35 @@ public:
     //! Caller is responsible for deallocating returned buffer.
     //! Information oabout the buffer is returned using a tuple 
     //! that consists
-    //! - Pointer to the buffer start. Nullptr if container 
-    //!   has no buffer.
-    //! - Used buffer capacity. Distance from the start of 
-    //!   buffer to the end of the last element.
-    //!   0 if buffer has no elements.
-    //! - Buffer size. 0 if container has no allocated buffer.
-    //!   
-    //!
-    flat_forward_list_buffer_alt detach() noexcept {
-        flat_forward_list_buffer_alt result{ buff().begin,  
-                                             buff().last ? used_capacity()
-                                                           : npos, 
-                                             total_capacity() };
-        buff().begin = nullptr;
-        buff().end = nullptr;
-        buff().last = nullptr;
-        return result;
-    }
-    //!
-    //! @brief Container releases ownership of the buffer.
-    //! @details After the call completes, container is empty.
-    //! input parameter helps with selecting between overloads.
-    //! @return Returns buffer information to the caller.
-    //! Caller is responsible for deallocating returned buffer.
-    //! Information oabout the buffer is returned using a tuple 
-    //! that consists
     //! - Pointer to the buffer start. Nullptr if container
     //!   contains no buffer.
     //! - Pointer to the start of the last elenet. Nullptr if
     //!   if buffer is empty or contains no elements.
     //! - Pointer to the end of the buffer
-    //! @code
-    //! flat_forward_list_buffer buffer_info { list.detach(as_pointers{}) };
-    //! @endcode
     //!
-    flat_forward_list_buffer detach(as_pointers) noexcept {
-        auto result{ buffer_ };
-        buff().begin = nullptr;
-        buff().end = nullptr;
-        buff().last = nullptr;
-        return result;
+    flat_forward_list_buffer detach() noexcept {
+        flat_forward_list_buffer tmp{ buff() };       
+        buff().clear();
+        return tmp;
+    }
+    //!
+    //! @brief Takes ownership of a buffer
+    //! @param other_buff - describes the buffer we are attaching.
+    //! @details This method first clears existing content of 
+    //! the container. It does not validate if buffer contains
+    //! a valid flat forward list. It assumes that
+    //! caller validated buffer before using this constructor.
+    //! After this call container is responsible for deallocating 
+    //! the buffer.
+    //! It is responsibility of the caller to make sure that buffer
+    //! was allocated using method compatible with allocator used by 
+    //! this container.
+    //!
+    void attach(flat_forward_list_buffer const &other_buff) {
+        FFL_CODDING_ERROR_IF(buff().begin == other_buff.begin);
+        other_buff.validate();
+        clear();
+        buff() = other_buff;
     }
     //!
     //! @brief Takes ownership of a buffer
@@ -2023,6 +2068,24 @@ public:
                is_valid ? last_valid : nullptr, 
                buffer + buffer_size);
         return is_valid;
+    }
+    //!
+    //! @brief Copies list from a buffer
+    //! @param other_buff - describes the other buffer.
+    //! @throw std::bad_alloc if buffer allocation fails
+    //! @details This method does not validate if this is
+    //! a valid flat forward list. It assumes that
+    //! caller validated buffer before using this constructor.
+    //!
+    void assign(flat_forward_list_buffer const &other_buff) {
+        flat_forward_list l(get_allocator());
+        other_buff.validate();
+
+        l.buff().begin = allocate_buffer(other_buff.size());
+        copy_data(l.buff().begin, other_buff.begin, other_buff.size());
+        l.buff().end = l.buff().begin + other_buff.size();
+        l.buff().last = l.buff().begin + other_buff.last_offset();
+        swap(l);
     }
     //!
     //! @brief Copies list from a buffer
@@ -2110,15 +2173,15 @@ public:
     //! @brief Returns reference to the allocator used by this container
     //! @return Allocator reference.
     //!
-    A &get_allocator() & noexcept {
-        return *this;
+    allocator_type &get_allocator() & noexcept {
+        return alloc();
     }
     //!
     //! @brief Returns const reference to the allocator used by this container
     //! @return Allocator const reference.
     //!
-    A const &get_allocator() const & noexcept {
-        return *this;
+    allocator_type const &get_allocator() const & noexcept {
+        return alloc();
     }
     //!
     //! @brief Returns maximum size.
@@ -4023,7 +4086,7 @@ private:
     //! @param other - other container we are movig allocator from.
     //!
     void move_allocator_from(flat_forward_list &&other) {
-        *static_cast<A *>(this) = std::move(other).get_allocator();
+        alloc() = std::move(other.alloc());
     }
     //!
     //! @brief Cleans this container, and takes ownership of data
@@ -4074,7 +4137,7 @@ private:
     //! @param buffer_size - size of the buffer that we are allocating
     //!
     char *allocate_buffer(size_t buffer_size) {
-        char *ptr{ allocator_type_traits::allocate(*this, buffer_size) };
+        char *ptr{ allocator_type_traits::allocate(alloc(), buffer_size) };
         FFL_CODDING_ERROR_IF(nullptr == ptr);
         return ptr;
     }
@@ -4086,7 +4149,7 @@ private:
     //!
     void deallocate_buffer(char *buffer, size_t buffer_size) {
         FFL_CODDING_ERROR_IF(0 == buffer_size || nullptr == buffer);
-        allocator_type_traits::deallocate(*this, buffer, buffer_size);
+        allocator_type_traits::deallocate(alloc(), buffer, buffer_size);
     }
     //!
     //! @brief Swaps buffer owned by container with a new buffer.
@@ -4160,14 +4223,7 @@ private:
     //! @brief Validates that container pointer invariants.
     //!
     void validate_pointer_invariants() const noexcept {
-        //
-        // empty() calls this method so we canot call it here
-        //
-        if (nullptr == buff().last) {
-            FFL_CODDING_ERROR_IF_NOT(buff().begin <= buff().end);
-        } else {
-            FFL_CODDING_ERROR_IF_NOT(buff().begin <= buff().last && buff().last <= buff().end);
-        }
+        buff().validate();
     }
     //!
     //! @brief Validates iterator invariants.
@@ -4416,7 +4472,7 @@ private:
     //! using a compressed_pair.
     //!
     flat_forward_list_buffer &buff() {
-        return buffer_;
+        return buffer_.get_second();
     }
     //!
     //! @brief Returns const reference to the struct that 
@@ -4425,14 +4481,31 @@ private:
     //! using a compressed_pair.
     //!
     flat_forward_list_buffer const &buff() const {
-        return buffer_;
+        return buffer_.get_second();
+    }
+
+    //!
+    //! @brief Returns reference to the allocator.
+    //! Helps abstracting out uglification that comes from
+    //! using a compressed_pair.
+    //!
+    allocator_type &alloc() {
+        return buffer_.get_first();
+    }
+    //!
+    //! @brief Returns const reference to the allocator.
+    //! Helps abstracting out uglification that comes from
+    //! using a compressed_pair.
+    //!
+    allocator_type const &alloc() const {
+        return buffer_.get_first();
     }
 
     //!
     //! @brief Set of pointers describing state of
     //! of the buffer
     //!
-    flat_forward_list_buffer buffer_;
+    compressed_pair<allocator_type, flat_forward_list_buffer> buffer_;
 };
 //!
 //! @tparam T - element type
