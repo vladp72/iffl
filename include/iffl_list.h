@@ -1529,6 +1529,280 @@ template<typename T,
 using flat_forward_list_const_iterator = flat_forward_list_iterator_t< std::add_const_t<T>, TT>;
 
 //!
+//! @class flat_forward_list_ref
+//! @brief Non owning container for flat forward list
+//!
+template <typename T,
+          typename TT = flat_forward_list_traits<T>>
+class flat_forward_list_ref final {
+public:
+
+    //
+    // Technically we need T to be 
+    // - trivialy destructable
+    // - trivialy constructable
+    // - trivialy movable
+    // - trivialy copyable
+    //
+    static_assert(std::is_pod_v<T>, "T must be a Plain Old Definition");
+    //!
+    //! @brief True if this is a view and false if this is ref
+    //!
+    inline static bool const is_view{ std::is_const_v<T> };
+    //!
+    //! @typedef value_type
+    //! @brief Element value type
+    //!
+    using value_type = T;
+    //!
+    //! @typedef pointer
+    //! @brief Pointer to element type
+    //!
+    using pointer = T * ;
+    //!
+    //! @typedef const_pointer
+    //! @brief Pointer to const element type
+    //!
+    using const_pointer = T const *;
+    //!
+    //! @typedef reference
+    //! @brief Reference to the element type
+    //!
+    using reference = T & ;
+    //!
+    //! @typedef const_reference
+    //! @brief Reference to the const element type
+    //!
+    using const_reference = T const &;
+    //!
+    //! @typedef size_type
+    //! @brief Size type
+    //!
+    using size_type = std::size_t;
+    //!
+    //! @typedef difference_type
+    //! @brief Element pointers difference type
+    //!
+    using difference_type = std::ptrdiff_t;
+    //!
+    //! @typedef traits
+    //! @brief Element traits type
+    //!
+    using traits = TT;
+    //!
+    //! @typedef traits_traits
+    //! @brief Element traits traits type
+    //!
+    using traits_traits = flat_forward_list_traits_traits<TT>;
+    //!
+    //! @typedef range_t
+    //! @brief Vocabulary type used to describe
+    //! buffer used by the element and how much
+    //! of this buffer is used by the data.
+    //! Type also includes information about 
+    //! required alignment.
+    //!
+    using range_t = typename traits_traits::range_t;
+    //!
+    //! @typedef size_with_padding_t
+    //! @brief Vocabulary type used to describe size with padding
+    //! 
+    using size_with_padding_t = typename traits_traits::size_with_padding_t;
+    //!
+    //! @typedef offset_with_aligment_t
+    //! @brief Vocabulary type used to describe size with alignment
+    //! 
+    using offset_with_aligment_t = typename traits_traits::offset_with_aligment_t;
+    //!
+    //! @typedef sizes_t
+    //! @brief Vocabulary type that contains information about buffer size, and last element range. 
+    //!
+    using sizes_t = flat_forward_list_sizes<traits_traits::alignment>;
+    //!
+    //! @typedef buffer_value_type
+    //! @details Since we have variable size elementa,
+    //! and we cannot express it in the C++ type system
+    //! we treat buffer with elements as a bag of chars
+    //! and cast to the element type when nessesary.
+    //! @brief Depending if T is const we will
+    //! use const or non-const buffer pointer
+    //!
+    using buffer_value_type = std::conditional_t<std::is_const_v<T>, char const, char>;
+    //!
+    //! @typedef const_buffer_value_type
+    //! @brief When we do not intend to modify buffer 
+    //! we can treat it as a bag of const characters
+    //!
+    using const_buffer_value_type = buffer_value_type const;
+    //!
+    //! @typedef buffer_pointer
+    //! @brief Type used as a buffer pointer.
+    //!
+    using buffer_pointer = buffer_value_type *;
+    //!
+    //! @typedef const_buffer_pointer
+    //! @brief Type used as a pointer ot the const buffer.
+    //!
+    using const_buffer_pointer = const_buffer_value_type *;
+    //!
+    //! @typedef iterator
+    //! @brief Type of iterator
+    //!
+    using iterator = flat_forward_list_iterator<T, TT>;
+    //!
+    //! @typedef const_iterator
+    //! @brief Type of const iterator
+    //!
+    using const_iterator = flat_forward_list_const_iterator<T, TT>;
+    //!
+    //! @typedef buffer_t
+    //! @brief Pointers that describe buffer
+    //! @details Depending if T is const buffer uses char * or char const *
+    //!
+    using buffer_t = flat_forward_list_buffer_t<buffer_value_type>;
+    //!
+    //! @brief Constant that represents and invalid 
+    //! or non-existent position
+    //!
+    inline static size_type const npos = iffl::npos;
+    //!
+    //! @brief Default constructor
+    //!
+    flat_forward_list_ref() noexcept
+        : buffer_() {
+    }
+    //!
+    //! @brief Copy constructor. Copies allocator if supprted and 
+    //! copies content of other container to this container
+    //! @param other - container we are copying from
+    //!
+    flat_forward_list_ref(flat_forward_list_ref const &other) noexcept
+        : buffer_(other.buffer_) {
+    }
+    //!
+    //! @brief Constructor that takes ownership of a buffer
+    //! @param other_buff - pointer to the start of the buffer
+    //! that contains list.
+    //! @details This constructor does not validate if this is
+    //! a valid flat forward list. It assumes that
+    //! caller validated buffer before using this constructor.
+    //! The first parameter is an empty vocabulary type to help
+    //! with overload resolution and code redability.
+    //!
+    explicit flat_forward_list_ref(buffer_t const &other_buff) noexcept
+        : buffer_(other_buff) {
+    }
+
+    //!
+    //! @brief Constructor that copies list from a buffer
+    //! @param buffer_begin - pointer to the start of the buffer
+    //! that contains list.
+    //! @param buffer_end - pointer to the address right 
+    //! after last byte in the buffer.
+    //! @param last_element - pointers to the last element of the
+    //! list in the buffer. If buffer does not contain any elements
+    //! then this parameter must be nullptr.
+    //! @details This constructor does not validate if this is
+    //! a valid flat forward list. It assumes that
+    //! caller validated buffer before using this constructor.
+    //!
+    flat_forward_list_ref(buffer_pointer buffer_begin,
+                          buffer_pointer last_element,
+                          buffer_pointer buffer_end) noexcept
+        : buffer_(flat_forward_list_buffer{ buffer_begin, last_element, buffer_end }) {
+    }
+
+    //!
+    //! @brief Constructor that checks if buffer contains a valid list
+    //! and if it does then copies that list.
+    //! @param buffer - pointer to the start of the buffer
+    //! that might contains list.
+    //! @param buffer_size - bufer size.
+    //! @details This constructor searches for the last
+    //! valid element in the buffer, and is buffer is valid then it
+    //! copies elements to the new buffer.
+    //!
+    flat_forward_list_ref(buffer_pointer *buffer,
+                         size_t buffer_size) noexcept {
+        //assign(buffer, buffer_size);
+    }
+    //!
+    //! @brief Copy assignment operator.
+    //! @param other - linked list we are moving from
+    //!
+    flat_forward_list_ref &operator= (flat_forward_list_ref const & other) {
+        buffer_ = other.buffer_;
+        return *this;
+    }
+
+    //!
+    //! @brief Copy assignment operator.
+    //! @param other_buffer - linked list we are copying from
+    //!
+    flat_forward_list_ref &operator= (flat_forward_list_buffer const &other_buffer) {
+        buffer_ = other_buffer;
+        return *this;
+    }
+
+    //!
+    //! @brief Destructor.
+    //! @details Deallocates buffer owned by container.
+    //!
+    ~flat_forward_list_ref() noexcept {
+        //clear();
+    }
+
+private:
+    //!
+    //! @returns Information about containers buffer
+    //! @details Most algorithms that modify container
+    //! use this method to buffer information in a single 
+    //! snapshot.
+    //!
+    sizes_t get_all_sizes() const noexcept {
+        sizes_t s;
+
+        s.total_capacity = buff().end - buff().begin;
+
+        if (nullptr != buff().last) {
+            s.last_element = range_unsafe(const_iterator{ buff().last });
+        }
+        FFL_CODDING_ERROR_IF(s.total_capacity < s.used_capacity().size);
+
+        return s;
+    }
+
+    //!
+    //! @brief Returns reference to the struct that 
+    //! describes buffer.
+    //! Helps abstracting out uglification that comes from
+    //! using a compressed_pair.
+    //!
+    buffer_t &buff() {
+        return buffer_.get_second();
+    }
+    //!
+    //! @brief Returns const reference to the struct that 
+    //! describes buffer.
+    //! Helps abstracting out uglification that comes from
+    //! using a compressed_pair.
+    //!
+    buffer_t const &buff() const {
+        return buffer_.get_second();
+    }
+
+    buffer_t buffer_;
+};
+
+//!
+//! @typedef flat_forward_list_view
+//! @brief Constant view to flat forward list
+//!
+template <typename T,
+          typename TT = flat_forward_list_traits<T>>
+using flat_forward_list_view = flat_forward_list_ref<T const, TT>;
+
+//!
 //! @class flat_forward_list
 //! @brief Intrusive flat forward list container
 //! @tparam T - element type
@@ -1592,7 +1866,7 @@ using flat_forward_list_const_iterator = flat_forward_list_iterator_t< std::add_
 //!
 template <typename T,
           typename TT = flat_forward_list_traits<T>,
-          typename A = std::allocator<char>>
+          typename A = std::allocator<T>>
 class flat_forward_list final {
 public:
 
@@ -1669,6 +1943,11 @@ public:
     //! 
     using offset_with_aligment_t = typename traits_traits::offset_with_aligment_t;
     //!
+    //! @typedef sizes_t
+    //! @brief Vocabulary type that contains information about buffer size, and last element range. 
+    //!
+    using sizes_t = flat_forward_list_sizes<traits_traits::alignment>;
+    //!
     //! @typedef allocator_type
     //! @brief Type of allocator
     //! 
@@ -1703,14 +1982,6 @@ public:
     //!
     using const_buffer_pointer = char const *;
 
-    //!
-    //! @typedef detach_type_as_size
-    //! @brief A tuple that contains 
-    //! - A pointer to the start of buffer,
-    //! - Used buffer size 
-    //! - Total buffer size
-    //!
-    using detach_type_as_size = std::tuple<char *, size_t, size_t>;
     //!
     //! @typedef iterator
     //! @brief Type of iterator
@@ -1978,16 +2249,9 @@ public:
     //! @details After the call completes, container is empty.
     //! @return Returns buffer information to the caller.
     //! Caller is responsible for deallocating returned buffer.
-    //! Information oabout the buffer is returned using a tuple 
-    //! that consists
-    //! - Pointer to the buffer start. Nullptr if container
-    //!   contains no buffer.
-    //! - Pointer to the start of the last elenet. Nullptr if
-    //!   if buffer is empty or contains no elements.
-    //! - Pointer to the end of the buffer
     //!
     flat_forward_list_buffer detach() noexcept {
-        flat_forward_list_buffer tmp{ buff() };       
+        flat_forward_list_buffer tmp{ buff() };
         buff().clear();
         return tmp;
     }
@@ -2200,9 +2464,7 @@ public:
         validate_pointer_invariants();
         if (buff().begin) {
             deallocate_buffer(buff().begin, total_capacity());
-            buff().begin = nullptr;
-            buff().end = nullptr;
-            buff().last = nullptr;
+            buff().clear();
         }
         validate_pointer_invariants();
     }
@@ -2236,7 +2498,7 @@ public:
     void resize_buffer(size_type size) {
         validate_pointer_invariants();
 
-        all_sizes_t prev_sizes{ get_all_sizes() };
+        sizes_t prev_sizes{ get_all_sizes() };
 
         char *new_buffer{ nullptr };
         size_t new_buffer_size{ 0 };
@@ -2358,7 +2620,7 @@ public:
         size_t new_buffer_size{ 0 };
         auto deallocate_buffer{ make_scoped_deallocator(&new_buffer, &new_buffer_size) };
 
-        all_sizes_t prev_sizes{get_all_sizes()};
+        sizes_t prev_sizes{get_all_sizes()};
       
         char *cur{ nullptr };
 
@@ -2534,7 +2796,7 @@ public:
         size_t new_buffer_size{ 0 };
         auto deallocate_buffer{ make_scoped_deallocator(&new_buffer, &new_buffer_size) };
 
-        all_sizes_t prev_sizes{ get_all_sizes() };
+        sizes_t prev_sizes{ get_all_sizes() };
         range_t element_range{ this->range_unsafe(it) };
         //
         // Note that in this case old element that was in that position
@@ -2693,7 +2955,7 @@ public:
         //
         // Otherwise calculate sizes and offsets
         //
-        all_sizes_t prev_sizes{ get_all_sizes() };
+        sizes_t prev_sizes{ get_all_sizes() };
         iterator begin_it{ iterator{ buff().begin } };
         iterator secont_element_it{ begin_it + 1 };
         range_t second_element_range{ this->range_unsafe(secont_element_it) };
@@ -2744,7 +3006,7 @@ public:
             //
             // calculate sizes and offsets
             //
-            all_sizes_t prev_sizes{ get_all_sizes() };
+            sizes_t prev_sizes{ get_all_sizes() };
             range_t element_to_erase_range{ this->range_unsafe(element_to_erase_it) };
             size_type tail_size{ prev_sizes.used_capacity().size - element_to_erase_range.buffer_end };
             //
@@ -2804,7 +3066,7 @@ public:
         //
         // calculate sizes and offsets
         //
-        all_sizes_t prev_sizes{ get_all_sizes() };
+        sizes_t prev_sizes{ get_all_sizes() };
 
         range_t first_element_to_erase_range{ this->range_unsafe(first_element_to_erase_it) };
         range_t last_element_to_erase_range{ this->range_unsafe(last) };
@@ -2911,7 +3173,7 @@ public:
             return end();
         } 
 
-        all_sizes_t prev_sizes{ get_all_sizes() };
+        sizes_t prev_sizes{ get_all_sizes() };
         range_t element_range{ range_unsafe(it) };
         //
         // Size of all elements after element that we are erasing,
@@ -2960,7 +3222,7 @@ public:
         // The rest of function deals with erasing from start to some existing element.
         // We need to shift all elements that we are keeping in place where start is.
         //
-        all_sizes_t prev_sizes{ get_all_sizes() };
+        sizes_t prev_sizes{ get_all_sizes() };
         
         range_t start_range = range_unsafe(start);
         range_t end_range = range_unsafe(end);
@@ -3471,7 +3733,7 @@ public:
 
         iterator result_it;
 
-        all_sizes_t prev_sizes{ get_all_sizes() };
+        sizes_t prev_sizes{ get_all_sizes() };
         range_t element_range_before{ range_unsafe(it) };
         //
         // We will change element size by padded size to make sure
@@ -3903,7 +4165,7 @@ public:
     //!
     size_type used_capacity() const noexcept {
         validate_pointer_invariants();
-        all_sizes_t s{ get_all_sizes() };
+        sizes_t s{ get_all_sizes() };
         return s.used_capacity().size;
     }
     //!
@@ -3919,7 +4181,7 @@ public:
     //!
     size_type remaining_capacity() const noexcept {
         validate_pointer_invariants();
-        all_sizes_t s{ get_all_sizes() };
+        sizes_t s{ get_all_sizes() };
         return s.remaining_capacity;
     }
     //!
@@ -3947,7 +4209,7 @@ public:
         // If we told so then zero tail
         //
         if (zero_unused_capacity) {
-            all_sizes_t prev_sizes{ get_all_sizes() };
+            sizes_t prev_sizes{ get_all_sizes() };
             if (prev_sizes.used_capacity().size > 0) {
                 size_type last_element_end{ prev_sizes.last_element.begin() + prev_sizes.last_element.data_size() };
                 size_type unuset_tail_size{ prev_sizes.total_capacity - last_element_end };
@@ -3981,7 +4243,7 @@ private:
 
         validate_pointer_invariants();
 
-        all_sizes_t prev_sizes{ get_all_sizes() };
+        sizes_t prev_sizes{ get_all_sizes() };
         difference_type element_size_diff{ static_cast<difference_type>(new_size - prev_sizes.last_element.data_size()) };
         //
         // If last element is shrinking or 
@@ -4124,7 +4386,7 @@ private:
     void copy_from(flat_forward_list const &other) {
         clear();
         if (other.buff().last) {
-            all_sizes_t other_sizes{ other.get_all_sizes() };
+            sizes_t other_sizes{ other.get_all_sizes() };
             buff().begin = allocate_buffer(other_sizes.used_capacity().size);
             copy_data(buff().begin, other.buff().begin, other_sizes.used_capacity().size);
             buff().end = buff().begin + other_sizes.used_capacity().size;
@@ -4406,55 +4668,13 @@ private:
         return closed_range_usafe(first, last);
     }
     //!
-    //! @class all_sizes
-    //! @brief Describes buffer used by container
-    //! 
-    template<size_t ALIGNMENT_V>
-    struct all_sizes {
-        //!
-        //! @brief Size of buffer
-        //!
-        size_type total_capacity{ 0 };
-        //!
-        //! @brief Last element range.
-        //!
-        range_with_alighment<ALIGNMENT_V> last_element;
-        //!
-        //! @brief Capacity used by elements in the buffer
-        //!
-        size_with_padding<ALIGNMENT_V> used_capacity() const {
-            return {last_element.data_end};
-        }
-        //!
-        //! @details When we are inserting new element in the middle we need to make sure inserted element
-        //! is padded, but we do not need to padd tail element
-        //!
-        size_type remaining_capacity_for_insert() const {
-            return total_capacity - used_capacity().size;
-        }
-        //!
-        //! @details If we are appending then we need to padd current last element, but new inserted 
-        //! element does not have to be padded
-        //
-        size_type remaining_capacity_for_append() const {
-            if (total_capacity <= used_capacity().size_padded()) {
-                return 0;
-            } else {
-                return total_capacity - used_capacity().size_padded();
-            }
-        }
-    };
-
-    using all_sizes_t = all_sizes<traits_traits::alignment>;
-
-    //!
     //! @returns Information about containers buffer
     //! @details Most algorithms that modify container
     //! use this method to buffer information in a single 
     //! snapshot.
     //!
-    all_sizes_t get_all_sizes() const noexcept {
-        all_sizes_t s;
+    sizes_t get_all_sizes() const noexcept {
+        sizes_t s;
 
         s.total_capacity = buff().end - buff().begin;
 

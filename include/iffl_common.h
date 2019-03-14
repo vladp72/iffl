@@ -621,6 +621,46 @@ namespace iffl {
     };
 
     //!
+    //! @class flat_forward_list_sizes
+    //! @brief Describes buffer used by container
+    //! 
+    template<size_t ALIGNMENT_V>
+    struct flat_forward_list_sizes {
+        //!
+        //! @brief Size of buffer
+        //!
+        size_t total_capacity{ 0 };
+        //!
+        //! @brief Last element range.
+        //!
+        range_with_alighment<ALIGNMENT_V> last_element;
+        //!
+        //! @brief Capacity used by elements in the buffer
+        //!
+        constexpr size_with_padding<ALIGNMENT_V> used_capacity() const {
+            return { last_element.data_end };
+        }
+        //!
+        //! @details When we are inserting new element in the middle we need to make sure inserted element
+        //! is padded, but we do not need to padd tail element
+        //!
+        constexpr size_t remaining_capacity_for_insert() const {
+            return total_capacity - used_capacity().size;
+        }
+        //!
+        //! @details If we are appending then we need to padd current last element, but new inserted 
+        //! element does not have to be padded
+        //
+        constexpr size_t remaining_capacity_for_append() const {
+            if (total_capacity <= used_capacity().size_padded()) {
+                return 0;
+            } else {
+                return total_capacity - used_capacity().size_padded();
+            }
+        }
+    };
+
+    //!
     //! @class zero_then_variadic_args_t
     //! @brief Tag type for value - initializing first,
     //! constructing second from remaining args
@@ -781,28 +821,28 @@ namespace iffl {
                 , v2_(std::forward<P2>(p2)...) {
             }
             //!
-            //! @brief Returns a reference to the 
+            //! @returns Returns a reference to the 
             //! first element of compressed pair
             //!
             constexpr T1& get_first() noexcept {
                 return (v1_);
             }
             //!
-            //! @brief Returns a const reference to the 
+            //! @returns Returns a const reference to the 
             //! first element of compressed pair
             //!
             constexpr T1 const & get_first() const noexcept {
                 return (v1_);
             }
             //!
-            //! @brief Returns a reference to the 
+            //! @returns Returns a reference to the 
             //! second element of compressed pair
             //!
             constexpr T2& get_second() noexcept {
                 return (v2_);
             }
             //!
-            //! @brief Returns a const reference to the 
+            //! @returns Returns a const reference to the 
             //! second element of compressed pair
             //!
             constexpr T2 const & get_second() const noexcept {
@@ -813,47 +853,104 @@ namespace iffl {
             T1 v1_;
             T2 v2_;
     };
-
     //!
-    //! @class flat_forward_list_buffer
+    //! @class flat_forward_list_buffer_t
     //! @brief A set of pointers describing state of
     //! the buffer containing flat forward list.
     //!
-    struct flat_forward_list_buffer {
-
+    template <typename T = char>
+    struct flat_forward_list_buffer_t {
+        //
+        // Buffer pointer can be const and non-const buffer
+        //
+        static_assert(std::is_same_v<T, char> || std::is_same_v<T, char const>, 
+                      "buffer pointer can be char * or char const *");
+        //!
+        //! @brief True if this is const buffer and false otherwise
+        //!
+        inline static bool const is_const{ std::is_same_v<T, char const> };
+        //!
+        //! @brief Default constructor
+        //!
+        flat_forward_list_buffer_t() = default;
+        //!
+        //! @brief Copy constructor
+        //!
+        flat_forward_list_buffer_t(flat_forward_list_buffer_t const &) = default;
+        //!
+        //! @brief Copy assignment operator
+        //!
+        flat_forward_list_buffer_t &operator= (flat_forward_list_buffer_t const &) = default;
+        //!
+        //! @brief Constructors const buffer from non-const buffer
+        //!
+        template<typename = std::enable_if<is_const>>
+        flat_forward_list_buffer_t(flat_forward_list_buffer_t<char> const &buff) {
+            begin = buff.begin;
+            last = buff.last;
+            end = buff.end;
+        }
+        //!
+        //! @brief Assignment operator to const buffer from non-const buffer
+        //!
+        template<typename = std::enable_if<is_const>>
+        flat_forward_list_buffer_t & operator= (flat_forward_list_buffer_t<char> const &buff) {
+            begin = buff.begin;
+            last = buff.last;
+            end = buff.end;
+            return *this;
+        }
+        //!
+        //! @typedef value_type
+        //! @brief type of buffer elements
+        //!
+        using value_type = T;
+        //!
+        //! @typedef pointer_type
+        //! @brief Pinter to the buffer elements
+        //!
+        using pointer_type = T *;
+        //!
+        //! @typedef refernce_type
+        //! @brief Reference to the buffer elements
+        //!
+        using refernce_type = T & ;
+        //!
+        //! @typedef size_type
+        //! @brief Size type
+        //!
+        using size_type = size_t;
         //!
         //! @brief Pointer to the beginning of buffer
         //! nullptr if no buffer
         //!
-        char *begin{ nullptr };
+        pointer_type begin{ nullptr };
         //!
         //! @brief Pointer to the last element in the list
         //! nullptr if no buffer or if there is no elements 
         //! in the list.
         //!
-        char *last{ nullptr };
+        pointer_type last{ nullptr };
         //!
         //! @brief Pointer to the end of buffer
         //! nullptr if no buffer
         //!
-        char *end{ nullptr };
-
+        pointer_type end{ nullptr };
         //!
         //! @brief Sets pointer to the buffer begin and recalculates last and end
         //! @param new_begin - pointer to the buffer begin
         //! 
-        constexpr void set_begin(char *new_begin) noexcept {
-            size_t tmp_last_offset = last_offset();
-            size_t tmp_size = size();
+        constexpr void set_begin(pointer_type new_begin) noexcept {
+            size_type tmp_last_offset = last_offset();
+            size_type tmp_size = size();
             begin = new_begin;
             set_size_unsafe(tmp_size);
             set_last_offset_unsafe(tmp_last_offset);
         }
-
         //!
         //! @returns Returns buffer size
         //!
-        constexpr size_t size() const noexcept {
+        constexpr size_type size() const noexcept {
             return end ? end - begin
                        : 0;
         }
@@ -861,21 +958,21 @@ namespace iffl {
         //! @brief Updates buffer size
         //! @param size - size of the buffer
         //!
-        constexpr void set_size_unsafe(size_t size) noexcept {
+        constexpr void set_size_unsafe(size_type size) noexcept {
             end = begin + size;
         }
         //!
         //! @brief Updates buffer size
         //! @param size - size of the buffer
         //!
-        constexpr void set_size(size_t size) noexcept {
+        constexpr void set_size(size_type size) noexcept {
             set_size_unsafe(size);
             validate();
         }
         //!
         //! @returns Returns offset of the last element in the buffer
         //!
-        constexpr size_t last_offset() const noexcept {
+        constexpr size_type last_offset() const noexcept {
             return last ? last - begin
                          : iffl::npos;
         }
@@ -883,7 +980,7 @@ namespace iffl {
         //! @brief Sets offset of the last pointer
         //! @param offset - offset of the last element in the buffer
         //!
-        constexpr void set_last_offset_unsafe(size_t offset) noexcept {
+        constexpr void set_last_offset_unsafe(size_type offset) noexcept {
             last = (iffl::npos == offset ? nullptr
                                          : begin + offset);
         }
@@ -892,7 +989,7 @@ namespace iffl {
         //! @brief Sets offset of the last pointer
         //! @param offset - offset of the last element in the buffer
         //!
-        constexpr void set_last_offset(size_t offset) noexcept {
+        constexpr void set_last_offset(size_type offset) noexcept {
             set_last_offset_unsafe(offset);
             validate();
         }
@@ -929,5 +1026,15 @@ namespace iffl {
             return begin != nullptr;
         }
     };
+    //!
+    //! @typedef flat_forward_list_buffer
+    //! @brief Non const flat forward list buffer 
+    //!
+    using flat_forward_list_buffer = flat_forward_list_buffer_t<char>;
+    //!
+    //! @typedef flat_forward_list_buffer_view
+    //! @brief Const flat forward list buffer 
+    //!
+    using flat_forward_list_buffer_view = flat_forward_list_buffer_t<char const>;
 
 } // namespace iffl
