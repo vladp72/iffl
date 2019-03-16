@@ -212,7 +212,7 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
                               std::fill(e.arr, e.arr + e.length, pattern);
                           });
 
-        iffl::flat_forward_list_buffer detached_buffer{ data.detach() };
+        iffl::buffer_ref detached_buffer{ data.detach() };
         *buffer = detached_buffer.begin;
         *buffer_size = detached_buffer.size();
 

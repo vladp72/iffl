@@ -1531,6 +1531,10 @@ using flat_forward_list_const_iterator = flat_forward_list_iterator_t< std::add_
 //!
 //! @class flat_forward_list_ref
 //! @brief Non owning container for flat forward list
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! Provides helpers accessing elements of the buffer
+//! without taking ownership of the buffer. 
 //!
 template <typename T,
           typename TT = flat_forward_list_traits<T>>
@@ -1546,9 +1550,9 @@ public:
     //
     static_assert(std::is_pod_v<T>, "T must be a Plain Old Definition");
     //!
-    //! @brief True if this is a view and false if this is ref
+    //! @brief True if this is a ref and false if this is a view
     //!
-    inline static bool const is_view{ std::is_const_v<T> };
+    inline static bool const is_ref{ !std::is_const_v<T> };
     //!
     //! @typedef value_type
     //! @brief Element value type
@@ -1655,11 +1659,11 @@ public:
     //!
     using const_iterator = flat_forward_list_const_iterator<T, TT>;
     //!
-    //! @typedef buffer_t
+    //! @typedef buffer_type
     //! @brief Pointers that describe buffer
     //! @details Depending if T is const buffer uses char * or char const *
     //!
-    using buffer_t = flat_forward_list_buffer_t<buffer_value_type>;
+    using buffer_type = buffer_t<buffer_value_type>;
     //!
     //! @brief Constant that represents and invalid 
     //! or non-existent position
@@ -1680,16 +1684,27 @@ public:
         : buffer_(other.buffer_) {
     }
     //!
-    //! @brief Constructor that takes ownership of a buffer
+    //! @brief Assignment operator to view from a ref
+    //! @details Use SFINAE to enable it only on const instantiation
+    //! to support assignment from a non-const instantiation of template
+    //!
+    template<typename V,
+             typename = std::enable_if<!is_ref &&
+                                       std::is_same_v<V, char>, 
+                                       void>>
+    flat_forward_list_ref(flat_forward_list_ref<V> const &other) noexcept
+        : buffer_(other.buffer_) {
+    }
+    //!
+    //! @brief Constructor that initializas view to point 
+    //! to the buffer buffer
     //! @param other_buff - pointer to the start of the buffer
     //! that contains list.
     //! @details This constructor does not validate if this is
     //! a valid flat forward list. It assumes that
     //! caller validated buffer before using this constructor.
-    //! The first parameter is an empty vocabulary type to help
-    //! with overload resolution and code redability.
     //!
-    explicit flat_forward_list_ref(buffer_t const &other_buff) noexcept
+    explicit flat_forward_list_ref(buffer_type const &other_buff) noexcept
         : buffer_(other_buff) {
     }
 
@@ -1709,7 +1724,40 @@ public:
     flat_forward_list_ref(buffer_pointer buffer_begin,
                           buffer_pointer last_element,
                           buffer_pointer buffer_end) noexcept
-        : buffer_(flat_forward_list_buffer{ buffer_begin, last_element, buffer_end }) {
+        : buffer_(buffer_type{ buffer_begin, last_element, buffer_end }) {
+    }
+    //!
+    //! @brief Constructor that creaates a view over a buffer described 
+    //! by a pair of iterators
+    //! @param begin - iterator for the buffer begin.
+    //! @param last - last element that should be included in the view
+    //! @details This constructor does not validate if this is
+    //! a valid flat forward list. It assumes that
+    //! caller validated buffer before using this constructor.
+    //!
+    flat_forward_list_ref(iterator const &begin,
+                          iterator const &last) noexcept
+        : buffer_(buffer_type{begin.get_ptr(), 
+                              last.get_ptr(), 
+                              reinterpret_cast<buffer_pointer>(last.get_ptr()) + 
+                                                               traits_traits::get_size(last.get_ptr()).size }) {
+    }
+    //!
+    //! @brief Constructor that creaates a view over a buffer described 
+    //! by a pair of iterators
+    //! @param begin - iterator for the buffer begin.
+    //! @param last - last element that should be included in the view
+    //! @details This constructor does not validate if this is
+    //! a valid flat forward list. It assumes that
+    //! caller validated buffer before using this constructor.
+    //!
+    flat_forward_list_ref(const_iterator const &begin,
+                          const_iterator const &last,
+                          bool = std::enable_if_t < !is_ref, std::true_type>{}) noexcept
+        : buffer_(buffer_type{ begin.get_ptr(),
+                              last.get_ptr(),
+                              reinterpret_cast<buffer_pointer>(last.get_ptr()) +
+                                                               traits_traits::get_size(last.get_ptr()).size }) {
     }
 
     //!
@@ -1723,8 +1771,8 @@ public:
     //! copies elements to the new buffer.
     //!
     flat_forward_list_ref(buffer_pointer *buffer,
-                         size_t buffer_size) noexcept {
-        //assign(buffer, buffer_size);
+                          size_t buffer_size) noexcept {
+        assign(buffer, buffer_size);
     }
     //!
     //! @brief Copy assignment operator.
@@ -1734,12 +1782,25 @@ public:
         buffer_ = other.buffer_;
         return *this;
     }
+    //!
+    //! @brief Assignment operator to view from a ref
+    //! @details Use SFINAE to enable it only on const instantiation
+    //! to support assignment from a non-const instantiation of template
+    //!
+    template<typename V,
+             typename = std::enable_if<!is_ref &&
+                                       std::is_same_v<V, char>, 
+                                       void>>
+    flat_forward_list_ref &operator= (flat_forward_list_ref<V> const & other) {
+        buffer_ = other.buffer_;
+        return *this;
+    }
 
     //!
     //! @brief Copy assignment operator.
     //! @param other_buffer - linked list we are copying from
     //!
-    flat_forward_list_ref &operator= (flat_forward_list_buffer const &other_buffer) {
+    flat_forward_list_ref &operator= (buffer_view const &other_buffer) {
         buffer_ = other_buffer;
         return *this;
     }
@@ -1749,10 +1810,664 @@ public:
     //! @details Deallocates buffer owned by container.
     //!
     ~flat_forward_list_ref() noexcept {
-        //clear();
+        buff().clear();
+    }
+    //!
+    //! @brief Assigns view to point to the described buffer
+    //! @param other_buff - pointer to the start of the buffer
+    //! that contains list.
+    //! @details This method does not validate if this is
+    //! a valid flat forward list. It assumes that
+    //! caller validated buffer before using this constructor.
+    //!
+    void assign(buffer_type const &other_buff) noexcept {
+        buffer_ = other_buff;
+    }
+    //!
+    //! @brief Assigns view to point to the described buffer
+    //! @param buffer_begin - pointer to the start of the buffer
+    //! that contains list.
+    //! @param last_element - pointer to the last element of the list.
+    //! @param buffer_end - pointer to the end of the buffer.
+    //! @details This method does not validate if this is
+    //! a valid flat forward list. It assumes that
+    //! caller validated buffer before using this constructor.
+    //!
+    void assign(buffer_pointer buffer_begin,
+                buffer_pointer last_element,
+                buffer_pointer buffer_end) noexcept {
+        buffer_ = buffer_type{ buffer_begin, last_element, buffer_end };
+    }
+    //!
+    //! @brief Assigns view to point to the described buffer
+    //! @param begin - iterator for the buffer begin.
+    //! @param last - last element that should be included in the view
+    //!
+    void assign(iterator const &begin,
+                iterator const &last) noexcept {
+        buffer_ = buffer_type{ begin.get_ptr(),
+                              last.get_ptr(),
+                              reinterpret_cast<buffer_pointer>(last.get_ptr()) +
+                                                               traits_traits::get_size(last.get_ptr()).size };
+    }
+    //!
+    //! @brief Assigns view to point to the described buffer
+    //! @param begin - iterator for the buffer begin.
+    //! @param last - last element that should be included in the view
+    //!
+    void assign(const_iterator const &begin,
+                const_iterator const& last,
+                bool = std::enable_if_t < !is_ref, std::true_type>{}) noexcept {
+        buffer_ = buffer_type{ begin.get_ptr(),
+                              last.get_ptr(),
+                              reinterpret_cast<buffer_pointer>(last.get_ptr()) +
+                                                               traits_traits::get_size(last.get_ptr()).size };
+    }
+    //!
+    //! @brief Assigns view to point to the described buffer
+    //! @param buffer - pointer to the begin of a buffer.
+    //! @param buffer_size - size of the buffer.
+    //!
+    void assign(buffer_pointer *buffer,
+                size_t buffer_size) noexcept {
+
+        auto[is_valid, last_valid] = flat_forward_list_validate<T, TT>(buffer,
+                                                                       buffer + buffer_size);
+
+        buffer_ = buffer_type{ buffer,
+                              is_valid ? last_valid : nullptr,
+                              buffer + buffer_size };
+    }
+    //!
+    //! @brief Swaps content of this container and the other container.
+    //! @param other - reference to the other container
+    //! @throws might throw std::bad_alloc if allocator swap throws or if
+    //! allocators do not suport swap, and we need to make a copy of elements,
+    //! which involves allocation.
+    //!
+    void swap(flat_forward_list_ref &other) noexcept {
+        flat_forward_list_ref tmp{ std::move(other) };
+        other = std::move(*this);
+        *this = std::move(tmp);
+    }
+    //!
+    //! @return Returns a reference to the first element in the container.
+    //! @details Calling this method on a empty container will trigger fail-fast
+    //!
+    T& front() {
+        validate_pointer_invariants();
+        FFL_CODDING_ERROR_IF(buff().last == nullptr || buff().begin == nullptr);
+        return *(T *)buff().begin;
+    }
+    //!
+    //! @return Returns a const reference to the first element in the container.
+    //! @details Calling this method on a empty container will trigger fail-fast
+    //!
+    T const &front() const {
+        validate_pointer_invariants();
+        FFL_CODDING_ERROR_IF(buff().last == nullptr || buff().begin == nullptr);
+        return *(T *)buff().begin;
+    }
+    //!
+    //! @return Returns a reference to the last element in the container.
+    //! @details Calling this method on a empty container will trigger fail-fast
+    //!
+    T& back() {
+        validate_pointer_invariants();
+        FFL_CODDING_ERROR_IF(buff().last == nullptr);
+        return *(T *)buff().last;
+    }
+    //!
+    //! @return Returns a const reference to the last element in the container.
+    //! @details Calling this method on a empty container will trigger fail-fast
+    //!
+    T const &back() const {
+        validate_pointer_invariants();
+        FFL_CODDING_ERROR_IF(buff().last == nullptr);
+        return *(T *)buff().last;
+    }
+    //!
+    //! @return Returns an iterator pointing to the first element of container.
+    //! @details Calling on an empty container returns end iterator
+    //!
+    iterator begin() noexcept {
+        validate_pointer_invariants();
+        return buff().last ? iterator{ buff().begin }
+        : end();
+    }
+    //!
+    //! @return Returns a const iterator pointing to the first element of container.
+    //! @details Calling on an empty container returns const end iterator
+    //!
+    const_iterator begin() const noexcept {
+        validate_pointer_invariants();
+        return buff().last ? const_iterator{ buff().begin }
+        : cend();
+    }
+
+    //
+    // It is not clear how to implement it 
+    // without adding extra boolen flags to iterator.
+    // Since elements are variable length we need to be able
+    // to query offset to next, and we cannot not do that
+    // no before_begin element
+    //
+    // iterator before_begin() noexcept {
+    // }
+
+    //!
+    //! @return Returns an iterator pointing to the last element of container.
+    //! @details Calling on an empty container returns end iterator
+    //!
+    iterator last() noexcept {
+        validate_pointer_invariants();
+        return buff().last ? iterator{ buff().last }
+        : end();
+    }
+    //!
+    //! @return Returns a const iterator pointing to the last element of container.
+    //! @details Calling on an empty container returns end iterator
+    //!
+    const_iterator last() const noexcept {
+        validate_pointer_invariants();
+        return buff().last ? const_iterator{ buff().last }
+        : cend();
+    }
+    //!
+    //! @return Returns an end iterator.
+    //! @details For types that support get_next_offset offset or when container is empty, 
+    //! the end iterator is iterator{}.
+    //! For types that do not support get_next_offset an end iterator is pointing pass the last
+    //! element of container
+    //!
+    iterator end() noexcept {
+        validate_pointer_invariants();
+        if (buff().last) {
+            size_with_padding_t last_element_size{ traits_traits::get_size(buff().last) };
+            return iterator{ buff().last + last_element_size.size_padded() };
+        } else {
+            return iterator{ };
+        }
+    }
+    //!
+    //! @return Returns an end const_iterator.
+    //! @details For types that support get_next_offset offset or when container is empty, 
+    //! the end iterator is const_iterator{}.
+    //! For types that do not support get_next_offset an end iterator is pointing pass the last
+    //! element of container
+    //!
+    const_iterator end() const noexcept {
+        validate_pointer_invariants();
+        if (buff().last) {
+            size_with_padding_t last_element_size{ traits_traits::get_size(buff().last) };
+            return const_iterator{ buff().last + last_element_size.size_padded() };
+        } else {
+            return const_iterator{ };
+        }
+    }
+    //!
+    //! @return Returns a const iterator pointing to the first element of container.
+    //! @details Calling on an empty container returns const end iterator
+    //!
+    const_iterator cbegin() const noexcept {
+        return begin();
+    }
+    //!
+    //! @return Returns a const iterator pointing to the last element of container.
+    //! @details Calling on an empty container returns end iterator
+    //!
+    const_iterator clast() const noexcept {
+        return last();
+    }
+    //!
+    //! @return Returns an end const_iterator.
+    //! @details For types that support get_next_offset offset or when container is empty, 
+    //! the end iterator is const_iterator{}.
+    //! For types that do not support get_next_offset an end iterator is pointing pass the last
+    //! element of container
+    //!
+    const_iterator cend() const noexcept {
+        return end();
+    }
+    //!
+    //! @return Pointer to the begging of the buffer or nullptr 
+    //! container has if no allocated buffer.
+    //!
+    char* data() noexcept {
+        return buff().begin;
+    }
+    //!
+    //! @return Const pointer to the begging of the buffer or nullptr 
+    //! container has if no allocated buffer.
+    //!
+    char const *data() const noexcept {
+        return buff().begin;
+    }
+    //!
+    //! @brief Validates that buffer contains a valid list.
+    //! @return true if valid list was found and false otherwise.
+    //! @details You must call this method after passing pointer to 
+    //! container's buffer to a function that might change buffer content.
+    //! If valid list of found then buff().last will be pointing to the
+    //! element element that was found. If no valid list was found then
+    //! buff().last will be nullptr.
+    //!
+    bool revalidate_data() noexcept {
+        auto[valid, last] = flat_forward_list_validate<T, TT>(buff().begin, buff().end);
+        if (valid) {
+            buff().last = last;
+        }
+        return valid;
+    }
+    //!
+    //! @brief Returns capacity used by the element's data.
+    //! @param it - iterator pointing to the element we are returning size for.
+    //! @returns Returns size of the element without paddint
+    //!
+    size_type required_size(const_iterator const &it) const noexcept {
+        validate_pointer_invariants();
+        validate_iterator_not_end(it);
+        return size_unsafe(it).size;
+    }
+    //!
+    //! @param it - iterator pointing to the element we are returning size for.
+    //! @returns For any element except last returns distance from element start 
+    //! to the start of the next element. For the last element it returns used_capacity
+    //!
+    size_type used_size(const_iterator const &it) const noexcept {
+        validate_pointer_invariants();
+        validate_iterator_not_end(it);
+
+        return used_size_unsafe(it);
+    }
+    //!
+    //! @brief Information about the buffer occupied by an element.
+    //! @param it - iterator pointing to an element.
+    //! @returns For any element except the last, it returns:
+    //! - start element offset.
+    //! - offset of element data end.
+    //! - offset of element buffer end.
+    //! For the last element data end and buffer end point to the 
+    //! same position.
+    //! @details All offsets values are relative to the buffer 
+    //! owned by the container.
+    //!
+    range_t range(const_iterator const &it) const noexcept {
+        validate_iterator_not_end(it);
+
+        return range_unsafe(it);
+    }
+    //!
+    //! @brief Information about the buffer occupied by elements in the range [begin, last].
+    //! @param begin - iterator pointing to the first element.
+    //! @param last - iterator pointing to the last element in the range.
+    //! @returns For any case, except when last element of range is last element of the collection,
+    //! it returns:
+    //! - start of the first element.
+    //! - offset of the last element data end.
+    //! - offset of the last element buffer end.
+    //! If range last is last element of collection then data end and
+    //! buffer end point to the same position.
+    //! @details All offsets values are relative to the buffer 
+    //! owned by the container.
+    //!
+    range_t closed_range(const_iterator const &begin, const_iterator const &last) const noexcept {
+        validate_iterator_not_end(begin);
+        validate_iterator_not_end(last);
+
+        return closed_range_unsafe(begin, last);
+    }
+    //!
+    //! @brief Information about the buffer occupied by elements in the range [begin, end).
+    //! @param begin - iterator pointing to the first element.
+    //! @param end - iterator pointing to the past last element in the range.
+    //! @returns For any case, except when end element of range is the end element of the collection,
+    //! - start of the first element.
+    //! - offset of the element before end data end.
+    //! - offset of the element before end buffer end.
+    //! If range end is colelction end then data end and
+    //! buffer end point to the same position.
+    //! @details All offsets values are relative to the buffer 
+    //! owned by the container.
+    //! Algorithm has complexity O(number of elements in collection) because to find 
+    //! element before end we have to scan buffer from beginning.
+    //!
+    range_t half_open_range(const_iterator const &begin, const_iterator const &end) const noexcept {
+        validate_iterator_not_end(begin);
+        validate_iterator_not_end(end);
+
+        return half_open_range_usafe(begin, end);
+    }
+    //!
+    //! @brief Tells if given offset in the buffer falls into a 
+    //! buffer used by the element.
+    //! @param it - iterator pointing to an element
+    //! @param position - offset in the container's buffer.
+    //! @returns True if position is in the element's buffer. 
+    //! and false otherwise. Element's buffer is retrieved using 
+    //! range(it).
+    //! When iterator referes to container end or when position is npos
+    //! the result will be false.
+    //!
+    bool contains(const_iterator const &it, size_type position) const noexcept {
+        validate_iterator(it);
+        if (cend() == it || npos == position) {
+            return false;
+        }
+        range_t const r{ range_unsafe(it) };
+        return r.buffer_contains(position);
+    }
+    //!
+    //! @brief Searches for an element before the element that containes 
+    //! given position.
+    //! @param position - offset in the conteiner's buffer
+    //! @returns Const iterator to the found element, if it was found, and
+    //! container's end const iterator otherwise.
+    //! @details Cost of this algorithm is O(nuber of elements in container)
+    //! because we have to performa linear search for an element from the start
+    //! of container's buffer.
+    //!
+    const_iterator find_element_before(size_type position) const noexcept {
+        validate_pointer_invariants();
+        if (empty_unsafe()) {
+            return end();
+        }
+        auto[is_valid, last_valid] = flat_forward_list_validate<T, TT>(buff().begin,
+                                                                       buff().begin + position);
+        if (last_valid) {
+            return const_iterator{ last_valid };
+        }
+        return end();
+    }
+    //!
+    //! @brief Searches for an element that containes given position.
+    //! @param position - offset in the conteiner's buffer
+    //! @returns Const iterator to the found element, if it was found, and
+    //! container's end const iterator otherwise.
+    //! @details Cost of this algorithm is O(nuber of elements in container)
+    //! because we have to performa linear search for an element from the start
+    //! of container's buffer.
+    //!
+    const_iterator find_element_at(size_type position) const noexcept {
+        const_iterator it = find_element_before(position);
+        if (cend() != it) {
+            ++it;
+            if (cend() != it) {
+                FFL_CODDING_ERROR_IF_NOT(contains(it, position));
+                return it;
+            }
+        }
+        return end();
+    }
+    //!
+    //! @brief Searches for an element after the element that containes 
+    //! given position.
+    //! @param position - offset in the conteiner's buffer
+    //! @returns Const iterator to the found element, if it was found, and
+    //! container's end const iterator otherwise.
+    //! @details Cost of this algorithm is O(nuber of elements in container)
+    //! because we have to performa linear search for an element from the start
+    //! of container's buffer.
+    //!
+    const_iterator find_element_after(size_type position) const noexcept {
+        const_iterator it = find_element_at(position);
+        if (cend() != it) {
+            ++it;
+            if (cend() != it) {
+                return it;
+            }
+        }
+        return end();
+    }
+    //!
+    //! @brief Number of elements in the container.
+    //! @returns Number of elements in the container.
+    //! @details Cost of this algorithm is O(nuber of elements in container).
+    //! Container does not actively cache/updates element count so we need to
+    //! scan list to find number of elements.
+    //!
+    size_type size() const noexcept {
+        validate_pointer_invariants();
+        size_type s = 0;
+        std::for_each(cbegin(), cend(), [&s](T const &) {
+            ++s;
+        });
+        return s;
+    }
+    //!
+    //! @brief Tells if container contains no elements.
+    //! @returns False when containe contains at least one element
+    //! and true otherwise.
+    //! @details Both container with no buffer as well as container
+    //! that has buffer that does not contain any valid elements will
+    //! return true.
+    //!
+    bool empty() const noexcept {
+        validate_pointer_invariants();
+        return  buff().last == nullptr;
+    }
+    //!
+    //! @returns Number of bytes in the bufer used
+    //! by existing elements.
+    //!
+    size_type used_capacity() const noexcept {
+        validate_pointer_invariants();
+        sizes_t s{ get_all_sizes() };
+        return s.used_capacity().size;
+    }
+    //!
+    //! @returns Buffer size.
+    //!
+    size_type total_capacity() const noexcept {
+        validate_pointer_invariants();
+        return buff().end - buff().begin;
+    }
+    //!
+    //! @returns Number of bytes in the buffer not used
+    //! by the existing elements.
+    //!
+    size_type remaining_capacity() const noexcept {
+        validate_pointer_invariants();
+        sizes_t s{ get_all_sizes() };
+        return s.remaining_capacity;
     }
 
 private:
+    //!
+    //! @brief Tells if container contains no elements.
+    //! @returns False when containe contains at least one element
+    //! and true otherwise.
+    //! @details Both container with no buffer as well as container
+    //! that has buffer that does not contain any valid elements will
+    //! return true.
+    //!
+    bool empty_unsafe() const noexcept {
+        return  buff().last == nullptr;
+    }
+    //!
+    //! @brief Validates that container pointer invariants.
+    //!
+    void validate_pointer_invariants() const noexcept {
+        buff().validate();
+    }
+    //!
+    //! @brief Validates iterator invariants.
+    //! @param it - iterator that we are verifying
+    //!
+    void validate_iterator(const_iterator const &it) const noexcept {
+        //
+        // If we do not have any valid elements then
+        // only end iterator is valid.
+        // Otherwise iterator should be an end or point somewhere
+        // between begin of the buffer and start of the first element
+        //
+        if (empty_unsafe()) {
+            FFL_CODDING_ERROR_IF_NOT(cend() == it);
+        } else {
+            FFL_CODDING_ERROR_IF_NOT(cend() == it ||
+                                     buff().begin <= it.get_ptr() && it.get_ptr() <= buff().last);
+            validate_compare_to_all_valid_elements(it);
+        }
+    }
+    //!
+    //! @brief Validates iterator invariants, as well as asserts 
+    //! that iterator is not an end iterator.
+    //! @param it - iterator that we are verifying
+    //!
+    void validate_iterator_not_end(const_iterator const &it) const noexcept {
+        //
+        // Used in case when end iterator is meaningless.
+        // Validates that container is not empty,
+        // and iterator is pointing somewhere between
+        // begin of the buffer and start of the first element
+        //
+        FFL_CODDING_ERROR_IF(cend() == it);
+        FFL_CODDING_ERROR_IF(const_iterator{} == it);
+        FFL_CODDING_ERROR_IF_NOT(buff().begin <= it.get_ptr() && it.get_ptr() <= buff().last);
+        validate_compare_to_all_valid_elements(it);
+    }
+    //!
+    //! @brief Validates iterator points to a valid element 
+    //! in the container 
+    //! @param it - iterator that we are verifying
+    //!
+    void validate_compare_to_all_valid_elements(const_iterator const &it) const noexcept {
+#ifdef FFL_DBG_CHECK_ITERATOR_VALID
+        //
+        // If not end iterator then must point to one of the valid iterators.
+        //
+        if (end() != it) {
+            bool found_match{ false };
+            for (auto cur = cbegin(); cur != cend(); ++cur) {
+                if (cur == it) {
+                    found_match = true;
+                    break;
+                }
+            }
+            FFL_CODDING_ERROR_IF_NOT(found_match);
+        }
+#else //FFL_DBG_CHECK_ITERATOR_VALID
+        it;
+#endif //FFL_DBG_CHECK_ITERATOR_VALID
+    }
+    //!
+    //! @brief Size used by an element data
+    //! @param it - iterator for the element user queries size for
+    //! @returns Returns size that is required for element data
+    //!
+    size_with_padding_t size_unsafe(const_iterator const &it) const noexcept {
+        return  traits_traits::get_size(it.get_ptr());
+    }
+    //!
+    //! @brief Size used by an element data and padding
+    //! @param it - iterator for the element user queries size for
+    //! @returns For types that support get_next_offset it should
+    //! return value of offset to the next element from the start of 
+    //! the element pointer by the iterator. If this is last element of the 
+    //! list then it returns element data size without padding.
+    //! For types that do not support get_next_offset it returns padded
+    //! element size, except the last element. For the last element we return
+    //! size without padding.
+    //! @details Last element is treated differently because container 
+    //! buffer might not include space for the last element padding.
+    //!
+    size_type used_size_unsafe(const_iterator const &it) const noexcept {
+        if constexpr (traits_traits::has_next_offset_v) {
+            size_type next_offset = traits::get_next_offset(it.get_ptr());
+            if (0 == next_offset) {
+                size_with_padding_t s{ traits_traits::get_size(it.get_ptr()) };
+                //
+                // Last element
+                //
+                next_offset = s.size;
+            }
+            return next_offset;
+        } else {
+            size_with_padding_t s{ traits_traits::get_size(it.get_ptr()) };
+            //
+            // buffer might end without including padding for the last element
+            //
+            if (last() == it) {
+                return s.size;
+            } else {
+                return s.size_padded();
+            }
+        }
+    }
+    //!
+    //! @brief Returns offsets in the container buffer that describe
+    //! part of the buffer used by this element.
+    //! @param it - iterator for the element user queries range for
+    //! @returns Range that describes part of the container buffer used
+    //! by the element
+    //! @details For the last element of the buffer end of the data and
+    //! end of the buffer have the same value.
+    //! For any element data end is calculated using size of data used by element.
+    //! For any element except last buffer size is calculated using
+    //!  - Value of offset to the next element if type supports get_next_offset
+    //!  - If get_next_offset is not suported then it is calculated as padded 
+    //!    element data size
+    //! This method assumes that iterator is pointing to an element, and is not an
+    //! end iterator. It assumes that caller verified that iterator satisfies 
+    //! these preconditions.
+    //!
+    range_t range_unsafe(const_iterator const &it) const noexcept {
+        size_with_padding_t s{ traits_traits::get_size(it.get_ptr()) };
+        range_t r{};
+        r.buffer_begin = it.get_ptr() - buff().begin;
+        r.data_end = r.begin() + s.size;
+        if constexpr (traits_traits::has_next_offset_v) {
+            size_type next_offset = traits::get_next_offset(it.get_ptr());
+            if (0 == next_offset) {
+                FFL_CODDING_ERROR_IF(last() != it);
+                r.buffer_end = r.begin() + s.size;
+            } else {
+                r.buffer_end = r.begin() + next_offset;
+            }
+        } else {
+            if (last() == it) {
+                r.buffer_end = r.begin() + s.size;
+            } else {
+                r.buffer_end = r.begin() + s.size_padded();
+            }
+        }
+        return r;
+    }
+    //!
+    //! @returns information about the pasrt of container 
+    //! buffer used by elements in the range [first, last]
+    //!
+    range_t closed_range_unsafe(const_iterator const &first, const_iterator const &last) const noexcept {
+        if (first == last) {
+            return element_range_unsafe(first);
+        } else {
+            range_t first_element_range{ range_unsafe(first) };
+            range_t last_element_range{ range_unsafe(last) };
+
+            return range_t{ first_element_range.begin,
+                            last_element_range.data_end,
+                            last_element_range.buffer_end };
+        }
+    }
+    //!
+    //! @returns information about the pasrt of container 
+    //! buffer used by elements in the range [first, end)
+    //! @details Algorithm complexity is O(number of elements in the niffer)
+    //! because we need to scan container from the beginning to find element 
+    //! before end.
+    //!
+    range_t half_open_range_usafe(const_iterator const &first,
+                                  const_iterator const &end) const noexcept {
+
+        if (this->end() == end) {
+            return closed_range_usafe(first, last());
+        }
+
+        size_t end_begin{ static_cast<size_t>(end->get_ptr() - buff().begin) };
+        iterator last{ find_element_before(end_begin) };
+
+        return closed_range_usafe(first, last);
+    }
     //!
     //! @returns Information about containers buffer
     //! @details Most algorithms that modify container
@@ -1778,7 +2493,7 @@ private:
     //! Helps abstracting out uglification that comes from
     //! using a compressed_pair.
     //!
-    buffer_t &buff() {
+    buffer_type &buff() {
         return buffer_.get_second();
     }
     //!
@@ -1787,11 +2502,11 @@ private:
     //! Helps abstracting out uglification that comes from
     //! using a compressed_pair.
     //!
-    buffer_t const &buff() const {
+    buffer_type const &buff() const {
         return buffer_.get_second();
     }
 
-    buffer_t buffer_;
+    buffer_type buffer_;
 };
 
 //!
@@ -1993,6 +2708,12 @@ public:
     //!
     using const_iterator = flat_forward_list_const_iterator<T, TT>;
     //!
+    //! @typedef buffer_type
+    //! @brief Pointers that describe buffer
+    //! @details Depending if T is const buffer uses char * or char const *
+    //!
+    using buffer_type = buffer_t<buffer_value_type>;
+    //!
     //! @brief Constant that represents and invalid 
     //! or non-existent position
     //!
@@ -2051,7 +2772,7 @@ public:
     //!
     template <typename AA = allocator_type>
     flat_forward_list(attach_buffer,
-                      flat_forward_list_buffer const &other_buff,
+                      buffer_view const &other_buff,
                       AA &&a = AA{}) noexcept
         : buffer_( one_then_variadic_args_t{}, std::forward<AA>(a) ) {
         attach(other_buff);
@@ -2068,7 +2789,7 @@ public:
     //! caller validated buffer before using this constructor.
     //!
     template <typename AA = allocator_type>
-    explicit flat_forward_list(flat_forward_list_buffer const &other_buff,
+    explicit flat_forward_list(buffer_view const &other_buff,
                                AA &&a = AA{})
         : buffer_( one_then_variadic_args_t{}, std::forward<AA>(a) ) {
         assign(other_buff);
@@ -2182,6 +2903,32 @@ public:
         assign(buffer, buffer_size);
     }
     //!
+    //! @brief Copies element pointed by the iterators.
+    //! @param begin - iterator for the buffer begin.
+    //! @param last - last element that should be included in the view.
+    //! @param a - allocator that should be used by this container.
+    //! @throw std::bad_alloc if buffer allocation fails
+    //!
+    template <typename AA = allocator_type>
+    flat_forward_list(const_iterator const &begin,
+                      const_iterator const &last,
+                      AA &&a = AA{})
+        : buffer_(one_then_variadic_args_t{}, std::forward<AA>(a)) {
+        assign(begin, last);
+    }
+    //!
+    //! @brief Copies element from the view.
+    //! @param view - view over a flat forward list buffer.
+    //! @param a - allocator that should be used by this container.
+    //! @throw std::bad_alloc if buffer allocation fails
+    //!
+    template <typename AA = allocator_type>
+    flat_forward_list(flat_forward_list_view<T, TT> const &view,
+                      AA &&a = AA{})
+        : buffer_(one_then_variadic_args_t{}, std::forward<AA>(a)) {
+        assign(view);
+    }
+    //!
     //! @brief Move assignment operator.
     //! @param other - linked list we are moving from
     //! @throw noexcept if allocator is propagate_on_container_move_assignment
@@ -2233,7 +2980,7 @@ public:
     //! if it is supported, and after that allocates new buffer
     //! and copies all elements to the new buffer.
     //!
-    flat_forward_list &operator= (flat_forward_list_buffer const &other_buff) {
+    flat_forward_list &operator= (buffer_view const &other_buff) {
         assign(other_buff);
         return *this;
     }
@@ -2250,8 +2997,8 @@ public:
     //! @return Returns buffer information to the caller.
     //! Caller is responsible for deallocating returned buffer.
     //!
-    flat_forward_list_buffer detach() noexcept {
-        flat_forward_list_buffer tmp{ buff() };
+    buffer_ref detach() noexcept {
+        buffer_ref tmp{ buff() };
         buff().clear();
         return tmp;
     }
@@ -2268,7 +3015,7 @@ public:
     //! was allocated using method compatible with allocator used by 
     //! this container.
     //!
-    void attach(flat_forward_list_buffer const &other_buff) {
+    void attach(buffer_view const &other_buff) {
         FFL_CODDING_ERROR_IF(buff().begin == other_buff.begin);
         other_buff.validate();
         clear();
@@ -2341,7 +3088,7 @@ public:
     //! a valid flat forward list. It assumes that
     //! caller validated buffer before using this constructor.
     //!
-    void assign(flat_forward_list_buffer const &other_buff) {
+    void assign(buffer_view const &other_buff) {
         flat_forward_list l(get_allocator());
         other_buff.validate();
 
@@ -2422,6 +3169,52 @@ public:
                 size_type buffer_size) {
 
         return assign(buffer, buffer + buffer_size);
+    }
+    //!
+    //! @brief Copies element pointed by the iterators.
+    //! @param begin - iterator for the buffer begin.
+    //! @param last - last element that should be included in the view.
+    //!
+    void assign(const_iterator const &begin,
+                const_iterator const &last) {
+        
+        validate_iterator_not_end(begin);
+        validate_iterator_not_end(last);
+
+        flat_forward_list new_list(get_allocator());
+        new_list.resize_buffer(distance(begin.get_ptr(),
+                                        last.get_ptr()) + traits_traits::get_size(last.get_ptr()).size);
+        const_iterator const end = last + 1;
+        for (const_iterator const it = begin; it != end; ++it) {
+            new_list.push_back(used_size(it), it.get_ptr());
+        }
+        //
+        // Swap with new list
+        //
+        swap(new_list);
+    }
+    //!
+    //! @brief Copies elements from the view
+    //! @param view - view over the flat forward list
+    //!
+    void assign(flat_forward_list_view<T, TT> const &view) {
+        if (!view.empty()) {
+            const_iterator const &begin{ view.begin() };
+            const_iterator const &last{ view.end() };
+            flat_forward_list new_list(get_allocator());
+            new_list.resize_buffer(distance(view.begin().get_ptr(),
+                                            last.get_ptr()) + traits_traits::get_size(last.get_ptr()).size);
+            const_iterator const end = last + 1;
+            for (const_iterator const it = begin; it != end; ++it) {
+                new_list.push_back(used_size(it), it.get_ptr());
+            }
+            //
+            // Swap with new list
+            //
+            swap(new_list);
+        } else {
+            clear();
+        }
     }
     //!
     //! @brief Compares if allocator used by container is 
@@ -2688,7 +3481,7 @@ public:
     void pop_back() noexcept {
         validate_pointer_invariants();
 
-        FFL_CODDING_ERROR_IF(empty());
+        FFL_CODDING_ERROR_IF(empty_unsafe());
         
         if (has_exactly_one_entry()) {
             //
@@ -2944,7 +3737,7 @@ public:
     void pop_front() {
         validate_pointer_invariants();
 
-        FFL_CODDING_ERROR_IF(empty());
+        FFL_CODDING_ERROR_IF(empty_unsafe());
         //
         // If we have only one element then simply forget it
         //
@@ -2987,7 +3780,7 @@ public:
         // There is no elements after last
         //
         FFL_CODDING_ERROR_IF( last() == it);
-        FFL_CODDING_ERROR_IF(empty());
+        FFL_CODDING_ERROR_IF(empty_unsafe());
         //
         // Find pointer to the element that we are erasing
         //
@@ -4021,7 +4814,7 @@ public:
     //!
     iterator find_element_before(size_type position) noexcept {
         validate_pointer_invariants();
-        if (empty()) {
+        if (empty_unsafe()) {
             return end();
         }
         auto[is_valid, last_valid] = flat_forward_list_validate<T, TT>(buff().begin, buff().begin + position);
@@ -4042,7 +4835,7 @@ public:
     //!
     const_iterator find_element_before(size_type position) const noexcept {
         validate_pointer_invariants();
-        if (empty()) {
+        if (empty_unsafe()) {
             return end();
         }
         auto[is_valid, last_valid] = flat_forward_list_validate<T, TT>(buff().begin,
@@ -4224,6 +5017,18 @@ public:
     }
 
 private:
+
+    //!
+    //! @brief Tells if container contains no elements.
+    //! @returns False when containe contains at least one element
+    //! and true otherwise.
+    //! @details Both container with no buffer as well as container
+    //! that has buffer that does not contain any valid elements will
+    //! return true.
+    //!
+    bool empty_unsafe() const noexcept {
+        return  buff().last == nullptr;
+    }
 
     //!
     //! @brief Resizes last element of the container.
@@ -4498,7 +5303,7 @@ private:
         // Otherwise iterator should be an end or point somewhere
         // between begin of the buffer and start of the first element
         //
-        if (empty()) {
+        if (empty_unsafe()) {
             FFL_CODDING_ERROR_IF_NOT(cend() == it);
         } else {
             FFL_CODDING_ERROR_IF_NOT(cend() == it ||
@@ -4655,8 +5460,6 @@ private:
     //!
     range_t half_open_range_usafe(const_iterator const &first,
                                   const_iterator const &end) const noexcept {
-        validate_iterator_not_end(first);
-        validate_iterator(end);
 
         if (this->end() == end) {
             return closed_range_usafe(first, last());
@@ -4691,7 +5494,7 @@ private:
     //! Helps abstracting out uglification that comes from
     //! using a compressed_pair.
     //!
-    flat_forward_list_buffer &buff() {
+    buffer_type &buff() {
         return buffer_.get_second();
     }
     //!
@@ -4700,7 +5503,7 @@ private:
     //! Helps abstracting out uglification that comes from
     //! using a compressed_pair.
     //!
-    flat_forward_list_buffer const &buff() const {
+    buffer_type const &buff() const {
         return buffer_.get_second();
     }
 
@@ -4725,7 +5528,7 @@ private:
     //! @brief Set of pointers describing state of
     //! of the buffer
     //!
-    compressed_pair<allocator_type, flat_forward_list_buffer> buffer_;
+    compressed_pair<allocator_type, buffer_type> buffer_;
 };
 //!
 //! @tparam T - element type

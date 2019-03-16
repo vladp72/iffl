@@ -258,6 +258,15 @@ namespace iffl {
         fill_buffer(buffer, 0, length);
     }
     //!
+    //! @brief sets "length" consequative bytes of "to_buffer" to 0.
+    //! @param begin - Destination buffer.
+    //! @param end - number of bytes to assign 0 to
+    //!
+    inline size_t distance(void const *begin, void const *end) noexcept {
+        FFL_CODDING_ERROR_IF_NOT(begin <= end);
+        return (static_cast<char const *>(end) - static_cast<char const *>(begin));
+    }    
+    //!
     //! @class scope_guard 
     //! @brief template class that can be parametrised with a functor
     //! or a lambda that it will call in distructor. 
@@ -854,12 +863,12 @@ namespace iffl {
             T2 v2_;
     };
     //!
-    //! @class flat_forward_list_buffer_t
+    //! @class buffer_t
     //! @brief A set of pointers describing state of
     //! the buffer containing flat forward list.
     //!
     template <typename T = char>
-    struct flat_forward_list_buffer_t {
+    struct buffer_t {
         //
         // Buffer pointer can be const and non-const buffer
         //
@@ -872,29 +881,39 @@ namespace iffl {
         //!
         //! @brief Default constructor
         //!
-        flat_forward_list_buffer_t() = default;
+        buffer_t() = default;
         //!
         //! @brief Copy constructor
         //!
-        flat_forward_list_buffer_t(flat_forward_list_buffer_t const &) = default;
+        buffer_t(buffer_t const &) = default;
         //!
         //! @brief Copy assignment operator
         //!
-        flat_forward_list_buffer_t &operator= (flat_forward_list_buffer_t const &) = default;
+        buffer_t &operator= (buffer_t const &) = default;
         //!
         //! @brief Constructors const buffer from non-const buffer
+        //! @details Use SFINAE to enable it only on const instantiation
+        //! to support assignment from a non-const instantiation of template
         //!
-        template<typename = std::enable_if<is_const>>
-        flat_forward_list_buffer_t(flat_forward_list_buffer_t<char> const &buff) {
+        template<typename V,
+                 typename = std::enable_if<is_const && 
+                                           std::is_same_v<V, char>, 
+                                           void>>
+        buffer_t(buffer_t<V> const &buff) {
             begin = buff.begin;
             last = buff.last;
             end = buff.end;
         }
         //!
         //! @brief Assignment operator to const buffer from non-const buffer
+        //! @details Use SFINAE to enable it only on const instantiation
+        //! to support assignment from a non-const instantiation of template
         //!
-        template<typename = std::enable_if<is_const>>
-        flat_forward_list_buffer_t & operator= (flat_forward_list_buffer_t<char> const &buff) {
+        template<typename V,
+                 typename = std::enable_if<is_const && 
+                                           std::is_same_v<V, char>, 
+                                           void>>
+        buffer_t & operator= (buffer_t<V> const &buff) {
             begin = buff.begin;
             last = buff.last;
             end = buff.end;
@@ -1027,14 +1046,14 @@ namespace iffl {
         }
     };
     //!
-    //! @typedef flat_forward_list_buffer
+    //! @typedef buffer_ref
     //! @brief Non const flat forward list buffer 
     //!
-    using flat_forward_list_buffer = flat_forward_list_buffer_t<char>;
+    using buffer_ref = buffer_t<char>;
     //!
-    //! @typedef flat_forward_list_buffer_view
+    //! @typedef buffer_view
     //! @brief Const flat forward list buffer 
     //!
-    using flat_forward_list_buffer_view = flat_forward_list_buffer_t<char const>;
+    using buffer_view = buffer_t<char const>;
 
 } // namespace iffl

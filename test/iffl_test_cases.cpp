@@ -553,7 +553,7 @@ void flat_forward_list_detach_attach_test1() {
     fill_container_with_data(ffl1);
 
     auto used_allocator = ffl1.get_allocator();
-    iffl::flat_forward_list_buffer buff{ ffl1.detach() };
+    iffl::buffer_ref buff{ ffl1.detach() };
     used_allocator.deallocate(buff.begin, buff.size());
 }
 
@@ -565,7 +565,7 @@ void flat_forward_list_detach_attach_test2() {
 
     iffl::pmr_flat_forward_list<FLAT_FORWARD_LIST_TEST> ffl2{ &dbg_memory_resource1 };
 
-    iffl::flat_forward_list_buffer buff{ ffl1.detach() };
+    iffl::buffer_ref buff{ ffl1.detach() };
 
     ffl2.attach(buff.begin, buff.last, buff.end);
 }
@@ -580,7 +580,7 @@ void flat_forward_list_detach_attach_test3() {
 
     iffl::pmr_flat_forward_list<FLAT_FORWARD_LIST_TEST> ffl2{ &dbg_memory_resource1 };
 
-    iffl::flat_forward_list_buffer buff{ ffl1.detach() };
+    iffl::buffer_ref buff{ ffl1.detach() };
 
     FFL_CODDING_ERROR_IF_NOT(ffl2.attach(buff.begin, buff.size()));
 
