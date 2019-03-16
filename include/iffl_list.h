@@ -2508,7 +2508,6 @@ private:
 
     buffer_type buffer_;
 };
-
 //!
 //! @typedef flat_forward_list_view
 //! @brief Constant view to flat forward list
@@ -2516,6 +2515,167 @@ private:
 template <typename T,
           typename TT = flat_forward_list_traits<T>>
 using flat_forward_list_view = flat_forward_list_ref<T const, TT>;
+
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param lhs - one of the containers we are swapping between
+//! @param rhs - other container we are swapping between
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT>
+inline void swap(flat_forward_list_ref<T, TT> &lhs, flat_forward_list_ref<T, TT> &rhs) noexcept {
+    lhs.swap(rhs);
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT>
+inline typename flat_forward_list_ref<T, TT>::iterator begin(flat_forward_list_ref<T, TT> &c) noexcept {
+    return c.begin();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT>
+inline typename flat_forward_list_ref<T, TT>::const_iterator begin(flat_forward_list_ref<T, TT> const &c) noexcept {
+    return c.begin();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT>
+inline typename flat_forward_list_ref<T, TT>::const_iterator cbegin(flat_forward_list_ref<T, TT> const &c) noexcept {
+    return c.cbegin();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT>
+inline typename flat_forward_list_ref<T, TT>::iterator end(flat_forward_list_ref<T, TT> &c) noexcept {
+    return c.end();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT>
+inline typename flat_forward_list_ref<T, TT>::const_iterator end(flat_forward_list_ref<T, TT> const &c) noexcept {
+    return c.end();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT>
+inline typename flat_forward_list_ref<T, TT>::const_iterator cend(flat_forward_list_ref<T, TT> const &c) noexcept {
+    return c.cend();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT>
+inline typename flat_forward_list_ref<T, TT>::iterator last(flat_forward_list_ref<T, TT> &c) noexcept {
+    return c.last();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT>
+inline typename flat_forward_list_ref<T, TT>::const_iterator last(flat_forward_list_ref<T, TT> const &c) noexcept {
+    return c.last();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT>
+inline typename flat_forward_list_ref<T, TT>::const_iterator clast(flat_forward_list_ref<T, TT> const &c) noexcept {
+    return c.clast();
+}
 
 //!
 //! @class flat_forward_list
@@ -5534,6 +5694,8 @@ private:
 //! @tparam T - element type
 //! @tparam TT - element type traits
 //! @tparam A - allocator type that should be used for this container
+//! @param lhs - one of the containers we are swapping between
+//! @param rhs - other container we are swapping between
 //! @details 
 //! TT is aefault initialized to specialization 
 //! of flat_forward_list_traits for T
@@ -5542,12 +5704,164 @@ private:
 template <typename T,
           typename TT,
           typename A>
-void swap(flat_forward_list<T, TT, A> &lhs, flat_forward_list<T, TT, A> &rhs) 
+inline void swap(flat_forward_list<T, TT, A> &lhs, flat_forward_list<T, TT, A> &rhs) 
             noexcept (std::allocator_traits<A>::propagate_on_container_swap::value ||
                       std::allocator_traits<A>::propagate_on_container_move_assignment::value) {
     lhs.swap(rhs);
 }
-
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT,
+          typename A>
+inline typename flat_forward_list<T, TT, A>::iterator begin(flat_forward_list<T, TT, A> &c) noexcept {
+    return c.begin();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT,
+          typename A>
+inline typename flat_forward_list<T, TT, A>::const_iterator begin(flat_forward_list<T, TT, A> const &c) noexcept {
+    return c.begin();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT,
+          typename A>
+inline typename flat_forward_list<T, TT, A>::const_iterator cbegin(flat_forward_list<T, TT, A> const &c) noexcept {
+    return c.cbegin();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT,
+          typename A>
+inline typename flat_forward_list<T, TT, A>::iterator end(flat_forward_list<T, TT, A> &c) noexcept {
+    return c.end();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT,
+          typename A>
+inline typename flat_forward_list<T, TT, A>::const_iterator end(flat_forward_list<T, TT, A> const &c) noexcept {
+    return c.end();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT,
+          typename A>
+inline typename flat_forward_list<T, TT, A>::const_iterator cend(flat_forward_list<T, TT, A> const &c) noexcept {
+    return c.cend();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT,
+          typename A>
+inline typename flat_forward_list<T, TT, A>::iterator last(flat_forward_list<T, TT, A> &c) noexcept {
+    return c.last();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT,
+          typename A>
+inline typename flat_forward_list<T, TT, A>::const_iterator last(flat_forward_list<T, TT, A> const &c) noexcept {
+    return c.last();
+}
+//!
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type that should be used for this container
+//! @param c - container
+//!
+//! @details 
+//! TT is aefault initialized to specialization 
+//! of flat_forward_list_traits for T
+//! A is default initialized to std::allocator for T
+//!
+template <typename T,
+          typename TT,
+          typename A>
+inline typename flat_forward_list<T, TT, A>::const_iterator clast(flat_forward_list<T, TT, A> const &c) noexcept {
+    return c.clast();
+}
 //!
 //! @typedef pmr_flat_forward_list
 //! @brief Use this typedef if you want to use container with polimorfic allocator
