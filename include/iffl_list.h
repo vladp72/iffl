@@ -1529,6 +1529,15 @@ template<typename T,
 using flat_forward_list_const_iterator = flat_forward_list_iterator_t< std::add_const_t<T>, TT>;
 
 //!
+//! @details forward declaration
+//! of intrusive flat forward list container.
+//!
+template <typename T,
+          typename TT,
+          typename A>
+class flat_forward_list;
+
+//!
 //! @class flat_forward_list_ref
 //! @brief Non owning container for flat forward list
 //! @tparam T - element type
@@ -1775,6 +1784,14 @@ public:
         assign(buffer, buffer_size);
     }
     //!
+    //! @brief Constructs view from container
+    //! @tparam A - allocator type
+    //! @param c - container we are constructing view from
+    //!
+    template <typename A>
+    explicit flat_forward_list_ref(flat_forward_list<T, TT, A> const &c) noexcept;
+
+    //!
     //! @brief Copy assignment operator.
     //! @param other - linked list we are moving from
     //!
@@ -1804,7 +1821,14 @@ public:
         buffer_ = other_buffer;
         return *this;
     }
-
+    //!
+    //! @brief Constructs view from container
+    //! @tparam A - allocator type
+    //! @param c - container we are constructing view from
+    //! @returns referencce to self
+    //!
+    template <typename A>
+    flat_forward_list_ref &operator= (flat_forward_list<T, TT, A> const &c) noexcept;
     //!
     //! @brief Destructor.
     //! @details Deallocates buffer owned by container.
@@ -2744,6 +2768,14 @@ template <typename T,
           typename A = std::allocator<T>>
 class flat_forward_list final {
 public:
+
+    //!
+    //! @details Give flat_forward_list_ref friend permissins
+    //! so it can initialize itself from the buffer
+    //!
+    template <typename T,
+              typename TT>
+    friend class flat_forward_list_ref;
 
     //
     // Technically we need T to be 
@@ -5873,5 +5905,31 @@ template <typename T,
  using pmr_flat_forward_list = flat_forward_list<T, 
                                                  TT, 
                                                  std::pmr::polymorphic_allocator<char>>;
+//!
+//! @brief Constructs view from container
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type
+//!
+template <typename T,
+          typename TT>
+template <typename A>
+flat_forward_list_ref<T, TT>::flat_forward_list_ref(flat_forward_list<T, TT, A> const &c) noexcept 
+:   buffer_(c.buff()) {
+}
+//!
+//! @brief Constructs view from container
+//! @tparam T - element type
+//! @tparam TT - element type traits
+//! @tparam A - allocator type
+//! @returns referencce to self
+//!
+template <typename T,
+          typename TT>
+template <typename A>
+flat_forward_list_ref<T, TT> &flat_forward_list_ref<T, TT>::operator= (flat_forward_list<T, TT, A> const &c) noexcept {
+    buffer_ = c.buff();
+    return *this;
+}
 
 } // namespace iffl
