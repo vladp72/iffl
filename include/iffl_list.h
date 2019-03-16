@@ -1016,6 +1016,22 @@ constexpr inline std::pair<bool, void*> flat_forward_list_validate(void *first,
 }
 
 //!
+//! @details Forward declaration
+//! of intrusive flat forward list container.
+//!
+template <typename T,
+          typename TT,
+          typename A>
+class flat_forward_list;
+//!
+//! @details Forward declaration
+//! of intrusive flat forward list reference.
+//!
+template <typename T,
+          typename TT>
+class flat_forward_list_ref;
+
+//!
 //! @class flat_forward_list_iterator_t
 //! @brief THis class implements forward iterator for intrusive flat forward list
 //! @tparam T  - type of element header
@@ -1527,15 +1543,6 @@ using flat_forward_list_iterator = flat_forward_list_iterator_t<T, TT>;
 template<typename T,
          typename TT = flat_forward_list_traits<T>>
 using flat_forward_list_const_iterator = flat_forward_list_iterator_t< std::add_const_t<T>, TT>;
-
-//!
-//! @details forward declaration
-//! of intrusive flat forward list container.
-//!
-template <typename T,
-          typename TT,
-          typename A>
-class flat_forward_list;
 
 //!
 //! @class flat_forward_list_ref
@@ -5715,7 +5722,6 @@ private:
     allocator_type const &alloc() const {
         return buffer_.get_first();
     }
-
     //!
     //! @brief Set of pointers describing state of
     //! of the buffer
@@ -5906,7 +5912,7 @@ template <typename T,
                                                  TT, 
                                                  std::pmr::polymorphic_allocator<char>>;
 //!
-//! @brief Constructs view from container
+//! @brief Constructs ref or view from container
 //! @tparam T - element type
 //! @tparam TT - element type traits
 //! @tparam A - allocator type
@@ -5918,7 +5924,7 @@ flat_forward_list_ref<T, TT>::flat_forward_list_ref(flat_forward_list<T, TT, A> 
 :   buffer_(c.buff()) {
 }
 //!
-//! @brief Constructs view from container
+//! @brief Constructs ref or view from container
 //! @tparam T - element type
 //! @tparam TT - element type traits
 //! @tparam A - allocator type

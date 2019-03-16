@@ -117,7 +117,7 @@ private:
     //!
     //! @brief Overrides memory resource virtual method that performs allocation.
     //! @param bytes - number of bytes to be allocated.
-    //! @param alignement - alignment requirements for the allocated buffer.
+    //! @param alignment - alignment requirements for the allocated buffer.
     //! @throws std::bad_alloc if allocation fails
     //! @return On success return a pointer to the buffer of requested size.
     //!         On failure throws std::bad_alloc.
@@ -150,7 +150,7 @@ private:
     //! @brief Overrides memory resource virtual method that performs deallocation.
     //! @param p - pointer to the user buffer that is deallocated.
     //! @param bytes - buffer size. Mast match to the size that was allocated.
-    //! @param alignement - alignment of the buffer. Must match to alignment at allocation time.
+    //! @param alignment - alignment of the buffer. Must match to alignment at allocation time.
     //! @return void. Checks buffer integrity and triggers fail fast if check does not pass.
     //!
     void do_deallocate(void* p, size_t bytes, size_t alignment) noexcept override {
@@ -201,6 +201,152 @@ private:
     //! @brief number of outstanding allocations.
     //!
     std::atomic<size_t> busy_blocks_count_{ 0 };
+};
+
+
+//!
+//! @class input_buffer_memory_resource 
+//! @brief implements std::pmr::memory_resource interface. 
+//! @details This class can be used with Polimorfic Memory Allocator.
+//! Forward Linked List has typedef for PMR called pmr_flat_forward_list.
+//! This memory resource allows constructing flat forward list on a buffer
+//! owned by someone else.
+//!
+//! This memory resource can be instantiated to point to a buffer that
+//! is owned elsewhere. 
+//! Using this memory resource you can allocate buffer to a single owned
+//! Consequent allocations will throw bad_alloc until buffer is deallcoated.
+//! On deallocation it checks that deallocated buffer is the
+//! same as allocation buffer. It will fail-fast on mismatch.
+//! Deallocated buffer can be allocated again.
+//! Deallocation does not free the buffer. It is assumed that
+//! buffer is owned by someone else.
+//! 
+//! Sample usage:
+//!
+//! In the below example memory resource is instantiated to point to the input buffer.
+//! Container is parametrized to use this memory resource.
+//! We resize container buffer to consume entire input buffer in one allocation.
+//! After that we keep appending data to the container try_* methods that
+//! would not attempt to reallocate larger buffer, and consequently are noexcept as long 
+//! as caller's functor does not throw. Instead they return false when buffer cannot 
+//! fit new element.
+//! Once a try_* function returns false, we know that buffer is filled, and we can exit.
+//! To let caller know how much of the buffer was filled with data we will set
+//! output_size to the size of part of the buffer used by the inserted elements.
+//! Optionally, if we want caller to adopt buffer without verification, we can return 
+//! offset to the last element in the buffer.
+//! Container destructor will deallocate memory back to resource.
+//! Memory resource destructor will detach from the buffer.
+//! Buffer content remains untached, and still contains a valid list.
+//! Once method returns, caller can examine buffer using flat forward list reference or
+//! view or attach it to the container with allocator compatibe to how buffer was allocated.
+//!
+//! @code
+//! void build_result(char *buffer, size_t buffer_size, size_t *output_size) {
+//!     iffl::input_buffer_memory_resource buffer_memory_resource{buffer, buffer_size};
+//!     iffl::pmr_flat_forward_list<FLAT_FORWARD_LIST_TEST> ffl{ &buffer_memory_resource };
+//!     ffl.resize_buffer(buffer_size);
+//!     for(;;) {
+//!         if(!ffl.try_push_back(<data>, <data_size>) {
+//!             break;
+//!         }
+//!     }
+//!     *output_size = ffl.used_capacity();
+//! }
+//! @endcode
+//!
+//! Thread safety:
+//!
+//! This class is not thread safe and cannot be used to perform concurent 
+//! allocations from multiple threads.
+//!
+class input_buffer_memory_resource
+    : public std::pmr::memory_resource {
+
+public:
+    //!
+    //! @brief Constructs memory resource with information
+    //! about buffer that should be used for allocation
+    //! @param buffer - pointer to the buffer that we will return on allocation
+    //! @param buffer_size - size of the buffer
+    //!
+    explicit input_buffer_memory_resource(void *buffer, 
+                                          size_t buffer_size)
+        : used_(buffer ? true : false)
+        , buffer_{buffer}
+        , buffer_size_{ buffer_size } {
+    }
+
+    //!
+    //! @brief Destructor verifies that there are no outstanding allocations
+    //!
+    ~input_buffer_memory_resource() {
+        validate_no_busy_blocks();
+    }
+
+    //!
+    //! @brief Can be used to query number of outstanding allocations
+    //! @return number of outstanding allocations
+    //!
+    size_t get_busy_blocks_count() const {
+        return (used_ ? 1 : 0);
+    }
+
+    //!
+    //! @brief Triggers fail fast if there are outstanding allocations
+    //!
+    void validate_no_busy_blocks() const {
+        FFL_CODDING_ERROR_IF(0 < get_busy_blocks_count());
+    }
+
+protected:
+
+    //!
+    //! @brief Overrides memory resource virtual method that performs allocation.
+    //! @param bytes - number of bytes to be allocated.
+    //! @param alignment - alignment requirements for the allocated buffer.
+    //! @throws std::bad_alloc if allocation fails
+    //! @return On success return a pointer to the buffer of requested size.
+    //!         On failure throws std::bad_alloc.
+    //!
+    void* do_allocate(size_t bytes, size_t alignment) override {
+        alignment;
+        if (!used_ && buffer_ && bytes <= buffer_size_) {
+            used_ = true;
+            return buffer_;
+        } else {
+            throw std::bad_alloc{};
+        }
+    }
+    //!
+    //! @brief Overrides memory resource virtual method that performs deallocation.
+    //! @param p - pointer to the user buffer that is deallocated.
+    //! @param bytes - buffer size. Mast match to the size that was allocated.
+    //! @param alignment - alignment of the buffer. Must match to alignment at allocation time.
+    //! @return void. Checks buffer that buffer was allocated, and that deallocated buffer 
+    //! match to the buffer that we own. Triggers fail fast if check does not pass.
+    //!
+    void do_deallocate(void* p, size_t bytes, size_t alignment) noexcept override {
+        FFL_CODDING_ERROR_IF_NOT(p == buffer_ && bytes <= buffer_size_);
+        used_ = false;
+    }
+
+    //!
+    //! @brief Validates that two memory resources are equivalent.
+    //!        For this class they must be equal.
+    //! @param other - reference to the other memory resource.
+    //! @return true if other memory resource is the same object,
+    //!         and false otherwise.
+    //!
+    bool do_is_equal(memory_resource const & other) const noexcept override {
+        return (&other == static_cast<memory_resource const *>(this));
+    }
+
+private:
+    bool used_{ false };
+    void *buffer_{ nullptr };
+    size_t buffer_size_{ 0 };
 };
 
 } // namespace iffl
