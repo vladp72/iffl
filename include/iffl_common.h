@@ -267,6 +267,19 @@ namespace iffl {
         return (static_cast<char const *>(end) - static_cast<char const *>(begin));
     }    
     //!
+    //! @brief Helper method to cast a pointer to a char *.
+    //! @param p - Buffer pointer.
+    //! @returns pointer casted to char *
+    //!
+    template <typename T>
+    inline char *cast_to_char_ptr(T *p) {
+        if constexpr (std::is_const_v<T>) {
+            return const_cast<char *>(reinterpret_cast<char const *>(p));
+        } else {
+            return reinterpret_cast<char *>(p);
+        }
+    }
+    //!
     //! @class scope_guard 
     //! @brief template class that can be parametrised with a functor
     //! or a lambda that it will call in distructor. 
@@ -896,9 +909,7 @@ namespace iffl {
         //! to support assignment from a non-const instantiation of template
         //!
         template<typename V,
-                 typename = std::enable_if<is_const && 
-                                           std::is_same_v<V, char>, 
-                                           void>>
+                 typename = std::enable_if<std::is_assignable_v<T*, V*>>>
         buffer_t(buffer_t<V> const &buff) {
             begin = buff.begin;
             last = buff.last;
@@ -910,14 +921,32 @@ namespace iffl {
         //! to support assignment from a non-const instantiation of template
         //!
         template<typename V,
-                 typename = std::enable_if<is_const && 
-                                           std::is_same_v<V, char>, 
-                                           void>>
+                 typename = std::enable_if<std::is_assignable_v<T*, V*>>>
         buffer_t & operator= (buffer_t<V> const &buff) {
             begin = buff.begin;
             last = buff.last;
             end = buff.end;
             return *this;
+        }
+        //!
+        //! @brief Assignment operator to const buffer from pointers
+        //!
+        buffer_t(T *begin, T *last, T *end) 
+        :   begin{ begin }
+        ,   last{ last }
+        ,   end{ end } {
+
+            validate();
+        }
+        //!
+        //! @brief Assignment operator to const buffer from pointers
+        //!
+        buffer_t(T *begin, size_t *last_offset, T *end_offset)
+            : begin{ begin }
+            , last{ begin + last_offset }
+            , end{ begin + end_offset } {
+
+            validate();
         }
         //!
         //! @typedef value_type

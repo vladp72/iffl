@@ -98,13 +98,13 @@ using ffl_const_iterator = iffl::flat_forward_list_const_iterator<FLAT_FORWARD_L
 
 void flat_forward_list_validate_test1(char const * title, bool expected_to_be_valid, char const *first, char const *end) {
     std::printf("-----\"%s\"-----\n", title);
-    auto[is_valid, last_valid] = iffl::flat_forward_list_validate<FLAT_FORWARD_LIST_TEST>(first, end);
+    auto[is_valid, buffer_view] = iffl::flat_forward_list_validate<FLAT_FORWARD_LIST_TEST>(first, end);
     FFL_CODDING_ERROR_IF_NOT(is_valid == expected_to_be_valid);
-    if (is_valid && last_valid) {
-        ffl_const_iterator cur{ first };
-        ffl_const_iterator end{};
+    if (is_valid) {
 
-        std::for_each(cur, end, [](FLAT_FORWARD_LIST_TEST const &e) {
+        std::for_each(buffer_view.begin(), 
+                      buffer_view.end(), 
+                      [](FLAT_FORWARD_LIST_TEST const &e) {
             print_element(e);
         });
     }
@@ -113,14 +113,13 @@ void flat_forward_list_validate_test1(char const * title, bool expected_to_be_va
 template<size_t N>
 void flat_forward_list_validate_array_test1(char const * title, bool expected_to_be_valid, FLAT_FORWARD_LIST_TEST const (&a)[N]) {
     std::printf("-----\"%s\"-----\n", title);
-    auto[is_valid, last_valid] = iffl::flat_forward_list_validate(a, a + N);
+    auto[is_valid, buffer_view] = iffl::flat_forward_list_validate(a, a + N);
     FFL_CODDING_ERROR_IF_NOT(is_valid == expected_to_be_valid);
 
-    if (is_valid && last_valid) {
-        ffl_const_iterator first{ a };
-        ffl_const_iterator end{};
-
-        std::for_each(first, end, [](FLAT_FORWARD_LIST_TEST const &e) {
+    if (is_valid) {
+        std::for_each(buffer_view.begin(), 
+                      buffer_view.end(), 
+                      [](FLAT_FORWARD_LIST_TEST const &e) {
             print_element(e);
         });
     }
@@ -296,10 +295,8 @@ inline void flat_forward_list_validate_test1() {
 
 inline void flat_forward_list_iterator_test1() {
     std::printf("----- flat_forward_list_iterator over \"ver1\"-----\n");
-    iffl::flat_forward_list_iterator<FLAT_FORWARD_LIST_TEST> first{ ve1 };
-    iffl::flat_forward_list_iterator<FLAT_FORWARD_LIST_TEST> end{};
-
-    std::for_each(first, end, [](FLAT_FORWARD_LIST_TEST &e) {
+    auto[is_valid, view] = iffl::flat_forward_list_validate(std::begin(ve1), std::end(ve1));
+    std::for_each(view.begin(), view.begin(), [](FLAT_FORWARD_LIST_TEST &e) {
         print_element(e);
     });
 }

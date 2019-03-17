@@ -199,7 +199,7 @@ void handle_ea1(char const *buffer, size_t buffer_lenght) {
     //
     // Validate and iterate in one loop
     //
-    auto[is_valid, last_valid] =
+    auto[is_valid, buffer_view] =
         iffl::flat_forward_list_validate<FILE_FULL_EA_INFORMATION>(
             buffer,
             buffer + buffer_lenght,
@@ -235,7 +235,7 @@ void handle_ea1(char const *buffer, size_t buffer_lenght) {
     std::printf("\n");
     std::printf("valid                            : %s\n", is_valid ? "yes" : "no");
     std::printf("found elements                   : %zi\n", idx);
-    std::printf("last valid element               : 0x%p\n", last_valid);
+    std::printf("last valid element               : 0x%p\n", buffer_view.last().get_ptr());
     std::printf("element failed validation        : 0x%p\n", failed_validation);
     std::printf("element failed validation length : %zi\n", invalid_element_length);
     std::printf("\n");
@@ -253,16 +253,14 @@ void handle_ea2(char const *buffer, size_t buffer_lenght) {
     //
     // First validate buffer
     //
-    auto[is_valid, last_element] =
+    auto[is_valid, buffer_view] =
         iffl::flat_forward_list_validate<FILE_FULL_EA_INFORMATION>( buffer, buffer + buffer_lenght);
     //
     // Using iterators go over elements of trusted buffer
     //
-    if (is_valid && last_element) {
-        ea_iffl_const_iterator start{buffer};
-        ea_iffl_const_iterator end{}; // sentinel element that plays role of end
-
-        std::for_each(start, end,
+    if (is_valid) {
+        std::for_each(buffer_view.begin(), 
+                      buffer_view.end(),
                       [buffer, &idx](FILE_FULL_EA_INFORMATION const &e) {
                           print_ea(idx, reinterpret_cast<char const *>(&e) - buffer, e);
                           ++idx;
@@ -272,7 +270,7 @@ void handle_ea2(char const *buffer, size_t buffer_lenght) {
     std::printf("\n");
     std::printf("valid                            : %s\n", is_valid ? "yes" : "no");
     std::printf("found elements                   : %zi\n", idx);
-    std::printf("last valid element               : 0x%p\n", last_element);
+    std::printf("last valid element               : 0x%p\n", buffer_view.last().get_ptr());
     std::printf("\n");
 }
 
