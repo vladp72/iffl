@@ -256,10 +256,20 @@ if ( MSVC )
     #target_compile_options( iffl_test PRIVATE /P)
 
     #
+    # Warning C26490 Don't use reinterpret_cast (type.1).
+    # [[gsl::suppress(type.1)]]
+    # Warning C26429 Symbol 'size_ptr' is never tested for nullness, it can be marked as not_null(f.23).
+    # [[gsl::suppress(f.23)]]
+    # Warning C26481 Don't use pointer arithmetic. Use span instead (bounds.1).
+    # [[gsl::suppress(bounds.1)]]
+    # 
+
+    #
     # Make sure we are MSVC extensions free
     #
     target_compile_options( iffl_test 
                             PRIVATE 
+#                                /permissive- /analyze:plugin EspXEngine.dll /wd26490 /wd26429 /wd26481)
                                 /permissive- )
 endif( )
 

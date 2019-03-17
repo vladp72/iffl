@@ -94,7 +94,7 @@ struct pod_array_list_entry_traits {
     // Is used by validate below
     //
     constexpr static size_t get_size(header_type const &e) {
-        size_t size = FFL_FIELD_OFFSET(header_type, arr) + e.length * sizeof(T);
+        size_t const size = FFL_FIELD_OFFSET(header_type, arr) + e.length * sizeof(T);
         FFL_CODDING_ERROR_IF_NOT(iffl::roundup_size_to_alignment<T>(size) == size);
         return size;
     }
@@ -158,7 +158,7 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
 
         data.emplace_back(element_buffer_size,
                           [array_size, pattern] (char *buffer,
-                                                 size_t element_size) {
+                                                 size_t element_size) noexcept {
                                long_long_array_list_entry &e {*reinterpret_cast<long_long_array_list_entry *>(buffer)};
                                e.length = array_size;
                                std::fill(e.arr, e.arr + e.length, pattern);
@@ -170,7 +170,7 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
 
         data.emplace_back(element_buffer_size,
                           [array_size, pattern](char *buffer,
-                                                size_t element_size) {
+                                                size_t element_size) noexcept {
                               long_long_array_list_entry &e{ *reinterpret_cast<long_long_array_list_entry *>(buffer) };
                               e.length = array_size;
                               std::fill(e.arr, e.arr + e.length, pattern);
@@ -182,7 +182,7 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
 
         data.emplace_back(element_buffer_size,
                           [array_size, pattern](char *buffer,
-                                                size_t element_size) {
+                                                size_t element_size) noexcept {
                               long_long_array_list_entry &e{ *reinterpret_cast<long_long_array_list_entry *>(buffer) };
                               e.length = array_size;
                               std::fill(e.arr, e.arr + e.length, pattern);
@@ -194,7 +194,7 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
 
         data.emplace_back(element_buffer_size,
                           [array_size, pattern](char *buffer,
-                                                size_t element_size) {
+                                                size_t element_size) noexcept {
                               long_long_array_list_entry &e{ *reinterpret_cast<long_long_array_list_entry *>(buffer) };
                               e.length = array_size;
                               std::fill(e.arr, e.arr + e.length, pattern);
@@ -206,7 +206,7 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
 
         data.emplace_back(element_buffer_size,
                           [array_size, pattern](char *buffer,
-                                                size_t element_size) {
+                                                size_t element_size) noexcept {
                               long_long_array_list_entry &e{ *reinterpret_cast<long_long_array_list_entry *>(buffer) };
                               e.length = array_size;
                               std::fill(e.arr, e.arr + e.length, pattern);
@@ -226,7 +226,7 @@ void print([[maybe_unused]] long_long_array_list_entry const &e) {
     std::printf("arr[%zi] = {", e.length);
     std::for_each(e.arr, 
                   e.arr + e.length,
-                  [](long long v) {
+                  [](long long v) noexcept {
                      std::printf("%I64i ", v);
                   });
     std::printf("}\n");

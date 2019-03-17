@@ -66,7 +66,7 @@ public:
     //!
     //! @brief Destructor triggers fail fast if there are outstanding allocations 
     //!
-    ~debug_memory_resource() {
+    ~debug_memory_resource() noexcept {
         validate_no_busy_blocks();
     }
 
@@ -74,14 +74,14 @@ public:
     //! @brief Can be used to query number of outstanding allocations
     //! @return number of outstanding allocations
     //!
-    size_t get_busy_blocks_count() const {
+    size_t get_busy_blocks_count() const noexcept {
         return busy_blocks_count_.load(std::memory_order_relaxed);
     }
 
     //!
     //! @brief Triggers fail fast if there are outstanding allocations
     //!
-    void validate_no_busy_blocks() const {
+    void validate_no_busy_blocks() const noexcept {
         FFL_CODDING_ERROR_IF(0 < get_busy_blocks_count());
     }
 
@@ -130,8 +130,8 @@ private:
             throw std::bad_alloc{};
         }
 
-        prefix_t *prefix{ reinterpret_cast<prefix_t *>(ptr) };
-        suffix_t *suffix{ reinterpret_cast<suffix_t *>( reinterpret_cast<char *>(ptr) + bytes_with_debug_info) - 1 };
+        prefix_t *prefix{ static_cast<prefix_t *>(ptr) };
+        suffix_t *suffix{ reinterpret_cast<suffix_t *>( static_cast<char *>(ptr) + bytes_with_debug_info) - 1 };
 
         prefix->size = bytes_with_debug_info;
         prefix->alignment = alignment;
@@ -157,11 +157,11 @@ private:
 
         decrement_busy_block_count();
 
-        prefix_t *prefix{ reinterpret_cast<prefix_t *>(p) - 1 };
+        prefix_t *prefix{ static_cast<prefix_t *>(p) - 1 };
         FFL_CODDING_ERROR_IF_NOT(prefix->pattern == busy_block_prefix_pattern);
         FFL_CODDING_ERROR_IF_NOT(prefix->memory_resource == this);
         FFL_CODDING_ERROR_IF_NOT(prefix->size > min_allocation_size);
-        size_t user_allocation_size = prefix->size - min_allocation_size;
+        size_t const user_allocation_size = prefix->size - min_allocation_size;
         FFL_CODDING_ERROR_IF_NOT(user_allocation_size == bytes);
         FFL_CODDING_ERROR_IF_NOT(prefix->alignment == alignment);
         suffix_t *suffix{ reinterpret_cast<suffix_t *>(reinterpret_cast<char *>(prefix) + prefix->size) - 1 };
@@ -181,20 +181,20 @@ private:
     //!         and false otherwise.
     //!
     bool do_is_equal(memory_resource const & other) const noexcept override {
-        return (&other == static_cast<memory_resource const *>(this));
+        return (&other == this);
     }
     //!
     //! @brief Increases number of outstamding allocations.
     //!
-    void increment_busy_block_count() {
-        size_t prev_busy_blocks_count = busy_blocks_count_.fetch_add(1, std::memory_order_relaxed);
+    void increment_busy_block_count() noexcept {
+        size_t const prev_busy_blocks_count = busy_blocks_count_.fetch_add(1, std::memory_order_relaxed);
         FFL_CODDING_ERROR_IF_NOT(prev_busy_blocks_count >= 0);
     }
     //!
     //! @brief Decreases number of outstamding allocations.
     //!
-    void decrement_busy_block_count() {
-        size_t prev_busy_blocks_count = busy_blocks_count_.fetch_sub(1, std::memory_order_relaxed);
+    void decrement_busy_block_count() noexcept {
+        size_t const prev_busy_blocks_count = busy_blocks_count_.fetch_sub(1, std::memory_order_relaxed);
         FFL_CODDING_ERROR_IF_NOT(prev_busy_blocks_count > 0);
     }
     //!
@@ -272,7 +272,7 @@ public:
     //! @param buffer_size - size of the buffer
     //!
     explicit input_buffer_memory_resource(void *buffer, 
-                                          size_t buffer_size)
+                                          size_t buffer_size) noexcept
         : used_(buffer ? true : false)
         , buffer_{buffer}
         , buffer_size_{ buffer_size } {
@@ -281,7 +281,7 @@ public:
     //!
     //! @brief Destructor verifies that there are no outstanding allocations
     //!
-    ~input_buffer_memory_resource() {
+    ~input_buffer_memory_resource() noexcept {
         validate_no_busy_blocks();
     }
 
@@ -289,14 +289,14 @@ public:
     //! @brief Can be used to query number of outstanding allocations
     //! @return number of outstanding allocations
     //!
-    size_t get_busy_blocks_count() const {
+    size_t get_busy_blocks_count() const noexcept {
         return (used_ ? 1 : 0);
     }
 
     //!
     //! @brief Triggers fail fast if there are outstanding allocations
     //!
-    void validate_no_busy_blocks() const {
+    void validate_no_busy_blocks() const noexcept {
         FFL_CODDING_ERROR_IF(0 < get_busy_blocks_count());
     }
 
@@ -340,7 +340,7 @@ protected:
     //!         and false otherwise.
     //!
     bool do_is_equal(memory_resource const & other) const noexcept override {
-        return (&other == static_cast<memory_resource const *>(this));
+        return (&other == this);
     }
 
 private:

@@ -56,14 +56,14 @@
 //! @param T type field is member of
 //! @param F field name
 //!
-#define FFL_FIELD_OFFSET(T, F) (((char const *)(&((T *)NULL)->F)) - (char const *)NULL)
+#define FFL_FIELD_OFFSET(T, F) (((char const *)(&((T *)nullptr)->F)) - (char const *)nullptr)
 //!
 //! @brief Field offset in the structure plus field size. 
 //!        Offset to the start of padding [if any] for the next field [if any].
 //! @param T type field is member of
 //! @param F field name
 //!
-#define FFL_SIZE_THROUGH_FIELD(T, F) (FFL_FIELD_OFFSET(T, F) + sizeof(((T *)NULL)->F))
+#define FFL_SIZE_THROUGH_FIELD(T, F) (FFL_FIELD_OFFSET(T, F) + sizeof(((T *)nullptr)->F))
 //!
 //! @brief Offset to the start of padding [if any] for the next field [if any].
 //! @param T type field is member of
@@ -185,8 +185,8 @@ namespace iffl {
     //! @param alignment - alignment we are rounding up to
     //! @return - value of pointer rounded up to alignment
     //!
-    constexpr inline char * roundup_ptr_to_alignment(char *ptr, size_t alignment) noexcept {
-        return reinterpret_cast<char *>(size_to_ptr(roundup_size_to_alignment(ptr_to_size(ptr), alignment)));
+    constexpr inline char * roundup_ptr_to_alignment(char * ptr, size_t alignment) noexcept {
+        return static_cast<char *>(size_to_ptr(roundup_size_to_alignment(ptr_to_size(ptr), alignment)));
     }
     //!
     //! @brief Rounds up pointer to specified alignment
@@ -206,7 +206,7 @@ namespace iffl {
     //! @return - value of pointer rounded up to alignment
     //!
     constexpr inline char const * roundup_ptr_to_alignment(char const *ptr, size_t alignment) noexcept {
-        return reinterpret_cast<char const *>(size_to_ptr(roundup_size_to_alignment(ptr_to_size(ptr), alignment)));
+        return static_cast<char const *>(size_to_ptr(roundup_size_to_alignment(ptr_to_size(ptr), alignment)));
     }
     //!
     //! @brief Rounds up pointer to specified alignment
@@ -272,7 +272,7 @@ namespace iffl {
     //! @returns pointer casted to char *
     //!
     template <typename T>
-    inline char *cast_to_char_ptr(T *p) {
+    inline char *cast_to_char_ptr(T *p) noexcept {
         if constexpr (std::is_const_v<T>) {
             return const_cast<char *>(reinterpret_cast<char const *>(p));
         } else {
@@ -931,7 +931,7 @@ namespace iffl {
         //!
         //! @brief Assignment operator to const buffer from pointers
         //!
-        buffer_t(T *begin, T *last, T *end) 
+        buffer_t(T *begin, T *last, T *end) noexcept
         :   begin{ begin }
         ,   last{ last }
         ,   end{ end } {
@@ -941,7 +941,7 @@ namespace iffl {
         //!
         //! @brief Assignment operator to const buffer from pointers
         //!
-        buffer_t(T *begin, size_t *last_offset, T *end_offset)
+        buffer_t(T *begin, size_t *last_offset, T *end_offset) noexcept
             : begin{ begin }
             , last{ begin + last_offset }
             , end{ begin + end_offset } {

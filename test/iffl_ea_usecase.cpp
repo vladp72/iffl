@@ -164,10 +164,10 @@ void print_ea(size_t idx,
     std::printf("FILE_FULL_EA_INFORMATION[%zi].NextEntryOffset = %u\n",
            idx,
            e.NextEntryOffset);
-    std::printf("FILE_FULL_EA_INFORMATION[%zi].Flags = %u\n",
+    std::printf("FILE_FULL_EA_INFORMATION[%zi].Flags = %i\n",
            idx,
            static_cast<int>(e.Flags));
-    std::printf("FILE_FULL_EA_INFORMATION[%zi].EaNameLength = %u \"%s\"\n",
+    std::printf("FILE_FULL_EA_INFORMATION[%zi].EaNameLength = %i \"%s\"\n",
            idx,
            static_cast<int>(e.EaNameLength),
            (e.EaNameLength ? std::string{ e.EaName, e.EaName + e.EaNameLength }
@@ -208,7 +208,7 @@ void handle_ea1(char const *buffer, size_t buffer_lenght) {
                 //
                 // validate element
                 //
-                bool is_valid = iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>::validate(buffer_size, element_buffer);
+                bool const is_valid{ iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>::validate(buffer_size, element_buffer) };
                 //
                 // if element is valid then process element
                 //
@@ -285,7 +285,7 @@ void prepare_ea_and_call_handler() {
     eas.emplace_front(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) 
                      + sizeof(ea_name0)-1, 
                      [](char *buffer,
-                        size_t new_element_size) {
+                        size_t new_element_size) noexcept {
                         FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
                         e.Flags = 0;
                         e.EaNameLength = sizeof(ea_name0)-1;
@@ -299,7 +299,7 @@ void prepare_ea_and_call_handler() {
                      + sizeof(ea_name1)-1
                      + sizeof(ea_data1),
                      [](char *buffer,
-                        size_t new_element_size) {
+                        size_t new_element_size) noexcept {
                         FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
                         e.Flags = 1;
                         e.EaNameLength = sizeof(ea_name1)-1;
@@ -316,7 +316,7 @@ void prepare_ea_and_call_handler() {
                      + sizeof(ea_name2)-1
                      + sizeof(ea_data2),
                      [](char *buffer,
-                        size_t new_element_size) {
+                        size_t new_element_size) noexcept {
                         FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
                         e.Flags = 2;
                         e.EaNameLength = sizeof(ea_name2)-1;
