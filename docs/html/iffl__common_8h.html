@@ -71,6 +71,7 @@ $(function() {
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">iffl_common.h File Reference</div>  </div>
@@ -89,6 +90,7 @@ $(function() {
 <code>#include &lt;typeinfo&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;memory_resource&gt;</code><br />
+<code>#include &lt;cstdio&gt;</code><br />
 <code>#include &lt;intrin.h&gt;</code><br />
 </div>
 <p><a href="iffl__common_8h_source.html">Go to the source code of this file.</a></p>
@@ -101,8 +103,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1attach__buffer.html">iffl::attach_buffer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper class used as a parameter in <a class="el" href="classiffl_1_1flat__forward__list.html" title="Intrusive flat forward list container.">flat_forward_list</a> constructor to designate that it should take ownership of the buffer rather than make a copy.  <a href="structiffl_1_1attach__buffer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1as__pointers.html">iffl::as_pointers</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1range.html">iffl::range</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vocabulary type that describes a subbuffer in a larger buffer, and portion of that subbuffer actuallu used by the data.  <a href="structiffl_1_1range.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,6 +114,24 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1size__with__padding.html">iffl::size_with_padding&lt; ALIGNMENT_V &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vocabulary type that describes an size and template parameter that specifies element's type alignment requirements.  <a href="structiffl_1_1size__with__padding.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__sizes.html">iffl::flat_forward_list_sizes&lt; ALIGNMENT_V &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describes buffer used by container.  <a href="structiffl_1_1flat__forward__list__sizes.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1zero__then__variadic__args__t.html">iffl::zero_then_variadic_args_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tag type for value - initializing first, constructing second from remaining args.  <a href="structiffl_1_1zero__then__variadic__args__t.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1one__then__variadic__args__t.html">iffl::one_then_variadic_args_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tag type for constructing first from one arg, constructing second from remaining args.  <a href="structiffl_1_1one__then__variadic__args__t.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1compressed__pair.html">iffl::compressed_pair&lt; T1, T2, bool &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty Base Class Optimization EBCO helper.  <a href="classiffl_1_1compressed__pair.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1compressed__pair_3_01_t1_00_01_t2_00_01false_01_4.html">iffl::compressed_pair&lt; T1, T2, false &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization for the case when Empty Base Class Optimization EBCO would not work.  <a href="classiffl_1_1compressed__pair_3_01_t1_00_01_t2_00_01false_01_4.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1buffer__t.html">iffl::buffer_t&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of pointers describing state of the buffer containing flat forward list.  <a href="structiffl_1_1buffer__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -140,10 +158,10 @@ Macros</h2></td></tr>
 <tr class="memitem:a810e6f97c8afdfc1c59235d8a0b04584"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#a810e6f97c8afdfc1c59235d8a0b04584">FFL_CODDING_ERROR_IF_NOT</a>(C)&#160;&#160;&#160;if (C) {;} else {<a class="el" href="iffl__common_8h.html#a8904ab7b6f57ac0e6cb55f24b4403280">FFL_FAST_FAIL</a>(ENOTRECOVERABLE);}</td></tr>
 <tr class="memdesc:a810e6f97c8afdfc1c59235d8a0b04584"><td class="mdescLeft">&#160;</td><td class="mdescRight">If expression is false then fail fast with error ENOTRECOVERABLE(127 or 0x7f)  <a href="#a810e6f97c8afdfc1c59235d8a0b04584">More...</a><br /></td></tr>
 <tr class="separator:a810e6f97c8afdfc1c59235d8a0b04584"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb5e0fe369df1ba98b13b497e0cf1860"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T,  F)&#160;&#160;&#160;(((char const *)(&amp;((T *)NULL)-&gt;F)) - (char const *)NULL)</td></tr>
+<tr class="memitem:acb5e0fe369df1ba98b13b497e0cf1860"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T,  F)&#160;&#160;&#160;(((char const *)(&amp;((T *)nullptr)-&gt;F)) - (char const *)nullptr)</td></tr>
 <tr class="memdesc:acb5e0fe369df1ba98b13b497e0cf1860"><td class="mdescLeft">&#160;</td><td class="mdescRight">Field offset in the structure.  <a href="#acb5e0fe369df1ba98b13b497e0cf1860">More...</a><br /></td></tr>
 <tr class="separator:acb5e0fe369df1ba98b13b497e0cf1860"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cbf58e5d7148a9c14be9397079f2c53"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#a6cbf58e5d7148a9c14be9397079f2c53">FFL_SIZE_THROUGH_FIELD</a>(T,  F)&#160;&#160;&#160;(<a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F) + sizeof(((T *)NULL)-&gt;F))</td></tr>
+<tr class="memitem:a6cbf58e5d7148a9c14be9397079f2c53"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#a6cbf58e5d7148a9c14be9397079f2c53">FFL_SIZE_THROUGH_FIELD</a>(T,  F)&#160;&#160;&#160;(<a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F) + sizeof(((T *)nullptr)-&gt;F))</td></tr>
 <tr class="memdesc:a6cbf58e5d7148a9c14be9397079f2c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Field offset in the structure plus field size. Offset to the start of padding [if any] for the next field [if any].  <a href="#a6cbf58e5d7148a9c14be9397079f2c53">More...</a><br /></td></tr>
 <tr class="separator:a6cbf58e5d7148a9c14be9397079f2c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0002c633fc1a2007f916a3c5a2140ec"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#ac0002c633fc1a2007f916a3c5a2140ec">FFL_PADDING_OFFSET_AFTER_FIELD</a>(T,  F)&#160;&#160;&#160;<a class="el" href="iffl__common_8h.html#a6cbf58e5d7148a9c14be9397079f2c53">FFL_SIZE_THROUGH_FIELD</a>(T, F)</td></tr>
@@ -158,6 +176,17 @@ Macros</h2></td></tr>
 <tr class="memitem:a828264d7e8453d034bfaeebfed0ccbc5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="iffl__common_8h.html#a828264d7e8453d034bfaeebfed0ccbc5">FFL_FIELD_PTR_TO_OBJ_PTR</a>(T,  F,  P)&#160;&#160;&#160;((T *)((char const *)(P) - <a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F)))</td></tr>
 <tr class="memdesc:a828264d7e8453d034bfaeebfed0ccbc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates pointer to the beginnig of the structure from the pointer to a field in that structure.  <a href="#a828264d7e8453d034bfaeebfed0ccbc5">More...</a><br /></td></tr>
 <tr class="separator:a828264d7e8453d034bfaeebfed0ccbc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a78536459b06204bafd2ddbfb7b778df9"><td class="memItemLeft" align="right" valign="top"><a id="a78536459b06204bafd2ddbfb7b778df9"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a78536459b06204bafd2ddbfb7b778df9">iffl::buffer_ref</a> = buffer_t&lt; char &gt;</td></tr>
+<tr class="memdesc:a78536459b06204bafd2ddbfb7b778df9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non const flat forward list buffer. <br /></td></tr>
+<tr class="separator:a78536459b06204bafd2ddbfb7b778df9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a285870e8a61063c542965ad589fee6df"><td class="memItemLeft" align="right" valign="top"><a id="a285870e8a61063c542965ad589fee6df"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a285870e8a61063c542965ad589fee6df">iffl::buffer_view</a> = buffer_t&lt; char const  &gt;</td></tr>
+<tr class="memdesc:a285870e8a61063c542965ad589fee6df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Const flat forward list buffer. <br /></td></tr>
+<tr class="separator:a285870e8a61063c542965ad589fee6df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -200,6 +229,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a395800a3bee8537b31af93bbba3927ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a395800a3bee8537b31af93bbba3927ac">iffl::zero_buffer</a> (char *buffer, size_t length) noexcept</td></tr>
 <tr class="memdesc:a395800a3bee8537b31af93bbba3927ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">sets "length" consequative bytes of "to_buffer" to 0.  <a href="namespaceiffl.html#a395800a3bee8537b31af93bbba3927ac">More...</a><br /></td></tr>
 <tr class="separator:a395800a3bee8537b31af93bbba3927ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75de19b348b30c2c9cec77c6ab5d0e12"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a75de19b348b30c2c9cec77c6ab5d0e12">iffl::distance</a> (void const *begin, void const *end) noexcept</td></tr>
+<tr class="memdesc:a75de19b348b30c2c9cec77c6ab5d0e12"><td class="mdescLeft">&#160;</td><td class="mdescRight">sets "length" consequative bytes of "to_buffer" to 0.  <a href="namespaceiffl.html#a75de19b348b30c2c9cec77c6ab5d0e12">More...</a><br /></td></tr>
+<tr class="separator:a75de19b348b30c2c9cec77c6ab5d0e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a641650e46f9c6138e9358b9b4b4552ff"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a641650e46f9c6138e9358b9b4b4552ff"><td class="memTemplItemLeft" align="right" valign="top">char *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a641650e46f9c6138e9358b9b4b4552ff">iffl::cast_to_char_ptr</a> (T *p) noexcept</td></tr>
+<tr class="memdesc:a641650e46f9c6138e9358b9b4b4552ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to cast a pointer to a char *.  <a href="namespaceiffl.html#a641650e46f9c6138e9358b9b4b4552ff">More...</a><br /></td></tr>
+<tr class="separator:a641650e46f9c6138e9358b9b4b4552ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b398fb9f25e87b28239b8cd37adc324"><td class="memTemplParams" colspan="2">template&lt;typename G &gt; </td></tr>
 <tr class="memitem:a9b398fb9f25e87b28239b8cd37adc324"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a9b398fb9f25e87b28239b8cd37adc324">iffl::make_scope_guard</a> (G &amp;&amp;g)</td></tr>
 <tr class="memdesc:a9b398fb9f25e87b28239b8cd37adc324"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory method for scoped_guard.  <a href="namespaceiffl.html#a9b398fb9f25e87b28239b8cd37adc324">More...</a><br /></td></tr>
@@ -309,7 +345,7 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;(((char const *)(&amp;((T *)NULL)-&gt;F)) - (char const *)NULL)</td>
+          <td></td><td>&#160;&#160;&#160;(((char const *)(&amp;((T *)nullptr)-&gt;F)) - (char const *)nullptr)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -515,7 +551,7 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;(<a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F) + sizeof(((T *)NULL)-&gt;F))</td>
+          <td></td><td>&#160;&#160;&#160;(<a class="el" href="iffl__common_8h.html#acb5e0fe369df1ba98b13b497e0cf1860">FFL_FIELD_OFFSET</a>(T, F) + sizeof(((T *)nullptr)-&gt;F))</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -89,17 +89,17 @@ Inheritance diagram for iffl::debug_memory_resource:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0238f4baa8d348e3ded838dd1a847a96"><td class="memItemLeft" align="right" valign="top"><a id="a0238f4baa8d348e3ded838dd1a847a96"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1debug__memory__resource.html#a0238f4baa8d348e3ded838dd1a847a96">~debug_memory_resource</a> ()</td></tr>
-<tr class="memdesc:a0238f4baa8d348e3ded838dd1a847a96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor triggers fail fast if there are outstanding allocations. <br /></td></tr>
-<tr class="separator:a0238f4baa8d348e3ded838dd1a847a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7866fc47ac307fbca1fa6c4d236d4559"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1debug__memory__resource.html#a7866fc47ac307fbca1fa6c4d236d4559">get_busy_blocks_count</a> () const</td></tr>
-<tr class="memdesc:a7866fc47ac307fbca1fa6c4d236d4559"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can be used to query number of outstanding allocations.  <a href="#a7866fc47ac307fbca1fa6c4d236d4559">More...</a><br /></td></tr>
-<tr class="separator:a7866fc47ac307fbca1fa6c4d236d4559"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0731654149cafa7c22c13ba27b370ea6"><td class="memItemLeft" align="right" valign="top"><a id="a0731654149cafa7c22c13ba27b370ea6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1debug__memory__resource.html#a0731654149cafa7c22c13ba27b370ea6">validate_no_busy_blocks</a> () const</td></tr>
-<tr class="memdesc:a0731654149cafa7c22c13ba27b370ea6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers fail fast if there are outstanding allocations. <br /></td></tr>
-<tr class="separator:a0731654149cafa7c22c13ba27b370ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1ba04353ef3203ca7c727b589dc1812"><td class="memItemLeft" align="right" valign="top"><a id="aa1ba04353ef3203ca7c727b589dc1812"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1debug__memory__resource.html#aa1ba04353ef3203ca7c727b589dc1812">~debug_memory_resource</a> () noexcept</td></tr>
+<tr class="memdesc:aa1ba04353ef3203ca7c727b589dc1812"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor triggers fail fast if there are outstanding allocations. <br /></td></tr>
+<tr class="separator:aa1ba04353ef3203ca7c727b589dc1812"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af91b75cb49822da3294d532962be15e4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1debug__memory__resource.html#af91b75cb49822da3294d532962be15e4">get_busy_blocks_count</a> () const noexcept</td></tr>
+<tr class="memdesc:af91b75cb49822da3294d532962be15e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can be used to query number of outstanding allocations.  <a href="#af91b75cb49822da3294d532962be15e4">More...</a><br /></td></tr>
+<tr class="separator:af91b75cb49822da3294d532962be15e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06cf180cf95127d21921209836475215"><td class="memItemLeft" align="right" valign="top"><a id="a06cf180cf95127d21921209836475215"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1debug__memory__resource.html#a06cf180cf95127d21921209836475215">validate_no_busy_blocks</a> () const noexcept</td></tr>
+<tr class="memdesc:a06cf180cf95127d21921209836475215"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers fail fast if there are outstanding allocations. <br /></td></tr>
+<tr class="separator:a06cf180cf95127d21921209836475215"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>implements std::pmr::memory_resource interface. </p>
@@ -112,9 +112,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <li>Helps detecting when objects use memory without previously initializing it. Allocate memory is filled with value that would trigger access violation if used as a pointer without initialization</li>
 <li>Basic memory leak and lifetime management issues by counting number of outstanding allocations. At memory resource destruction time we check that there are no outstanding allocations. Table below describes layout of each allocated block.</li>
 </ul>
-<div class="fragment"><div class="line">--------------------------------------------------------------------------------------------------------------------</div><div class="line">|<span class="keyword">sizeof</span>(size_t) bytes | pointer to | <span class="keyword">sizeof</span>(<span class="keywordtype">size_t</span>) prefix          | user data   | <span class="keyword">sizeof</span>(size_t) suffix          |</div><div class="line">|offset to the end of | memory     | 0xBEEFABCD - allocated block   | filled with | 0xDEADABCD - allocated block   |</div><div class="line">|allocation           | resource   | 0xBEEFABCE - deallocated block | 0xFE        | 0xDEADABCE - deallocated block |</div><div class="line">--------------------------------------------------------------------------------------------------------------------</div></div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7866fc47ac307fbca1fa6c4d236d4559"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7866fc47ac307fbca1fa6c4d236d4559">&#9670;&nbsp;</a></span>get_busy_blocks_count()</h2>
+<div class="fragment"><div class="line">--------------------------------------------------------------------------------------------------------------------</div><div class="line">|<span class="keyword">sizeof</span>(size_t) bytes | pointer to | <span class="keyword">sizeof</span>(<span class="keywordtype">size_t</span>) prefix          | user data   | <span class="keyword">sizeof</span>(size_t) suffix          |</div><div class="line">|offset to the <a class="code" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a> of | memory     | 0xBEEFABCD - allocated block   | filled with | 0xDEADABCD - allocated block   |</div><div class="line">|allocation           | resource   | 0xBEEFABCE - deallocated block | 0xFE        | 0xDEADABCE - deallocated block |</div><div class="line">--------------------------------------------------------------------------------------------------------------------</div></div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="af91b75cb49822da3294d532962be15e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af91b75cb49822da3294d532962be15e4">&#9670;&nbsp;</a></span>get_busy_blocks_count()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -131,7 +131,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

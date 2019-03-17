@@ -68,10 +68,10 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classiffl_1_1flat__forward__list-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">iffl::flat_forward_list&lt; T, TT, A &gt; Class Template Reference</div>  </div>
@@ -82,12 +82,6 @@ $(function() {
  <a href="classiffl_1_1flat__forward__list.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="iffl__list_8h_source.html">iffl_list.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for iffl::flat_forward_list&lt; T, TT, A &gt;:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="classiffl_1_1flat__forward__list.png" alt=""/>
- </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -139,12 +133,16 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a391e14005459b20e9596175e92943147">offset_with_aligment_t</a> = typename <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aaa01a29e472dfdd74fd15b2c63387a51">traits_traits::offset_with_aligment_t</a></td></tr>
 <tr class="memdesc:a391e14005459b20e9596175e92943147"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vocabulary type used to describe size with alignment. <br /></td></tr>
 <tr class="separator:a391e14005459b20e9596175e92943147"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ff96502bf2dc94c9849cfd820ec5166"><td class="memItemLeft" align="right" valign="top"><a id="a3ff96502bf2dc94c9849cfd820ec5166"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a3ff96502bf2dc94c9849cfd820ec5166">sizes_t</a> = <a class="el" href="structiffl_1_1flat__forward__list__sizes.html">flat_forward_list_sizes</a>&lt; <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa3fe68f843e48534915ef6303cd45deb">traits_traits::alignment</a> &gt;</td></tr>
+<tr class="memdesc:a3ff96502bf2dc94c9849cfd820ec5166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vocabulary type that contains information about buffer size, and last element range. <br /></td></tr>
+<tr class="separator:a3ff96502bf2dc94c9849cfd820ec5166"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48eff6c3870e8a47e546f9b3312b2d71"><td class="memItemLeft" align="right" valign="top"><a id="a48eff6c3870e8a47e546f9b3312b2d71"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a48eff6c3870e8a47e546f9b3312b2d71">allocator_type</a> = A</td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a48eff6c3870e8a47e546f9b3312b2d71">allocator_type</a> = typename std::allocator_traits&lt; A &gt;::template rebind_alloc&lt; char &gt;</td></tr>
 <tr class="memdesc:a48eff6c3870e8a47e546f9b3312b2d71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of allocator. <br /></td></tr>
 <tr class="separator:a48eff6c3870e8a47e546f9b3312b2d71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fb8af508136a184801ff710cd6e2fcd"><td class="memItemLeft" align="right" valign="top"><a id="a6fb8af508136a184801ff710cd6e2fcd"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a6fb8af508136a184801ff710cd6e2fcd">allocator_type_traits</a> = std::allocator_traits&lt; A &gt;</td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a6fb8af508136a184801ff710cd6e2fcd">allocator_type_traits</a> = std::allocator_traits&lt; <a class="el" href="classiffl_1_1flat__forward__list.html#a48eff6c3870e8a47e546f9b3312b2d71">allocator_type</a> &gt;</td></tr>
 <tr class="memdesc:a6fb8af508136a184801ff710cd6e2fcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of allocator traits. <br /></td></tr>
 <tr class="separator:a6fb8af508136a184801ff710cd6e2fcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4bcd72c49e150e53c92fbf8c52158db"><td class="memItemLeft" align="right" valign="top"><a id="ac4bcd72c49e150e53c92fbf8c52158db"></a>
@@ -163,12 +161,6 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a8cc6de39012aca12afaeaeb27e12507f">const_buffer_pointer</a> = char const *</td></tr>
 <tr class="memdesc:a8cc6de39012aca12afaeaeb27e12507f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type used as a pointer ot the const buffer. <br /></td></tr>
 <tr class="separator:a8cc6de39012aca12afaeaeb27e12507f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcd798438fefaaf709e79314d9d9f23d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#afcd798438fefaaf709e79314d9d9f23d">detach_type_as_size</a> = std::tuple&lt; char *, size_t, size_t &gt;</td></tr>
-<tr class="memdesc:afcd798438fefaaf709e79314d9d9f23d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A tuple that contains.  <a href="#afcd798438fefaaf709e79314d9d9f23d">More...</a><br /></td></tr>
-<tr class="separator:afcd798438fefaaf709e79314d9d9f23d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaab18f7c2fb30f24bb41c8e228180f0e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#aaab18f7c2fb30f24bb41c8e228180f0e">detach_type_as_pointers</a> = std::tuple&lt; char *, char *, char * &gt;</td></tr>
-<tr class="memdesc:aaab18f7c2fb30f24bb41c8e228180f0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A tuple that contians.  <a href="#aaab18f7c2fb30f24bb41c8e228180f0e">More...</a><br /></td></tr>
-<tr class="separator:aaab18f7c2fb30f24bb41c8e228180f0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59bf6a6f46962a1fbaf0d2f7d91098f2"><td class="memItemLeft" align="right" valign="top"><a id="a59bf6a6f46962a1fbaf0d2f7d91098f2"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> = <a class="el" href="namespaceiffl.html#a0cc99c7f27e6b377339364aef8b45b0c">flat_forward_list_iterator</a>&lt; T, TT &gt;</td></tr>
 <tr class="memdesc:a59bf6a6f46962a1fbaf0d2f7d91098f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of iterator. <br /></td></tr>
@@ -177,6 +169,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#ade934330e2dce8176985d15f7ee927cf">const_iterator</a> = <a class="el" href="namespaceiffl.html#ad67086ee8db08a7b96df7f9759d02a1b">flat_forward_list_const_iterator</a>&lt; T, TT &gt;</td></tr>
 <tr class="memdesc:ade934330e2dce8176985d15f7ee927cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of const iterator. <br /></td></tr>
 <tr class="separator:ade934330e2dce8176985d15f7ee927cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e8f1baf4a08c0cd00c7108bc3442f22"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a3e8f1baf4a08c0cd00c7108bc3442f22">buffer_type</a> = <a class="el" href="structiffl_1_1buffer__t.html">buffer_t</a>&lt; <a class="el" href="classiffl_1_1flat__forward__list.html#ac4bcd72c49e150e53c92fbf8c52158db">buffer_value_type</a> &gt;</td></tr>
+<tr class="memdesc:a3e8f1baf4a08c0cd00c7108bc3442f22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointers that describe buffer.  <a href="#a3e8f1baf4a08c0cd00c7108bc3442f22">More...</a><br /></td></tr>
+<tr class="separator:a3e8f1baf4a08c0cd00c7108bc3442f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -184,72 +179,100 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a6d6b97919909d4b2ac0da9120fc0394b">flat_forward_list</a> () noexcept</td></tr>
 <tr class="memdesc:a6d6b97919909d4b2ac0da9120fc0394b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for container. <br /></td></tr>
 <tr class="separator:a6d6b97919909d4b2ac0da9120fc0394b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3c6dbc279cbaac4ed8549c5d0a8832e"><td class="memItemLeft" align="right" valign="top"><a id="ae3c6dbc279cbaac4ed8549c5d0a8832e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#ae3c6dbc279cbaac4ed8549c5d0a8832e">flat_forward_list</a> (A a) noexcept</td></tr>
-<tr class="memdesc:ae3c6dbc279cbaac4ed8549c5d0a8832e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty container with an instance of provided allocator. <br /></td></tr>
-<tr class="separator:ae3c6dbc279cbaac4ed8549c5d0a8832e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62cc0c79c368b98ba0827a5823165f4f"><td class="memItemLeft" align="right" valign="top"><a id="a62cc0c79c368b98ba0827a5823165f4f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a62cc0c79c368b98ba0827a5823165f4f">flat_forward_list</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a48eff6c3870e8a47e546f9b3312b2d71">allocator_type</a> a) noexcept</td></tr>
+<tr class="memdesc:a62cc0c79c368b98ba0827a5823165f4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty container with an instance of provided allocator. <br /></td></tr>
+<tr class="separator:a62cc0c79c368b98ba0827a5823165f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a749f152e4fb3d8781277060f19609048"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a749f152e4fb3d8781277060f19609048">flat_forward_list</a> (<a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a> &amp;&amp;other) noexcept</td></tr>
 <tr class="memdesc:a749f152e4fb3d8781277060f19609048"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. Moves allocator and content of other container to this container.  <a href="#a749f152e4fb3d8781277060f19609048">More...</a><br /></td></tr>
 <tr class="separator:a749f152e4fb3d8781277060f19609048"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0add72d0b2150302c9c66a16ba70bc52"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a0add72d0b2150302c9c66a16ba70bc52">flat_forward_list</a> (<a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a> const &amp;other)</td></tr>
 <tr class="memdesc:a0add72d0b2150302c9c66a16ba70bc52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. Copies allocator if supprted and copies content of other container to this container.  <a href="#a0add72d0b2150302c9c66a16ba70bc52">More...</a><br /></td></tr>
 <tr class="separator:a0add72d0b2150302c9c66a16ba70bc52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e8a3c637cb02c0d00bf0b4d991b3ab6"><td class="memTemplParams" colspan="2">template&lt;typename AA  = A&gt; </td></tr>
+<tr class="memitem:ab0c6c251f25b12c0287092d215f8574c"><td class="memTemplParams" colspan="2">template&lt;typename AA  = allocator_type&gt; </td></tr>
+<tr class="memitem:ab0c6c251f25b12c0287092d215f8574c"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#ab0c6c251f25b12c0287092d215f8574c">flat_forward_list</a> (<a class="el" href="structiffl_1_1attach__buffer.html">attach_buffer</a>, <a class="el" href="namespaceiffl.html#a285870e8a61063c542965ad589fee6df">buffer_view</a> const &amp;other_buff, AA &amp;&amp;a=AA{}) noexcept</td></tr>
+<tr class="memdesc:ab0c6c251f25b12c0287092d215f8574c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that takes ownership of a buffer.  <a href="#ab0c6c251f25b12c0287092d215f8574c">More...</a><br /></td></tr>
+<tr class="separator:ab0c6c251f25b12c0287092d215f8574c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afccbf673a48dc329bc645f1abc8a5823"><td class="memTemplParams" colspan="2">template&lt;typename AA  = allocator_type&gt; </td></tr>
+<tr class="memitem:afccbf673a48dc329bc645f1abc8a5823"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#afccbf673a48dc329bc645f1abc8a5823">flat_forward_list</a> (<a class="el" href="namespaceiffl.html#a285870e8a61063c542965ad589fee6df">buffer_view</a> const &amp;other_buff, AA &amp;&amp;a=AA{})</td></tr>
+<tr class="memdesc:afccbf673a48dc329bc645f1abc8a5823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that copies list from a buffer.  <a href="#afccbf673a48dc329bc645f1abc8a5823">More...</a><br /></td></tr>
+<tr class="separator:afccbf673a48dc329bc645f1abc8a5823"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e8a3c637cb02c0d00bf0b4d991b3ab6"><td class="memTemplParams" colspan="2">template&lt;typename AA  = allocator_type&gt; </td></tr>
 <tr class="memitem:a7e8a3c637cb02c0d00bf0b4d991b3ab6"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a7e8a3c637cb02c0d00bf0b4d991b3ab6">flat_forward_list</a> (<a class="el" href="structiffl_1_1attach__buffer.html">attach_buffer</a>, char *buffer_begin, char *last_element, char *buffer_end, AA &amp;&amp;a=AA{}) noexcept</td></tr>
 <tr class="memdesc:a7e8a3c637cb02c0d00bf0b4d991b3ab6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that takes ownership of a buffer.  <a href="#a7e8a3c637cb02c0d00bf0b4d991b3ab6">More...</a><br /></td></tr>
 <tr class="separator:a7e8a3c637cb02c0d00bf0b4d991b3ab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae91f5a5db96c9ed92dff41ca79c0dc35"><td class="memTemplParams" colspan="2">template&lt;typename AA  = A&gt; </td></tr>
+<tr class="memitem:ae91f5a5db96c9ed92dff41ca79c0dc35"><td class="memTemplParams" colspan="2">template&lt;typename AA  = allocator_type&gt; </td></tr>
 <tr class="memitem:ae91f5a5db96c9ed92dff41ca79c0dc35"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#ae91f5a5db96c9ed92dff41ca79c0dc35">flat_forward_list</a> (char const *buffer_begin, char const *last_element, char const *buffer_end, AA &amp;&amp;a=AA{})</td></tr>
 <tr class="memdesc:ae91f5a5db96c9ed92dff41ca79c0dc35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that copies list from a buffer.  <a href="#ae91f5a5db96c9ed92dff41ca79c0dc35">More...</a><br /></td></tr>
 <tr class="separator:ae91f5a5db96c9ed92dff41ca79c0dc35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a50df8a0aeff99375371fa4679fa85a"><td class="memTemplParams" colspan="2">template&lt;typename AA  = A&gt; </td></tr>
+<tr class="memitem:a2a50df8a0aeff99375371fa4679fa85a"><td class="memTemplParams" colspan="2">template&lt;typename AA  = allocator_type&gt; </td></tr>
 <tr class="memitem:a2a50df8a0aeff99375371fa4679fa85a"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a2a50df8a0aeff99375371fa4679fa85a">flat_forward_list</a> (<a class="el" href="structiffl_1_1attach__buffer.html">attach_buffer</a>, char *buffer, size_t buffer_size, AA &amp;&amp;a=AA{}) noexcept</td></tr>
 <tr class="memdesc:a2a50df8a0aeff99375371fa4679fa85a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that takes ownership of a buffer and attempts to find last element of the list.  <a href="#a2a50df8a0aeff99375371fa4679fa85a">More...</a><br /></td></tr>
 <tr class="separator:a2a50df8a0aeff99375371fa4679fa85a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf497e76a8d8462697d1897dfcf1b63b"><td class="memTemplParams" colspan="2">template&lt;typename AA  = A&gt; </td></tr>
+<tr class="memitem:abf497e76a8d8462697d1897dfcf1b63b"><td class="memTemplParams" colspan="2">template&lt;typename AA  = allocator_type&gt; </td></tr>
 <tr class="memitem:abf497e76a8d8462697d1897dfcf1b63b"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#abf497e76a8d8462697d1897dfcf1b63b">flat_forward_list</a> (char const *buffer, size_t buffer_size, AA &amp;&amp;a=AA{})</td></tr>
 <tr class="memdesc:abf497e76a8d8462697d1897dfcf1b63b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that checks if buffer contains a valid list and if it does then copies that list.  <a href="#abf497e76a8d8462697d1897dfcf1b63b">More...</a><br /></td></tr>
 <tr class="separator:abf497e76a8d8462697d1897dfcf1b63b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59af9a85096de0323b690c08004fe015"><td class="memTemplParams" colspan="2">template&lt;typename AA  = allocator_type&gt; </td></tr>
+<tr class="memitem:a59af9a85096de0323b690c08004fe015"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a59af9a85096de0323b690c08004fe015">flat_forward_list</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#ade934330e2dce8176985d15f7ee927cf">const_iterator</a> const &amp;<a class="el" href="classiffl_1_1flat__forward__list.html#a74ef3b5ffc610931999a6f7c53239507">begin</a>, <a class="el" href="classiffl_1_1flat__forward__list.html#ade934330e2dce8176985d15f7ee927cf">const_iterator</a> const &amp;<a class="el" href="classiffl_1_1flat__forward__list.html#a5e954cb6c473db357ea47abefb1fbf86">last</a>, AA &amp;&amp;a=AA{})</td></tr>
+<tr class="memdesc:a59af9a85096de0323b690c08004fe015"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies element pointed by the iterators.  <a href="#a59af9a85096de0323b690c08004fe015">More...</a><br /></td></tr>
+<tr class="separator:a59af9a85096de0323b690c08004fe015"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac60ccc1f4b9767dbda08355a66484afe"><td class="memTemplParams" colspan="2">template&lt;typename AA  = allocator_type&gt; </td></tr>
+<tr class="memitem:ac60ccc1f4b9767dbda08355a66484afe"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#ac60ccc1f4b9767dbda08355a66484afe">flat_forward_list</a> (<a class="el" href="namespaceiffl.html#a06df220d9126052279a6c8c6cd3e482a">flat_forward_list_view</a>&lt; T, TT &gt; const &amp;view, AA &amp;&amp;a=AA{})</td></tr>
+<tr class="memdesc:ac60ccc1f4b9767dbda08355a66484afe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies element from the view.  <a href="#ac60ccc1f4b9767dbda08355a66484afe">More...</a><br /></td></tr>
+<tr class="separator:ac60ccc1f4b9767dbda08355a66484afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acaed0d20746c46aae94752b6308a0344"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#acaed0d20746c46aae94752b6308a0344">operator=</a> (<a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a> &amp;&amp;other) noexcept(allocator_type_traits::propagate_on_container_move_assignment::value)</td></tr>
 <tr class="memdesc:acaed0d20746c46aae94752b6308a0344"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator.  <a href="#acaed0d20746c46aae94752b6308a0344">More...</a><br /></td></tr>
 <tr class="separator:acaed0d20746c46aae94752b6308a0344"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4ba60911e7af2cf14a26acfed6e6771"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#af4ba60911e7af2cf14a26acfed6e6771">operator=</a> (<a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a> const &amp;other)</td></tr>
 <tr class="memdesc:af4ba60911e7af2cf14a26acfed6e6771"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator.  <a href="#af4ba60911e7af2cf14a26acfed6e6771">More...</a><br /></td></tr>
 <tr class="separator:af4ba60911e7af2cf14a26acfed6e6771"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79ff402c3c60a1f615e80a0e01489a64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a79ff402c3c60a1f615e80a0e01489a64">operator=</a> (<a class="el" href="namespaceiffl.html#a285870e8a61063c542965ad589fee6df">buffer_view</a> const &amp;other_buff)</td></tr>
+<tr class="memdesc:a79ff402c3c60a1f615e80a0e01489a64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator.  <a href="#a79ff402c3c60a1f615e80a0e01489a64">More...</a><br /></td></tr>
+<tr class="separator:a79ff402c3c60a1f615e80a0e01489a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e8076875ac67c0dd3e95c2915fee0c2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a4e8076875ac67c0dd3e95c2915fee0c2">~flat_forward_list</a> () noexcept</td></tr>
 <tr class="memdesc:a4e8076875ac67c0dd3e95c2915fee0c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a4e8076875ac67c0dd3e95c2915fee0c2">More...</a><br /></td></tr>
 <tr class="separator:a4e8076875ac67c0dd3e95c2915fee0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a720b431f97e05638d3fdc1a92348d5c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html#afcd798438fefaaf709e79314d9d9f23d">detach_type_as_size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a720b431f97e05638d3fdc1a92348d5c2">detach</a> () noexcept</td></tr>
-<tr class="memdesc:a720b431f97e05638d3fdc1a92348d5c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container releases ownership of the buffer.  <a href="#a720b431f97e05638d3fdc1a92348d5c2">More...</a><br /></td></tr>
-<tr class="separator:a720b431f97e05638d3fdc1a92348d5c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b8c4416f74b312a7af8e7f80c52917d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html#aaab18f7c2fb30f24bb41c8e228180f0e">detach_type_as_pointers</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a4b8c4416f74b312a7af8e7f80c52917d">detach</a> (<a class="el" href="structiffl_1_1as__pointers.html">as_pointers</a>) noexcept</td></tr>
-<tr class="memdesc:a4b8c4416f74b312a7af8e7f80c52917d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container releases ownership of the buffer.  <a href="#a4b8c4416f74b312a7af8e7f80c52917d">More...</a><br /></td></tr>
-<tr class="separator:a4b8c4416f74b312a7af8e7f80c52917d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af677c8e90b2dcdcd45feb814f7e19d50"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#af677c8e90b2dcdcd45feb814f7e19d50">attach</a> (char *buffer_begin, char *last_element, char *buffer_end)</td></tr>
-<tr class="memdesc:af677c8e90b2dcdcd45feb814f7e19d50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes ownership of a buffer.  <a href="#af677c8e90b2dcdcd45feb814f7e19d50">More...</a><br /></td></tr>
-<tr class="separator:af677c8e90b2dcdcd45feb814f7e19d50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98aa8899ef08ac7e2de76f8666d71774"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceiffl.html#a78536459b06204bafd2ddbfb7b778df9">buffer_ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a98aa8899ef08ac7e2de76f8666d71774">detach</a> () noexcept</td></tr>
+<tr class="memdesc:a98aa8899ef08ac7e2de76f8666d71774"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container releases ownership of the buffer.  <a href="#a98aa8899ef08ac7e2de76f8666d71774">More...</a><br /></td></tr>
+<tr class="separator:a98aa8899ef08ac7e2de76f8666d71774"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e28a8e192f0ebd7fd2024bb76690fc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a7e28a8e192f0ebd7fd2024bb76690fc9">attach</a> (<a class="el" href="namespaceiffl.html#a285870e8a61063c542965ad589fee6df">buffer_view</a> const &amp;other_buff)</td></tr>
+<tr class="memdesc:a7e28a8e192f0ebd7fd2024bb76690fc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes ownership of a buffer.  <a href="#a7e28a8e192f0ebd7fd2024bb76690fc9">More...</a><br /></td></tr>
+<tr class="separator:a7e28a8e192f0ebd7fd2024bb76690fc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9902201e3d45a15b96b0e5582137e11e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a9902201e3d45a15b96b0e5582137e11e">attach</a> (char *buffer_begin, char *last_element, char *buffer_end) noexcept</td></tr>
+<tr class="memdesc:a9902201e3d45a15b96b0e5582137e11e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes ownership of a buffer.  <a href="#a9902201e3d45a15b96b0e5582137e11e">More...</a><br /></td></tr>
+<tr class="separator:a9902201e3d45a15b96b0e5582137e11e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7257d26d9b667a333b2ccb76e46e33b8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a7257d26d9b667a333b2ccb76e46e33b8">attach</a> (char *buffer, size_t buffer_size) noexcept</td></tr>
 <tr class="memdesc:a7257d26d9b667a333b2ccb76e46e33b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes ownership of a buffer and attempts to find last element of the list.  <a href="#a7257d26d9b667a333b2ccb76e46e33b8">More...</a><br /></td></tr>
 <tr class="separator:a7257d26d9b667a333b2ccb76e46e33b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa2ff1f02aad5ca827a0530951e39662"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#afa2ff1f02aad5ca827a0530951e39662">copy_from_buffer</a> (char const *buffer_begin, char const *last_element, char const *buffer_end)</td></tr>
-<tr class="memdesc:afa2ff1f02aad5ca827a0530951e39662"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies list from a buffer.  <a href="#afa2ff1f02aad5ca827a0530951e39662">More...</a><br /></td></tr>
-<tr class="separator:afa2ff1f02aad5ca827a0530951e39662"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ba0b914bfbc4db14a68616fde4e4c9e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a5ba0b914bfbc4db14a68616fde4e4c9e">copy_from_buffer</a> (char const *buffer_begin, char const *buffer_end)</td></tr>
-<tr class="memdesc:a5ba0b914bfbc4db14a68616fde4e4c9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if buffer contains a valid list and if it does then copies that list.  <a href="#a5ba0b914bfbc4db14a68616fde4e4c9e">More...</a><br /></td></tr>
-<tr class="separator:a5ba0b914bfbc4db14a68616fde4e4c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd1ed7b08f6dda0d431275eabadda7cb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#abd1ed7b08f6dda0d431275eabadda7cb">copy_from_buffer</a> (char const *buffer, <a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> buffer_size)</td></tr>
-<tr class="memdesc:abd1ed7b08f6dda0d431275eabadda7cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if buffer contains a valid list and if it does then copies that list.  <a href="#abd1ed7b08f6dda0d431275eabadda7cb">More...</a><br /></td></tr>
-<tr class="separator:abd1ed7b08f6dda0d431275eabadda7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e1b7f1ce1d9a6e473d32e7722df3546"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a5e1b7f1ce1d9a6e473d32e7722df3546">assign</a> (<a class="el" href="namespaceiffl.html#a285870e8a61063c542965ad589fee6df">buffer_view</a> const &amp;other_buff)</td></tr>
+<tr class="memdesc:a5e1b7f1ce1d9a6e473d32e7722df3546"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies list from a buffer.  <a href="#a5e1b7f1ce1d9a6e473d32e7722df3546">More...</a><br /></td></tr>
+<tr class="separator:a5e1b7f1ce1d9a6e473d32e7722df3546"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbe9875e1f49a8c397c9e54baeab1b19"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#acbe9875e1f49a8c397c9e54baeab1b19">assign</a> (char const *buffer_begin, char const *last_element, char const *buffer_end)</td></tr>
+<tr class="memdesc:acbe9875e1f49a8c397c9e54baeab1b19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies list from a buffer.  <a href="#acbe9875e1f49a8c397c9e54baeab1b19">More...</a><br /></td></tr>
+<tr class="separator:acbe9875e1f49a8c397c9e54baeab1b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34fd209537cfdc6e3815b7fe73339395"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a34fd209537cfdc6e3815b7fe73339395">assign</a> (char const *buffer_begin, char const *buffer_end)</td></tr>
+<tr class="memdesc:a34fd209537cfdc6e3815b7fe73339395"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if buffer contains a valid list and if it does then copies that list.  <a href="#a34fd209537cfdc6e3815b7fe73339395">More...</a><br /></td></tr>
+<tr class="separator:a34fd209537cfdc6e3815b7fe73339395"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0aca8620ca3d7046ae16ede95d3e7df"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#ac0aca8620ca3d7046ae16ede95d3e7df">assign</a> (char const *buffer, <a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> buffer_size)</td></tr>
+<tr class="memdesc:ac0aca8620ca3d7046ae16ede95d3e7df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if buffer contains a valid list and if it does then copies that list.  <a href="#ac0aca8620ca3d7046ae16ede95d3e7df">More...</a><br /></td></tr>
+<tr class="separator:ac0aca8620ca3d7046ae16ede95d3e7df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acce06db8757a295d12548048b580e54b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#acce06db8757a295d12548048b580e54b">assign</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#ade934330e2dce8176985d15f7ee927cf">const_iterator</a> const &amp;<a class="el" href="classiffl_1_1flat__forward__list.html#a74ef3b5ffc610931999a6f7c53239507">begin</a>, <a class="el" href="classiffl_1_1flat__forward__list.html#ade934330e2dce8176985d15f7ee927cf">const_iterator</a> const &amp;<a class="el" href="classiffl_1_1flat__forward__list.html#a5e954cb6c473db357ea47abefb1fbf86">last</a>)</td></tr>
+<tr class="memdesc:acce06db8757a295d12548048b580e54b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies element pointed by the iterators.  <a href="#acce06db8757a295d12548048b580e54b">More...</a><br /></td></tr>
+<tr class="separator:acce06db8757a295d12548048b580e54b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad24668a17bfbd71ea21e7cc26f0b1f76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#ad24668a17bfbd71ea21e7cc26f0b1f76">assign</a> (<a class="el" href="namespaceiffl.html#a06df220d9126052279a6c8c6cd3e482a">flat_forward_list_view</a>&lt; T, TT &gt; const &amp;view)</td></tr>
+<tr class="memdesc:ad24668a17bfbd71ea21e7cc26f0b1f76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies elements from the view.  <a href="#ad24668a17bfbd71ea21e7cc26f0b1f76">More...</a><br /></td></tr>
+<tr class="separator:ad24668a17bfbd71ea21e7cc26f0b1f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a149964301c14bb68cd97eec42a17f6c3"><td class="memTemplParams" colspan="2">template&lt;typename AA &gt; </td></tr>
 <tr class="memitem:a149964301c14bb68cd97eec42a17f6c3"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a149964301c14bb68cd97eec42a17f6c3">is_compatible_allocator</a> (AA const &amp;other_allocator) const noexcept</td></tr>
 <tr class="memdesc:a149964301c14bb68cd97eec42a17f6c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares if allocator used by container is equivalent to the other alocator.  <a href="#a149964301c14bb68cd97eec42a17f6c3">More...</a><br /></td></tr>
 <tr class="separator:a149964301c14bb68cd97eec42a17f6c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6c1ced3274ca3fc6b7be406383fc41c"><td class="memItemLeft" align="right" valign="top">A &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#ae6c1ced3274ca3fc6b7be406383fc41c">get_allocator</a> () &amp;noexcept</td></tr>
-<tr class="memdesc:ae6c1ced3274ca3fc6b7be406383fc41c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns reference to the allocator used by this container.  <a href="#ae6c1ced3274ca3fc6b7be406383fc41c">More...</a><br /></td></tr>
-<tr class="separator:ae6c1ced3274ca3fc6b7be406383fc41c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3691fff56c9ffd49fb01ad6f29188cbd"><td class="memItemLeft" align="right" valign="top">A const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a3691fff56c9ffd49fb01ad6f29188cbd">get_allocator</a> () const &amp;noexcept</td></tr>
-<tr class="memdesc:a3691fff56c9ffd49fb01ad6f29188cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns const reference to the allocator used by this container.  <a href="#a3691fff56c9ffd49fb01ad6f29188cbd">More...</a><br /></td></tr>
-<tr class="separator:a3691fff56c9ffd49fb01ad6f29188cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa75a05e0588ade0c5e7ff698a7784546"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html#a48eff6c3870e8a47e546f9b3312b2d71">allocator_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#aa75a05e0588ade0c5e7ff698a7784546">get_allocator</a> () &amp;noexcept</td></tr>
+<tr class="memdesc:aa75a05e0588ade0c5e7ff698a7784546"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns reference to the allocator used by this container.  <a href="#aa75a05e0588ade0c5e7ff698a7784546">More...</a><br /></td></tr>
+<tr class="separator:aa75a05e0588ade0c5e7ff698a7784546"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea2607b37e7acd106fa12bb9d48b25c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html#a48eff6c3870e8a47e546f9b3312b2d71">allocator_type</a> const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#aea2607b37e7acd106fa12bb9d48b25c2">get_allocator</a> () const &amp;noexcept</td></tr>
+<tr class="memdesc:aea2607b37e7acd106fa12bb9d48b25c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns const reference to the allocator used by this container.  <a href="#aea2607b37e7acd106fa12bb9d48b25c2">More...</a><br /></td></tr>
+<tr class="separator:aea2607b37e7acd106fa12bb9d48b25c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab52f33651aba885d4de1f6950038905"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#aab52f33651aba885d4de1f6950038905">max_size</a> () const noexcept</td></tr>
 <tr class="memdesc:aab52f33651aba885d4de1f6950038905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns maximum size.  <a href="#aab52f33651aba885d4de1f6950038905">More...</a><br /></td></tr>
 <tr class="separator:aab52f33651aba885d4de1f6950038905"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -265,30 +288,51 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a21379e1564a876956ba65b185e5da02a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a21379e1564a876956ba65b185e5da02a">push_back</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> init_buffer_size, char const *init_buffer=nullptr)</td></tr>
 <tr class="memdesc:a21379e1564a876956ba65b185e5da02a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new elemnt to the end of the list. Element is initialized by coppying provided buffer.  <a href="#a21379e1564a876956ba65b185e5da02a">More...</a><br /></td></tr>
 <tr class="separator:a21379e1564a876956ba65b185e5da02a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a010c5ed15b0267ab98f6bc796aa5192f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a010c5ed15b0267ab98f6bc796aa5192f">try_push_back</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> init_buffer_size, char const *init_buffer=nullptr)</td></tr>
+<tr class="memdesc:a010c5ed15b0267ab98f6bc796aa5192f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new elemnt to the end of the list. Element is initialized by coppying provided buffer.  <a href="#a010c5ed15b0267ab98f6bc796aa5192f">More...</a><br /></td></tr>
+<tr class="separator:a010c5ed15b0267ab98f6bc796aa5192f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01241f4c96c511e178cc5cb61b3aef5c"><td class="memTemplParams" colspan="2">template&lt;typename F &gt; </td></tr>
 <tr class="memitem:a01241f4c96c511e178cc5cb61b3aef5c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a01241f4c96c511e178cc5cb61b3aef5c">emplace_back</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> element_size, F const &amp;fn)</td></tr>
 <tr class="memdesc:a01241f4c96c511e178cc5cb61b3aef5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs new element at the end of the list.  <a href="#a01241f4c96c511e178cc5cb61b3aef5c">More...</a><br /></td></tr>
 <tr class="separator:a01241f4c96c511e178cc5cb61b3aef5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a707541c446ced7b8078e2db52f472b57"><td class="memTemplParams" colspan="2">template&lt;typename F &gt; </td></tr>
+<tr class="memitem:a707541c446ced7b8078e2db52f472b57"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a707541c446ced7b8078e2db52f472b57">try_emplace_back</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> element_size, F const &amp;fn)</td></tr>
+<tr class="memdesc:a707541c446ced7b8078e2db52f472b57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs new element at the end of the list if it fits in the existing free capacity.  <a href="#a707541c446ced7b8078e2db52f472b57">More...</a><br /></td></tr>
+<tr class="separator:a707541c446ced7b8078e2db52f472b57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeafdb0311999b32801715649a1e436f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#aeafdb0311999b32801715649a1e436f0">pop_back</a> () noexcept</td></tr>
 <tr class="memdesc:aeafdb0311999b32801715649a1e436f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes last element from the list.  <a href="#aeafdb0311999b32801715649a1e436f0">More...</a><br /></td></tr>
 <tr class="separator:aeafdb0311999b32801715649a1e436f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6737b1fba55db96c0babc6bf81b09980"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a6737b1fba55db96c0babc6bf81b09980">insert</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> const &amp;it, <a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> init_buffer_size, char const *init_buffer=nullptr)</td></tr>
 <tr class="memdesc:a6737b1fba55db96c0babc6bf81b09980"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts new element at the position described by iterator. Element is initialized by coppying provided buffer.  <a href="#a6737b1fba55db96c0babc6bf81b09980">More...</a><br /></td></tr>
 <tr class="separator:a6737b1fba55db96c0babc6bf81b09980"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a188a147c095b190f2af5fa98cb13ab50"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a188a147c095b190f2af5fa98cb13ab50">try_insert</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> const &amp;it, <a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> init_buffer_size, char const *init_buffer=nullptr)</td></tr>
+<tr class="memdesc:a188a147c095b190f2af5fa98cb13ab50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts new element at the position described by iterator. Element is initialized by coppying provided buffer.  <a href="#a188a147c095b190f2af5fa98cb13ab50">More...</a><br /></td></tr>
+<tr class="separator:a188a147c095b190f2af5fa98cb13ab50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1e4fb5874008f3c4492331eb8f03e0f"><td class="memTemplParams" colspan="2">template&lt;typename F &gt; </td></tr>
 <tr class="memitem:ac1e4fb5874008f3c4492331eb8f03e0f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#ac1e4fb5874008f3c4492331eb8f03e0f">emplace</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> const &amp;it, <a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> new_element_size, F const &amp;fn)</td></tr>
 <tr class="memdesc:ac1e4fb5874008f3c4492331eb8f03e0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs new element at the position described by iterator. Element is initialized with a help of the functor passed as a parameter.  <a href="#ac1e4fb5874008f3c4492331eb8f03e0f">More...</a><br /></td></tr>
 <tr class="separator:ac1e4fb5874008f3c4492331eb8f03e0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeda23f49f747a1b83864d17717fe31cf"><td class="memTemplParams" colspan="2">template&lt;typename F &gt; </td></tr>
+<tr class="memitem:aeda23f49f747a1b83864d17717fe31cf"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#aeda23f49f747a1b83864d17717fe31cf">try_emplace</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> const &amp;it, <a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> new_element_size, F const &amp;fn)</td></tr>
+<tr class="memdesc:aeda23f49f747a1b83864d17717fe31cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs new element at the position described by iterator. Element is initialized with a help of the functor passed as a parameter.  <a href="#aeda23f49f747a1b83864d17717fe31cf">More...</a><br /></td></tr>
+<tr class="separator:aeda23f49f747a1b83864d17717fe31cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d78c2f471a13687e13e4cf327793e42"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a8d78c2f471a13687e13e4cf327793e42">push_front</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> init_buffer_size, char const *init_buffer=nullptr)</td></tr>
 <tr class="memdesc:a8d78c2f471a13687e13e4cf327793e42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs new element at the beginnig of the container. Element is initialized by coppying provided buffer.  <a href="#a8d78c2f471a13687e13e4cf327793e42">More...</a><br /></td></tr>
 <tr class="separator:a8d78c2f471a13687e13e4cf327793e42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95cbc46ab002b4267d2e2b6f2d60e5f5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a95cbc46ab002b4267d2e2b6f2d60e5f5">try_push_front</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> init_buffer_size, char const *init_buffer=nullptr)</td></tr>
+<tr class="memdesc:a95cbc46ab002b4267d2e2b6f2d60e5f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs new element at the beginnig of the container. Element is initialized by coppying provided buffer.  <a href="#a95cbc46ab002b4267d2e2b6f2d60e5f5">More...</a><br /></td></tr>
+<tr class="separator:a95cbc46ab002b4267d2e2b6f2d60e5f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafd692819b4beba06fe8f5ee81d0cd2e"><td class="memTemplParams" colspan="2">template&lt;typename F &gt; </td></tr>
 <tr class="memitem:aafd692819b4beba06fe8f5ee81d0cd2e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#aafd692819b4beba06fe8f5ee81d0cd2e">emplace_front</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> element_size, F const &amp;fn)</td></tr>
 <tr class="memdesc:aafd692819b4beba06fe8f5ee81d0cd2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts new element at the beginnig of the container. Element is initialized with a help of the functor passed as a parameter.  <a href="#aafd692819b4beba06fe8f5ee81d0cd2e">More...</a><br /></td></tr>
 <tr class="separator:aafd692819b4beba06fe8f5ee81d0cd2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26e9b97a9cbd5ec426d0b2d3e4972fe3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a26e9b97a9cbd5ec426d0b2d3e4972fe3">pop_front</a> ()</td></tr>
-<tr class="memdesc:a26e9b97a9cbd5ec426d0b2d3e4972fe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes first element from the container.  <a href="#a26e9b97a9cbd5ec426d0b2d3e4972fe3">More...</a><br /></td></tr>
-<tr class="separator:a26e9b97a9cbd5ec426d0b2d3e4972fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a225ec9bc851ca9a7fa07e2151c709dc4"><td class="memTemplParams" colspan="2">template&lt;typename F &gt; </td></tr>
+<tr class="memitem:a225ec9bc851ca9a7fa07e2151c709dc4"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a225ec9bc851ca9a7fa07e2151c709dc4">try_emplace_front</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> element_size, F const &amp;fn)</td></tr>
+<tr class="memdesc:a225ec9bc851ca9a7fa07e2151c709dc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts new element at the beginnig of the container. Element is initialized with a help of the functor passed as a parameter.  <a href="#a225ec9bc851ca9a7fa07e2151c709dc4">More...</a><br /></td></tr>
+<tr class="separator:a225ec9bc851ca9a7fa07e2151c709dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf4b04a0b2c64bd346ec9ceaaaa6faac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#acf4b04a0b2c64bd346ec9ceaaaa6faac">pop_front</a> () noexcept</td></tr>
+<tr class="memdesc:acf4b04a0b2c64bd346ec9ceaaaa6faac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes first element from the container.  <a href="#acf4b04a0b2c64bd346ec9ceaaaa6faac">More...</a><br /></td></tr>
+<tr class="separator:acf4b04a0b2c64bd346ec9ceaaaa6faac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3905a536980ca8882f751b497f3e958b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a3905a536980ca8882f751b497f3e958b">erase_after</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> const &amp;it) noexcept</td></tr>
 <tr class="memdesc:a3905a536980ca8882f751b497f3e958b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erases element after the element pointed by the iterator.  <a href="#a3905a536980ca8882f751b497f3e958b">More...</a><br /></td></tr>
 <tr class="separator:a3905a536980ca8882f751b497f3e958b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -333,14 +377,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a9f8330232495a549bc7c9dd9b6971d7a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a9f8330232495a549bc7c9dd9b6971d7a">remove_if</a> (F const &amp;fn) noexcept</td></tr>
 <tr class="memdesc:a9f8330232495a549bc7c9dd9b6971d7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all elements that satisfy predicate.  <a href="#a9f8330232495a549bc7c9dd9b6971d7a">More...</a><br /></td></tr>
 <tr class="separator:a9f8330232495a549bc7c9dd9b6971d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d08bf21fd1541bf08ef84e199d03292"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a3d08bf21fd1541bf08ef84e199d03292">front</a> ()</td></tr>
-<tr class="separator:a3d08bf21fd1541bf08ef84e199d03292"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefe884e1997c9cfe86185d7b76f228ee"><td class="memItemLeft" align="right" valign="top">T const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#aefe884e1997c9cfe86185d7b76f228ee">front</a> () const</td></tr>
-<tr class="separator:aefe884e1997c9cfe86185d7b76f228ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f5803ed7e5bca1aa7cff68080a591b1"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a8f5803ed7e5bca1aa7cff68080a591b1">back</a> ()</td></tr>
-<tr class="separator:a8f5803ed7e5bca1aa7cff68080a591b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdf7c82ccbbccc2ca0a530de2f1afad7"><td class="memItemLeft" align="right" valign="top">T const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#acdf7c82ccbbccc2ca0a530de2f1afad7">back</a> () const</td></tr>
-<tr class="separator:acdf7c82ccbbccc2ca0a530de2f1afad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a353f86d2ec2dfc9e57c7f22763ca1e2d"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a353f86d2ec2dfc9e57c7f22763ca1e2d">front</a> () noexcept</td></tr>
+<tr class="separator:a353f86d2ec2dfc9e57c7f22763ca1e2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af72832120381fa785d2b15f7547bb071"><td class="memItemLeft" align="right" valign="top">T const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#af72832120381fa785d2b15f7547bb071">front</a> () const noexcept</td></tr>
+<tr class="separator:af72832120381fa785d2b15f7547bb071"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fd0fa125da47c89fbbb0edb9afaf44c"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a5fd0fa125da47c89fbbb0edb9afaf44c">back</a> () noexcept</td></tr>
+<tr class="separator:a5fd0fa125da47c89fbbb0edb9afaf44c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac21942325ec811aa9ba55ad9408ee42d"><td class="memItemLeft" align="right" valign="top">T const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#ac21942325ec811aa9ba55ad9408ee42d">back</a> () const noexcept</td></tr>
+<tr class="separator:ac21942325ec811aa9ba55ad9408ee42d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74ef3b5ffc610931999a6f7c53239507"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a74ef3b5ffc610931999a6f7c53239507">begin</a> () noexcept</td></tr>
 <tr class="separator:a74ef3b5ffc610931999a6f7c53239507"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53145c393f192996705e52c93019cf6c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html#ade934330e2dce8176985d15f7ee927cf">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a53145c393f192996705e52c93019cf6c">begin</a> () const noexcept</td></tr>
@@ -378,10 +422,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ac5f78cb6440ac9cafd81482b213df930"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#ac5f78cb6440ac9cafd81482b213df930">element_add_size</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> const &amp;it, <a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> size_to_add)</td></tr>
 <tr class="memdesc:ac5f78cb6440ac9cafd81482b213df930"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds unused capacity to the element.  <a href="#ac5f78cb6440ac9cafd81482b213df930">More...</a><br /></td></tr>
 <tr class="separator:ac5f78cb6440ac9cafd81482b213df930"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19808727f93004158e87e84a3cdeedad"><td class="memTemplParams" colspan="2">template&lt;typename F &gt; </td></tr>
-<tr class="memitem:a19808727f93004158e87e84a3cdeedad"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a19808727f93004158e87e84a3cdeedad">element_resize</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> const &amp;it, <a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> new_size, F const &amp;fn) noexcept</td></tr>
-<tr class="memdesc:a19808727f93004158e87e84a3cdeedad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resizes element.  <a href="#a19808727f93004158e87e84a3cdeedad">More...</a><br /></td></tr>
-<tr class="separator:a19808727f93004158e87e84a3cdeedad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0647a468dde5ed38ae7ba4d90f7af7d3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a0647a468dde5ed38ae7ba4d90f7af7d3">try_element_add_size</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> const &amp;it, <a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> size_to_add)</td></tr>
+<tr class="memdesc:a0647a468dde5ed38ae7ba4d90f7af7d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds unused capacity to the element.  <a href="#a0647a468dde5ed38ae7ba4d90f7af7d3">More...</a><br /></td></tr>
+<tr class="separator:a0647a468dde5ed38ae7ba4d90f7af7d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d10bb547c4bdac9b9d32c83b6b7a343"><td class="memTemplParams" colspan="2">template&lt;typename F &gt; </td></tr>
+<tr class="memitem:a7d10bb547c4bdac9b9d32c83b6b7a343"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a7d10bb547c4bdac9b9d32c83b6b7a343">element_resize</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> const &amp;it, <a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> new_size, F const &amp;fn)</td></tr>
+<tr class="memdesc:a7d10bb547c4bdac9b9d32c83b6b7a343"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resizes element.  <a href="#a7d10bb547c4bdac9b9d32c83b6b7a343">More...</a><br /></td></tr>
+<tr class="separator:a7d10bb547c4bdac9b9d32c83b6b7a343"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4416213cbf593143f177a6c6aec1e33"><td class="memTemplParams" colspan="2">template&lt;typename F &gt; </td></tr>
+<tr class="memitem:ad4416213cbf593143f177a6c6aec1e33"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#ad4416213cbf593143f177a6c6aec1e33">try_element_resize</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> const &amp;it, <a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> new_size, F const &amp;fn)</td></tr>
+<tr class="memdesc:ad4416213cbf593143f177a6c6aec1e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resizes element.  <a href="#ad4416213cbf593143f177a6c6aec1e33">More...</a><br /></td></tr>
+<tr class="separator:ad4416213cbf593143f177a6c6aec1e33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a784af2858013e63f73f5c4f624663f39"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a784af2858013e63f73f5c4f624663f39">required_size</a> (<a class="el" href="classiffl_1_1flat__forward__list.html#ade934330e2dce8176985d15f7ee927cf">const_iterator</a> const &amp;it) const noexcept</td></tr>
 <tr class="memdesc:a784af2858013e63f73f5c4f624663f39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns capacity used by the element's data.  <a href="#a784af2858013e63f73f5c4f624663f39">More...</a><br /></td></tr>
 <tr class="separator:a784af2858013e63f73f5c4f624663f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -436,15 +487,22 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a73cabcecae9e7a99ad701fb4188e8e73"><td class="memItemLeft" align="right" valign="top"><a id="a73cabcecae9e7a99ad701fb4188e8e73"></a>
-static <a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a73cabcecae9e7a99ad701fb4188e8e73">npos</a> = iffl_npos</td></tr>
+static <a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a> const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a73cabcecae9e7a99ad701fb4188e8e73">npos</a> = iffl::npos</td></tr>
 <tr class="memdesc:a73cabcecae9e7a99ad701fb4188e8e73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constant that represents and invalid or non-existent position. <br /></td></tr>
 <tr class="separator:a73cabcecae9e7a99ad701fb4188e8e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a994773d1cdb85755ff5ff9937abc1a48"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT &gt; </td></tr>
+<tr class="memitem:a994773d1cdb85755ff5ff9937abc1a48"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classiffl_1_1flat__forward__list.html#a994773d1cdb85755ff5ff9937abc1a48">flat_forward_list_ref</a></td></tr>
+<tr class="separator:a994773d1cdb85755ff5ff9937abc1a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt;<br />
+<div class="textblock"><h3>template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt;<br />
 class iffl::flat_forward_list&lt; T, TT, A &gt;</h3>
 
 <p>Intrusive flat forward list container. </p>
+<p>Forward declaration of intrusive flat forward list container.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>- element type </td></tr>
@@ -458,63 +516,36 @@ class iffl::flat_forward_list&lt; T, TT, A &gt;</h3>
 <p>Debugging notes: Defining FFL_DBG_CHECK_ITERATOR_VALID will enable validation of that iterators passed in input parameters are valid and are pointing to an existing element. Cost of this validation is O(element count). Defining FFL_DBG_CHECK_DATA_VALID will enable validation of container after every method that modifies container data.</p>
 <p>Iterator names notes: begin or first - first element in a half-open [first, end) or closed [first, last] range. last - referes to the last element in half-closed (before_begin, last] or closed [first, last] range. end - referes to an element pass the last element. It is used with half open [begin, end) or open (before_begin, end) range. before_beging or before_first - referes to an element preceeding begin or first element. Is used in halfope (before_begin, last] or open (before_begin, end) range.</p>
 <p>Security notes: One of the common directions for attack is to leak to the attacher some uninitialized data that might contain addresses that might guide attacker how to bypass technics like Address Space Layout Randomization (ASLR). To prevent that consider using fill_padding that will fill any unused space with given pattern making sure we are not leaking any unintended information in the element padding and in the buffer's unused tail.</p>
-<p>Interop with API notes: When passing pointer to container's buffer to an API that can modify it it will invalidate container invariants. For instance pointer to the last element will no longer be valid. User must call revalidate_data after this call to make sure invariants are fixed. The cal revalidate_data will rescan buffer for valid list as if it is a non-trusted buffer.</p>
+<p>Interop with C API notes: When passing pointer to container's buffer to an API that can modify it it will invalidate container invariants. For instance pointer to the last element will no longer be valid. User must call revalidate_data after this call to make sure invariants are fixed. The cal revalidate_data will rescan buffer for valid list as if it is a non-trusted buffer.</p>
 <p>Allocator notes: COntainer supports adopting (attaching to) buffer that was allocated by someone else. This helps to minimize number of copies when interoping with C API. It is responsibility of user to make sure that container uses allocator that is compatible with how adopted buffer was allocated. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="aaab18f7c2fb30f24bb41c8e228180f0e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaab18f7c2fb30f24bb41c8e228180f0e">&#9670;&nbsp;</a></span>detach_type_as_pointers</h2>
+<a id="a3e8f1baf4a08c0cd00c7108bc3442f22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e8f1baf4a08c0cd00c7108bc3442f22">&#9670;&nbsp;</a></span>buffer_type</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::<a class="el" href="classiffl_1_1flat__forward__list.html#aaab18f7c2fb30f24bb41c8e228180f0e">detach_type_as_pointers</a></td>
+          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::<a class="el" href="classiffl_1_1flat__forward__list.html#a3e8f1baf4a08c0cd00c7108bc3442f22">buffer_type</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>A tuple that contians. </p>
-<ul>
-<li>A pointer to the start of buffer,</li>
-<li>A pointer to the start of last element,</li>
-<li>A pointer to the buffer end </li>
-</ul>
-
-</div>
-</div>
-<a id="afcd798438fefaaf709e79314d9d9f23d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcd798438fefaaf709e79314d9d9f23d">&#9670;&nbsp;</a></span>detach_type_as_size</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::<a class="el" href="classiffl_1_1flat__forward__list.html#afcd798438fefaaf709e79314d9d9f23d">detach_type_as_size</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A tuple that contains. </p>
-<ul>
-<li>A pointer to the start of buffer,</li>
-<li>Used buffer size</li>
-<li>Total buffer size </li>
-</ul>
+<p>Pointers that describe buffer. </p>
+<p>Depending if T is const buffer uses char * or char const * </p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a749f152e4fb3d8781277060f19609048"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a749f152e4fb3d8781277060f19609048">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a749f152e4fb3d8781277060f19609048">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[1/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -545,12 +576,12 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 </div>
 </div>
 <a id="a0add72d0b2150302c9c66a16ba70bc52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0add72d0b2150302c9c66a16ba70bc52">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0add72d0b2150302c9c66a16ba70bc52">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[2/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -586,15 +617,139 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 
 </div>
 </div>
-<a id="a7e8a3c637cb02c0d00bf0b4d991b3ab6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e8a3c637cb02c0d00bf0b4d991b3ab6">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[3/6]</span></h2>
+<a id="ab0c6c251f25b12c0287092d215f8574c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0c6c251f25b12c0287092d215f8574c">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[3/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <div class="memtemplate">
-template&lt;typename AA  = A&gt; </div>
+template&lt;typename AA  = allocator_type&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::<a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structiffl_1_1attach__buffer.html">attach_buffer</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceiffl.html#a285870e8a61063c542965ad589fee6df">buffer_view</a> const &amp;&#160;</td>
+          <td class="paramname"><em>other_buff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AA &amp;&amp;&#160;</td>
+          <td class="paramname"><em>a</em> = <code>AA{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor that takes ownership of a buffer. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">A</td><td>- type of allocator. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other_buff</td><td>- pointer to the start of the buffer that contains list. </td></tr>
+    <tr><td class="paramname">a</td><td>- allocator that should be used by this container.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This constructor does not validate if this is a valid flat forward list. It assumes that caller validated buffer before using this constructor. The first parameter is an empty vocabulary type to help with overload resolution and code redability. </p><div class="fragment"><div class="line"><a class="code" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list&lt;my_type&gt;</a> new_owner{<a class="code" href="structiffl_1_1attach__buffer.html">iffl::attach_buffer</a>{}, <a class="code" href="classiffl_1_1flat__forward__list.html#a74ef3b5ffc610931999a6f7c53239507">begin</a>, <a class="code" href="classiffl_1_1flat__forward__list.html#a5e954cb6c473db357ea47abefb1fbf86">last</a>, <a class="code" href="classiffl_1_1flat__forward__list.html#ad271eef884526f0b76592d3d7dccaf93">end</a>};</div></div><!-- fragment --><p> After this call container is responsible for deallocating the buffer. It is responsibility of the caller to make sure that buffer was allocated using method compatible with allocator used by this container. </p>
+
+</div>
+</div>
+<a id="afccbf673a48dc329bc645f1abc8a5823"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afccbf673a48dc329bc645f1abc8a5823">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[4/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename AA  = allocator_type&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::<a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceiffl.html#a285870e8a61063c542965ad589fee6df">buffer_view</a> const &amp;&#160;</td>
+          <td class="paramname"><em>other_buff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AA &amp;&amp;&#160;</td>
+          <td class="paramname"><em>a</em> = <code>AA{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor that copies list from a buffer. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">AA</td><td>- type of allocator. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other_buff</td><td>- pointer to the start of the buffer that contains list. </td></tr>
+    <tr><td class="paramname">a</td><td>- allocator that should be used by this container. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if buffer allocation fails</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This constructor does not validate if this is a valid flat forward list. It assumes that caller validated buffer before using this constructor. </p>
+
+</div>
+</div>
+<a id="a7e8a3c637cb02c0d00bf0b4d991b3ab6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e8a3c637cb02c0d00bf0b4d991b3ab6">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[5/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename AA  = allocator_type&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -663,14 +818,14 @@ template&lt;typename AA  = A&gt; </div>
 </div>
 </div>
 <a id="ae91f5a5db96c9ed92dff41ca79c0dc35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae91f5a5db96c9ed92dff41ca79c0dc35">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae91f5a5db96c9ed92dff41ca79c0dc35">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[6/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <div class="memtemplate">
-template&lt;typename AA  = A&gt; </div>
+template&lt;typename AA  = allocator_type&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -739,14 +894,14 @@ template&lt;typename AA  = A&gt; </div>
 </div>
 </div>
 <a id="a2a50df8a0aeff99375371fa4679fa85a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a50df8a0aeff99375371fa4679fa85a">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a50df8a0aeff99375371fa4679fa85a">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[7/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <div class="memtemplate">
-template&lt;typename AA  = A&gt; </div>
+template&lt;typename AA  = allocator_type&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -808,14 +963,14 @@ template&lt;typename AA  = A&gt; </div>
 </div>
 </div>
 <a id="abf497e76a8d8462697d1897dfcf1b63b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf497e76a8d8462697d1897dfcf1b63b">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abf497e76a8d8462697d1897dfcf1b63b">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[8/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <div class="memtemplate">
-template&lt;typename AA  = A&gt; </div>
+template&lt;typename AA  = allocator_type&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -876,13 +1031,130 @@ template&lt;typename AA  = A&gt; </div>
 
 </div>
 </div>
+<a id="a59af9a85096de0323b690c08004fe015"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59af9a85096de0323b690c08004fe015">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[9/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename AA  = allocator_type&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::<a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#ade934330e2dce8176985d15f7ee927cf">const_iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>begin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#ade934330e2dce8176985d15f7ee927cf">const_iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>last</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AA &amp;&amp;&#160;</td>
+          <td class="paramname"><em>a</em> = <code>AA{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copies element pointed by the iterators. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">begin</td><td>- iterator for the buffer begin. </td></tr>
+    <tr><td class="paramname">last</td><td>- last element that should be included in the view. </td></tr>
+    <tr><td class="paramname">a</td><td>- allocator that should be used by this container. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if buffer allocation fails </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac60ccc1f4b9767dbda08355a66484afe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac60ccc1f4b9767dbda08355a66484afe">&#9670;&nbsp;</a></span>flat_forward_list() <span class="overload">[10/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename AA  = allocator_type&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::<a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceiffl.html#a06df220d9126052279a6c8c6cd3e482a">flat_forward_list_view</a>&lt; T, TT &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>view</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">AA &amp;&amp;&#160;</td>
+          <td class="paramname"><em>a</em> = <code>AA{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copies element from the view. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">view</td><td>- view over a flat forward list buffer. </td></tr>
+    <tr><td class="paramname">a</td><td>- allocator that should be used by this container. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if buffer allocation fails </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a4e8076875ac67c0dd3e95c2915fee0c2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4e8076875ac67c0dd3e95c2915fee0c2">&#9670;&nbsp;</a></span>~flat_forward_list()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -907,13 +1179,345 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="af677c8e90b2dcdcd45feb814f7e19d50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af677c8e90b2dcdcd45feb814f7e19d50">&#9670;&nbsp;</a></span>attach() <span class="overload">[1/2]</span></h2>
+<a id="a5e1b7f1ce1d9a6e473d32e7722df3546"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e1b7f1ce1d9a6e473d32e7722df3546">&#9670;&nbsp;</a></span>assign() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::assign </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceiffl.html#a285870e8a61063c542965ad589fee6df">buffer_view</a> const &amp;&#160;</td>
+          <td class="paramname"><em>other_buff</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copies list from a buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other_buff</td><td>- describes the other buffer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if buffer allocation fails</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This method does not validate if this is a valid flat forward list. It assumes that caller validated buffer before using this constructor. </p>
+
+</div>
+</div>
+<a id="acbe9875e1f49a8c397c9e54baeab1b19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbe9875e1f49a8c397c9e54baeab1b19">&#9670;&nbsp;</a></span>assign() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::assign </td>
+          <td>(</td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>buffer_begin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>last_element</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>buffer_end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copies list from a buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer_begin</td><td>- pointer to the start of the buffer that contains list. </td></tr>
+    <tr><td class="paramname">buffer_end</td><td>- pointer to the address right after last byte in the buffer. </td></tr>
+    <tr><td class="paramname">last_element</td><td>- pointers to the last element of the list in the buffer. If buffer does not contain any elements then this parameter must be nullptr. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if buffer allocation fails</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This method does not validate if this is a valid flat forward list. It assumes that caller validated buffer before using this constructor. </p>
+
+</div>
+</div>
+<a id="a34fd209537cfdc6e3815b7fe73339395"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34fd209537cfdc6e3815b7fe73339395">&#9670;&nbsp;</a></span>assign() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::assign </td>
+          <td>(</td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>buffer_begin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>buffer_end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if buffer contains a valid list and if it does then copies that list. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer_begin</td><td>- pointer to the start of the buffer that might contains list. </td></tr>
+    <tr><td class="paramname">buffer_end</td><td>- pointer to the buffer end. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if buffer allocation fails</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This method searches for the last valid element in the buffer, and is buffer is valid then it copies elements to the new buffer. </p>
+
+</div>
+</div>
+<a id="ac0aca8620ca3d7046ae16ede95d3e7df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0aca8620ca3d7046ae16ede95d3e7df">&#9670;&nbsp;</a></span>assign() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::assign </td>
+          <td>(</td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a>&#160;</td>
+          <td class="paramname"><em>buffer_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if buffer contains a valid list and if it does then copies that list. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer</td><td>- pointer to the start of the buffer that might contains list. </td></tr>
+    <tr><td class="paramname">buffer_size</td><td>- bufer size. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>if buffer allocation fails</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This method searches for the last valid element in the buffer, and is buffer is valid then it copies elements to the new buffer. </p>
+
+</div>
+</div>
+<a id="acce06db8757a295d12548048b580e54b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acce06db8757a295d12548048b580e54b">&#9670;&nbsp;</a></span>assign() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::assign </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#ade934330e2dce8176985d15f7ee927cf">const_iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>begin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#ade934330e2dce8176985d15f7ee927cf">const_iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>last</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copies element pointed by the iterators. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">begin</td><td>- iterator for the buffer begin. </td></tr>
+    <tr><td class="paramname">last</td><td>- last element that should be included in the view. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad24668a17bfbd71ea21e7cc26f0b1f76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad24668a17bfbd71ea21e7cc26f0b1f76">&#9670;&nbsp;</a></span>assign() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::assign </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceiffl.html#a06df220d9126052279a6c8c6cd3e482a">flat_forward_list_view</a>&lt; T, TT &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>view</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copies elements from the view. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">view</td><td>- view over the flat forward list </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7e28a8e192f0ebd7fd2024bb76690fc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e28a8e192f0ebd7fd2024bb76690fc9">&#9670;&nbsp;</a></span>attach() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::attach </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceiffl.html#a285870e8a61063c542965ad589fee6df">buffer_view</a> const &amp;&#160;</td>
+          <td class="paramname"><em>other_buff</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Takes ownership of a buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other_buff</td><td>- describes the buffer we are attaching.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This method first clears existing content of the container. It does not validate if buffer contains a valid flat forward list. It assumes that caller validated buffer before using this constructor. After this call container is responsible for deallocating the buffer. It is responsibility of the caller to make sure that buffer was allocated using method compatible with allocator used by this container. </p>
+
+</div>
+</div>
+<a id="a9902201e3d45a15b96b0e5582137e11e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9902201e3d45a15b96b0e5582137e11e">&#9670;&nbsp;</a></span>attach() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -944,7 +1548,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -963,12 +1567,12 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 </div>
 </div>
 <a id="a7257d26d9b667a333b2ccb76e46e33b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7257d26d9b667a333b2ccb76e46e33b8">&#9670;&nbsp;</a></span>attach() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7257d26d9b667a333b2ccb76e46e33b8">&#9670;&nbsp;</a></span>attach() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1010,13 +1614,13 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 
 </div>
 </div>
-<a id="a8f5803ed7e5bca1aa7cff68080a591b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f5803ed7e5bca1aa7cff68080a591b1">&#9670;&nbsp;</a></span>back() <span class="overload">[1/2]</span></h2>
+<a id="a5fd0fa125da47c89fbbb0edb9afaf44c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fd0fa125da47c89fbbb0edb9afaf44c">&#9670;&nbsp;</a></span>back() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1030,7 +1634,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1039,13 +1643,13 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 
 </div>
 </div>
-<a id="acdf7c82ccbbccc2ca0a530de2f1afad7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acdf7c82ccbbccc2ca0a530de2f1afad7">&#9670;&nbsp;</a></span>back() <span class="overload">[2/2]</span></h2>
+<a id="ac21942325ec811aa9ba55ad9408ee42d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac21942325ec811aa9ba55ad9408ee42d">&#9670;&nbsp;</a></span>back() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1059,7 +1663,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1074,7 +1678,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1103,7 +1707,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1132,7 +1736,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1161,7 +1765,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1190,7 +1794,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1219,7 +1823,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1249,7 +1853,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1303,7 +1907,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1345,182 +1949,13 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 
 </div>
 </div>
-<a id="afa2ff1f02aad5ca827a0530951e39662"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa2ff1f02aad5ca827a0530951e39662">&#9670;&nbsp;</a></span>copy_from_buffer() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::copy_from_buffer </td>
-          <td>(</td>
-          <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>buffer_begin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>last_element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>buffer_end</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Copies list from a buffer. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buffer_begin</td><td>- pointer to the start of the buffer that contains list. </td></tr>
-    <tr><td class="paramname">buffer_end</td><td>- pointer to the address right after last byte in the buffer. </td></tr>
-    <tr><td class="paramname">last_element</td><td>- pointers to the last element of the list in the buffer. If buffer does not contain any elements then this parameter must be nullptr. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::bad_alloc</td><td>if buffer allocation fails</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This method does not validate if this is a valid flat forward list. It assumes that caller validated buffer before using this constructor. </p>
-
-</div>
-</div>
-<a id="a5ba0b914bfbc4db14a68616fde4e4c9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ba0b914bfbc4db14a68616fde4e4c9e">&#9670;&nbsp;</a></span>copy_from_buffer() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::copy_from_buffer </td>
-          <td>(</td>
-          <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>buffer_begin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>buffer_end</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Checks if buffer contains a valid list and if it does then copies that list. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buffer_begin</td><td>- pointer to the start of the buffer that might contains list. </td></tr>
-    <tr><td class="paramname">buffer_end</td><td>- pointer to the buffer end. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::bad_alloc</td><td>if buffer allocation fails</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This method searches for the last valid element in the buffer, and is buffer is valid then it copies elements to the new buffer. </p>
-
-</div>
-</div>
-<a id="abd1ed7b08f6dda0d431275eabadda7cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd1ed7b08f6dda0d431275eabadda7cb">&#9670;&nbsp;</a></span>copy_from_buffer() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::copy_from_buffer </td>
-          <td>(</td>
-          <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a>&#160;</td>
-          <td class="paramname"><em>buffer_size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Checks if buffer contains a valid list and if it does then copies that list. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buffer</td><td>- pointer to the start of the buffer that might contains list. </td></tr>
-    <tr><td class="paramname">buffer_size</td><td>- bufer size. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::bad_alloc</td><td>if buffer allocation fails</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This method searches for the last valid element in the buffer, and is buffer is valid then it copies elements to the new buffer. </p>
-
-</div>
-</div>
 <a id="af159146257d0e16b713704907e552b7b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af159146257d0e16b713704907e552b7b">&#9670;&nbsp;</a></span>data() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1548,7 +1983,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1570,19 +2005,19 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 
 </div>
 </div>
-<a id="a720b431f97e05638d3fdc1a92348d5c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a720b431f97e05638d3fdc1a92348d5c2">&#9670;&nbsp;</a></span>detach() <span class="overload">[1/2]</span></h2>
+<a id="a98aa8899ef08ac7e2de76f8666d71774"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98aa8899ef08ac7e2de76f8666d71774">&#9670;&nbsp;</a></span>detach()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list.html#afcd798438fefaaf709e79314d9d9f23d">detach_type_as_size</a> <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::detach </td>
+          <td class="memname"><a class="el" href="namespaceiffl.html#a78536459b06204bafd2ddbfb7b778df9">buffer_ref</a> <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::detach </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1596,48 +2031,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 </div><div class="memdoc">
 
 <p>Container releases ownership of the buffer. </p>
-<p>After the call completes, container is empty. </p><dl class="section return"><dt>Returns</dt><dd>Returns buffer information to the caller. Caller is responsible for deallocating returned buffer. Information oabout the buffer is returned using a tuple that consists<ul>
-<li>Pointer to the buffer start. Nullptr if container has no buffer.</li>
-<li>Used buffer capacity. Distance from the start of buffer to the end of the last element. 0 if buffer has no elements.</li>
-<li>Buffer size. 0 if container has no allocated buffer. </li>
-</ul>
-</dd></dl>
-
-</div>
-</div>
-<a id="a4b8c4416f74b312a7af8e7f80c52917d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b8c4416f74b312a7af8e7f80c52917d">&#9670;&nbsp;</a></span>detach() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list.html#aaab18f7c2fb30f24bb41c8e228180f0e">detach_type_as_pointers</a> <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::detach </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structiffl_1_1as__pointers.html">as_pointers</a>&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Container releases ownership of the buffer. </p>
-<p>After the call completes, container is empty. input parameter helps with selecting between overloads. </p><dl class="section return"><dt>Returns</dt><dd>Returns buffer information to the caller. Caller is responsible for deallocating returned buffer. Information oabout the buffer is returned using a tuple that consists<ul>
-<li>Pointer to the buffer start. Nullptr if container contains no buffer.</li>
-<li>Pointer to the start of the last elenet. Nullptr if if buffer is empty or contains no elements.</li>
-<li>Pointer to the end of the buffer <div class="fragment"><div class="line"><a class="code" href="classiffl_1_1flat__forward__list.html#aaab18f7c2fb30f24bb41c8e228180f0e">detach_type_as_pointers</a> buffer_info { list.detach(as_pointers{}) };</div></div><!-- fragment --> </li>
-</ul>
-</dd></dl>
+<p>After the call completes, container is empty. </p><dl class="section return"><dt>Returns</dt><dd>Returns buffer information to the caller. Caller is responsible for deallocating returned buffer. </dd></dl>
 
 </div>
 </div>
@@ -1647,7 +2041,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1695,13 +2089,13 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 
 </div>
 </div>
-<a id="a19808727f93004158e87e84a3cdeedad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19808727f93004158e87e84a3cdeedad">&#9670;&nbsp;</a></span>element_resize()</h2>
+<a id="a7d10bb547c4bdac9b9d32c83b6b7a343"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d10bb547c4bdac9b9d32c83b6b7a343">&#9670;&nbsp;</a></span>element_resize()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <div class="memtemplate">
 template&lt;typename F &gt; </div>
 <table class="mlabels">
@@ -1734,7 +2128,7 @@ template&lt;typename F &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1760,7 +2154,7 @@ template&lt;typename F &gt; </div>
   </table>
   </dd>
 </dl>
-<p>Resizing to 0 will delete element. Resizing to size smaller than minimum_size will trigger fail-fast. Resizing to any other siz also fixes alignment of element and adds missing padding. </p>
+<p>Resizing to 0 will delete element. Resizing to size smaller than minimum_size will trigger fail-fast. Resizing to any other size also fixes alignment of element and adds missing padding. </p>
 
 </div>
 </div>
@@ -1770,7 +2164,7 @@ template&lt;typename F &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <div class="memtemplate">
 template&lt;typename F &gt; </div>
 <table class="mlabels">
@@ -1823,6 +2217,7 @@ template&lt;typename F &gt; </div>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns a pair of boolean that tells caller if element was inserted, and iterator to the position where it should be inserted in case of failure or was inserted in case of success. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::bad_alloca</td><td>if allocating new buffer fails. Any exceptions that might be raised by the functor. If functor raises then container remains in the state as if call did not happen</td></tr>
@@ -1839,7 +2234,7 @@ template&lt;typename F &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <div class="memtemplate">
 template&lt;typename F &gt; </div>
 <table class="mlabels">
@@ -1901,7 +2296,7 @@ template&lt;typename F &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <div class="memtemplate">
 template&lt;typename F &gt; </div>
 <table class="mlabels">
@@ -1962,7 +2357,7 @@ template&lt;typename F &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1993,7 +2388,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2012,7 +2407,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>Returns an end iterator.</dd></dl>
-<p>For types that support get_next_offset offset or when container is empty, the end iterator is iterator{}. For types that do not support get_next_offset an end iterator is pointing pass the last element of container </p>
+<p>An end iterator is pointing pass the last element of container </p>
 
 </div>
 </div>
@@ -2022,7 +2417,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2041,7 +2436,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>Returns an end const_iterator.</dd></dl>
-<p>For types that support get_next_offset offset or when container is empty, the end iterator is const_iterator{}. For types that do not support get_next_offset an end iterator is pointing pass the last element of container </p>
+<p>An end iterator is pointing pass the last element of container </p>
 
 </div>
 </div>
@@ -2051,7 +2446,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2088,7 +2483,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2136,7 +2531,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2172,7 +2567,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2220,7 +2615,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2256,7 +2651,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2293,7 +2688,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2340,7 +2735,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2378,7 +2773,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2416,7 +2811,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2454,7 +2849,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2492,7 +2887,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2530,7 +2925,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2562,13 +2957,13 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 
 </div>
 </div>
-<a id="a3d08bf21fd1541bf08ef84e199d03292"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d08bf21fd1541bf08ef84e199d03292">&#9670;&nbsp;</a></span>front() <span class="overload">[1/2]</span></h2>
+<a id="a353f86d2ec2dfc9e57c7f22763ca1e2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a353f86d2ec2dfc9e57c7f22763ca1e2d">&#9670;&nbsp;</a></span>front() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2582,7 +2977,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2591,13 +2986,13 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 
 </div>
 </div>
-<a id="aefe884e1997c9cfe86185d7b76f228ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aefe884e1997c9cfe86185d7b76f228ee">&#9670;&nbsp;</a></span>front() <span class="overload">[2/2]</span></h2>
+<a id="af72832120381fa785d2b15f7547bb071"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af72832120381fa785d2b15f7547bb071">&#9670;&nbsp;</a></span>front() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2611,7 +3006,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2620,19 +3015,19 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 
 </div>
 </div>
-<a id="ae6c1ced3274ca3fc6b7be406383fc41c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6c1ced3274ca3fc6b7be406383fc41c">&#9670;&nbsp;</a></span>get_allocator() <span class="overload">[1/2]</span></h2>
+<a id="aa75a05e0588ade0c5e7ff698a7784546"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa75a05e0588ade0c5e7ff698a7784546">&#9670;&nbsp;</a></span>get_allocator() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">A&amp; <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::get_allocator </td>
+          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list.html#a48eff6c3870e8a47e546f9b3312b2d71">allocator_type</a>&amp; <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::get_allocator </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> &amp;</td>
@@ -2650,19 +3045,19 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 
 </div>
 </div>
-<a id="a3691fff56c9ffd49fb01ad6f29188cbd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3691fff56c9ffd49fb01ad6f29188cbd">&#9670;&nbsp;</a></span>get_allocator() <span class="overload">[2/2]</span></h2>
+<a id="aea2607b37e7acd106fa12bb9d48b25c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea2607b37e7acd106fa12bb9d48b25c2">&#9670;&nbsp;</a></span>get_allocator() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">A const&amp; <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::get_allocator </td>
+          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list.html#a48eff6c3870e8a47e546f9b3312b2d71">allocator_type</a> const&amp; <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::get_allocator </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const &amp;</td>
@@ -2686,7 +3081,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2740,7 +3135,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2801,7 +3196,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <div class="memtemplate">
 template&lt;typename AA &gt; </div>
 <table class="mlabels">
@@ -2840,7 +3235,7 @@ template&lt;typename AA &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2869,7 +3264,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2898,7 +3293,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2929,7 +3324,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <div class="memtemplate">
 template&lt;class F &gt; </div>
 <table class="mlabels">
@@ -2986,12 +3381,12 @@ template&lt;class F &gt; </div>
 </div>
 </div>
 <a id="acaed0d20746c46aae94752b6308a0344"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acaed0d20746c46aae94752b6308a0344">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acaed0d20746c46aae94752b6308a0344">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3029,12 +3424,12 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 </div>
 </div>
 <a id="af4ba60911e7af2cf14a26acfed6e6771"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4ba60911e7af2cf14a26acfed6e6771">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af4ba60911e7af2cf14a26acfed6e6771">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3071,13 +3466,56 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 
 </div>
 </div>
+<a id="a79ff402c3c60a1f615e80a0e01489a64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79ff402c3c60a1f615e80a0e01489a64">&#9670;&nbsp;</a></span>operator=() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a>&amp; <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceiffl.html#a285870e8a61063c542965ad589fee6df">buffer_view</a> const &amp;&#160;</td>
+          <td class="paramname"><em>other_buff</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copy assignment operator. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other_buff</td><td>- linked list we are copying from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloc</td><td>when allocating buffer fails</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function first attempts to copy allocator, if it is supported, and after that allocates new buffer and copies all elements to the new buffer. </p>
+
+</div>
+</div>
 <a id="aeafdb0311999b32801715649a1e436f0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeafdb0311999b32801715649a1e436f0">&#9670;&nbsp;</a></span>pop_back()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3101,13 +3539,13 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 
 </div>
 </div>
-<a id="a26e9b97a9cbd5ec426d0b2d3e4972fe3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26e9b97a9cbd5ec426d0b2d3e4972fe3">&#9670;&nbsp;</a></span>pop_front()</h2>
+<a id="acf4b04a0b2c64bd346ec9ceaaaa6faac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf4b04a0b2c64bd346ec9ceaaaa6faac">&#9670;&nbsp;</a></span>pop_front()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3121,7 +3559,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -3137,7 +3575,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3191,7 +3629,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3244,7 +3682,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3287,7 +3725,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3315,7 +3753,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <div class="memtemplate">
 template&lt;typename F &gt; </div>
 <table class="mlabels">
@@ -3359,7 +3797,7 @@ template&lt;typename F &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3396,7 +3834,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3439,7 +3877,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3460,7 +3898,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 
 <p>Validates that buffer contains a valid list. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if valid list was found and false otherwise.</dd></dl>
-<p>You must call this method after passing pointer to container's buffer to a function that might change buffer content. If valid list of found then last_element_ will be pointing to the element element that was found. If no valid list was found then last_element_ will be nullptr. </p>
+<p>You must call this method after passing pointer to container's buffer to a function that might change buffer content. If valid list of found then buff().last will be pointing to the element element that was found. If no valid list was found then buff().last will be nullptr. </p>
 
 </div>
 </div>
@@ -3470,7 +3908,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3505,7 +3943,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3541,7 +3979,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3595,7 +4033,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3638,7 +4076,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3669,7 +4107,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <div class="memtemplate">
 template&lt;typename LESS_F &gt; </div>
 <table class="mlabels">
@@ -3719,7 +4157,7 @@ template&lt;typename LESS_F &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3761,7 +4199,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3791,7 +4229,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3813,13 +4251,463 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 
 </div>
 </div>
+<a id="a0647a468dde5ed38ae7ba4d90f7af7d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0647a468dde5ed38ae7ba4d90f7af7d3">&#9670;&nbsp;</a></span>try_element_add_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::try_element_add_size </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>it</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a>&#160;</td>
+          <td class="paramname"><em>size_to_add</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds unused capacity to the element. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">it</td><td>- iterator that points to the element to grow. </td></tr>
+    <tr><td class="paramname">size_to_add</td><td>- bytes to add to the current element size </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if element was placed in the existing buffer and false if buffer does not have enough capacity for the new element.</dd></dl>
+<p>This method also fixes alignment of element and adds missing padding. added capacity becomes unused capacity that is reserved for future use. Unused capacity is zero initialized. </p>
+
+</div>
+</div>
+<a id="ad4416213cbf593143f177a6c6aec1e33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4416213cbf593143f177a6c6aec1e33">&#9670;&nbsp;</a></span>try_element_resize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename F &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::try_element_resize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>it</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a>&#160;</td>
+          <td class="paramname"><em>new_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">F const &amp;&#160;</td>
+          <td class="paramname"><em>fn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Resizes element. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">F</td><td>- type of functor user to update element. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">it</td><td>- iterator that points to the element that is being resized. </td></tr>
+    <tr><td class="paramname">new_size</td><td>- new element size. </td></tr>
+    <tr><td class="paramname">fn</td><td>- functor used to update element after it was resized. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if element was placed in the existing buffer and false if buffer does not have enough capacity for the new element.</dd></dl>
+<p>Resizing to 0 will delete element. Resizing to size smaller than minimum_size will trigger fail-fast. Resizing to any other size also fixes alignment of element and adds missing padding. </p>
+
+</div>
+</div>
+<a id="aeda23f49f747a1b83864d17717fe31cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeda23f49f747a1b83864d17717fe31cf">&#9670;&nbsp;</a></span>try_emplace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename F &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::try_emplace </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>it</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a>&#160;</td>
+          <td class="paramname"><em>new_element_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">F const &amp;&#160;</td>
+          <td class="paramname"><em>fn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs new element at the position described by iterator. Element is initialized with a help of the functor passed as a parameter. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">F</td><td>- type of a functor </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">it</td><td>- iterator pointing to the position new element should be inserte to. Iterator value must be a valid iterator pointing to one of the elements or an end iterator. If iterator is pointing to an element that is not propertly alligned then new element will not be propertly alligned. When iterator in not then end then size is padded to make sure that if this element is propertly alligned then next element is also property aligned. </td></tr>
+    <tr><td class="paramname">new_element_size</td><td>- number of bytes required for the new element. </td></tr>
+    <tr><td class="paramname">fn</td><td>- a functor used to construct new element. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns a pair of boolean that tells caller if element was inserted, and iterator to the position where it should be inserted in case of failure or was inserted in case of success. </dd>
+<dd>
+true if element was placed in the existing buffer and false if buffer does not have enough capacity for the new element.</dd></dl>
+<p>Constructed element does not have to use up the entire buffer unused space will become unused buffer capacity. </p>
+
+</div>
+</div>
+<a id="a707541c446ced7b8078e2db52f472b57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a707541c446ced7b8078e2db52f472b57">&#9670;&nbsp;</a></span>try_emplace_back()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename F &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::try_emplace_back </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a>&#160;</td>
+          <td class="paramname"><em>element_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">F const &amp;&#160;</td>
+          <td class="paramname"><em>fn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs new element at the end of the list if it fits in the existing free capacity. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">F</td><td>- type of a functor Element is initialized with a help of the functor passed as a parameter. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">element_size</td><td>- number of bytes required for the new element. </td></tr>
+    <tr><td class="paramname">fn</td><td>- a functor used to construct new element. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if element was placed in the existing buffer and false if buffer does not have enough capacity for the new element.</dd></dl>
+<p>Constructed element does not have to use up the entire buffer unused space will become unused buffer capacity. </p>
+
+</div>
+</div>
+<a id="a225ec9bc851ca9a7fa07e2151c709dc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a225ec9bc851ca9a7fa07e2151c709dc4">&#9670;&nbsp;</a></span>try_emplace_front()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename F &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::try_emplace_front </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a>&#160;</td>
+          <td class="paramname"><em>element_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">F const &amp;&#160;</td>
+          <td class="paramname"><em>fn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Inserts new element at the beginnig of the container. Element is initialized with a help of the functor passed as a parameter. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">F</td><td>- type of a functor </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">element_size</td><td>- size of the buffer that will be used for initialization size smaller than minimum element size will trigger a fail-fast. When container is not empty then size is padded to make sure that next element is also property aligned. </td></tr>
+    <tr><td class="paramname">fn</td><td>- a functor used to construct new element. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if element was placed in the existing buffer and false if buffer does not have enough capacity for the new element. </dd></dl>
+
+</div>
+</div>
+<a id="a188a147c095b190f2af5fa98cb13ab50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a188a147c095b190f2af5fa98cb13ab50">&#9670;&nbsp;</a></span>try_insert()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::try_insert </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2">iterator</a> const &amp;&#160;</td>
+          <td class="paramname"><em>it</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a>&#160;</td>
+          <td class="paramname"><em>init_buffer_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>init_buffer</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Inserts new element at the position described by iterator. Element is initialized by coppying provided buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">it</td><td>- iterator pointing to the position new element should be inserte to. Iterator value must be a valid iterator pointing to one of the elements or an end iterator. If iterator is pointing to an element that is not propertly alligned then new element will not be propertly alligned. </td></tr>
+    <tr><td class="paramname">init_buffer_size</td><td>- size of the buffer that will be used for initialization size smaller than minimum element size will trigger a fail-fast. When iterator in not then end then size is padded to make sure that if this element is propertly alligned then next element is also property aligned. </td></tr>
+    <tr><td class="paramname">init_buffer</td><td>- a poiner to the buffer. If pointer to the buffer is nullptr then element data are zero initialized. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if element was placed in the existing buffer and false if buffer does not have enough capacity for the new element.</dd></dl>
+<p>New element becomes a new last element and, if set_next offset is supported, then it is called on the previous last element such that it points to the new one. </p>
+
+</div>
+</div>
+<a id="a010c5ed15b0267ab98f6bc796aa5192f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a010c5ed15b0267ab98f6bc796aa5192f">&#9670;&nbsp;</a></span>try_push_back()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::try_push_back </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a>&#160;</td>
+          <td class="paramname"><em>init_buffer_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>init_buffer</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds new elemnt to the end of the list. Element is initialized by coppying provided buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">init_buffer_size</td><td>- size of the buffer that will be used for initialization size smaller than minimum element size will trigger a fail-fast. </td></tr>
+    <tr><td class="paramname">init_buffer</td><td>- a poiner to the buffer. If pointer to the buffer is nullptr then element data are zero initialized. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::bad_alloca</td><td>if allocating new buffer fails</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>New element becomes a new last element and, if set_next offset is supported, then it is called on the previous last element such that it points to the new one. </p><dl class="section return"><dt>Returns</dt><dd>true if element was placed in the existing buffer and false if buffer does not have enough capacity for the new element. </dd></dl>
+
+</div>
+</div>
+<a id="a95cbc46ab002b4267d2e2b6f2d60e5f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95cbc46ab002b4267d2e2b6f2d60e5f5">&#9670;&nbsp;</a></span>try_push_front()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classiffl_1_1flat__forward__list.html">iffl::flat_forward_list</a>&lt; T, TT, A &gt;::try_push_front </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classiffl_1_1flat__forward__list.html#a08fdcd8ca95876ed148244983cd4929b">size_type</a>&#160;</td>
+          <td class="paramname"><em>init_buffer_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>init_buffer</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructs new element at the beginnig of the container. Element is initialized by coppying provided buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">init_buffer_size</td><td>- size of the buffer that will be used for initialization size smaller than minimum element size will trigger a fail-fast. When container is not empty then size is padded to make sure that next element is also property aligned. </td></tr>
+    <tr><td class="paramname">init_buffer</td><td>- a poiner to the buffer. If pointer to the buffer is nullptr then element data are zero initialized. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if element was placed in the existing buffer and false if buffer does not have enough capacity for the new element. </dd></dl>
+
+</div>
+</div>
 <a id="af537a98c54789b2d8efef41a0ab315b1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af537a98c54789b2d8efef41a0ab315b1">&#9670;&nbsp;</a></span>unique()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <div class="memtemplate">
 template&lt;typename F &gt; </div>
 <table class="mlabels">
@@ -3863,7 +4751,7 @@ template&lt;typename F &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3891,7 +4779,7 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;char&gt;&gt; </div>
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -3917,6 +4805,34 @@ template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typenam
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>For any element except last returns distance from element start to the start of the next element. For the last element it returns used_capacity </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a994773d1cdb85755ff5ff9937abc1a48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a994773d1cdb85755ff5ff9937abc1a48">&#9670;&nbsp;</a></span>flat_forward_list_ref</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;, typename A = std::allocator&lt;T&gt;&gt; </div>
+<div class="memtemplate">
+template&lt;typename T , typename TT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Give <a class="el" href="classiffl_1_1flat__forward__list__ref.html" title="Non owning container for flat forward list.">flat_forward_list_ref</a> friend permissins so it can initialize itself from the buffer </p>
 
 </div>
 </div>

@@ -1,13 +1,15 @@
 var searchData=
 [
-  ['data',['data',['../classiffl_1_1flat__forward__list.html#af159146257d0e16b713704907e552b7b',1,'iffl::flat_forward_list::data() noexcept'],['../classiffl_1_1flat__forward__list.html#a1092cb07ad493b9012e1095d67cee56c',1,'iffl::flat_forward_list::data() const noexcept']]],
+  ['data',['data',['../classiffl_1_1flat__forward__list__ref.html#ad8ae49c650483197ce08e074738443c8',1,'iffl::flat_forward_list_ref::data() noexcept'],['../classiffl_1_1flat__forward__list__ref.html#a54516df7db6b828c9194c84d0e31f460',1,'iffl::flat_forward_list_ref::data() const noexcept'],['../classiffl_1_1flat__forward__list.html#af159146257d0e16b713704907e552b7b',1,'iffl::flat_forward_list::data() noexcept'],['../classiffl_1_1flat__forward__list.html#a1092cb07ad493b9012e1095d67cee56c',1,'iffl::flat_forward_list::data() const noexcept']]],
   ['data_5fcontains',['data_contains',['../structiffl_1_1range.html#afb29370e9e4b881c9c03169c0b564aaf',1,'iffl::range']]],
   ['data_5fend_5faligned',['data_end_aligned',['../structiffl_1_1range__with__alighment.html#ababa6a5c635424b32a5e26885334dea4',1,'iffl::range_with_alighment']]],
-  ['data_5fend_5funaligned',['data_end_unaligned',['../structiffl_1_1range__with__alighment.html#a4ec4c7c45b866b7c56b7efaee238fae6',1,'iffl::range_with_alighment']]],
   ['data_5fsize',['data_size',['../structiffl_1_1range.html#a541b3d5ceb6fc72f245648cda6d27bc0',1,'iffl::range']]],
-  ['data_5fsize_5fnot_5fpadded',['data_size_not_padded',['../structiffl_1_1range__with__alighment.html#a1791c6f6a25c8f8d0c47ec1e94f7aee8',1,'iffl::range_with_alighment']]],
   ['data_5fsize_5fpadded',['data_size_padded',['../structiffl_1_1range__with__alighment.html#ab70449ab872073a4f1b70f80f39720b7',1,'iffl::range_with_alighment']]],
-  ['detach',['detach',['../classiffl_1_1flat__forward__list.html#a720b431f97e05638d3fdc1a92348d5c2',1,'iffl::flat_forward_list::detach() noexcept'],['../classiffl_1_1flat__forward__list.html#a4b8c4416f74b312a7af8e7f80c52917d',1,'iffl::flat_forward_list::detach(as_pointers) noexcept']]],
+  ['detach',['detach',['../classiffl_1_1flat__forward__list.html#a98aa8899ef08ac7e2de76f8666d71774',1,'iffl::flat_forward_list']]],
   ['disarm',['disarm',['../classiffl_1_1scope__guard.html#af38bd5f45a30b2ba63ea9bd2b218c05f',1,'iffl::scope_guard']]],
-  ['discharge',['discharge',['../classiffl_1_1scope__guard.html#a3570a333c8317d0077253b57c406fc50',1,'iffl::scope_guard']]]
+  ['discharge',['discharge',['../classiffl_1_1scope__guard.html#a3570a333c8317d0077253b57c406fc50',1,'iffl::scope_guard']]],
+  ['distance',['distance',['../namespaceiffl.html#a75de19b348b30c2c9cec77c6ab5d0e12',1,'iffl']]],
+  ['do_5fallocate',['do_allocate',['../classiffl_1_1input__buffer__memory__resource.html#aa7df8cad423f4fcdc0cb9e2b420548a9',1,'iffl::input_buffer_memory_resource']]],
+  ['do_5fdeallocate',['do_deallocate',['../classiffl_1_1input__buffer__memory__resource.html#ac0773a1e829b86a8853749d7f09c3e52',1,'iffl::input_buffer_memory_resource']]],
+  ['do_5fis_5fequal',['do_is_equal',['../classiffl_1_1input__buffer__memory__resource.html#a6d630e0212c871020e83419ff6a616c4',1,'iffl::input_buffer_memory_resource']]]
 ];

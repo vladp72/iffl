@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['scope_5fguard',['scope_guard',['../classiffl_1_1scope__guard.html',1,'iffl']]],
-  ['size_5fwith_5fpadding',['size_with_padding',['../structiffl_1_1size__with__padding.html',1,'iffl']]]
+  ['offset_5fwith_5faligment',['offset_with_aligment',['../structiffl_1_1offset__with__aligment.html',1,'iffl']]],
+  ['one_5fthen_5fvariadic_5fargs_5ft',['one_then_variadic_args_t',['../structiffl_1_1one__then__variadic__args__t.html',1,'iffl']]]
 ];
