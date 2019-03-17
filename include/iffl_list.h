@@ -3357,13 +3357,39 @@ public:
                       [init_buffer_size, init_buffer](char *buffer,
                                                       size_type element_size) {
                         FFL_CODDING_ERROR_IF_NOT(init_buffer_size == element_size);
-
                         if (init_buffer) {
                             copy_data(buffer, init_buffer, element_size);
                         } else {
                             zero_buffer(buffer, element_size);
                         }
                      });
+    }
+    //!
+    //! @brief Adds new elemnt to the end of the list. 
+    //! Element is initialized by coppying provided buffer.
+    //! @param init_buffer_size - size of the buffer that will be used for initialization 
+    //!                           size smaller than minimum element size will trigger a fail-fast.
+    //! @param init_buffer - a poiner to the buffer. If pointer to the buffer is nullptr then
+    //!                      element data are zero initialized.
+    //! @throw std::bad_alloca if allocating new buffer fails
+    //! @details New element becomes a new last element and, if set_next offset is supported,
+    //! then it is called on the previous last element such that it points to the new one.
+    //! @returns true if element was placed in the existing buffer and false if
+    //! buffer does not have enough capacity for the new element.
+    //!
+    bool try_push_back(size_type init_buffer_size,
+                       char const *init_buffer = nullptr) {
+
+        return try_emplace_back(init_buffer_size,
+                                [init_buffer_size, init_buffer](char *buffer,
+                                                                size_type element_size) {
+                                  FFL_CODDING_ERROR_IF_NOT(init_buffer_size == element_size);
+                                  if (init_buffer) {
+                                      copy_data(buffer, init_buffer, element_size);
+                                  } else {
+                                      zero_buffer(buffer, element_size);
+                                  }
+                               });
     }
     //!
     //! @brief Constructs new element at the end of the list. 
@@ -3381,70 +3407,28 @@ public:
     template <typename F>
     void emplace_back(size_type element_size,
                       F const &fn) {
-        validate_pointer_invariants();
-
-        FFL_CODDING_ERROR_IF(element_size < traits_traits::minimum_size());
-      
-        char *new_buffer{ nullptr };
-        size_t new_buffer_size{ 0 };
-        auto deallocate_buffer{ make_scoped_deallocator(&new_buffer, &new_buffer_size) };
-
-        sizes_t const prev_sizes{get_all_sizes()};
-      
-        char *cur{ nullptr };
-
-        //
-        // We are appending. New last element does not have to be padded 
-        // since there will be no elements after. We do need to padd the 
-        // previous last element so the new last element will be padded
-        //
-        if (prev_sizes.remaining_capacity_for_append() < element_size) {
-            new_buffer_size = traits_traits::roundup_to_alignment(prev_sizes.total_capacity) + 
-                              (element_size - prev_sizes.remaining_capacity_for_append());
-            new_buffer = allocate_buffer(new_buffer_size);
-            cur = new_buffer + prev_sizes.used_capacity().size_padded();
-        } else {
-            cur = buff().begin + prev_sizes.used_capacity().size_padded();
-        }
-
-        fn(cur, element_size);
-
-        set_no_next_element(cur);
-        //
-        // After element was constructed it cannot be larger than 
-        // size requested for this element.
-        //
-        size_with_padding_t const cur_element_size{ traits_traits::get_size(cur) };
-        FFL_CODDING_ERROR_IF(element_size < cur_element_size.size);
-        //
-        // element that used to be last becomes
-        // an element in the middle so we need to change 
-        // its next element pointer
-        //
-        if (buff().last) {
-            set_next_offset(buff().last, prev_sizes.last_element.data_size_padded());
-        }
-        //
-        // swap new buffer and new buffer
-        //
-        if (new_buffer != nullptr) {
-            //
-            // If we are reallocating buffer then move existing 
-            // elements to the new buffer. 
-            //
-            if (buff().begin) {
-                copy_data(new_buffer, buff().begin, prev_sizes.used_capacity().size);
-            }
-            commit_new_buffer(new_buffer, new_buffer_size);
-        }
-        //
-        // Element that we've just addede is the new last element
-        //
-        buff().last = cur;
-
-        validate_pointer_invariants();
-        validate_data_invariants();
+        bool const result{ try_emplace_back_impl(can_reallocate::yes, element_size, fn) };
+        FFL_CODDING_ERROR_IF(!result);
     }
+
+    //!
+    //! @brief Constructs new element at the end of the list if it fits 
+    //! in the existing free capacity.
+    //! @tparam F - type of a functor
+    //! Element is initialized with a help of the functor passed as a parameter.
+    //! @param element_size - number of bytes required for the new element.
+    //! @param fn - a functor used to construct new element.
+    //! @returns true if element was placed in the existing buffer and false if
+    //! buffer does not have enough capacity for the new element.
+    //! @details Constructed element does not have to use up the entire buffer
+    //! unused space will become unused buffer capacity.
+    //!
+    template <typename F>
+    bool try_emplace_back(size_type element_size,
+                          F const &fn) {
+        return try_emplace_back_impl(can_reallocate::no, element_size, fn);
+    }
+
     //!
     //! @brief Removes last element from the list. 
     //! @details Tnis method has cost O(number of elements). 
@@ -3519,6 +3503,39 @@ public:
                 });
     }
     //!
+    //! @brief Inserts new element at the position described by iterator. 
+    //! Element is initialized by coppying provided buffer.
+    //! @param it - iterator pointing to the position new element should be inserte to.
+    //!             Iterator value must be a valid iterator pointing to one of the elements
+    //!             or an end iterator.
+    //!             If iterator is pointing to an element that is not propertly alligned then
+    //!             new element will not be propertly alligned.
+    //! @param init_buffer_size - size of the buffer that will be used for initialization 
+    //!                           size smaller than minimum element size will trigger a fail-fast.
+    //!                           When iterator in not then end then size is padded to make sure that if
+    //!                           this element is propertly alligned then next element is also property 
+    //!                           aligned.
+    //! @param init_buffer - a poiner to the buffer. If pointer to the buffer is nullptr then
+    //!                      element data are zero initialized.
+    //! @returns true if element was placed in the existing buffer and false if
+    //! buffer does not have enough capacity for the new element.
+    //! @details New element becomes a new last element and, if set_next offset is supported,
+    //! then it is called on the previous last element such that it points to the new one.
+    //!
+    bool try_insert(iterator const &it, size_type init_buffer_size, char const *init_buffer = nullptr) {
+        return try_emplace(it, 
+                           init_buffer_size,
+                           [init_buffer_size, init_buffer](char *buffer,
+                                                           size_type element_size) {
+                               FFL_CODDING_ERROR_IF_NOT(init_buffer_size == element_size);
+                               if (init_buffer) {
+                                   copy_data(buffer, init_buffer, element_size);
+                               } else {
+                                   zero_buffer(buffer, element_size);
+                               }
+                           });
+    }
+    //!
     //! @brief Constructs new element at the position described by iterator. 
     //! Element is initialized with a help of the functor passed as a parameter.
     //! @tparam F - type of a functor
@@ -3532,6 +3549,9 @@ public:
     //!             aligned.
     //! @param new_element_size - number of bytes required for the new element.
     //! @param fn - a functor used to construct new element.
+    //! @returns Returns a pair of boolean that tells caller if element was inserted, and 
+    //! iterator to the position where it should be inserted in case of failure or was 
+    //! inserted in case of success.
     //! @throw std::bad_alloca if allocating new buffer fails.
     //!        Any exceptions that might be raised by the functor.
     //!        If functor raises then container remains in the state as if 
@@ -3541,126 +3561,47 @@ public:
     //!
     template <typename F>
     iterator emplace(iterator const &it,
-                     size_type new_element_size, 
+                     size_type new_element_size,
                      F const &fn) {
-
-        validate_pointer_invariants();
-        validate_iterator(it);
-
-        FFL_CODDING_ERROR_IF(new_element_size < traits_traits::minimum_size());
-
-        if (end() == it) {
-            emplace_back(new_element_size, fn);
-            return last();
-        }
-        //
-        // When implacing in the middle of list we need to preserve alignment of the 
-        // next element so we need to make sure we add padding to the requested size.
-        // An alternative would be to rely on the caller to make sure size is padded
-        // and call out codding error if it is not.
-        //
-        size_t new_element_size_aligned = traits_traits::roundup_to_alignment(new_element_size);
-
-        char *new_buffer{ nullptr };
-        size_t new_buffer_size{ 0 };
-        auto deallocate_buffer{ make_scoped_deallocator(&new_buffer, &new_buffer_size) };
-
-        sizes_t const prev_sizes{ get_all_sizes() };
-        range_t const element_range{ this->range_unsafe(it) };
-        //
-        // Note that in this case old element that was in that position
-        // is a part of the tail
-        //
-        size_type const tail_size{ prev_sizes.used_capacity().size - element_range.begin() };
-
-        char *begin{ nullptr };
-        char *cur{ nullptr };
-        //
-        // We are inserting new element in the middle. 
-        // We do not need make last eleement aligned. 
-        // We need to add padding for the element that we are inserting to
-        // keep element that we are shifting right propertly aligned
-        //
-        if (prev_sizes.remaining_capacity_for_insert() < new_element_size_aligned) {
-            new_buffer_size = traits_traits::roundup_to_alignment(prev_sizes.total_capacity) + 
-                              (new_element_size_aligned - prev_sizes.remaining_capacity_for_insert());
-            new_buffer = allocate_buffer(new_buffer_size);
-            cur = new_buffer + element_range.begin();
-            begin = new_buffer;
-        } else {
-            cur = it.get_ptr();
-            begin = buff().begin;
-        }
-        char *new_tail_start{ nullptr };
-        //
-        // Common part where we construct new part of the buffer
-        //
-        // Move tail forward. 
-        // This will free space to insert new element
-        //
-        if (!new_buffer) {
-            new_tail_start = begin + element_range.begin() + new_element_size_aligned;
-            move_data(new_tail_start, it.get_ptr(), tail_size);
-        }
-        //
-        // construct
-        //
-        try {
-            //
-            // Pass to the constructor requested size, not padded size
-            //
-            fn(cur, new_element_size);
-        } catch (...) {
-            //
-            // on failure to costruct move tail back
-            // only if we are not reallocating
-            //
-            if (!new_buffer) {
-                move_data(it.get_ptr(), new_tail_start, tail_size);
-            }
-            throw;
-        }
-
-        set_next_offset(cur, new_element_size_aligned);
-        //
-        // For types with next element pointer data can consume less than requested size. 
-        // for types that do not have next element pointer size must match exactly, otherwise
-        // we would not be able to get to the next element
-        //
-        size_with_padding_t const cur_element_size{ traits_traits::get_size(cur) };
-        if constexpr (traits_traits::has_next_offset_v) {
-            FFL_CODDING_ERROR_IF(new_element_size < cur_element_size.size ||
-                                 new_element_size_aligned < cur_element_size.size_padded());
-        } else {
-            FFL_CODDING_ERROR_IF_NOT(new_element_size == cur_element_size.size &&
-                                     new_element_size_aligned == cur_element_size.size_padded());
-        }
-        //
-        // now see if we need to update existing 
-        // buffer or swap with the new buffer
-        //
-        if (new_buffer != nullptr) {
-            //
-            // If we are reallocating buffer then move all elements
-            // before and after position that we are inserting to
-            //
-            if (buff().begin) {
-                copy_data(new_buffer, buff().begin, element_range.begin());
-                copy_data(cur + new_element_size_aligned, it.get_ptr(), tail_size);
-            }
-            commit_new_buffer(new_buffer, new_buffer_size);
-        }
-        //
-        // Last element moved ahead by the size of the new inserted element
-        //
-        buff().last = buff().begin + prev_sizes.last_element.begin() + new_element_size_aligned;
-
-        validate_pointer_invariants();
-        validate_data_invariants();
-        //
-        // Return iterator pointing to the new inserted element
-        //
-        return iterator{ cur };
+        auto [result, new_it] =  try_emplace_impl(can_reallocate::yes,
+                                                  it,
+                                                  new_element_size,
+                                                  fn);
+        FFL_CODDING_ERROR_IF(!result);
+        return new_it;
+    }
+    //!
+    //! @brief Constructs new element at the position described by iterator. 
+    //! Element is initialized with a help of the functor passed as a parameter.
+    //! @tparam F - type of a functor
+    //! @param it - iterator pointing to the position new element should be inserte to.
+    //!             Iterator value must be a valid iterator pointing to one of the elements
+    //!             or an end iterator.
+    //!             If iterator is pointing to an element that is not propertly alligned then
+    //!             new element will not be propertly alligned.
+    //!             When iterator in not then end then size is padded to make sure that if
+    //!             this element is propertly alligned then next element is also property 
+    //!             aligned.
+    //! @param new_element_size - number of bytes required for the new element.
+    //! @param fn - a functor used to construct new element.
+    //! @returns Returns a pair of boolean that tells caller if element was inserted, and 
+    //! iterator to the position where it should be inserted in case of failure or was 
+    //! inserted in case of success.
+    //! @returns true if element was placed in the existing buffer and false if
+    //! buffer does not have enough capacity for the new element.
+    //! @details Constructed element does not have to use up the entire buffer
+    //! unused space will become unused buffer capacity.
+    //!
+    template <typename F>
+    bool try_emplace(iterator const &it,
+                     size_type new_element_size,
+                     F const &fn) {
+        auto[result, new_it] = try_emplace_impl(can_reallocate::no,
+                                                it,
+                                                new_element_size,
+                                                fn);
+        FFL_CODDING_ERROR_IF_NOT(it == new_it);
+        return result;
     }
     //!
     //! @brief Constructs new element at the beginnig of the container. 
@@ -3688,6 +3629,31 @@ public:
                 });
     }
     //!
+    //! @brief Constructs new element at the beginnig of the container. 
+    //! Element is initialized by coppying provided buffer.
+    //! @param init_buffer_size - size of the buffer that will be used for initialization 
+    //!                           size smaller than minimum element size will trigger a fail-fast.
+    //!                           When container is not empty then size is padded to make sure that
+    //!                           next element is also property aligned.
+    //! @param init_buffer - a poiner to the buffer. If pointer to the buffer is nullptr then
+    //!                      element data are zero initialized.
+    //! @returns true if element was placed in the existing buffer and false if
+    //! buffer does not have enough capacity for the new element.
+    //!
+    bool try_push_front(size_type init_buffer_size, char const *init_buffer = nullptr) {
+        return try_emplace(begin(),
+                           init_buffer_size,
+                           [init_buffer_size, init_buffer](char *buffer,
+                                                           size_type element_size) {
+                               FFL_CODDING_ERROR_IF_NOT(init_buffer_size == element_size);
+                               if (init_buffer) {
+                                   copy_data(buffer, init_buffer, element_size);
+                               } else {
+                                   zero_buffer(buffer, element_size);
+                               }
+                           });
+    }
+    //!
     //! @brief Inserts new element at the beginnig of the container. 
     //! Element is initialized with a help of the functor passed as a parameter.
     //! @tparam F - type of a functor
@@ -3705,6 +3671,23 @@ public:
     void emplace_front(size_type element_size, 
                        F const &fn) {
         emplace(begin(), element_size, fn);
+    }
+    //!
+    //! @brief Inserts new element at the beginnig of the container. 
+    //! Element is initialized with a help of the functor passed as a parameter.
+    //! @tparam F - type of a functor
+    //! @param element_size - size of the buffer that will be used for initialization 
+    //!                           size smaller than minimum element size will trigger a fail-fast.
+    //!                           When container is not empty then size is padded to make sure that
+    //!                           next element is also property aligned.
+    //! @param fn - a functor used to construct new element.
+    //! @returns true if element was placed in the existing buffer and false if
+    //! buffer does not have enough capacity for the new element.
+    //!
+    template <typename F>
+    bool try_emplace_front(size_type element_size, 
+                           F const &fn) {
+        return try_emplace(begin(), element_size, fn);
     }
     //!
     //! @brief Removes first element from the container. 
@@ -4449,7 +4432,36 @@ public:
                                   FFL_CODDING_ERROR_IF_NOT(traits_traits::validate(new_size, buffer));
                               });
     }
+    //!
+    //! @brief Adds unused capacity to the element.
+    //! @param it - iterator that points to the element to grow.
+    //! @param size_to_add - bytes to add to the current element size
+    //! @returns true if element was placed in the existing buffer and false if
+    //! buffer does not have enough capacity for the new element.
+    //! @details This method also fixes alignment of element and 
+    //! adds missing padding.
+    //! added capacity becomes unused capacity that is reserved 
+    //! for future use. Unused capacity is zero initialized.
+    //!
+    bool try_element_add_size(iterator const &it,
+                              size_type size_to_add) {
+        validate_pointer_invariants();
+        validate_iterator_not_end(it);
 
+        return try_element_resize(it, 
+                                  traits_traits::roundup_to_alignment(used_size(it) + size_to_add),
+                                  [] (char *buffer,  
+                                      size_type old_size, 
+                                      size_type new_size) {
+                                      //
+                                      // must be extending, and
+                                      // data must fit new buffer
+                                      //
+                                      FFL_CODDING_ERROR_IF_NOT(old_size <= new_size);
+                                      zero_buffer(buffer + old_size, new_size - old_size);
+                                      FFL_CODDING_ERROR_IF_NOT(traits_traits::validate(new_size, buffer));
+                                  });
+    }
     //!
     //! @brief Resizes element.
     //! @tparam F - type of functor user to update element.
@@ -4466,207 +4478,36 @@ public:
     iterator element_resize(iterator const &it, 
                             size_type new_size, 
                             F const &fn) {
-        //
-        // Resize to 0 is same as erase
-        //
-        if (0 == new_size) {
-            return erase(it);
-        }
-
-        FFL_CODDING_ERROR_IF(new_size < traits_traits::minimum_size());
-        //
-        // Separately handle case of resizing the last element 
-        // we do not need to deal with tail and padding
-        // for the next element
-        //
-        if (last() == it) {
-            return resize_last_element(new_size, fn);
-        }
-        //
-        // Now deal with resizing element in the middle
-        // or at the head
-        //
-        validate_pointer_invariants();
-        validate_iterator_not_end(it);
-
-        iterator result_it;
-
-        sizes_t prev_sizes{ get_all_sizes() };
-        range_t element_range_before{ range_unsafe(it) };
-        //
-        // We will change element size by padded size to make sure
-        // that next element stays padded
-        //
-        size_type new_size_padded{ traits_traits::roundup_to_alignment(new_size) };
-        //
-        // Calculate tail size
-        //
-        size_type const tail_size{ prev_sizes.used_capacity().size - element_range_before.buffer_end };
-        //
-        // By how much element size is changing
-        //
-        difference_type const element_size_diff{ static_cast<difference_type>(new_size_padded - element_range_before.buffer_size()) };
-        //
-        // This branch handles case when we do not need to reallocate buffer
-        // and we have sufficiently large buffer.
-        //
-        if (element_size_diff < 0 ||
-            prev_sizes.remaining_capacity_for_insert() >= static_cast<size_type>(element_size_diff)) {
-
-            size_type tail_start_offset = element_range_before.buffer_end;
-            //
-            // If element is getting extended in size then shift tail to the 
-            // right to make space for element data, and remember new tail 
-            // position
-            //
-            if (new_size_padded > element_range_before.buffer_size()) {
-                move_data(buff().begin + element_range_before.begin() + new_size_padded,
-                          buff().begin + tail_start_offset,
-                          tail_size);
-
-                tail_start_offset = element_range_before.begin() + new_size_padded;
-            }
-            //
-            // Regardless how  we are exiting scope, by exception or not,
-            // shift tail left so it would be right after the new end of 
-            // the element
-            //
-            auto fix_tail{ make_scope_guard([this, 
-                                            it, 
-                                            new_size, 
-                                            new_size_padded, 
-                                            &prev_sizes, 
-                                            tail_start_offset, 
-                                            tail_size,
-                                            &element_range_before] {
-                //
-                // See how much space elements consumes now
-                //
-                size_with_padding_t const element_size_after { this->size_unsafe(it)};
-                //
-                // New element size must not be larget than size that it is 
-                // allowed to grow by
-                //
-                FFL_CODDING_ERROR_IF(element_size_after.size > new_size);
-                //
-                // If we have next pointer then next element should start after new_size_padded
-                // otherwise if should start after padded size of the element
-                //
-                range_t element_range_after{ element_range_before.begin(),
-                                             element_range_after.begin() + element_size_after.size,
-                                             element_range_after.begin() + new_size_padded };
-                element_range_after.verify();
-                //
-                // New evement end must not pass current tail position
-                //
-                FFL_CODDING_ERROR_IF(element_range_after.buffer_end > tail_start_offset);
-                //
-                // if size changed, then shift tal to the left
-                //
-                if (element_range_after.buffer_end != element_range_before.buffer_end) {
-
-                    move_data(buff().begin + element_range_after.buffer_end,
-                              buff().begin + tail_start_offset,
-                              tail_size);
-                    //
-                    // calculate by how much tail moved
-                    //
-                    difference_type tail_shift{ static_cast<difference_type>(element_range_after.buffer_size() -
-                                                                             element_range_before.buffer_size()) };
-                    //
-                    // Update pointer to last element
-                    //
-                    buff().last += tail_shift;
-                }
-
-                this->set_next_offset(it.get_ptr(), element_range_after.buffer_size());
-            }) };
-
-            fn(it.get_ptr(), 
-               element_range_before.buffer_size(),
-               new_size);
-
-            result_it = it;
-
-        } else {
-            //
-            // Buffer is increasing in size so we will need to reallocate buffer
-            //
-            char *new_buffer{ nullptr };
-            size_type new_buffer_size{ 0 };
-            auto deallocate_buffer{ make_scoped_deallocator(&new_buffer, &new_buffer_size) };
-
-            new_buffer_size = prev_sizes.used_capacity().size + new_size_padded - element_range_before.buffer_size();
-            new_buffer = allocate_buffer(new_buffer_size);
-            //
-            // copy element that we are changing to the new buffer
-            //
-            copy_data(new_buffer + element_range_before.begin(),
-                      buff().begin + element_range_before.begin(),
-                      element_range_before.buffer_size());
-            //
-            // change element
-            //
-            fn(new_buffer + element_range_before.begin(),
-               element_range_before.buffer_size(),
-               new_size);
-            //
-            // fn did not throw an exception, and remainder of 
-            // function is noexcept
-            //
-            result_it = iterator{ new_buffer + element_range_before.begin() };
-            //
-            // copy head
-            //
-            copy_data(new_buffer, buff().begin, element_range_before.begin());
-            //
-            // See how much space elements consumes now
-            //
-            size_with_padding_t const element_size_after = this->size_unsafe(result_it);
-            //
-            // New element size must not be larget than size that it is 
-            // allowed to grow by
-            //
-            FFL_CODDING_ERROR_IF(element_size_after.size > new_size);
-            //
-            // If we have next pointer then next element should start after new_size_padded
-            // otherwise if should start after padded size of the element
-            //
-            range_t element_range_after{ element_range_before.begin(),
-                                         element_range_after.begin() + element_size_after.size,
-                                         element_range_after.begin() + new_size_padded };
-            element_range_after.verify();
-            //
-            // Copy tail
-            //
-            move_data(new_buffer + element_range_after.buffer_end,
-                      buff().begin + element_range_before.buffer_end,
-                      tail_size);
-            //
-            // commit mew buffer
-            //
-            commit_new_buffer(new_buffer, new_buffer_size);
-            //
-            // calculate by how much tail moved
-            //
-            difference_type tail_shift{ static_cast<difference_type>(element_range_after.buffer_size() -
-                                                                     element_range_before.buffer_size()) };
-            //
-            // Update pointer to last element
-            //
-            buff().last = buff().begin + prev_sizes.last_element.begin() + tail_shift;
-            //
-            // fix offset to the next element
-            //
-            this->set_next_offset(result_it.get_ptr(), element_range_after.buffer_size());
-        }
-
-        validate_pointer_invariants();
-        validate_data_invariants();
-        //
-        // Return iterator pointing to the new inserted element
-        //
-        return result_it;
+        auto[result, new_it] = element_resize_impl(can_reallocate::yes,
+                                                   it,
+                                                   new_size,
+                                                   fn);
+        FFL_CODDING_ERROR_IF(!result);
+        return new_it;
+    }
+    //!
+    //! @brief Resizes element.
+    //! @tparam F - type of functor user to update element.
+    //! @param it - iterator that points to the element that is being resized.
+    //! @param new_size - new element size.
+    //! @param fn - functor used to update element after it was resized.
+    //! @returns true if element was placed in the existing buffer and false if
+    //! buffer does not have enough capacity for the new element.
+    //! @details Resizing to 0 will delete element.
+    //! Resizing to size smaller than minimum_size will trigger fail-fast.
+    //! Resizing to any other size also fixes alignment of element and 
+    //! adds missing padding.
+    //!
+    template <typename F>
+    bool try_element_resize(iterator const &it, 
+                            size_type new_size, 
+                            F const &fn) {
+        auto[result, new_it] = element_resize_impl(can_reallocate::no,
+                                                   it,
+                                                   new_size,
+                                                   fn);
+        FFL_CODDING_ERROR_IF_NOT(new_it == it);
+        return result;
     }
     //!
     //! @brief Returns capacity used by the element's data.
@@ -4985,6 +4826,270 @@ public:
 private:
 
     //!
+    //! @class can_reallocate.
+    //! @brief Enumiration used to express per call
+    //! buffer reallocation policy.
+    //!
+    enum class can_reallocate : bool {
+        //!
+        //! @brief Buffer reallocation is not allowed
+        //!
+        no,
+        //!
+        //! @brief Buffer reallocation is allowed
+        //!
+        yes,
+    };
+
+    //!
+    //! @brief Constructs new element at the end of the list. 
+    //! @tparam F - type of a functor
+    //! Element is initialized with a help of the functor passed as a parameter.
+    //! @param reallocation_policy - can_reallocate::no tells that method should 
+    //! fail if new element does not fit free capacity that we have in the buffer.
+    //! can_reallocate::no tells that method is allowed to reallocate buffer to 
+    //! fit additional element.
+    //! @param element_size - number of bytes required for the new element.
+    //! @param fn - a functor used to construct new element.
+    //! @returns false if element was not added because reallocation is not allowed
+    //! and true otherwise.
+    //! @throw std::bad_alloca if allocating new buffer fails.
+    //!        Any exceptions that might be raised by the functor.
+    //!        If functor raises then container remains in the state as if 
+    //!        call did not happen
+    //! @details Constructed element does not have to use up the entire buffer
+    //! unused space will become unused buffer capacity.
+    //!
+    template <typename F>
+    bool try_emplace_back_impl(can_reallocate reallocation_policy,
+                               size_type element_size,
+                               F const &fn) {
+        validate_pointer_invariants();
+
+        FFL_CODDING_ERROR_IF(element_size < traits_traits::minimum_size());
+
+        char *new_buffer{ nullptr };
+        size_t new_buffer_size{ 0 };
+        auto deallocate_buffer{ make_scoped_deallocator(&new_buffer, &new_buffer_size) };
+
+        sizes_t const prev_sizes{ get_all_sizes() };
+
+        char *cur{ nullptr };
+        //
+        // We are appending. New last element does not have to be padded 
+        // since there will be no elements after. We do need to padd the 
+        // previous last element so the new last element will be padded
+        //
+        if (prev_sizes.remaining_capacity_for_append() < element_size) {
+            if (reallocation_policy == can_reallocate::no) {
+                return false;
+            }
+            new_buffer_size = traits_traits::roundup_to_alignment(prev_sizes.total_capacity) +
+                              (element_size - prev_sizes.remaining_capacity_for_append());
+            new_buffer = allocate_buffer(new_buffer_size);
+            cur = new_buffer + prev_sizes.used_capacity().size_padded();
+        } else {
+            cur = buff().begin + prev_sizes.used_capacity().size_padded();
+        }
+
+        fn(cur, element_size);
+
+        set_no_next_element(cur);
+        //
+        // After element was constructed it cannot be larger than 
+        // size requested for this element.
+        //
+        size_with_padding_t const cur_element_size{ traits_traits::get_size(cur) };
+        FFL_CODDING_ERROR_IF(element_size < cur_element_size.size);
+        //
+        // element that used to be last becomes
+        // an element in the middle so we need to change 
+        // its next element pointer
+        //
+        if (buff().last) {
+            set_next_offset(buff().last, prev_sizes.last_element.data_size_padded());
+        }
+        //
+        // swap new buffer and new buffer
+        //
+        if (new_buffer != nullptr) {
+            //
+            // If we are reallocating buffer then move existing 
+            // elements to the new buffer. 
+            //
+            if (buff().begin) {
+                copy_data(new_buffer, buff().begin, prev_sizes.used_capacity().size);
+            }
+            commit_new_buffer(new_buffer, new_buffer_size);
+        }
+        //
+        // Element that we've just addede is the new last element
+        //
+        buff().last = cur;
+
+        validate_pointer_invariants();
+        validate_data_invariants();
+
+        return true;
+    }
+    //!
+    //! @brief Constructs new element at the position described by iterator. 
+    //! Element is initialized with a help of the functor passed as a parameter.
+    //! @tparam F - type of a functor
+    //! @param reallocation_policy - can_reallocate::no tells that method should 
+    //! fail if new element does not fit free capacity that we have in the buffer.
+    //! can_reallocate::no tells that method is allowed to reallocate buffer to 
+    //! fit additional element.
+    //! @param it - iterator pointing to the position new element should be inserte to.
+    //!             Iterator value must be a valid iterator pointing to one of the elements
+    //!             or an end iterator.
+    //!             If iterator is pointing to an element that is not propertly alligned then
+    //!             new element will not be propertly alligned.
+    //!             When iterator in not then end then size is padded to make sure that if
+    //!             this element is propertly alligned then next element is also property 
+    //!             aligned.
+    //! @param new_element_size - number of bytes required for the new element.
+    //! @param fn - a functor used to construct new element.
+    //! @returns Returns a pair of boolean that tells caller if element was inserted, and 
+    //! iterator to the position where it should be inserted in case of failure or was 
+    //! inserted in case of success.
+    //! @throw std::bad_alloca if allocating new buffer fails.
+    //!        Any exceptions that might be raised by the functor.
+    //!        If functor raises then container remains in the state as if 
+    //!        call did not happen
+    //! @details Constructed element does not have to use up the entire buffer
+    //! unused space will become unused buffer capacity.
+    //!
+    template <typename F>
+    std::pair<bool, iterator> try_emplace_impl(can_reallocate reallocation_policy,
+                                               iterator const &it,
+                                               size_type new_element_size, 
+                                               F const &fn) {
+
+        validate_pointer_invariants();
+        validate_iterator(it);
+
+        FFL_CODDING_ERROR_IF(new_element_size < traits_traits::minimum_size());
+
+        if (end() == it) {
+            bool result{ try_emplace_back_impl(reallocation_policy,
+                                               new_element_size,
+                                               fn) };
+            return std::make_pair(result, last());
+        }
+        //
+        // When implacing in the middle of list we need to preserve alignment of the 
+        // next element so we need to make sure we add padding to the requested size.
+        // An alternative would be to rely on the caller to make sure size is padded
+        // and call out codding error if it is not.
+        //
+        size_t new_element_size_aligned = traits_traits::roundup_to_alignment(new_element_size);
+
+        char *new_buffer{ nullptr };
+        size_t new_buffer_size{ 0 };
+        auto deallocate_buffer{ make_scoped_deallocator(&new_buffer, &new_buffer_size) };
+
+        sizes_t const prev_sizes{ get_all_sizes() };
+        range_t const element_range{ this->range_unsafe(it) };
+        //
+        // Note that in this case old element that was in that position
+        // is a part of the tail
+        //
+        size_type const tail_size{ prev_sizes.used_capacity().size - element_range.begin() };
+
+        char *begin{ nullptr };
+        char *cur{ nullptr };
+        //
+        // We are inserting new element in the middle. 
+        // We do not need make last eleement aligned. 
+        // We need to add padding for the element that we are inserting to
+        // keep element that we are shifting right propertly aligned
+        //
+        if (prev_sizes.remaining_capacity_for_insert() < new_element_size_aligned) {
+            if (can_reallocate::no == reallocation_policy) {
+                return std::make_pair(false, it);
+            }
+            new_buffer_size = traits_traits::roundup_to_alignment(prev_sizes.total_capacity) + 
+                              (new_element_size_aligned - prev_sizes.remaining_capacity_for_insert());
+            new_buffer = allocate_buffer(new_buffer_size);
+            cur = new_buffer + element_range.begin();
+            begin = new_buffer;
+        } else {
+            cur = it.get_ptr();
+            begin = buff().begin;
+        }
+        char *new_tail_start{ nullptr };
+        //
+        // Common part where we construct new part of the buffer
+        //
+        // Move tail forward. 
+        // This will free space to insert new element
+        //
+        if (!new_buffer) {
+            new_tail_start = begin + element_range.begin() + new_element_size_aligned;
+            move_data(new_tail_start, it.get_ptr(), tail_size);
+        }
+        //
+        // construct
+        //
+        try {
+            //
+            // Pass to the constructor requested size, not padded size
+            //
+            fn(cur, new_element_size);
+        } catch (...) {
+            //
+            // on failure to costruct move tail back
+            // only if we are not reallocating
+            //
+            if (!new_buffer) {
+                move_data(it.get_ptr(), new_tail_start, tail_size);
+            }
+            throw;
+        }
+
+        set_next_offset(cur, new_element_size_aligned);
+        //
+        // For types with next element pointer data can consume less than requested size. 
+        // for types that do not have next element pointer size must match exactly, otherwise
+        // we would not be able to get to the next element
+        //
+        size_with_padding_t const cur_element_size{ traits_traits::get_size(cur) };
+        if constexpr (traits_traits::has_next_offset_v) {
+            FFL_CODDING_ERROR_IF(new_element_size < cur_element_size.size ||
+                                 new_element_size_aligned < cur_element_size.size_padded());
+        } else {
+            FFL_CODDING_ERROR_IF_NOT(new_element_size == cur_element_size.size &&
+                                     new_element_size_aligned == cur_element_size.size_padded());
+        }
+        //
+        // now see if we need to update existing 
+        // buffer or swap with the new buffer
+        //
+        if (new_buffer != nullptr) {
+            //
+            // If we are reallocating buffer then move all elements
+            // before and after position that we are inserting to
+            //
+            if (buff().begin) {
+                copy_data(new_buffer, buff().begin, element_range.begin());
+                copy_data(cur + new_element_size_aligned, it.get_ptr(), tail_size);
+            }
+            commit_new_buffer(new_buffer, new_buffer_size);
+        }
+        //
+        // Last element moved ahead by the size of the new inserted element
+        //
+        buff().last = buff().begin + prev_sizes.last_element.begin() + new_element_size_aligned;
+
+        validate_pointer_invariants();
+        validate_data_invariants();
+        //
+        // Return iterator pointing to the new inserted element
+        //
+        return std::make_pair(true, iterator{ cur });
+    }
+    //!
     //! @brief Tells if container contains no elements.
     //! @returns False when containe contains at least one element
     //! and true otherwise.
@@ -5009,8 +5114,9 @@ private:
     //! 
     //!
     template <typename F>
-    iterator resize_last_element( size_type new_size, 
-                                  F const &fn) {
+    std::pair<bool, iterator> resize_last_element(can_reallocate reallocation_policy,
+                                                  size_type new_size,
+                                                  F const &fn) {
 
         validate_pointer_invariants();
 
@@ -5035,6 +5141,10 @@ private:
                new_size);
 
         } else {
+
+            if (can_reallocate::no == reallocation_policy) {
+                return std::make_pair(false, last());
+            }
 
             char *new_buffer{ nullptr };
             size_type new_buffer_size{ 0 };
@@ -5070,7 +5180,229 @@ private:
         validate_pointer_invariants();
         validate_data_invariants();
 
-        return last();
+        return std::make_pair(true, last());
+    }
+    //!
+    //! @brief Resizes element.
+    //! @tparam F - type of functor user to update element.
+    //! @param it - iterator that points to the element that is being resized.
+    //! @param new_size - new element size.
+    //! @param fn - functor used to update element after it was resized.
+    //! @throws std::bad_alloc if allocating new buffer fails.
+    //! @details Resizing to 0 will delete element.
+    //! Resizing to size smaller than minimum_size will trigger fail-fast.
+    //! Resizing to any other size also fixes alignment of element and 
+    //! adds missing padding.
+    //!
+    template <typename F>
+    std::pair<bool, iterator> element_resize_impl(can_reallocate reallocation_policy, 
+                                                  iterator const &it,
+                                                  size_type new_size, 
+                                                  F const &fn) {
+        //
+        // Resize to 0 is same as erase
+        //
+        if (0 == new_size) {
+            return std::make_pair(true, erase(it));
+        }
+
+        FFL_CODDING_ERROR_IF(new_size < traits_traits::minimum_size());
+        //
+        // Separately handle case of resizing the last element 
+        // we do not need to deal with tail and padding
+        // for the next element
+        //
+        if (last() == it) {
+            return resize_last_element(reallocation_policy, new_size, fn);
+        }
+        //
+        // Now deal with resizing element in the middle
+        // or at the head
+        //
+        validate_pointer_invariants();
+        validate_iterator_not_end(it);
+
+        iterator result_it;
+
+        sizes_t prev_sizes{ get_all_sizes() };
+        range_t element_range_before{ range_unsafe(it) };
+        //
+        // We will change element size by padded size to make sure
+        // that next element stays padded
+        //
+        size_type new_size_padded{ traits_traits::roundup_to_alignment(new_size) };
+        //
+        // Calculate tail size
+        //
+        size_type const tail_size{ prev_sizes.used_capacity().size - element_range_before.buffer_end };
+        //
+        // By how much element size is changing
+        //
+        difference_type const element_size_diff{ static_cast<difference_type>(new_size_padded - element_range_before.buffer_size()) };
+        //
+        // This branch handles case when we do not need to reallocate buffer
+        // and we have sufficiently large buffer.
+        //
+        if (element_size_diff < 0 ||
+            prev_sizes.remaining_capacity_for_insert() >= static_cast<size_type>(element_size_diff)) {
+
+            size_type tail_start_offset = element_range_before.buffer_end;
+            //
+            // If element is getting extended in size then shift tail to the 
+            // right to make space for element data, and remember new tail 
+            // position
+            //
+            if (new_size_padded > element_range_before.buffer_size()) {
+                move_data(buff().begin + element_range_before.begin() + new_size_padded,
+                          buff().begin + tail_start_offset,
+                          tail_size);
+
+                tail_start_offset = element_range_before.begin() + new_size_padded;
+            }
+            //
+            // Regardless how  we are exiting scope, by exception or not,
+            // shift tail left so it would be right after the new end of 
+            // the element
+            //
+            auto fix_tail{ make_scope_guard([this, 
+                                            it, 
+                                            new_size, 
+                                            new_size_padded, 
+                                            &prev_sizes, 
+                                            tail_start_offset, 
+                                            tail_size,
+                                            &element_range_before] {
+                //
+                // See how much space elements consumes now
+                //
+                size_with_padding_t const element_size_after { this->size_unsafe(it)};
+                //
+                // New element size must not be larget than size that it is 
+                // allowed to grow by
+                //
+                FFL_CODDING_ERROR_IF(element_size_after.size > new_size);
+                //
+                // If we have next pointer then next element should start after new_size_padded
+                // otherwise if should start after padded size of the element
+                //
+                range_t element_range_after{ element_range_before.begin(),
+                                             element_range_after.begin() + element_size_after.size,
+                                             element_range_after.begin() + new_size_padded };
+                element_range_after.verify();
+                //
+                // New evement end must not pass current tail position
+                //
+                FFL_CODDING_ERROR_IF(element_range_after.buffer_end > tail_start_offset);
+                //
+                // if size changed, then shift tal to the left
+                //
+                if (element_range_after.buffer_end != element_range_before.buffer_end) {
+
+                    move_data(buff().begin + element_range_after.buffer_end,
+                              buff().begin + tail_start_offset,
+                              tail_size);
+                    //
+                    // calculate by how much tail moved
+                    //
+                    difference_type tail_shift{ static_cast<difference_type>(element_range_after.buffer_size() -
+                                                                             element_range_before.buffer_size()) };
+                    //
+                    // Update pointer to last element
+                    //
+                    buff().last += tail_shift;
+                }
+
+                this->set_next_offset(it.get_ptr(), element_range_after.buffer_size());
+            }) };
+
+            fn(it.get_ptr(), 
+               element_range_before.buffer_size(),
+               new_size);
+
+            result_it = it;
+
+        } else {
+            if (can_reallocate::no == reallocation_policy) {
+                return std::make_pair(false, it);
+            }
+            //
+            // Buffer is increasing in size so we will need to reallocate buffer
+            //
+            char *new_buffer{ nullptr };
+            size_type new_buffer_size{ 0 };
+            auto deallocate_buffer{ make_scoped_deallocator(&new_buffer, &new_buffer_size) };
+
+            new_buffer_size = prev_sizes.used_capacity().size + new_size_padded - element_range_before.buffer_size();
+            new_buffer = allocate_buffer(new_buffer_size);
+            //
+            // copy element that we are changing to the new buffer
+            //
+            copy_data(new_buffer + element_range_before.begin(),
+                      buff().begin + element_range_before.begin(),
+                      element_range_before.buffer_size());
+            //
+            // change element
+            //
+            fn(new_buffer + element_range_before.begin(),
+               element_range_before.buffer_size(),
+               new_size);
+            //
+            // fn did not throw an exception, and remainder of 
+            // function is noexcept
+            //
+            result_it = iterator{ new_buffer + element_range_before.begin() };
+            //
+            // copy head
+            //
+            copy_data(new_buffer, buff().begin, element_range_before.begin());
+            //
+            // See how much space elements consumes now
+            //
+            size_with_padding_t const element_size_after = this->size_unsafe(result_it);
+            //
+            // New element size must not be larget than size that it is 
+            // allowed to grow by
+            //
+            FFL_CODDING_ERROR_IF(element_size_after.size > new_size);
+            //
+            // If we have next pointer then next element should start after new_size_padded
+            // otherwise if should start after padded size of the element
+            //
+            range_t element_range_after{ element_range_before.begin(),
+                                         element_range_after.begin() + element_size_after.size,
+                                         element_range_after.begin() + new_size_padded };
+            element_range_after.verify();
+            //
+            // Copy tail
+            //
+            move_data(new_buffer + element_range_after.buffer_end,
+                      buff().begin + element_range_before.buffer_end,
+                      tail_size);
+            //
+            // commit mew buffer
+            //
+            commit_new_buffer(new_buffer, new_buffer_size);
+            //
+            // calculate by how much tail moved
+            //
+            difference_type tail_shift{ static_cast<difference_type>(element_range_after.buffer_size() -
+                                                                     element_range_before.buffer_size()) };
+            //
+            // Update pointer to last element
+            //
+            buff().last = buff().begin + prev_sizes.last_element.begin() + tail_shift;
+            //
+            // fix offset to the next element
+            //
+            this->set_next_offset(result_it.get_ptr(), element_range_after.buffer_size());
+        }
+
+        validate_pointer_invariants();
+        validate_data_invariants();
+        //
+        // Return iterator pointing to the new inserted element
+        //
+        return std::make_pair(false, result_it);
     }
     //!
     //! @brief Returns true when container has no or exactly one entry
