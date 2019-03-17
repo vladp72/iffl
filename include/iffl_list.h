@@ -5402,7 +5402,7 @@ private:
         //
         // Return iterator pointing to the new inserted element
         //
-        return std::make_pair(false, result_it);
+        return std::make_pair(true, result_it);
     }
     //!
     //! @brief Returns true when container has no or exactly one entry
