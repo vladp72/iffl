@@ -326,7 +326,7 @@ inline void flat_forward_list_iterator_syntax_check() {
     bli3 = std::move(bli1);
 
     ffl_iterator const bli4;
-    ffl_iterator const bli5{ bli1 };
+    [[maybe_unused]] ffl_iterator const bli5{ bli1 };
     ffl_iterator const bli6{ std::move(bli1) };
 
     bli2 = bli4;
@@ -340,13 +340,13 @@ inline void flat_forward_list_iterator_syntax_check() {
 
     ffl_const_iterator const blci4;
     ffl_const_iterator const blci5{ blci1 };
-    ffl_const_iterator const blci6{ blci5 };
+    [[maybe_unused]] ffl_const_iterator const blci6{ blci5 };
     ffl_const_iterator const blci7{ std::move(blci1) };
 
     blci2 = blci4;
 
     ffl_const_iterator blci8{ bli1 };
-    ffl_const_iterator const blci9{ bli4 };
+    [[maybe_unused]] ffl_const_iterator const blci9{ bli4 };
     ffl_const_iterator const blci10{ std::move(bli1) };
 
     blci8 = bli1;
@@ -365,8 +365,8 @@ inline void flat_forward_list_iterator_syntax_check() {
     // Assignment non-const iterator from 
     // const iterator should be failing
     //
-    ffl_iterator const bli_nc3;
-    ffl_iterator const bli_nc4;
+    [[maybe_unused]] ffl_iterator const bli_nc3;
+    [[maybe_unused]] ffl_iterator const bli_nc4;
     //
     // bli_nc3 = blci1;
     // bli_nc4 = std::move(blci1);
@@ -626,9 +626,9 @@ void flat_forward_list_resize_elements_test1() {
     for (auto i = ffl.begin(); i != ffl.end(); ++i, ++idx) {
         i = ffl.element_resize(i,
                                sizeof(FLAT_FORWARD_LIST_TEST) + 20,
-                               [idx](char *buffer,
-                                     size_t old_element_size,
-                                     size_t new_element_size) {
+                               [](char *buffer,
+                                  size_t old_element_size,
+                                  size_t new_element_size) {
                                     FLAT_FORWARD_LIST_TEST &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST *>(buffer);
                                     FFL_CODDING_ERROR_IF(old_element_size < sizeof(FLAT_FORWARD_LIST_TEST));
                                     FFL_CODDING_ERROR_IF(new_element_size < sizeof(FLAT_FORWARD_LIST_TEST));
@@ -700,10 +700,10 @@ void flat_forward_list_resize_elements_test1() {
     for (auto i = ffl.begin(); i != ffl.end(); ++idx) {
         i = ffl.element_resize(i,
                                0,
-                               [idx](char *buffer,
-                                     [[maybe_unused]] size_t old_element_size,
-                                     [[maybe_unused]] size_t new_element_size) noexcept {
-                                    [[maybe_unused]] FLAT_FORWARD_LIST_TEST const &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST *>(buffer);
+                               [](char *buffer,
+                                  [[maybe_unused]] size_t old_element_size,
+                                  [[maybe_unused]] size_t new_element_size) noexcept {
+                                  [[maybe_unused]] FLAT_FORWARD_LIST_TEST const &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST *>(buffer);
                                     FFL_CRASH_APPLICATION();
                                 });
     }
