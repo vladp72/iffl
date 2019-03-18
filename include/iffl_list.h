@@ -676,8 +676,8 @@ struct noop_validate_element_fn {
 //! @brief Forward declaration
 //!
 template<typename T,
-         typename TT,
-         typename F>
+         typename TT = flat_forward_list_traits<T>,
+         typename F = default_validate_element_fn<T, TT>>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate_has_next_offset(char const *first,
                                                                                                           char const *end,
                                                                                                           F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept;
@@ -685,8 +685,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Forward declaration
 //!
 template<typename T,
-         typename TT,
-         typename F>
+         typename TT = flat_forward_list_traits<T>,
+         typename F = default_validate_element_fn<T, TT>>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate_no_next_offset(char const *first,
                                                                                                          char const *end,
                                                                                                          F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept;
@@ -694,8 +694,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Forward declaration
 //!
 template<typename T,
-         typename TT,
-         typename F>
+         typename TT = flat_forward_list_traits<T>,
+         typename F = default_validate_element_fn<T, TT>>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(char const *first,
                                                                                           char const *end, 
                                                                                           F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept;
@@ -703,8 +703,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Forward declaration
 //!
 template<typename T,
-         typename TT,
-         typename F>
+         typename TT = flat_forward_list_traits<T>,
+         typename F = default_validate_element_fn<T, TT>>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(char *first,
                                                                                           char *end,
                                                                                           F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept;
@@ -712,8 +712,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Forward declaration
 //!
 template<typename T,
-         typename TT,
-         typename F>
+         typename TT = flat_forward_list_traits<T>,
+         typename F = default_validate_element_fn<T, TT>>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(T *first,
                                                                                           T *end,
                                                                                           F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept;
@@ -721,8 +721,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Forward declaration
 //!
 template<typename T,
-         typename TT,
-         typename F>
+         typename TT = flat_forward_list_traits<T>,
+         typename F = default_validate_element_fn<T, TT>>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(T const *first,
                                                                                           T const *end,
                                                                                           F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept;
@@ -730,8 +730,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Forward declaration
 //!
 template<typename T,
-         typename TT,
-         typename F>
+         typename TT = flat_forward_list_traits<T>,
+         typename F = default_validate_element_fn<T, TT>>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(unsigned char const *first,
                                                                                           unsigned char const *end,
                                                                                           F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept;
@@ -739,8 +739,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Forward declaration
 //!
 template<typename T,
-         typename TT,
-         typename F>
+         typename TT = flat_forward_list_traits<T>,
+         typename F = default_validate_element_fn<T, TT>>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(unsigned char *first,
                                                                                           unsigned char *end,
                                                                                           F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept;
@@ -748,8 +748,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Forward declaration
 //!
 template<typename T,
-         typename TT,
-         typename F>
+         typename TT = flat_forward_list_traits<T>,
+         typename F = default_validate_element_fn<T, TT>>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(void const *first,
                                                                                           void const *end,
                                                                                           F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept;
@@ -757,8 +757,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Forward declaration
 //!
 template<typename T,
-         typename TT,
-         typename F>
+         typename TT = flat_forward_list_traits<T>,
+         typename F = default_validate_element_fn<T, TT>>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(void *first,
                                                                                           void *end,
                                                                                           F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept;
@@ -6063,8 +6063,8 @@ flat_forward_list_ref<T, TT> &flat_forward_list_ref<T, TT>::operator= (flat_forw
 //! is defined.
 //!
 template<typename T,
-         typename TT = flat_forward_list_traits<T>,
-         typename F = default_validate_element_fn<T, TT>>
+         typename TT,
+         typename F>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate_has_next_offset(char const *first,
                                                                                                           char const *end,
                                                                                                           F const &validate_element_fn) noexcept {
@@ -6168,8 +6168,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! defined, but you want to run validation as if it is not defined.
 //!
 template<typename T,
-         typename TT = flat_forward_list_traits<T>,
-         typename F = default_validate_element_fn<T, TT>>
+         typename TT,
+         typename F>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate_no_next_offset(char const *first,
                                                                                                          char const *end,
                                                                                                          F const &validate_element_fn) noexcept {
@@ -6315,8 +6315,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //!       when buffer cannot fit next element
 //!
 template<typename T,
-         typename TT = flat_forward_list_traits<T>,
-         typename F = default_validate_element_fn<T, TT>>
+         typename TT,
+         typename F>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(char const *first,
                                                                                           char const *end, 
                                                                                           F const &validate_element_fn) noexcept {
@@ -6336,8 +6336,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 }
 
 template<typename T,
-         typename TT = flat_forward_list_traits<T>,
-         typename F = default_validate_element_fn<T, TT>>
+         typename TT,
+         typename F>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(char *first,
                                                                                           char *end, 
                                                                                           F const &validate_element_fn) noexcept {
@@ -6359,8 +6359,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Overload that takes pointers to element types
 //!
 template<typename T,
-         typename TT = flat_forward_list_traits<T>,
-         typename F = default_validate_element_fn<T, TT>>
+         typename TT,
+         typename F>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(T *first,
                                                                                           T *end,
                                                                                           F const &validate_element_fn) noexcept {
@@ -6372,8 +6372,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Overload that takes pointers to element types
 //!
 template<typename T,
-         typename TT = flat_forward_list_traits<T>,
-         typename F = default_validate_element_fn<T, TT>>
+         typename TT,
+         typename F>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(T const *first,
                                                                                           T const *end,
                                                                                           F const &validate_element_fn) noexcept {
@@ -6385,8 +6385,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Overload that takes unsigned char const pointers
 //!
 template<typename T,
-         typename TT = flat_forward_list_traits<T>,
-         typename F = default_validate_element_fn<T, TT>>
+         typename TT,
+         typename F>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(unsigned char const *first,
                                                                                           unsigned char const *end,
                                                                                           F const &validate_element_fn) noexcept {
@@ -6398,8 +6398,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Overload that takes unsigned char pointers
 //!
 template<typename T,
-         typename TT = flat_forward_list_traits<T>,
-         typename F = default_validate_element_fn<T, TT>>
+         typename TT,
+         typename F>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(unsigned char *first,
                                                                                           unsigned char *end,
                                                                                           F const &validate_element_fn) noexcept {
@@ -6411,8 +6411,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Overload that takes void const pointers
 //!
 template<typename T,
-         typename TT = flat_forward_list_traits<T>,
-         typename F = default_validate_element_fn<T, TT>>
+         typename TT,
+         typename F>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(void const *first,
                                                                                           void const *end,
                                                                                           F const &validate_element_fn) noexcept {
@@ -6424,8 +6424,8 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @brief Overload that takes void pointers
 //!
 template<typename T,
-         typename TT = flat_forward_list_traits<T>,
-         typename F = default_validate_element_fn<T, TT>>
+         typename TT,
+         typename F>
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(void *first,
                                                                                           void *end,
                                                                                           F const &validate_element_fn) noexcept {
