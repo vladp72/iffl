@@ -463,7 +463,7 @@ using is_detected_exact =
 template <typename ExpectedType,
           template <typename... > typename Operation,
           typename... Arguments>
-constexpr auto const is_detected_exact_v{ is_detected_exact<ExpectedType, Operation, Arguments...>::value{} };
+constexpr auto const is_detected_exact_v{ is_detected_exact<ExpectedType, Operation, Arguments...>{} };
 //!
 //! @typedef is_detected_convertable
 //! @brief returns std::true_type when result of metafunction detected_t is the convertable to ConvertableToType
@@ -491,6 +491,6 @@ using is_detected_convertable =
 template <typename ConvertableToType,
           template <typename... > typename Operation,
           typename... Arguments>
-constexpr auto const is_detected_convertable_v{ is_detected_convertable<ConvertableToType, Operation, Arguments...>::value{} };
+constexpr auto const is_detected_convertable_v{ is_detected_convertable<ConvertableToType, Operation, Arguments...>{} };
 
 } //namespace iffl::mpl;
