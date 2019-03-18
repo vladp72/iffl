@@ -350,7 +350,7 @@ private:
     //! !brief Metafunction that detects if traits include get_size
     //!
     template <typename P>
-    using has_get_size_mfn = decltype(std::declval<P &>().get_size(nullptr));
+    using has_get_size_mfn = decltype(std::declval<P &>().get_size(std::declval<T const &>()));
     //!
     //! @typedef has_next_offset_mfn
     //! @tparam P - type we will evaluate this metafunction for. 
@@ -358,7 +358,7 @@ private:
     //! !brief Metafunction that detects if traits include get_next_offset
     //!
     template <typename P>
-    using has_next_offset_mfn = decltype(std::declval<P &>().get_next_offset(nullptr));
+    using has_next_offset_mfn = decltype(std::declval<P &>().get_next_offset(std::declval<T const &>()));
     //!
     //! @typedef can_set_next_offset_mfn
     //! @tparam P - type we will evaluate this metafunction for. 
@@ -366,7 +366,7 @@ private:
     //! !brief Metafunction that detects if traits include set_next_offset
     //!
     template <typename P>
-    using can_set_next_offset_mfn = decltype(std::declval<P &>().set_next_offset(nullptr, 0));
+    using can_set_next_offset_mfn = decltype(std::declval<P &>().set_next_offset(std::declval<T &>(), size_t{ 0 }));
     //!
     //! @typedef can_validate_mfn
     //! @tparam P - type we will evaluate this metafunction for. 
@@ -374,7 +374,7 @@ private:
     //! !brief Metafunction that detects if traits include validate
     //!
     template <typename P>
-    using can_validate_mfn = decltype(std::declval<P &>().validate(0, nullptr));
+    using can_validate_mfn = decltype(std::declval<P &>().validate(size_t{0}, std::declval<T const &>()));
     //!
     //! @typedef has_alignment_mfn
     //! @tparam P - type we will evaluate this metafunction for. 
@@ -486,7 +486,7 @@ public:
     //! @param ptr - pointer to a buffer
     //!
     static value_type const* ptr_to_t(void const *ptr) {
-        return static_cast<value_type *>(ptr);
+        return static_cast<value_type const *>(ptr);
     }
     //!
     //! @brief Casts buffer pointer to a pointer to the element type
@@ -500,7 +500,7 @@ public:
     //! @param ptr - pointer to a buffer
     //!
     static value_type const* ptr_to_t(char const *ptr) {
-        return reinterpret_cast<value_type *>(ptr);
+        return reinterpret_cast<value_type const *>(ptr);
     }
     //!
     //! @brief Casts buffer pointer to a pointer to the element type
@@ -514,7 +514,7 @@ public:
     //! @param ptr - pointer to a buffer
     //!
     static value_type const* ptr_to_t(unsigned char const *ptr) {
-        return reinterpret_cast<value_type *>(ptr);
+        return reinterpret_cast<value_type const *>(ptr);
     }
     //!
     //! @brief returns minimum valid element size
@@ -572,7 +572,7 @@ public:
     //! @return element size wrapped into size_with_padding_t
     //!
     constexpr static size_with_padding_t get_size(char const *buffer) noexcept {
-        return size_with_padding_t{ type_traits::get_size(buffer) };
+        return size_with_padding_t{ type_traits::get_size(*ptr_to_t(buffer)) };
     }
     //!
     //! @brief Asks type traits to validate element. 
@@ -583,7 +583,7 @@ public:
     //!
     constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {
         if constexpr (can_validate_v) {
-            return type_traits::validate(buffer_size, buffer);
+            return type_traits::validate(buffer_size, *ptr_to_t(buffer));
         } else {
             return true;
         }
@@ -596,7 +596,7 @@ public:
     //!
     constexpr static size_t get_next_offset(char const *buffer) noexcept {
         if constexpr (has_next_offset_v) {
-            return type_traits::get_next_offset(buffer);
+            return type_traits::get_next_offset(*ptr_to_t(buffer));
         } else {
             size_with_padding_t s{ get_size(buffer) };
             return s.size_padded;
@@ -620,7 +620,7 @@ public:
             //
             FFL_CODDING_ERROR_IF_NOT(size == roundup_to_alignment(size));
         }
-        return type_traits::set_next_offset(buffer, size);
+        return type_traits::set_next_offset(*ptr_to_t(buffer), size);
     }
     //!
     //! @brief Prints information about what traits_traits discovered
@@ -704,7 +704,7 @@ struct default_validate_element_fn {
     //! @param buffer - pointer to the buffer used by the element
     //!
     bool operator() (size_t buffer_size, char const *buffer) const noexcept {
-        return TT::validate(buffer_size, buffer);
+        return TT::validate(buffer_size, *reinterpret_cast<T const *>(buffer));
     }
 };
 //!
@@ -2226,7 +2226,7 @@ private:
     //!
     size_type used_size_unsafe(const_iterator const &it) const noexcept {
         if constexpr (traits_traits::has_next_offset_v) {
-            size_type next_offset = traits::get_next_offset(it.get_ptr());
+            size_type next_offset = traits_traits::get_next_offset(it.get_ptr());
             if (0 == next_offset) {
                 size_with_padding_t s{ traits_traits::get_size(it.get_ptr()) };
                 //
@@ -2270,7 +2270,7 @@ private:
         r.buffer_begin = it.get_ptr() - buff().begin;
         r.data_end = r.begin() + s.size;
         if constexpr (traits_traits::has_next_offset_v) {
-            size_type next_offset = traits::get_next_offset(it.get_ptr());
+            size_type next_offset = traits_traits::get_next_offset(it.get_ptr());
             if (0 == next_offset) {
                 FFL_CODDING_ERROR_IF(last() != it);
                 r.buffer_end = r.begin() + s.size;
@@ -5723,7 +5723,7 @@ private:
     //!
     size_type used_size_unsafe(const_iterator const &it) const noexcept {
         if constexpr (traits_traits::has_next_offset_v) {
-            size_type next_offset = traits::get_next_offset(it.get_ptr());
+            size_type next_offset = traits_traits::get_next_offset(it.get_ptr());
             if (0 == next_offset) {
                 size_with_padding_t const s{ traits_traits::get_size(it.get_ptr()) };
                 //
@@ -5767,7 +5767,7 @@ private:
         r.buffer_begin = it.get_ptr() - buff().begin;
         r.data_end = r.begin() + s.size;
         if constexpr (traits_traits::has_next_offset_v) {
-            size_type const next_offset = traits::get_next_offset(it.get_ptr());
+            size_type const next_offset = traits_traits::get_next_offset(it.get_ptr());
             if (0 == next_offset) {
                 FFL_CODDING_ERROR_IF(last() != it);
                 r.buffer_end = r.begin() + s.size;

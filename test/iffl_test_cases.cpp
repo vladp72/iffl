@@ -28,8 +28,7 @@ namespace iffl {
         //
         // This is the only method required by flat_forward_list_iterator.
         //
-        static size_t get_next_offset(char const *buffer) noexcept {
-            FLAT_FORWARD_LIST_TEST const &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST const *>(buffer);
+        static size_t get_next_offset(FLAT_FORWARD_LIST_TEST const &e) noexcept {
             return e.NextEntryOffset;
         }
         //
@@ -47,14 +46,10 @@ namespace iffl {
             return  FFL_SIZE_THROUGH_FIELD(FLAT_FORWARD_LIST_TEST, DataLength) +
                     e.DataLength;
         }
-        static size_t get_size(char const *buffer) {
-            return get_size(*reinterpret_cast<FLAT_FORWARD_LIST_TEST const *>(buffer));
-        }
         //
         // This method is required for validate algorithm
         //
-        static bool validate(size_t buffer_size, char const *buffer) noexcept {
-            FLAT_FORWARD_LIST_TEST const &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST const *>(buffer);
+        static bool validate(size_t buffer_size, FLAT_FORWARD_LIST_TEST const &e) noexcept {
             //
             // if this is last element then make sure it fits in the reminder of buffer
             // otherwise make sure that pointer to the next element fits reminder of buffer
@@ -75,13 +70,12 @@ namespace iffl {
         //
         // This method is required by container
         //
-        static void set_next_offset(char *buffer, size_t size) noexcept {
-            FLAT_FORWARD_LIST_TEST &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST *>(buffer);
+        static void set_next_offset(FLAT_FORWARD_LIST_TEST &e, size_t size) noexcept {
             FFL_CODDING_ERROR_IF_NOT(size == 0 || size >= get_size(e));
             //
             // Validate alignment
             //
-            FFL_CODDING_ERROR_IF_NOT(roundup_ptr_to_alignment(buffer, alignment) == buffer);
+            FFL_CODDING_ERROR_IF_NOT(roundup_ptr_to_alignment(&e, alignment) == &e);
             FFL_CODDING_ERROR_IF_NOT(0 == size || roundup_size_to_alignment(size, alignment) == size);
             e.NextEntryOffset = size;
         }

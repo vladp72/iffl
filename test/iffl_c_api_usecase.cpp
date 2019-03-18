@@ -78,8 +78,7 @@ struct pod_array_list_entry_traits {
     //
     // This is the only method required by flat_forward_list_iterator.
     //
-    constexpr static size_t get_next_offset(char const *buffer) noexcept {
-        header_type const &e = *reinterpret_cast<header_type const *>(buffer);
+    constexpr static size_t get_next_offset(header_type const &e) noexcept {
         return e.next_offset;
     }
     //
@@ -89,9 +88,8 @@ struct pod_array_list_entry_traits {
         return FFL_SIZE_THROUGH_FIELD(header_type, length);
     }
     //
-    // Helper method that calculates buffer size
-    // Not required.
-    // Is used by validate below
+    // Required by container ir validate algorithm when type
+    // does not support get_next_offset
     //
     constexpr static size_t get_size(header_type const &e) {
         size_t const size = FFL_FIELD_OFFSET(header_type, arr) + e.length * sizeof(T);
@@ -99,18 +97,9 @@ struct pod_array_list_entry_traits {
         return size;
     }
     //
-    // Required by container ir validate algorithm when type
-    // does not support get_next_offset
-    //
-    constexpr static size_t get_size(char const *buffer) {
-        return get_size(*reinterpret_cast<header_type const *>(buffer));
-    }
-
-    //
     // This method is required for validate algorithm
     //
-    constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {
-        header_type const &e = *reinterpret_cast<header_type const *>(buffer);
+    constexpr static bool validate(size_t buffer_size, header_type const &e) noexcept {
         if (e.next_offset == 0) {
             return  get_size(e) <= buffer_size;
         } else if (e.next_offset <= buffer_size) {
@@ -121,10 +110,9 @@ struct pod_array_list_entry_traits {
     //
     // This method is required by container
     //
-    constexpr static void set_next_offset(char *buffer, size_t size) noexcept {
-        header_type &e = *reinterpret_cast<header_type *>(buffer);
+    constexpr static void set_next_offset(header_type &e, size_t size) noexcept {
         FFL_CODDING_ERROR_IF_NOT(size == 0 ||
-                                    size >= get_size(e));
+                                 size >= get_size(e));
         FFL_CODDING_ERROR_IF_NOT(iffl::roundup_size_to_alignment<T>(size) == size);
         e.next_offset = static_cast<unsigned long long>(size);
     }

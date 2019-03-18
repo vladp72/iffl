@@ -72,8 +72,7 @@ namespace iffl {
         //
         // This is the only method required by flat_forward_list_iterator.
         //
-        static size_t get_next_offset(char const *buffer) noexcept {
-            FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
+        static size_t get_next_offset(FILE_FULL_EA_INFORMATION const &e) noexcept {
             return e.NextEntryOffset;
         }
         //
@@ -92,10 +91,9 @@ namespace iffl {
                     e.EaNameLength +
                     e.EaValueLength;
         }
-        static size_t get_size(char const *buffer) {
-            return get_size(*reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer));
-        }
-
+        //
+        // This method is required for validate algorithm
+        //
         static bool validate_size(FILE_FULL_EA_INFORMATION const &e, size_t buffer_size) noexcept {
             //
             // if this is last element then make sure it fits in the reminder of buffer
@@ -117,7 +115,7 @@ namespace iffl {
 
         static bool validate_data(FILE_FULL_EA_INFORMATION const &e) noexcept {
             //
-            // This is and example of a validation you might want to do.
+            // This is an example of a validation you might want to do.
             // Extended attribute name does not have to be 0 terminated 
             // so it is not strictly speaking nessesary here.
             //
@@ -129,18 +127,13 @@ namespace iffl {
             //                            });
             return true;
         }
-        //
-        // This method is required for validate algorithm
-        //
-        static bool validate(size_t buffer_size, char const *buffer) noexcept {
-            FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
+        static bool validate(size_t buffer_size, FILE_FULL_EA_INFORMATION const &e) noexcept {
             return validate_size(e, buffer_size) && validate_data(e);
         }
         //
         // This method is required by container
         //
-        static void set_next_offset(char *buffer, size_t size) noexcept {
-            FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
+        static void set_next_offset(FILE_FULL_EA_INFORMATION &e, size_t size) noexcept {
             FFL_CODDING_ERROR_IF_NOT(size == 0 ||
                                      size >= get_size(e));
             e.NextEntryOffset = static_cast<ULONG>(size);
@@ -216,7 +209,8 @@ void handle_ea1(char const *buffer, size_t buffer_lenght) {
                 //
                 // validate element
                 //
-                bool const is_valid{ iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>::validate(buffer_size, element_buffer) };
+                bool const is_valid{ iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>::validate(buffer_size, 
+                                                                                                        *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(element_buffer)) };
                 //
                 // if element is valid then process element
                 //

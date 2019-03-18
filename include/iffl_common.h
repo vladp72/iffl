@@ -252,8 +252,8 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //! @param alignment - alignment we are rounding up to
     //! @return - value of pointer rounded up to alignment
     //!
-    inline char * roundup_ptr_to_alignment(char * ptr, size_t alignment) noexcept {
-        return static_cast<char *>(size_to_ptr(roundup_size_to_alignment(ptr_to_size(ptr), alignment)));
+    inline void * roundup_ptr_to_alignment(void * ptr, size_t alignment) noexcept {
+        return static_cast<void *>(size_to_ptr(roundup_size_to_alignment(ptr_to_size(ptr), alignment)));
     }
     //!
     //! @brief Rounds up pointer to specified alignment
@@ -262,7 +262,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //! @return - pointer rounded up to the type alignment
     //!
     template<typename T>
-    inline char * roundup_ptr_to_alignment(char *ptr) noexcept {
+    inline void * roundup_ptr_to_alignment(void *ptr) noexcept {
         static_assert(alignof(T) > 0, "Cannot devide by 0");
         return roundup_ptr_to_alignment(ptr, alignof(T));
     }
@@ -272,8 +272,8 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //! @param alignment - alignment we are rounding up to
     //! @return - value of pointer rounded up to alignment
     //!
-    inline char const * roundup_ptr_to_alignment(char const *ptr, size_t alignment) noexcept {
-        return static_cast<char const *>(size_to_ptr(roundup_size_to_alignment(ptr_to_size(ptr), alignment)));
+    inline void const * roundup_ptr_to_alignment(void const *ptr, size_t alignment) noexcept {
+        return static_cast<void const *>(size_to_ptr(roundup_size_to_alignment(ptr_to_size(ptr), alignment)));
     }
     //!
     //! @brief Rounds up pointer to specified alignment
@@ -282,7 +282,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //! @return - pointer rounded up to the type alignment
     //!
     template<typename T>
-    inline char const * roundup_ptr_to_alignment(char const *ptr) noexcept {
+    inline void const * roundup_ptr_to_alignment(void const *ptr) noexcept {
         static_assert(alignof(T) > 0, "Cannot devide by 0");
         return roundup_ptr_to_alignment(ptr, alignof(T));
     }
