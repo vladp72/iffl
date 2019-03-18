@@ -5437,12 +5437,9 @@ private:
     //! @details This call is a noop for the types that do not support 
     //! next element offset 
     //!
-    constexpr static void set_next_offset(char *buffer, size_t size) noexcept {
+    constexpr static void set_next_offset([[maybe_unused]] char *buffer, [[maybe_unused]] size_t size) noexcept {
         if constexpr (traits_traits::has_next_offset_v) {
             traits_traits::set_next_offset(buffer, size);
-        } else {
-            buffer;
-            size;
         }
     }
     //!

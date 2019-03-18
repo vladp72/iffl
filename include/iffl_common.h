@@ -201,7 +201,7 @@ constexpr inline void unused_variable([[maybe_unused]] T const &) {
 //! @param ptr - pointer that value we want to put in size_t
 //! @return - value of pointer places in size_t
 //!
-    constexpr inline size_t ptr_to_size(void const *const ptr) {
+    constexpr inline size_t const ptr_to_size(void const *const ptr) {
         static_assert(sizeof(void*) == sizeof(size_t),
                       "This function assumes that on this platform size of pointer equals to a size of size_t type");
         size_t const *const size_ptr = reinterpret_cast<size_t const *const>(&ptr);
