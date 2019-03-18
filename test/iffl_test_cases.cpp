@@ -295,7 +295,8 @@ inline void flat_forward_list_validate_test1() {
 
 inline void flat_forward_list_iterator_test1() {
     std::printf("----- flat_forward_list_iterator over \"ver1\"-----\n");
-    [[maybe_unused]] auto [is_valid, view] = iffl::flat_forward_list_validate(std::begin(ve1), std::end(ve1));
+    auto [is_valid, view] = iffl::flat_forward_list_validate(std::begin(ve1), std::end(ve1));
+    iffl::unused_variable(is_valid);
     std::for_each(view.begin(), view.begin(), 
                   [](FLAT_FORWARD_LIST_TEST &e) noexcept {
                       print_element(e);
@@ -307,7 +308,7 @@ inline void flat_forward_list_iterator_test1() {
 // it is for checking that stuff compiles.
 // Runnig this function will cause access violation.
 //
-inline int flat_forward_list_iterator_syntax_check() {
+inline void flat_forward_list_iterator_syntax_check() {
 
     static_assert(!std::is_const_v<ffl_iterator::value_type>,
                   "This is a non-const iterator");

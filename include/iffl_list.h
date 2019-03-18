@@ -4623,8 +4623,10 @@ public:
         if (empty_unsafe()) {
             return end();
         }
-        auto const [is_valid, buffer_view] = flat_forward_list_validate<T, TT>(buff().begin, 
+        auto const [is_valid, buffer_view] = flat_forward_list_validate<T, TT>(buff().begin,
                                                                                buff().begin + position);
+        unused_variable(is_valid);
+
         if (!buffer_view.empty()) {
             return iterator{ const_cast<char *>(buffer_view.last().get_ptr()) };
         }

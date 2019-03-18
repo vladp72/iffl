@@ -186,6 +186,17 @@ namespace iffl {
 #endif
 
 //!
+//! @brief Silence unused variable warning when both 
+//! - MSVC: var;
+//! - and [[maybe_unused]]
+//! do not work
+//! @tparam T - type of unused variable
+//!
+template<typename T>
+constexpr inline void unused_variable([[maybe_unused]] T const &) {
+}
+
+//!
 //! @brief Reinterprets pointer to void value as size_t value
 //! @param ptr - pointer that value we want to put in size_t
 //! @return - value of pointer places in size_t
