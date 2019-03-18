@@ -19,6 +19,7 @@
 #include <cerrno>
 #include <typeinfo>
 #include <memory>
+#include <cstring>
 
 #if defined(__GNUC__) || defined(__clang__)
 #include <experimental/memory_resource>
@@ -41,7 +42,7 @@
 //! @param EC - fail fast error code
 //!
 #ifndef FFL_FAST_FAIL
-#define FFL_FAST_FAIL(EC) {FFL_PLATFORM_FAIL_FAST(EC)}
+#define FFL_FAST_FAIL(EC) {FFL_PLATFORM_FAIL_FAST(EC);}
 #endif
 //!
 //! @brief Fail fast with error ENOTRECOVERABLE(127 or 0x7f)
@@ -240,7 +241,7 @@ namespace iffl {
     //! @param length - number of bytes to copy
     //!
     inline void copy_data(char *to_buffer, char const *from_buffer, size_t length) noexcept {
-        memcpy(to_buffer, from_buffer, length);
+        std::memcpy(to_buffer, from_buffer, length);
     }
     //!
     //! @brief copies length bytes from from_buffer to to_buffer.
@@ -251,7 +252,7 @@ namespace iffl {
     //!
 
     inline void move_data(char *to_buffer, char const *from_buffer, size_t length) noexcept {
-        memmove(to_buffer, from_buffer, length);
+        std::memmove(to_buffer, from_buffer, length);
     }
     //!
     //! @brief sets "length" consequative bytes of "to_buffer" to "value".
@@ -260,7 +261,7 @@ namespace iffl {
     //! @param length - number of bytes to assign value to
     //!
     inline void fill_buffer(char *buffer, int value, size_t length) noexcept {
-        memset(buffer, value, length);
+        std::memset(buffer, value, length);
     }
     //!
     //! @brief sets "length" consequative bytes of "to_buffer" to 0.
