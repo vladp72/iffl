@@ -72,14 +72,14 @@ namespace iffl {
         //
         // This is the only method required by flat_forward_list_iterator.
         //
-        constexpr static size_t get_next_offset(char const *buffer) noexcept {
+        static size_t get_next_offset(char const *buffer) noexcept {
             FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
             return e.NextEntryOffset;
         }
         //
         // This method is requiered for validate algorithm
         //
-        constexpr static size_t minimum_size() noexcept {
+        static size_t minimum_size() noexcept {
             return FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength);
         }
         //
@@ -87,16 +87,16 @@ namespace iffl {
         // Not required.
         // Is used by validate below
         //
-        constexpr static size_t get_size(FILE_FULL_EA_INFORMATION const &e) {
+        static size_t get_size(FILE_FULL_EA_INFORMATION const &e) {
             return  FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) +
                     e.EaNameLength +
                     e.EaValueLength;
         }
-        constexpr static size_t get_size(char const *buffer) {
+        static size_t get_size(char const *buffer) {
             return get_size(*reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer));
         }
 
-        constexpr static bool validate_size(FILE_FULL_EA_INFORMATION const &e, size_t buffer_size) noexcept {
+        static bool validate_size(FILE_FULL_EA_INFORMATION const &e, size_t buffer_size) noexcept {
             //
             // if this is last element then make sure it fits in the reminder of buffer
             // otherwise make sure that pointer to the next element fits reminder of buffer
@@ -132,7 +132,7 @@ namespace iffl {
         //
         // This method is required for validate algorithm
         //
-        constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {
+        static bool validate(size_t buffer_size, char const *buffer) noexcept {
             FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
             return validate_size(e, buffer_size) && validate_data(e);
         }
