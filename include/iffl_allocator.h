@@ -122,10 +122,10 @@ private:
     //! @return On success return a pointer to the buffer of requested size.
     //!         On failure throws std::bad_alloc.
     //!
-    void* do_allocate(size_t bytes, size_t alignment) override {
+    void* do_allocate(size_t bytes, [[maybe_unused]] size_t alignment) override {
 
         size_t bytes_with_debug_info = bytes + min_allocation_size;
-        void *ptr = _aligned_malloc(bytes_with_debug_info, alignment);
+        void *ptr = FFL_ALLIGNED_ALLOC(bytes_with_debug_info, alignment);
         if (nullptr == ptr) {
             throw std::bad_alloc{};
         }
@@ -153,7 +153,7 @@ private:
     //! @param alignment - alignment of the buffer. Must match to alignment at allocation time.
     //! @return void. Checks buffer integrity and triggers fail fast if check does not pass.
     //!
-    void do_deallocate(void* p, size_t bytes, size_t alignment) noexcept override {
+    void do_deallocate(void* p, size_t bytes, [[maybe_unused]] size_t alignment) noexcept override {
 
         decrement_busy_block_count();
 
@@ -171,7 +171,7 @@ private:
         prefix->pattern = free_block_prefix_pattern;
         suffix->pattern = free_block_suffix_pattern;
 
-        _aligned_free(prefix);
+        FFL_ALLIGNED_FREE(prefix);
     }
     //!
     //! @brief Validates that two memory resources are equivalent.

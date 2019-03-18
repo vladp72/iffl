@@ -39,6 +39,14 @@
 #define FFL_PLATFORM_FAIL_FAST(EC) {__debugbreak();__fastfail(EC);}
 #endif
 
+#if defined(__GNUC__) || defined(__clang__)
+#define FFL_ALLIGNED_ALLOC(BYTES, ALIGNMENT) malloc(BYTES)
+#define FFL_ALLIGNED_FREE(PTR) free(PTR)
+#else
+#define FFL_ALLIGNED_ALLOC(BYTES, ALIGNMENT) _aligned_malloc(BYTES, ALIGNMENT)
+#define FFL_ALLIGNED_FREE(PTR) _aligned_free(PTR)
+#endif
+
 //!
 //! @brief Fail fast with error code.
 //! @param EC - fail fast error code
