@@ -27,14 +27,21 @@
 #endif
 
 #include <cstdio>
+
+#if defined(__GNUC__) || defined(__clang__)
+//#include <x86intrin.h>
+#define FFL_PLATFORM_FAIL_FAST(EC) {std::terminate();(EC);}
+#else
 #include <intrin.h>
+#define FFL_PLATFORM_FAIL_FAST(EC) {__debugbreak();__fastfail(EC);}
+#endif
 
 //!
 //! @brief Fail fast with error code.
 //! @param EC - fail fast error code
 //!
 #ifndef FFL_FAST_FAIL
-#define FFL_FAST_FAIL(EC) {__debugbreak();__fastfail(EC);}
+#define FFL_FAST_FAIL(EC) {FFL_PLATFORM_FAIL_FAST(EC)}
 #endif
 //!
 //! @brief Fail fast with error ENOTRECOVERABLE(127 or 0x7f)
