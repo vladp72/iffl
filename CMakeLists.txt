@@ -108,6 +108,9 @@ if ( MSVC )
     target_compile_options( iffl 
                             PRIVATE 
                                 /permissive- )
+
+elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Werror")
 endif( )
 
 #
@@ -271,6 +274,8 @@ if ( MSVC )
                             PRIVATE 
 #                                /permissive- /analyze:plugin EspXEngine.dll /wd26490 /wd26429 /wd26481)
                                 /permissive- )
+elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Werror")
 endif( )
 
 target_link_libraries ( iffl_test
