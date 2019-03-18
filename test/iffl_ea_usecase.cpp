@@ -18,13 +18,21 @@
 //   Fnction handle_ea2 demonstrates how to first validate and then 
 //   iterate over trusted buffer
 //   
-
 //
 
+#if !defined(__GNUC__) && !defined(__clang__)
 #include <windows.h>
+#endif
 
 #include "iffl.h"
 #include "iffl_ea_usecase.h"
+
+#if !defined(_WINDOWS_)
+using ULONG = unsigned long;
+using USHORT = unsigned short;
+using UCHAR = unsigned char;
+using CHAR = char;
+#endif
 
 
 typedef struct _FILE_FULL_EA_INFORMATION {
