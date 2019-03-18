@@ -1057,7 +1057,7 @@ void flat_forward_list_resize_buffer_test1() {
 //
 // 1,2,3,4
 //
-FLAT_FORWARD_LIST_TEST const list_ordered1_len_4[] = {
+[[maybe_unused]] FLAT_FORWARD_LIST_TEST const list_ordered1_len_4[] = {
     {2 * sizeof(FLAT_FORWARD_LIST_TEST), 1, 1 * sizeof(FLAT_FORWARD_LIST_TEST)},
     {0xFFFFFFF1, 0xFFFFFFF2, 0xFFFFFFF3},
     {3 * sizeof(FLAT_FORWARD_LIST_TEST), 2, 2 * sizeof(FLAT_FORWARD_LIST_TEST)},
@@ -1095,7 +1095,7 @@ FLAT_FORWARD_LIST_TEST const list_unordered1_len_4[] = {
 //
 // 2,3,4,5
 //
-FLAT_FORWARD_LIST_TEST const list_ordered2_len_4[] = {
+[[maybe_unused]] FLAT_FORWARD_LIST_TEST const list_ordered2_len_4[] = {
     {2 * sizeof(FLAT_FORWARD_LIST_TEST), 2, 1 * sizeof(FLAT_FORWARD_LIST_TEST)},
     {0xFFFFFFF1, 0xFFFFFFF2, 0xFFFFFFF3},
     {3 * sizeof(FLAT_FORWARD_LIST_TEST), 3, 2 * sizeof(FLAT_FORWARD_LIST_TEST)},
@@ -1133,7 +1133,7 @@ FLAT_FORWARD_LIST_TEST const list_unordered2_len_4[] = {
 //
 // 2,5
 //
-FLAT_FORWARD_LIST_TEST const list_ordered1_len_2[] = {
+[[maybe_unused]] FLAT_FORWARD_LIST_TEST const list_ordered1_len_2[] = {
     {2 * sizeof(FLAT_FORWARD_LIST_TEST), 2, 1 * sizeof(FLAT_FORWARD_LIST_TEST)},
     {0xFFFFFFF1, 0xFFFFFFF2, 0xFFFFFFF3},
     {0, 5, 4 * sizeof(FLAT_FORWARD_LIST_TEST)},
@@ -1145,7 +1145,7 @@ FLAT_FORWARD_LIST_TEST const list_ordered1_len_2[] = {
 //
 // 5,2
 //
-FLAT_FORWARD_LIST_TEST const list_unordered1_len_2[] = {
+[[maybe_unused]] FLAT_FORWARD_LIST_TEST const list_unordered1_len_2[] = {
     {2 * sizeof(FLAT_FORWARD_LIST_TEST), 5, 1 * sizeof(FLAT_FORWARD_LIST_TEST)},
     {0xFFFFFFF1, 0xFFFFFFF2, 0xFFFFFFF3},
     {0, 2, 4 * sizeof(FLAT_FORWARD_LIST_TEST)},
