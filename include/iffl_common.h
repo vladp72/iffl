@@ -23,9 +23,15 @@
 
 #if defined(__GNUC__) || defined(__clang__)
 #include <experimental/memory_resource>
+//!
+//! @brief in GCC and CLANG pmr is still an experimental feature
+//!
 #define FFL_PMR std::experimental::pmr
 #else
 #include <memory_resource>
+//!
+//! @brief In MSVC pmr was already shipped
+//!
 #define FFL_PMR std::pmr
 #endif
 
@@ -33,17 +39,36 @@
 
 #if defined(__GNUC__) || defined(__clang__)
 //#include <x86intrin.h>
+//!
+//! @brief Need to find out what is GCC equivalent to __fastfail
+//!
 #define FFL_PLATFORM_FAIL_FAST(EC) {std::terminate();(EC);}
 #else
 #include <intrin.h>
+//!
+//! @brief In MSVC define to intrinsics that terminate the process
+//!
 #define FFL_PLATFORM_FAIL_FAST(EC) {__debugbreak();__fastfail(EC);}
 #endif
 
 #if defined(__GNUC__) || defined(__clang__)
+//!
+//! @brief In MSVC define to function that allocates buffer.
+//! Need to find out what is equivalent to _aligned_malloc on GCC
+//!
 #define FFL_ALLIGNED_ALLOC(BYTES, ALIGNMENT) malloc(BYTES)
+//!
+//! @brief In MSVC define to function matching to _aligned_malloc
+//!
 #define FFL_ALLIGNED_FREE(PTR) free(PTR)
 #else
+//!
+//! @brief In MSVC define to function that allocates aligned buffer
+//!
 #define FFL_ALLIGNED_ALLOC(BYTES, ALIGNMENT) _aligned_malloc(BYTES, ALIGNMENT)
+//!
+//! @brief In MSVC define to function matching to _aligned_malloc
+//!
 #define FFL_ALLIGNED_FREE(PTR) _aligned_free(PTR)
 #endif
 
