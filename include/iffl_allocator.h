@@ -57,7 +57,7 @@ namespace iffl {
 //! @endcode
 //!
 class debug_memory_resource 
-    : public std::pmr::memory_resource {
+    : public FFL_PMR::memory_resource {
 
 public:
 
@@ -262,7 +262,7 @@ private:
 //! allocations from multiple threads.
 //!
 class input_buffer_memory_resource
-    : public std::pmr::memory_resource {
+    : public FFL_PMR::memory_resource {
 
 public:
     //!

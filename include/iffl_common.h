@@ -23,8 +23,10 @@
 
 #if defined(__GNUC__) || defined(__clang__)
 #include <experimental/memory_resource>
+#define FFL_PMR std::experimental::pmr
 #else
 #include <memory_resource>
+#define FFL_PMR std::pmr
 #endif
 
 #include <cstdio>

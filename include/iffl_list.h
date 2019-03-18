@@ -6013,7 +6013,7 @@ template <typename T,
           typename TT = flat_forward_list_traits<T>>
  using pmr_flat_forward_list = flat_forward_list<T, 
                                                  TT, 
-                                                 std::pmr::polymorphic_allocator<char>>;
+                                                 FFL_PMR::polymorphic_allocator<char>>;
 //!
 //! @brief Constructs ref or view from container
 //! @tparam T - element type
