@@ -139,7 +139,7 @@ namespace iffl {
         //
         // This method is required by container
         //
-        constexpr static void set_next_offset(char *buffer, size_t size) noexcept {
+        static void set_next_offset(char *buffer, size_t size) noexcept {
             FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
             FFL_CODDING_ERROR_IF_NOT(size == 0 ||
                                      size >= get_size(e));
