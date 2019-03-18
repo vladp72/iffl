@@ -227,7 +227,7 @@ void print([[maybe_unused]] long_long_array_list_entry const &e) {
     std::for_each(e.arr, 
                   e.arr + e.length,
                   [](long long v) noexcept {
-                     std::printf("%I64i ", v);
+                     std::printf("%lld ", v);
                   });
     std::printf("}\n");
 }

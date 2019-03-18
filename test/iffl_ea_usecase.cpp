@@ -28,7 +28,7 @@
 #include "iffl_ea_usecase.h"
 
 #if !defined(_WINDOWS_)
-using ULONG = unsigned long;
+using ULONG = unsigned int;
 using USHORT = unsigned short;
 using UCHAR = unsigned char;
 using CHAR = char;
