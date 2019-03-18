@@ -793,8 +793,8 @@ class flat_forward_list_iterator_t final {
     //! @details Forward declaration
     //! of intrusive flat forward list reference.
     //!
-    template <typename T,
-              typename TT>
+    template <typename TU,
+              typename TTU>
     friend class flat_forward_list_ref;
 
 public:
@@ -2554,8 +2554,8 @@ public:
     //! @details Give flat_forward_list_ref friend permissins
     //! so it can initialize itself from the buffer
     //!
-    template <typename T,
-              typename TT>
+    template <typename TU,
+              typename TTU>
     friend class flat_forward_list_ref;
 
     //
