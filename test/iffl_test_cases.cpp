@@ -295,7 +295,7 @@ inline void flat_forward_list_validate_test1() {
 
 inline void flat_forward_list_iterator_test1() {
     std::printf("----- flat_forward_list_iterator over \"ver1\"-----\n");
-    auto [is_valid, view] = iffl::flat_forward_list_validate(std::begin(ve1), std::end(ve1));
+    [[maybe_unused]] auto [is_valid, view] = iffl::flat_forward_list_validate(std::begin(ve1), std::end(ve1));
     std::for_each(view.begin(), view.begin(), 
                   [](FLAT_FORWARD_LIST_TEST &e) noexcept {
                       print_element(e);
@@ -702,7 +702,7 @@ void flat_forward_list_resize_elements_test1() {
                                [idx](char *buffer,
                                      [[maybe_unused]] size_t old_element_size,
                                      [[maybe_unused]] size_t new_element_size) noexcept {
-                                    FLAT_FORWARD_LIST_TEST const &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST *>(buffer);
+                                    [[maybe_unused]] FLAT_FORWARD_LIST_TEST const &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST *>(buffer);
                                     FFL_CRASH_APPLICATION();
                                 });
     }
