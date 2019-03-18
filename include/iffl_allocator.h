@@ -310,7 +310,7 @@ protected:
     //! @return On success return a pointer to the buffer of requested size.
     //!         On failure throws std::bad_alloc.
     //!
-    void* do_allocate(size_t bytes, size_t alignment) override {
+    void* do_allocate(size_t bytes, [[maybe_unused]] size_t alignment) override {
         alignment;
         if (!used_ && buffer_ && bytes <= buffer_size_) {
             used_ = true;
@@ -327,7 +327,7 @@ protected:
     //! @return void. Checks buffer that buffer was allocated, and that deallocated buffer 
     //! match to the buffer that we own. Triggers fail fast if check does not pass.
     //!
-    void do_deallocate(void* p, size_t bytes, size_t alignment) noexcept override {
+    void do_deallocate(void* p, size_t bytes, [[maybe_unused]] size_t alignment) noexcept override {
         FFL_CODDING_ERROR_IF_NOT(p == buffer_ && bytes <= buffer_size_);
         used_ = false;
     }
