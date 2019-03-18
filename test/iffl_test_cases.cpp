@@ -776,7 +776,7 @@ void flat_forward_list_find_by_offset_test1() {
     FFL_CODDING_ERROR_IF(true == ffl.contains(element4_it, element4_range.buffer_end));
     FFL_CODDING_ERROR_IF(true == ffl.contains(element4_it, element4_range.buffer_end + 1));
 
-    auto const last_it = ffl.last();
+    [[maybe_unused]] auto const last_it = ffl.last();
     auto const last_range = ffl.range(last_it);
     FFL_CODDING_ERROR_IF(last_range.begin() < 0 || last_range.begin() >= last_range.buffer_end);
     FFL_CODDING_ERROR_IF_NOT(element4_range.begin() <= last_range.buffer_end);
@@ -851,7 +851,7 @@ void flat_forward_list_erase_range_test1() {
     auto const element0_it = ffl.begin();
     auto element1_it = element0_it + 1;
     auto const element2_it = element1_it + 1;
-    auto const last_it = ffl.last();
+    [[maybe_unused]] auto const last_it = ffl.last();
 
     ffl.erase(element1_it, element2_it);
 
@@ -932,7 +932,7 @@ void flat_forward_list_erase_after_half_closed_test1() {
     auto const element0_it = ffl.begin();
     auto const element1_it = element0_it + 1;
     auto const element2_it = element1_it + 1;
-    auto const last_it = ffl.last();
+    [[maybe_unused]] auto const last_it = ffl.last();
 
     ffl.erase_after_half_closed(element0_it, element2_it);
 

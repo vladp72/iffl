@@ -2110,7 +2110,7 @@ private:
             FFL_CODDING_ERROR_IF_NOT(cend() == it);
         } else {
             FFL_CODDING_ERROR_IF_NOT(cend() == it ||
-                                     buff().begin <= it.get_ptr() && it.get_ptr() <= buff().last);
+                                     (buff().begin <= it.get_ptr() && it.get_ptr() <= buff().last));
             validate_compare_to_all_valid_elements(it);
         }
     }
@@ -5609,7 +5609,7 @@ private:
             FFL_CODDING_ERROR_IF_NOT(cend() == it);
         } else {
             FFL_CODDING_ERROR_IF_NOT(cend() == it ||
-                                     buff().begin <= it.get_ptr() && it.get_ptr() <= buff().last);
+                                     (buff().begin <= it.get_ptr() && it.get_ptr() <= buff().last));
             validate_compare_to_all_valid_elements(it);
         }
     }
