@@ -42,7 +42,7 @@
 //!
 //! @brief Need to find out what is GCC equivalent to __fastfail
 //!
-#define FFL_PLATFORM_FAIL_FAST(EC) {std::terminate();(EC);}
+#define FFL_PLATFORM_FAIL_FAST(EC) {std::terminate();}
 #else
 #include <intrin.h>
 //!
