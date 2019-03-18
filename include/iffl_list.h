@@ -5270,7 +5270,6 @@ private:
                                             it, 
                                             new_size, 
                                             new_size_padded, 
-                                            &prev_sizes, 
                                             tail_start_offset, 
                                             tail_size,
                                             &element_range_before] {
