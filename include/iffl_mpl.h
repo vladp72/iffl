@@ -185,7 +185,7 @@ namespace iffl::mpl {
 //! It is used by detector metafunction SFINAE
 //!
 template <typename... Whatever >
-using void_t = std::void_t<Whatever>;
+using void_t = std::void_t<Whatever ...>;
 
 //!
 //! @class nonesuch
@@ -348,7 +348,7 @@ using is_detected =
 //!
 template <template <typename... > typename Operation,
           typename... Arguments>
-using is_detected_t = is_detected<Operation, Arguments>;
+using is_detected_t = is_detected<Operation, Arguments...>;
 
 //!
 //! @brief Instance of is_detected metafunction output
