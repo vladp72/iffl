@@ -579,7 +579,7 @@ public:
     //! about traits class. 
     //!
     static void print_traits_info() noexcept {
-        type_info const & ti = typeid(type_traits);
+        std::type_info const & ti = typeid(type_traits);
 
         std::printf("type \"%s\" {\n", ti.name());
 
@@ -784,9 +784,9 @@ class flat_forward_list_iterator_t final {
     //! @details Forward declaration
     //! of intrusive flat forward list container.
     //!
-    template <typename T,
-              typename TT,
-              typename A>
+    template <typename TU,
+              typename TTU,
+              typename AU>
     friend class flat_forward_list;
 
     //!
