@@ -343,6 +343,6 @@ void prepare_ea_and_call_handler() {
 }
 
 void run_ffl_ea_usecase() {
-    iffl::flat_forward_list_traits_traits<iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>>::print_traits_info();
+    iffl::flat_forward_list_traits_traits<FILE_FULL_EA_INFORMATION>::print_traits_info();
     prepare_ea_and_call_handler();
 }

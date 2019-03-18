@@ -288,7 +288,8 @@ struct flat_forward_list_traits;
 //!
 //! @class flat_forward_list_traits_traits
 //! @brief traits for flat_forward_list_traits
-//! @tparam TT type traits
+//! @tparam T - element header type
+//! @tparam TT - type traits
 //!
 //! @details
 //! I know, traits of traits does sounds redicules,
@@ -306,7 +307,7 @@ struct flat_forward_list_traits;
 //! How to use:
 //!
 //! @code
-//! using my_traits_traits = flat_forward_list_traits_traits<my_traits>;
+//! using my_traits_traits = flat_forward_list_traits_traits<my_type, my_traits>;
 //! @endcode
 //!
 //! For example:
@@ -325,7 +326,8 @@ struct flat_forward_list_traits;
 //! }
 //! @endcode
 //!
-template <typename TT>
+template < typename T,
+           typename TT = flat_forward_list_traits<T>>
 struct flat_forward_list_traits_traits {
 
 private:
@@ -385,11 +387,15 @@ private:
 
 public:
     //!
+    //! @typedef value_type
+    //! !brief alias for the value type
+    //!
+    using value_type = T;
+    //!
     //! @typedef type_traits
     //! !brief alias for the traits
     //!
     using type_traits = TT;
-
     //!
     //! @typedef has_minimum_size_t
     //! @brief Uses detect idiom with has_minimum_size_mfn to
@@ -468,6 +474,48 @@ public:
     //! @details has_alignment_v is std::true_type{} otherwise std::false_type{}
     //!
     constexpr static auto const has_alignment_v{ iffl::mpl::is_detected_v < has_alignment_mfn, type_traits> };
+    //!
+    //! @brief Casts buffer pointer to a pointer to the element type
+    //! @param ptr - pointer to a buffer
+    //!
+    static value_type* ptr_to_t(void *ptr) {
+        return static_cast<value_type *>(ptr);
+    }
+    //!
+    //! @brief Casts buffer pointer to a pointer to the element type
+    //! @param ptr - pointer to a buffer
+    //!
+    static value_type const* ptr_to_t(void const *ptr) {
+        return static_cast<value_type *>(ptr);
+    }
+    //!
+    //! @brief Casts buffer pointer to a pointer to the element type
+    //! @param ptr - pointer to a buffer
+    //!
+    static value_type* ptr_to_t(char *ptr) {
+        return reinterpret_cast<value_type *>(ptr);
+    }
+    //!
+    //! @brief Casts buffer pointer to a pointer to the element type
+    //! @param ptr - pointer to a buffer
+    //!
+    static value_type const* ptr_to_t(char const *ptr) {
+        return reinterpret_cast<value_type *>(ptr);
+    }
+    //!
+    //! @brief Casts buffer pointer to a pointer to the element type
+    //! @param ptr - pointer to a buffer
+    //!
+    static value_type* ptr_to_t(unsigned char *ptr) {
+        return reinterpret_cast<value_type *>(ptr);
+    }
+    //!
+    //! @brief Casts buffer pointer to a pointer to the element type
+    //! @param ptr - pointer to a buffer
+    //!
+    static value_type const* ptr_to_t(unsigned char const *ptr) {
+        return reinterpret_cast<value_type *>(ptr);
+    }
     //!
     //! @brief returns minimum valid element size
     //!
@@ -579,7 +627,7 @@ public:
     //! about traits class. 
     //!
     static void print_traits_info() noexcept {
-        std::type_info const & ti = typeid(type_traits);
+        std::type_info const & ti = typeid(type_traits&);
 
         std::printf("type \"%s\" {\n", ti.name());
 
@@ -832,7 +880,7 @@ public:
     //! @typedef traits_traits
     //! @brief Element traits traits type
     //!
-    using traits_traits = flat_forward_list_traits_traits<TT>;
+    using traits_traits = flat_forward_list_traits_traits<T, TT>;
     //!
     //! @typedef buffer_char_pointer
     //! @details Selects between constant and non-constant pointer to the buffer
@@ -1371,7 +1419,7 @@ public:
     //! @typedef traits_traits
     //! @brief Element traits traits type
     //!
-    using traits_traits = flat_forward_list_traits_traits<TT>;
+    using traits_traits = flat_forward_list_traits_traits<T, TT>;
     //!
     //! @typedef range_t
     //! @brief Vocabulary type used to describe
@@ -2610,7 +2658,7 @@ public:
     //! @typedef traits_traits
     //! @brief Element traits traits type
     //!
-    using traits_traits = flat_forward_list_traits_traits<TT>;
+    using traits_traits = flat_forward_list_traits_traits<T, TT>;
     //!
     //! @typedef range_t
     //! @brief Vocabulary type used to describe
@@ -5633,7 +5681,7 @@ private:
     //! in the container 
     //! @param it - iterator that we are verifying
     //!
-    void validate_compare_to_all_valid_elements(const_iterator const &it) const noexcept {
+    void validate_compare_to_all_valid_elements([[maybe_unused]] const_iterator const &it) const noexcept {
 #ifdef FFL_DBG_CHECK_ITERATOR_VALID
         //
         // If not end iterator then must point to one of the valid iterators.
@@ -6066,7 +6114,7 @@ template<typename T,
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate_has_next_offset(char const *first,
                                                                                                           char const *end,
                                                                                                           F const &validate_element_fn) noexcept {
-    using traits_traits = flat_forward_list_traits_traits<TT>;
+    using traits_traits = flat_forward_list_traits_traits<T, TT>;
     constexpr auto const type_has_next_offset{ traits_traits::has_next_offset_v };
     static_assert(type_has_next_offset, "traits type must define get_next_offset");
 
@@ -6175,7 +6223,7 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
     //
     // For this function to work correctly we do not care if 
     // traits has get_next_offset
-    using traits_traits = flat_forward_list_traits_traits<TT>;
+    using traits_traits = flat_forward_list_traits_traits<T, TT>;
     //
     // by default we did not found any valid elements
     //
@@ -6318,7 +6366,7 @@ template<typename T,
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(char const *first,
                                                                                           char const *end, 
                                                                                           F const &validate_element_fn) noexcept {
-    using traits_traits = flat_forward_list_traits_traits<TT>;
+    using traits_traits = flat_forward_list_traits_traits<T, TT>;
     constexpr auto const type_has_next_offset{ traits_traits::has_next_offset_v };
     //
     // If TT::get_next_offset is defined then use 
@@ -6339,7 +6387,7 @@ template<typename T,
 constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list_validate(char *first,
                                                                                           char *end, 
                                                                                           F const &validate_element_fn) noexcept {
-    using traits_traits = flat_forward_list_traits_traits<TT>;
+    using traits_traits = flat_forward_list_traits_traits<T, TT>;
     constexpr auto const type_has_next_offset{ traits_traits::has_next_offset_v };
     //
     // If TT::get_next_offset is defined then use 

@@ -1215,7 +1215,7 @@ void flat_forward_list_sort_test1() {
 
 void flat_forward_list_traits_traits_test1() noexcept {
     using test_traits = iffl::flat_forward_list_traits<FLAT_FORWARD_LIST_TEST>;
-    using test_traits_traits = iffl::flat_forward_list_traits_traits<test_traits>;
+    using test_traits_traits = iffl::flat_forward_list_traits_traits<FLAT_FORWARD_LIST_TEST>;
     
     static_assert (test_traits_traits::has_minimum_size_v, 
                    "FLAT_FORWARD_LIST_TEST must have minimum_size");

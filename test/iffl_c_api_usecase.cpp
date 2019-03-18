@@ -259,6 +259,6 @@ void call_server() {
 
 
 void run_ffl_c_api_usecase() {
-    iffl::flat_forward_list_traits_traits<iffl::flat_forward_list_traits<long_long_array_list_entry>>::print_traits_info();
+    iffl::flat_forward_list_traits_traits<long_long_array_list_entry>::print_traits_info();
     call_server();
 }
