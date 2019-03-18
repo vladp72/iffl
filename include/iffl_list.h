@@ -5370,8 +5370,8 @@ private:
             // otherwise if should start after padded size of the element
             //
             range_t element_range_after{ { element_range_before.begin(),
-                                           element_range_after.begin() + element_size_after.size,
-                                           element_range_after.begin() + new_size_padded } };
+                                           element_range_before.begin() + element_size_after.size,
+                                           element_range_before.begin() + new_size_padded } };
             element_range_after.verify();
             //
             // Copy tail
