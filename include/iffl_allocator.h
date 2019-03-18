@@ -311,7 +311,6 @@ protected:
     //!         On failure throws std::bad_alloc.
     //!
     void* do_allocate(size_t bytes, [[maybe_unused]] size_t alignment) override {
-        alignment;
         if (!used_ && buffer_ && bytes <= buffer_size_) {
             used_ = true;
             return buffer_;

@@ -700,11 +700,9 @@ void flat_forward_list_resize_elements_test1() {
         i = ffl.element_resize(i,
                                0,
                                [idx](char *buffer,
-                                     size_t old_element_size,
-                                     size_t new_element_size) noexcept {
+                                     [[maybe_unused]] size_t old_element_size,
+                                     [[maybe_unused]] size_t new_element_size) noexcept {
                                     FLAT_FORWARD_LIST_TEST const &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST *>(buffer);
-                                    old_element_size;
-                                    new_element_size;
                                     FFL_CRASH_APPLICATION();
                                 });
     }
