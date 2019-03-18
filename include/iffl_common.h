@@ -195,6 +195,13 @@ namespace iffl {
 template<typename T>
 constexpr inline void unused_variable([[maybe_unused]] T const &) {
 }
+//!
+//! @brief Silence sinetizer warning about unused result of expression 
+//! @tparam T - type of unused variable
+//!
+template<typename T>
+constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
+}
 
 //!
 //! @brief Reinterprets pointer to void value as size_t value

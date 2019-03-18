@@ -375,20 +375,20 @@ inline void flat_forward_list_iterator_syntax_check() {
     //
     // We can compare two non-const iterators
     //
-    bli1 == bli2;
-    bli1 != bli2;
+    iffl::unused_expression_result(bli1 == bli2);
+    iffl::unused_expression_result(bli1 != bli2);
     //
     // We can compare two const iterators
     //
-    blci1 == blci2;
-    blci1 != blci2;
+    iffl::unused_expression_result(blci1 == blci2);
+    iffl::unused_expression_result(blci1 != blci2);
     //
     // We can compare const and non-const iterator
     //
-    bli1 == blci1;
-    blci1 == bli1;
-    bli4 == blci4;
-    blci4 == bli4;
+    iffl::unused_expression_result(bli1 == blci1);
+    iffl::unused_expression_result(blci1 == bli1);
+    iffl::unused_expression_result(bli4 == blci4);
+    iffl::unused_expression_result(blci4 == bli4);
     
     std::for_each(bli1, bli2, [](FLAT_FORWARD_LIST_TEST &) {});
 
