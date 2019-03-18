@@ -208,7 +208,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
 //! @param ptr - pointer that value we want to put in size_t
 //! @return - value of pointer places in size_t
 //!
-    constexpr inline size_t const ptr_to_size(void const *const ptr) {
+    inline size_t const ptr_to_size(void const *const ptr) {
         static_assert(sizeof(void*) == sizeof(size_t),
                       "This function assumes that on this platform size of pointer equals to a size of size_t type");
         size_t const *const size_ptr = reinterpret_cast<size_t const *const>(&ptr);
@@ -220,7 +220,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //! @param size - value that we want to reinterpret as a pointer
     //! @return - pointer that contains same value as passed in size parameter
     //!
-    constexpr inline void * const size_to_ptr(size_t size) {
+    inline void * const size_to_ptr(size_t size) {
         static_assert(sizeof(void*) == sizeof(size_t),
                       "This function assumes that on this platform size of pointer equals to a size of size_t type");
         void ** ptr_ptr = reinterpret_cast<void **>(&size);
@@ -252,7 +252,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //! @param alignment - alignment we are rounding up to
     //! @return - value of pointer rounded up to alignment
     //!
-    constexpr inline char * roundup_ptr_to_alignment(char * ptr, size_t alignment) noexcept {
+    inline char * roundup_ptr_to_alignment(char * ptr, size_t alignment) noexcept {
         return static_cast<char *>(size_to_ptr(roundup_size_to_alignment(ptr_to_size(ptr), alignment)));
     }
     //!
@@ -262,7 +262,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //! @return - pointer rounded up to the type alignment
     //!
     template<typename T>
-    constexpr inline char * roundup_ptr_to_alignment(char *ptr) noexcept {
+    inline char * roundup_ptr_to_alignment(char *ptr) noexcept {
         static_assert(alignof(T) > 0, "Cannot devide by 0");
         return roundup_ptr_to_alignment(ptr, alignof(T));
     }
@@ -272,7 +272,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //! @param alignment - alignment we are rounding up to
     //! @return - value of pointer rounded up to alignment
     //!
-    constexpr inline char const * roundup_ptr_to_alignment(char const *ptr, size_t alignment) noexcept {
+    inline char const * roundup_ptr_to_alignment(char const *ptr, size_t alignment) noexcept {
         return static_cast<char const *>(size_to_ptr(roundup_size_to_alignment(ptr_to_size(ptr), alignment)));
     }
     //!
@@ -282,7 +282,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //! @return - pointer rounded up to the type alignment
     //!
     template<typename T>
-    constexpr inline char const * roundup_ptr_to_alignment(char const *ptr) noexcept {
+    inline char const * roundup_ptr_to_alignment(char const *ptr) noexcept {
         static_assert(alignof(T) > 0, "Cannot devide by 0");
         return roundup_ptr_to_alignment(ptr, alignof(T));
     }

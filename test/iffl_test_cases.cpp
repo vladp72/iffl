@@ -75,7 +75,7 @@ namespace iffl {
         //
         // This method is required by container
         //
-        constexpr static void set_next_offset(char *buffer, size_t size) noexcept {
+        static void set_next_offset(char *buffer, size_t size) noexcept {
             FLAT_FORWARD_LIST_TEST &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST *>(buffer);
             FFL_CODDING_ERROR_IF_NOT(size == 0 || size >= get_size(e));
             //
