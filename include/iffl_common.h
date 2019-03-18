@@ -19,7 +19,13 @@
 #include <cerrno>
 #include <typeinfo>
 #include <memory>
+
+#if defined(__GNUC__) || defined(__clang__)
+#include <experimental/memory_resource>
+#else
 #include <memory_resource>
+#endif
+
 #include <cstdio>
 #include <intrin.h>
 
