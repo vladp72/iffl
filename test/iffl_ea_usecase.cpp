@@ -167,7 +167,7 @@ void print_ea(size_t idx,
               FILE_FULL_EA_INFORMATION const &e) {
     std::printf("FILE_FULL_EA_INFORMATION[%zi] @ = 0x%p, buffer offset %zi\n",
            idx,
-           &e,
+           iffl::cast_to_void_ptr(&e),
            offset);
     std::printf("FILE_FULL_EA_INFORMATION[%zi].NextEntryOffset = %u\n",
            idx,
@@ -243,8 +243,8 @@ void handle_ea1(char const *buffer, size_t buffer_lenght) {
     std::printf("\n");
     std::printf("valid                            : %s\n", is_valid ? "yes" : "no");
     std::printf("found elements                   : %zi\n", idx);
-    std::printf("last valid element               : 0x%p\n", buffer_view.last().get_ptr());
-    std::printf("element failed validation        : 0x%p\n", failed_validation);
+    std::printf("last valid element               : 0x%p\n", iffl::cast_to_void_ptr(buffer_view.last().get_ptr()));
+    std::printf("element failed validation        : 0x%p\n", iffl::cast_to_void_ptr(failed_validation));
     std::printf("element failed validation length : %zi\n", invalid_element_length);
     std::printf("\n");
 }
@@ -278,7 +278,7 @@ void handle_ea2(char const *buffer, size_t buffer_lenght) {
     std::printf("\n");
     std::printf("valid                            : %s\n", is_valid ? "yes" : "no");
     std::printf("found elements                   : %zi\n", idx);
-    std::printf("last valid element               : 0x%p\n", buffer_view.last().get_ptr());
+    std::printf("last valid element               : 0x%p\n", iffl::cast_to_void_ptr(buffer_view.last().get_ptr()));
     std::printf("\n");
 }
 

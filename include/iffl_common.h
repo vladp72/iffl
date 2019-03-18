@@ -340,6 +340,19 @@ constexpr inline void unused_variable([[maybe_unused]] T const &) {
         }
     }
     //!
+//! @brief Helper method to cast a pointer to a void *.
+//! @param p - Buffer pointer.
+//! @returns pointer casted to void *
+//!
+    template <typename T>
+    inline void *cast_to_void_ptr(T *p) noexcept {
+        if constexpr (std::is_const_v<T>) {
+            return const_cast<void *>(reinterpret_cast<void const *>(p));
+        } else {
+            return reinterpret_cast<void *>(p);
+        }
+    }
+    //!
     //! @class scope_guard 
     //! @brief template class that can be parametrised with a functor
     //! or a lambda that it will call in distructor. 
