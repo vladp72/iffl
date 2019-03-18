@@ -2249,9 +2249,9 @@ private:
             range_t first_element_range{ range_unsafe(first) };
             range_t last_element_range{ range_unsafe(last) };
 
-            return range_t{ first_element_range.begin,
-                            last_element_range.data_end,
-                            last_element_range.buffer_end };
+            return range_t{ {first_element_range.begin,
+                             last_element_range.data_end,
+                             last_element_range.buffer_end } };
         }
     }
     //!
@@ -5286,9 +5286,9 @@ private:
                 // If we have next pointer then next element should start after new_size_padded
                 // otherwise if should start after padded size of the element
                 //
-                range_t element_range_after{ element_range_before.begin(),
-                                             element_range_before.begin() + element_size_after.size,
-                                             element_range_before.begin() + new_size_padded };
+                range_t element_range_after{ {element_range_before.begin(),
+                                              element_range_before.begin() + element_size_after.size,
+                                              element_range_before.begin() + new_size_padded} };
                 element_range_after.verify();
                 //
                 // New evement end must not pass current tail position
@@ -5369,9 +5369,9 @@ private:
             // If we have next pointer then next element should start after new_size_padded
             // otherwise if should start after padded size of the element
             //
-            range_t element_range_after{ element_range_before.begin(),
-                                         element_range_after.begin() + element_size_after.size,
-                                         element_range_after.begin() + new_size_padded };
+            range_t element_range_after{ { element_range_before.begin(),
+                                           element_range_after.begin() + element_size_after.size,
+                                           element_range_after.begin() + new_size_padded } };
             element_range_after.verify();
             //
             // Copy tail
@@ -5746,9 +5746,9 @@ private:
             range_t first_element_range{ range_unsafe(first) };
             range_t last_element_range{ range_unsafe(last) };
 
-            return range_t{ first_element_range.begin,
-                            last_element_range.data_end,
-                            last_element_range.buffer_end };
+            return range_t{ {first_element_range.begin,
+                             last_element_range.data_end,
+                             last_element_range.buffer_end } };
         }
     }
     //!
