@@ -519,14 +519,14 @@ public:
     //!
     //! @brief returns minimum valid element size
     //!
-    constexpr static [[nodiscard]] size_t minimum_size() noexcept {
+    [[nodiscard]] constexpr static size_t minimum_size() noexcept {
         return type_traits::minimum_size();
     }
     //!
     //! @brief If traits defined allignment then size of
     //! alignment, and 1 otherwise
     //!
-    constexpr static [[nodiscard]] size_t get_alignment() noexcept {
+    [[nodiscard]] constexpr static size_t get_alignment() noexcept {
         if constexpr (has_alignment_v) {
             return type_traits::alignment;
         } else {
@@ -559,7 +559,7 @@ public:
     //! @param s - value that we are rounding up
     //! @return Value of s padded to alignment
     //!
-    constexpr static[[nodiscard]] size_t roundup_to_alignment(size_t s) noexcept {
+    [[nodiscard]] constexpr static size_t roundup_to_alignment(size_t s) noexcept {
         if constexpr (has_alignment_v && 0 != alignment) {
             return roundup_size_to_alignment(s, alignment);
         } else {
@@ -571,7 +571,7 @@ public:
     //! @param buffer - pointer to the begining of the element
     //! @return element size wrapped into size_with_padding_t
     //!
-    constexpr static[[nodiscard]] size_with_padding_t get_size(char const *buffer) noexcept {
+    [[nodiscard]] constexpr static size_with_padding_t get_size(char const *buffer) noexcept {
         return size_with_padding_t{ type_traits::get_size(*ptr_to_t(buffer)) };
     }
     //!
@@ -581,7 +581,7 @@ public:
     //! @param buffer - pointer to the begining of the element
     //! @return element size wrapped into size_with_padding_t
     //!
-    constexpr static[[nodiscard]] bool validate(size_t buffer_size, T const &buffer) noexcept {
+    [[nodiscard]] constexpr static bool validate(size_t buffer_size, T const &buffer) noexcept {
         if constexpr (can_validate_v) {
             return type_traits::validate(buffer_size, buffer);
         } else {
@@ -594,7 +594,7 @@ public:
     //! @return For the types that support query for the next element offset
     //! method returns get_next_offset, otherwise it returns element size
     //!
-    constexpr static[[nodiscard]] size_t get_next_offset(char const *buffer) noexcept {
+    [[nodiscard]] constexpr static size_t get_next_offset(char const *buffer) noexcept {
         if constexpr (has_next_offset_v) {
             return type_traits::get_next_offset(*ptr_to_t(buffer));
         } else {
@@ -5474,14 +5474,14 @@ private:
     //! @brief Returns true when container has no or exactly one entry
     //! and false otherwise.
     //!
-    constexpr[[nodiscard]] bool has_one_or_no_entry() const noexcept {
+    [[nodiscard]] constexpr bool has_one_or_no_entry() const noexcept {
         return buff().last == buff().begin;
     }
     //!
     //! @brief Returns true when container has exactly one entry
     //! and false otherwise.
     //!
-    constexpr[[nodiscard]] bool has_exactly_one_entry() const noexcept {
+    [[nodiscard]] constexpr bool has_exactly_one_entry() const noexcept {
         return nullptr != buff().last &&
             buff().last == buff().begin;
     }
