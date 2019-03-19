@@ -79,9 +79,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acb8d5f5d2eb20bfb48ca07a71dbf3ff3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1default__validate__element__fn.html#acb8d5f5d2eb20bfb48ca07a71dbf3ff3">operator()</a> (size_t buffer_size, char const *buffer) const noexcept</td></tr>
-<tr class="memdesc:acb8d5f5d2eb20bfb48ca07a71dbf3ff3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function call iterator that validates element.  <a href="#acb8d5f5d2eb20bfb48ca07a71dbf3ff3">More...</a><br /></td></tr>
-<tr class="separator:acb8d5f5d2eb20bfb48ca07a71dbf3ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a445aa24e0fcd15b989f41d09328a2eaa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1default__validate__element__fn.html#a445aa24e0fcd15b989f41d09328a2eaa">operator()</a> (size_t buffer_size, T const &amp;e) const noexcept</td></tr>
+<tr class="memdesc:a445aa24e0fcd15b989f41d09328a2eaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function call iterator that validates element.  <a href="#a445aa24e0fcd15b989f41d09328a2eaa">More...</a><br /></td></tr>
+<tr class="separator:a445aa24e0fcd15b989f41d09328a2eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt;<br />
@@ -96,8 +96,8 @@ class iffl::default_validate_element_fn&lt; T, TT &gt;</h3>
 </dl>
 <p>Calls flat_forward_list_traits::validate(...) </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="acb8d5f5d2eb20bfb48ca07a71dbf3ff3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb8d5f5d2eb20bfb48ca07a71dbf3ff3">&#9670;&nbsp;</a></span>operator()()</h2>
+<a id="a445aa24e0fcd15b989f41d09328a2eaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a445aa24e0fcd15b989f41d09328a2eaa">&#9670;&nbsp;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -116,8 +116,8 @@ template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>buffer</em>&#160;</td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>e</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -136,7 +136,7 @@ template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buffer_size</td><td>- size of the buffer used by the element </td></tr>
-    <tr><td class="paramname">buffer</td><td>- pointer to the buffer used by the element </td></tr>
+    <tr><td class="paramname">e</td><td>- pointer to the buffer used by the element </td></tr>
   </table>
   </dd>
 </dl>

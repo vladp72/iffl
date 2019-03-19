@@ -170,18 +170,26 @@ template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </
 <tr class="memdesc:a06df220d9126052279a6c8c6cd3e482a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constant view to flat forward list. <br /></td></tr>
 <tr class="separator:a06df220d9126052279a6c8c6cd3e482a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed3cdfbfc81a514a8e68df0854789a00"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </td></tr>
-<tr class="memitem:aed3cdfbfc81a514a8e68df0854789a00"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#aed3cdfbfc81a514a8e68df0854789a00">pmr_flat_forward_list</a> = <a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a>&lt; T, TT, std::pmr::polymorphic_allocator&lt; char &gt; &gt;</td></tr>
+<tr class="memitem:aed3cdfbfc81a514a8e68df0854789a00"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#aed3cdfbfc81a514a8e68df0854789a00">pmr_flat_forward_list</a> = <a class="el" href="classiffl_1_1flat__forward__list.html">flat_forward_list</a>&lt; T, TT, FFL_PMR::polymorphic_allocator&lt; char &gt; &gt;</td></tr>
 <tr class="memdesc:aed3cdfbfc81a514a8e68df0854789a00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this typedef if you want to use container with polimorfic allocator.  <a href="#aed3cdfbfc81a514a8e68df0854789a00">More...</a><br /></td></tr>
 <tr class="separator:aed3cdfbfc81a514a8e68df0854789a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a74b25575152028e6785daff889608baa"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a74b25575152028e6785daff889608baa">ptr_to_size</a> (void const *const ptr)</td></tr>
-<tr class="memdesc:a74b25575152028e6785daff889608baa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore saved min and max definition.  <a href="#a74b25575152028e6785daff889608baa">More...</a><br /></td></tr>
-<tr class="separator:a74b25575152028e6785daff889608baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42809efec1dceee6007ebca220fe0ba3"><td class="memItemLeft" align="right" valign="top">constexpr void *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a42809efec1dceee6007ebca220fe0ba3">size_to_ptr</a> (size_t size)</td></tr>
-<tr class="memdesc:a42809efec1dceee6007ebca220fe0ba3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinterprets size_t value as pointer to void.  <a href="#a42809efec1dceee6007ebca220fe0ba3">More...</a><br /></td></tr>
-<tr class="separator:a42809efec1dceee6007ebca220fe0ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a9d91b46344e59160e070b770d40e9f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a2a9d91b46344e59160e070b770d40e9f"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a2a9d91b46344e59160e070b770d40e9f">unused_variable</a> ([[maybe_unused]] T const &amp;)</td></tr>
+<tr class="memdesc:a2a9d91b46344e59160e070b770d40e9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore saved min and max definition.  <a href="#a2a9d91b46344e59160e070b770d40e9f">More...</a><br /></td></tr>
+<tr class="separator:a2a9d91b46344e59160e070b770d40e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93ca50887c9840f023931e8b27ccbe17"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a93ca50887c9840f023931e8b27ccbe17"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a93ca50887c9840f023931e8b27ccbe17">unused_expression_result</a> ([[maybe_unused]] T const &amp;)</td></tr>
+<tr class="memdesc:a93ca50887c9840f023931e8b27ccbe17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Silence sinetizer warning about unused result of expression.  <a href="#a93ca50887c9840f023931e8b27ccbe17">More...</a><br /></td></tr>
+<tr class="separator:a93ca50887c9840f023931e8b27ccbe17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e326f8ca98ad06d942924c5ffbc63a3"><td class="memItemLeft" align="right" valign="top">size_t const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a7e326f8ca98ad06d942924c5ffbc63a3">ptr_to_size</a> (void const *const ptr)</td></tr>
+<tr class="memdesc:a7e326f8ca98ad06d942924c5ffbc63a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinterprets pointer to void value as size_t value.  <a href="#a7e326f8ca98ad06d942924c5ffbc63a3">More...</a><br /></td></tr>
+<tr class="separator:a7e326f8ca98ad06d942924c5ffbc63a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6467e8b19ddcb0a0a80dce324f2eb9c3"><td class="memItemLeft" align="right" valign="top">void *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a6467e8b19ddcb0a0a80dce324f2eb9c3">size_to_ptr</a> (size_t size)</td></tr>
+<tr class="memdesc:a6467e8b19ddcb0a0a80dce324f2eb9c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinterprets size_t value as pointer to void.  <a href="#a6467e8b19ddcb0a0a80dce324f2eb9c3">More...</a><br /></td></tr>
+<tr class="separator:a6467e8b19ddcb0a0a80dce324f2eb9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32e6c55d3f8fcdb53f64debbbf4a5c7d"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a32e6c55d3f8fcdb53f64debbbf4a5c7d">roundup_size_to_alignment</a> (size_t size, size_t alignment) noexcept</td></tr>
 <tr class="memdesc:a32e6c55d3f8fcdb53f64debbbf4a5c7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up size to specified alignment.  <a href="#a32e6c55d3f8fcdb53f64debbbf4a5c7d">More...</a><br /></td></tr>
 <tr class="separator:a32e6c55d3f8fcdb53f64debbbf4a5c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -189,20 +197,20 @@ Functions</h2></td></tr>
 <tr class="memitem:aa12acd05702a4128b55949434f988286"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#aa12acd05702a4128b55949434f988286">roundup_size_to_alignment</a> (size_t size) noexcept</td></tr>
 <tr class="memdesc:aa12acd05702a4128b55949434f988286"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up size to specified alignment.  <a href="#aa12acd05702a4128b55949434f988286">More...</a><br /></td></tr>
 <tr class="separator:aa12acd05702a4128b55949434f988286"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2711d44b2c5f29fc8d25a08e5c63cb51"><td class="memItemLeft" align="right" valign="top">constexpr char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a2711d44b2c5f29fc8d25a08e5c63cb51">roundup_ptr_to_alignment</a> (char *ptr, size_t alignment) noexcept</td></tr>
-<tr class="memdesc:a2711d44b2c5f29fc8d25a08e5c63cb51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up pointer to specified alignment.  <a href="#a2711d44b2c5f29fc8d25a08e5c63cb51">More...</a><br /></td></tr>
-<tr class="separator:a2711d44b2c5f29fc8d25a08e5c63cb51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad1b2db11c2e8779de5ee513948cd9d6"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aad1b2db11c2e8779de5ee513948cd9d6"><td class="memTemplItemLeft" align="right" valign="top">constexpr char *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#aad1b2db11c2e8779de5ee513948cd9d6">roundup_ptr_to_alignment</a> (char *ptr) noexcept</td></tr>
-<tr class="memdesc:aad1b2db11c2e8779de5ee513948cd9d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up pointer to specified alignment.  <a href="#aad1b2db11c2e8779de5ee513948cd9d6">More...</a><br /></td></tr>
-<tr class="separator:aad1b2db11c2e8779de5ee513948cd9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af68beb46a3d4f1531f668d835ecf1328"><td class="memItemLeft" align="right" valign="top">constexpr char const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#af68beb46a3d4f1531f668d835ecf1328">roundup_ptr_to_alignment</a> (char const *ptr, size_t alignment) noexcept</td></tr>
-<tr class="memdesc:af68beb46a3d4f1531f668d835ecf1328"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up pointer to specified alignment.  <a href="#af68beb46a3d4f1531f668d835ecf1328">More...</a><br /></td></tr>
-<tr class="separator:af68beb46a3d4f1531f668d835ecf1328"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4941a5ebaa9516677bee86d04a191ca"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ac4941a5ebaa9516677bee86d04a191ca"><td class="memTemplItemLeft" align="right" valign="top">constexpr char const  *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#ac4941a5ebaa9516677bee86d04a191ca">roundup_ptr_to_alignment</a> (char const *ptr) noexcept</td></tr>
-<tr class="memdesc:ac4941a5ebaa9516677bee86d04a191ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up pointer to specified alignment.  <a href="#ac4941a5ebaa9516677bee86d04a191ca">More...</a><br /></td></tr>
-<tr class="separator:ac4941a5ebaa9516677bee86d04a191ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7163004d24a40a5c4880bacb8985e33"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#ab7163004d24a40a5c4880bacb8985e33">roundup_ptr_to_alignment</a> (void *ptr, size_t alignment) noexcept</td></tr>
+<tr class="memdesc:ab7163004d24a40a5c4880bacb8985e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up pointer to specified alignment.  <a href="#ab7163004d24a40a5c4880bacb8985e33">More...</a><br /></td></tr>
+<tr class="separator:ab7163004d24a40a5c4880bacb8985e33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36e57aa95c52aab88cddd3f6902790ee"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a36e57aa95c52aab88cddd3f6902790ee"><td class="memTemplItemLeft" align="right" valign="top">void *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a36e57aa95c52aab88cddd3f6902790ee">roundup_ptr_to_alignment</a> (void *ptr) noexcept</td></tr>
+<tr class="memdesc:a36e57aa95c52aab88cddd3f6902790ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up pointer to specified alignment.  <a href="#a36e57aa95c52aab88cddd3f6902790ee">More...</a><br /></td></tr>
+<tr class="separator:a36e57aa95c52aab88cddd3f6902790ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35c092d294aa9443c6d2ed0fe826c060"><td class="memItemLeft" align="right" valign="top">void const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a35c092d294aa9443c6d2ed0fe826c060">roundup_ptr_to_alignment</a> (void const *ptr, size_t alignment) noexcept</td></tr>
+<tr class="memdesc:a35c092d294aa9443c6d2ed0fe826c060"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up pointer to specified alignment.  <a href="#a35c092d294aa9443c6d2ed0fe826c060">More...</a><br /></td></tr>
+<tr class="separator:a35c092d294aa9443c6d2ed0fe826c060"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5efcb4790de0482696257578b53490c1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a5efcb4790de0482696257578b53490c1"><td class="memTemplItemLeft" align="right" valign="top">void const  *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a5efcb4790de0482696257578b53490c1">roundup_ptr_to_alignment</a> (void const *ptr) noexcept</td></tr>
+<tr class="memdesc:a5efcb4790de0482696257578b53490c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds up pointer to specified alignment.  <a href="#a5efcb4790de0482696257578b53490c1">More...</a><br /></td></tr>
+<tr class="separator:a5efcb4790de0482696257578b53490c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad07072ae8b15c3cb89c45049f070b7c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#aad07072ae8b15c3cb89c45049f070b7c">copy_data</a> (char *to_buffer, char const *from_buffer, size_t length) noexcept</td></tr>
 <tr class="memdesc:aad07072ae8b15c3cb89c45049f070b7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">copies length bytes from from_buffer to to_buffer. source and destination buffers cannot overlap  <a href="#aad07072ae8b15c3cb89c45049f070b7c">More...</a><br /></td></tr>
 <tr class="separator:aad07072ae8b15c3cb89c45049f070b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -222,51 +230,55 @@ Functions</h2></td></tr>
 <tr class="memitem:a641650e46f9c6138e9358b9b4b4552ff"><td class="memTemplItemLeft" align="right" valign="top">char *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a641650e46f9c6138e9358b9b4b4552ff">cast_to_char_ptr</a> (T *p) noexcept</td></tr>
 <tr class="memdesc:a641650e46f9c6138e9358b9b4b4552ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to cast a pointer to a char *.  <a href="#a641650e46f9c6138e9358b9b4b4552ff">More...</a><br /></td></tr>
 <tr class="separator:a641650e46f9c6138e9358b9b4b4552ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a486d006deb665810fd35a6c029472375"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a486d006deb665810fd35a6c029472375"><td class="memTemplItemLeft" align="right" valign="top">void *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a486d006deb665810fd35a6c029472375">cast_to_void_ptr</a> (T *p) noexcept</td></tr>
+<tr class="memdesc:a486d006deb665810fd35a6c029472375"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method to cast a pointer to a void *.  <a href="#a486d006deb665810fd35a6c029472375">More...</a><br /></td></tr>
+<tr class="separator:a486d006deb665810fd35a6c029472375"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b398fb9f25e87b28239b8cd37adc324"><td class="memTemplParams" colspan="2">template&lt;typename G &gt; </td></tr>
 <tr class="memitem:a9b398fb9f25e87b28239b8cd37adc324"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a9b398fb9f25e87b28239b8cd37adc324">make_scope_guard</a> (G &amp;&amp;g)</td></tr>
 <tr class="memdesc:a9b398fb9f25e87b28239b8cd37adc324"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory method for scoped_guard.  <a href="#a9b398fb9f25e87b28239b8cd37adc324">More...</a><br /></td></tr>
 <tr class="separator:a9b398fb9f25e87b28239b8cd37adc324"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfd870943857179e636b173fb4fa7f72"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT , typename F &gt; </td></tr>
-<tr class="memitem:abfd870943857179e636b173fb4fa7f72"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#abfd870943857179e636b173fb4fa7f72">flat_forward_list_validate_has_next_offset</a> (char const *first, char const *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn) noexcept</td></tr>
-<tr class="memdesc:abfd870943857179e636b173fb4fa7f72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#abfd870943857179e636b173fb4fa7f72">More...</a><br /></td></tr>
-<tr class="separator:abfd870943857179e636b173fb4fa7f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a165e625fdb35c14a3f20c328e9bb3aa9"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT , typename F &gt; </td></tr>
-<tr class="memitem:a165e625fdb35c14a3f20c328e9bb3aa9"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a165e625fdb35c14a3f20c328e9bb3aa9">flat_forward_list_validate_no_next_offset</a> (char const *first, char const *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn) noexcept</td></tr>
-<tr class="memdesc:a165e625fdb35c14a3f20c328e9bb3aa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#a165e625fdb35c14a3f20c328e9bb3aa9">More...</a><br /></td></tr>
-<tr class="separator:a165e625fdb35c14a3f20c328e9bb3aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d10f2a4be14bda053456e1c5ffce7dd"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT , typename F &gt; </td></tr>
-<tr class="memitem:a4d10f2a4be14bda053456e1c5ffce7dd"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a4d10f2a4be14bda053456e1c5ffce7dd">flat_forward_list_validate</a> (char const *first, char const *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn) noexcept</td></tr>
-<tr class="memdesc:a4d10f2a4be14bda053456e1c5ffce7dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#a4d10f2a4be14bda053456e1c5ffce7dd">More...</a><br /></td></tr>
-<tr class="separator:a4d10f2a4be14bda053456e1c5ffce7dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71e952fa6cb4412626572f231d14e8d7"><td class="memTemplParams" colspan="2"><a id="a71e952fa6cb4412626572f231d14e8d7"></a>
-template&lt;typename T , typename TT , typename F &gt; </td></tr>
-<tr class="memitem:a71e952fa6cb4412626572f231d14e8d7"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a71e952fa6cb4412626572f231d14e8d7">flat_forward_list_validate</a> (char *first, char *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn) noexcept</td></tr>
-<tr class="memdesc:a71e952fa6cb4412626572f231d14e8d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration. <br /></td></tr>
-<tr class="separator:a71e952fa6cb4412626572f231d14e8d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5098e8672e2d52ba8f6d7df0108d8ba9"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT , typename F &gt; </td></tr>
-<tr class="memitem:a5098e8672e2d52ba8f6d7df0108d8ba9"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a5098e8672e2d52ba8f6d7df0108d8ba9">flat_forward_list_validate</a> (T *first, T *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn) noexcept</td></tr>
-<tr class="memdesc:a5098e8672e2d52ba8f6d7df0108d8ba9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#a5098e8672e2d52ba8f6d7df0108d8ba9">More...</a><br /></td></tr>
-<tr class="separator:a5098e8672e2d52ba8f6d7df0108d8ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13ecdd60e337d52b85ca540d9dbb328f"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT , typename F &gt; </td></tr>
-<tr class="memitem:a13ecdd60e337d52b85ca540d9dbb328f"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a13ecdd60e337d52b85ca540d9dbb328f">flat_forward_list_validate</a> (T const *first, T const *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn) noexcept</td></tr>
-<tr class="memdesc:a13ecdd60e337d52b85ca540d9dbb328f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#a13ecdd60e337d52b85ca540d9dbb328f">More...</a><br /></td></tr>
-<tr class="separator:a13ecdd60e337d52b85ca540d9dbb328f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab79ec52979066b87c276f0315696a312"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT , typename F &gt; </td></tr>
-<tr class="memitem:ab79ec52979066b87c276f0315696a312"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#ab79ec52979066b87c276f0315696a312">flat_forward_list_validate</a> (unsigned char const *first, unsigned char const *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn) noexcept</td></tr>
-<tr class="memdesc:ab79ec52979066b87c276f0315696a312"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#ab79ec52979066b87c276f0315696a312">More...</a><br /></td></tr>
-<tr class="separator:ab79ec52979066b87c276f0315696a312"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73680d66e30552c23630a756ee60d1ed"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT , typename F &gt; </td></tr>
-<tr class="memitem:a73680d66e30552c23630a756ee60d1ed"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a73680d66e30552c23630a756ee60d1ed">flat_forward_list_validate</a> (unsigned char *first, unsigned char *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn) noexcept</td></tr>
-<tr class="memdesc:a73680d66e30552c23630a756ee60d1ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#a73680d66e30552c23630a756ee60d1ed">More...</a><br /></td></tr>
-<tr class="separator:a73680d66e30552c23630a756ee60d1ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94d311d8512edda67316848a6f02576f"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT , typename F &gt; </td></tr>
-<tr class="memitem:a94d311d8512edda67316848a6f02576f"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a94d311d8512edda67316848a6f02576f">flat_forward_list_validate</a> (void const *first, void const *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn) noexcept</td></tr>
-<tr class="memdesc:a94d311d8512edda67316848a6f02576f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#a94d311d8512edda67316848a6f02576f">More...</a><br /></td></tr>
-<tr class="separator:a94d311d8512edda67316848a6f02576f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec8faa48f7ee8d91c095b4375b02f1b2"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT , typename F &gt; </td></tr>
-<tr class="memitem:aec8faa48f7ee8d91c095b4375b02f1b2"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#aec8faa48f7ee8d91c095b4375b02f1b2">flat_forward_list_validate</a> (void *first, void *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn) noexcept</td></tr>
-<tr class="memdesc:aec8faa48f7ee8d91c095b4375b02f1b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#aec8faa48f7ee8d91c095b4375b02f1b2">More...</a><br /></td></tr>
-<tr class="separator:aec8faa48f7ee8d91c095b4375b02f1b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4283508b0594464b208680293c8fa1f5"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </td></tr>
+<tr class="memitem:a4283508b0594464b208680293c8fa1f5"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a4283508b0594464b208680293c8fa1f5">flat_forward_list_validate_has_next_offset</a> (char const *first, char const *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn=<a class="el" href="structiffl_1_1default__validate__element__fn.html">default_validate_element_fn</a>&lt; T, TT &gt;{}) noexcept</td></tr>
+<tr class="memdesc:a4283508b0594464b208680293c8fa1f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#a4283508b0594464b208680293c8fa1f5">More...</a><br /></td></tr>
+<tr class="separator:a4283508b0594464b208680293c8fa1f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7f6375903d5162437963a66888259a9"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </td></tr>
+<tr class="memitem:ac7f6375903d5162437963a66888259a9"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#ac7f6375903d5162437963a66888259a9">flat_forward_list_validate_no_next_offset</a> (char const *first, char const *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn=<a class="el" href="structiffl_1_1default__validate__element__fn.html">default_validate_element_fn</a>&lt; T, TT &gt;{}) noexcept</td></tr>
+<tr class="memdesc:ac7f6375903d5162437963a66888259a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#ac7f6375903d5162437963a66888259a9">More...</a><br /></td></tr>
+<tr class="separator:ac7f6375903d5162437963a66888259a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06bb0b65178106f5fb0634982ec75668"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </td></tr>
+<tr class="memitem:a06bb0b65178106f5fb0634982ec75668"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a06bb0b65178106f5fb0634982ec75668">flat_forward_list_validate</a> (char const *first, char const *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn=<a class="el" href="structiffl_1_1default__validate__element__fn.html">default_validate_element_fn</a>&lt; T, TT &gt;{}) noexcept</td></tr>
+<tr class="memdesc:a06bb0b65178106f5fb0634982ec75668"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#a06bb0b65178106f5fb0634982ec75668">More...</a><br /></td></tr>
+<tr class="separator:a06bb0b65178106f5fb0634982ec75668"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fae26253c6bd5e08b98229024e59dd2"><td class="memTemplParams" colspan="2"><a id="a2fae26253c6bd5e08b98229024e59dd2"></a>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </td></tr>
+<tr class="memitem:a2fae26253c6bd5e08b98229024e59dd2"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a2fae26253c6bd5e08b98229024e59dd2">flat_forward_list_validate</a> (char *first, char *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn=<a class="el" href="structiffl_1_1default__validate__element__fn.html">default_validate_element_fn</a>&lt; T, TT &gt;{}) noexcept</td></tr>
+<tr class="memdesc:a2fae26253c6bd5e08b98229024e59dd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration. <br /></td></tr>
+<tr class="separator:a2fae26253c6bd5e08b98229024e59dd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3fc601092b4f211fa1369f540d43269"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </td></tr>
+<tr class="memitem:af3fc601092b4f211fa1369f540d43269"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#af3fc601092b4f211fa1369f540d43269">flat_forward_list_validate</a> (T *first, T *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn=<a class="el" href="structiffl_1_1default__validate__element__fn.html">default_validate_element_fn</a>&lt; T, TT &gt;{}) noexcept</td></tr>
+<tr class="memdesc:af3fc601092b4f211fa1369f540d43269"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#af3fc601092b4f211fa1369f540d43269">More...</a><br /></td></tr>
+<tr class="separator:af3fc601092b4f211fa1369f540d43269"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23dae54f1aef65189d4b3cf86ababc16"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </td></tr>
+<tr class="memitem:a23dae54f1aef65189d4b3cf86ababc16"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a23dae54f1aef65189d4b3cf86ababc16">flat_forward_list_validate</a> (T const *first, T const *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn=<a class="el" href="structiffl_1_1default__validate__element__fn.html">default_validate_element_fn</a>&lt; T, TT &gt;{}) noexcept</td></tr>
+<tr class="memdesc:a23dae54f1aef65189d4b3cf86ababc16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#a23dae54f1aef65189d4b3cf86ababc16">More...</a><br /></td></tr>
+<tr class="separator:a23dae54f1aef65189d4b3cf86ababc16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae577c0f1290fec5e15d08e818cb7526c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </td></tr>
+<tr class="memitem:ae577c0f1290fec5e15d08e818cb7526c"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#ae577c0f1290fec5e15d08e818cb7526c">flat_forward_list_validate</a> (unsigned char const *first, unsigned char const *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn=<a class="el" href="structiffl_1_1default__validate__element__fn.html">default_validate_element_fn</a>&lt; T, TT &gt;{}) noexcept</td></tr>
+<tr class="memdesc:ae577c0f1290fec5e15d08e818cb7526c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#ae577c0f1290fec5e15d08e818cb7526c">More...</a><br /></td></tr>
+<tr class="separator:ae577c0f1290fec5e15d08e818cb7526c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9d6f5e151074d2e05b3b3a79e9442b5"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </td></tr>
+<tr class="memitem:ae9d6f5e151074d2e05b3b3a79e9442b5"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#ae9d6f5e151074d2e05b3b3a79e9442b5">flat_forward_list_validate</a> (unsigned char *first, unsigned char *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn=<a class="el" href="structiffl_1_1default__validate__element__fn.html">default_validate_element_fn</a>&lt; T, TT &gt;{}) noexcept</td></tr>
+<tr class="memdesc:ae9d6f5e151074d2e05b3b3a79e9442b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#ae9d6f5e151074d2e05b3b3a79e9442b5">More...</a><br /></td></tr>
+<tr class="separator:ae9d6f5e151074d2e05b3b3a79e9442b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b033d750706d5f1127b2559fe7560ec"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </td></tr>
+<tr class="memitem:a8b033d750706d5f1127b2559fe7560ec"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a8b033d750706d5f1127b2559fe7560ec">flat_forward_list_validate</a> (void const *first, void const *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn=<a class="el" href="structiffl_1_1default__validate__element__fn.html">default_validate_element_fn</a>&lt; T, TT &gt;{}) noexcept</td></tr>
+<tr class="memdesc:a8b033d750706d5f1127b2559fe7560ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#a8b033d750706d5f1127b2559fe7560ec">More...</a><br /></td></tr>
+<tr class="separator:a8b033d750706d5f1127b2559fe7560ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea923b5cc9b6104200156f3df7931c49"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </td></tr>
+<tr class="memitem:aea923b5cc9b6104200156f3df7931c49"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; bool, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#aea923b5cc9b6104200156f3df7931c49">flat_forward_list_validate</a> (void *first, void *<a class="el" href="namespaceiffl.html#aca996347cdbe2a4522fca54db163341e">end</a>, F const &amp;validate_element_fn=<a class="el" href="structiffl_1_1default__validate__element__fn.html">default_validate_element_fn</a>&lt; T, TT &gt;{}) noexcept</td></tr>
+<tr class="memdesc:aea923b5cc9b6104200156f3df7931c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward declaration.  <a href="#aea923b5cc9b6104200156f3df7931c49">More...</a><br /></td></tr>
+<tr class="separator:aea923b5cc9b6104200156f3df7931c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7dd3eeb508b416cd1b2babd413ee3094"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT &gt; </td></tr>
 <tr class="memitem:a7dd3eeb508b416cd1b2babd413ee3094"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl.html#a7dd3eeb508b416cd1b2babd413ee3094">swap</a> (<a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &amp;lhs, <a class="el" href="classiffl_1_1flat__forward__list__ref.html">flat_forward_list_ref</a>&lt; T, TT &gt; &amp;rhs) noexcept</td></tr>
 <tr class="separator:a7dd3eeb508b416cd1b2babd413ee3094"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -615,6 +627,43 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer casted to char * </dd></dl>
+
+</div>
+</div>
+<a id="a486d006deb665810fd35a6c029472375"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a486d006deb665810fd35a6c029472375">&#9670;&nbsp;</a></span>cast_to_void_ptr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void* iffl::cast_to_void_ptr </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Helper method to cast a pointer to a void *. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>- Buffer pointer. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>pointer casted to void * </dd></dl>
 
 </div>
 </div>
@@ -1197,13 +1246,13 @@ template&lt;typename T , typename TT , typename A &gt; </div>
 
 </div>
 </div>
-<a id="a4d10f2a4be14bda053456e1c5ffce7dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d10f2a4be14bda053456e1c5ffce7dd">&#9670;&nbsp;</a></span>flat_forward_list_validate() <span class="overload">[1/7]</span></h2>
+<a id="a06bb0b65178106f5fb0634982ec75668"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06bb0b65178106f5fb0634982ec75668">&#9670;&nbsp;</a></span>flat_forward_list_validate() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename TT , typename F &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1224,7 +1273,7 @@ template&lt;typename T , typename TT , typename F &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">F const &amp;&#160;</td>
-          <td class="paramname"><em>validate_element_fn</em> = <code><a class="el" href="structiffl_1_1default__validate__element__fn.html">default_validate_element_fn</a>&lt;&#160;T,&#160;TT&#160;&gt;{}</code>&#160;</td>
+          <td class="paramname"><em>validate_element_fn</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1279,13 +1328,13 @@ template&lt;typename T , typename TT , typename F &gt; </div>
 
 </div>
 </div>
-<a id="a5098e8672e2d52ba8f6d7df0108d8ba9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5098e8672e2d52ba8f6d7df0108d8ba9">&#9670;&nbsp;</a></span>flat_forward_list_validate() <span class="overload">[2/7]</span></h2>
+<a id="af3fc601092b4f211fa1369f540d43269"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3fc601092b4f211fa1369f540d43269">&#9670;&nbsp;</a></span>flat_forward_list_validate() <span class="overload">[2/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename TT , typename F &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1326,13 +1375,13 @@ template&lt;typename T , typename TT , typename F &gt; </div>
 
 </div>
 </div>
-<a id="a13ecdd60e337d52b85ca540d9dbb328f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13ecdd60e337d52b85ca540d9dbb328f">&#9670;&nbsp;</a></span>flat_forward_list_validate() <span class="overload">[3/7]</span></h2>
+<a id="a23dae54f1aef65189d4b3cf86ababc16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23dae54f1aef65189d4b3cf86ababc16">&#9670;&nbsp;</a></span>flat_forward_list_validate() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename TT , typename F &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1373,13 +1422,13 @@ template&lt;typename T , typename TT , typename F &gt; </div>
 
 </div>
 </div>
-<a id="ab79ec52979066b87c276f0315696a312"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab79ec52979066b87c276f0315696a312">&#9670;&nbsp;</a></span>flat_forward_list_validate() <span class="overload">[4/7]</span></h2>
+<a id="ae577c0f1290fec5e15d08e818cb7526c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae577c0f1290fec5e15d08e818cb7526c">&#9670;&nbsp;</a></span>flat_forward_list_validate() <span class="overload">[4/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename TT , typename F &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1420,13 +1469,13 @@ template&lt;typename T , typename TT , typename F &gt; </div>
 
 </div>
 </div>
-<a id="a73680d66e30552c23630a756ee60d1ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73680d66e30552c23630a756ee60d1ed">&#9670;&nbsp;</a></span>flat_forward_list_validate() <span class="overload">[5/7]</span></h2>
+<a id="ae9d6f5e151074d2e05b3b3a79e9442b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9d6f5e151074d2e05b3b3a79e9442b5">&#9670;&nbsp;</a></span>flat_forward_list_validate() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename TT , typename F &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1467,13 +1516,13 @@ template&lt;typename T , typename TT , typename F &gt; </div>
 
 </div>
 </div>
-<a id="a94d311d8512edda67316848a6f02576f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94d311d8512edda67316848a6f02576f">&#9670;&nbsp;</a></span>flat_forward_list_validate() <span class="overload">[6/7]</span></h2>
+<a id="a8b033d750706d5f1127b2559fe7560ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b033d750706d5f1127b2559fe7560ec">&#9670;&nbsp;</a></span>flat_forward_list_validate() <span class="overload">[6/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename TT , typename F &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1514,13 +1563,13 @@ template&lt;typename T , typename TT , typename F &gt; </div>
 
 </div>
 </div>
-<a id="aec8faa48f7ee8d91c095b4375b02f1b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec8faa48f7ee8d91c095b4375b02f1b2">&#9670;&nbsp;</a></span>flat_forward_list_validate() <span class="overload">[7/7]</span></h2>
+<a id="aea923b5cc9b6104200156f3df7931c49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea923b5cc9b6104200156f3df7931c49">&#9670;&nbsp;</a></span>flat_forward_list_validate() <span class="overload">[7/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename TT , typename F &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1561,13 +1610,13 @@ template&lt;typename T , typename TT , typename F &gt; </div>
 
 </div>
 </div>
-<a id="abfd870943857179e636b173fb4fa7f72"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfd870943857179e636b173fb4fa7f72">&#9670;&nbsp;</a></span>flat_forward_list_validate_has_next_offset()</h2>
+<a id="a4283508b0594464b208680293c8fa1f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4283508b0594464b208680293c8fa1f5">&#9670;&nbsp;</a></span>flat_forward_list_validate_has_next_offset()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename TT , typename F &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1588,7 +1637,7 @@ template&lt;typename T , typename TT , typename F &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">F const &amp;&#160;</td>
-          <td class="paramname"><em>validate_element_fn</em> = <code><a class="el" href="structiffl_1_1default__validate__element__fn.html">default_validate_element_fn</a>&lt;&#160;T,&#160;TT&#160;&gt;{}</code>&#160;</td>
+          <td class="paramname"><em>validate_element_fn</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1617,13 +1666,13 @@ template&lt;typename T , typename TT , typename F &gt; </div>
 
 </div>
 </div>
-<a id="a165e625fdb35c14a3f20c328e9bb3aa9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a165e625fdb35c14a3f20c328e9bb3aa9">&#9670;&nbsp;</a></span>flat_forward_list_validate_no_next_offset()</h2>
+<a id="ac7f6375903d5162437963a66888259a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7f6375903d5162437963a66888259a9">&#9670;&nbsp;</a></span>flat_forward_list_validate_no_next_offset()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename TT , typename F &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;, typename F  = default_validate_element_fn&lt;T, TT&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1644,7 +1693,7 @@ template&lt;typename T , typename TT , typename F &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">F const &amp;&#160;</td>
-          <td class="paramname"><em>validate_element_fn</em> = <code><a class="el" href="structiffl_1_1default__validate__element__fn.html">default_validate_element_fn</a>&lt;&#160;T,&#160;TT&#160;&gt;{}</code>&#160;</td>
+          <td class="paramname"><em>validate_element_fn</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1939,8 +1988,8 @@ template&lt;typename G &gt; </div>
 
 </div>
 </div>
-<a id="a74b25575152028e6785daff889608baa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74b25575152028e6785daff889608baa">&#9670;&nbsp;</a></span>ptr_to_size()</h2>
+<a id="a7e326f8ca98ad06d942924c5ffbc63a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e326f8ca98ad06d942924c5ffbc63a3">&#9670;&nbsp;</a></span>ptr_to_size()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1949,7 +1998,7 @@ template&lt;typename G &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t iffl::ptr_to_size </td>
+          <td class="memname">size_t const iffl::ptr_to_size </td>
           <td>(</td>
           <td class="paramtype">void const *const&#160;</td>
           <td class="paramname"><em>ptr</em></td><td>)</td>
@@ -1963,8 +2012,8 @@ template&lt;typename G &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Restore saved min and max definition. </p>
-<p>Reinterprets pointer to void value as size_t value </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Reinterprets pointer to void value as size_t value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ptr</td><td>- pointer that value we want to put in size_t </td></tr>
   </table>
@@ -1974,8 +2023,8 @@ template&lt;typename G &gt; </div>
 
 </div>
 </div>
-<a id="a2711d44b2c5f29fc8d25a08e5c63cb51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2711d44b2c5f29fc8d25a08e5c63cb51">&#9670;&nbsp;</a></span>roundup_ptr_to_alignment() <span class="overload">[1/4]</span></h2>
+<a id="ab7163004d24a40a5c4880bacb8985e33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7163004d24a40a5c4880bacb8985e33">&#9670;&nbsp;</a></span>roundup_ptr_to_alignment() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1984,9 +2033,9 @@ template&lt;typename G &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr char* iffl::roundup_ptr_to_alignment </td>
+          <td class="memname">void* iffl::roundup_ptr_to_alignment </td>
           <td>(</td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>ptr</em>, </td>
         </tr>
         <tr>
@@ -2020,8 +2069,8 @@ template&lt;typename G &gt; </div>
 
 </div>
 </div>
-<a id="aad1b2db11c2e8779de5ee513948cd9d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad1b2db11c2e8779de5ee513948cd9d6">&#9670;&nbsp;</a></span>roundup_ptr_to_alignment() <span class="overload">[2/4]</span></h2>
+<a id="a36e57aa95c52aab88cddd3f6902790ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36e57aa95c52aab88cddd3f6902790ee">&#9670;&nbsp;</a></span>roundup_ptr_to_alignment() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2032,9 +2081,9 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr char* iffl::roundup_ptr_to_alignment </td>
+          <td class="memname">void* iffl::roundup_ptr_to_alignment </td>
           <td>(</td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>ptr</em></td><td>)</td>
           <td></td>
         </tr>
@@ -2063,8 +2112,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="af68beb46a3d4f1531f668d835ecf1328"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af68beb46a3d4f1531f668d835ecf1328">&#9670;&nbsp;</a></span>roundup_ptr_to_alignment() <span class="overload">[3/4]</span></h2>
+<a id="a35c092d294aa9443c6d2ed0fe826c060"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35c092d294aa9443c6d2ed0fe826c060">&#9670;&nbsp;</a></span>roundup_ptr_to_alignment() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2073,9 +2122,9 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr char const* iffl::roundup_ptr_to_alignment </td>
+          <td class="memname">void const* iffl::roundup_ptr_to_alignment </td>
           <td>(</td>
-          <td class="paramtype">char const *&#160;</td>
+          <td class="paramtype">void const *&#160;</td>
           <td class="paramname"><em>ptr</em>, </td>
         </tr>
         <tr>
@@ -2109,8 +2158,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ac4941a5ebaa9516677bee86d04a191ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4941a5ebaa9516677bee86d04a191ca">&#9670;&nbsp;</a></span>roundup_ptr_to_alignment() <span class="overload">[4/4]</span></h2>
+<a id="a5efcb4790de0482696257578b53490c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5efcb4790de0482696257578b53490c1">&#9670;&nbsp;</a></span>roundup_ptr_to_alignment() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2121,9 +2170,9 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr char const* iffl::roundup_ptr_to_alignment </td>
+          <td class="memname">void const* iffl::roundup_ptr_to_alignment </td>
           <td>(</td>
-          <td class="paramtype">char const *&#160;</td>
+          <td class="paramtype">void const *&#160;</td>
           <td class="paramname"><em>ptr</em></td><td>)</td>
           <td></td>
         </tr>
@@ -2241,8 +2290,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a42809efec1dceee6007ebca220fe0ba3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42809efec1dceee6007ebca220fe0ba3">&#9670;&nbsp;</a></span>size_to_ptr()</h2>
+<a id="a6467e8b19ddcb0a0a80dce324f2eb9c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6467e8b19ddcb0a0a80dce324f2eb9c3">&#9670;&nbsp;</a></span>size_to_ptr()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2251,7 +2300,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr void* const iffl::size_to_ptr </td>
+          <td class="memname">void* const iffl::size_to_ptr </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>size</em></td><td>)</td>
@@ -2381,6 +2430,82 @@ template&lt;typename T , typename TT , typename A &gt; </div>
   </dd>
 </dl>
 <p>TT is aefault initialized to specialization of <a class="el" href="structiffl_1_1flat__forward__list__traits.html" title="traits for an elements that are in the flat forward list">flat_forward_list_traits</a> for T A is default initialized to std::allocator for T </p>
+
+</div>
+</div>
+<a id="a93ca50887c9840f023931e8b27ccbe17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93ca50887c9840f023931e8b27ccbe17">&#9670;&nbsp;</a></span>unused_expression_result()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void iffl::unused_expression_result </td>
+          <td>(</td>
+          <td class="paramtype">[[maybe_unused] ] T const &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Silence sinetizer warning about unused result of expression. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>- type of unused variable </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2a9d91b46344e59160e070b770d40e9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a9d91b46344e59160e070b770d40e9f">&#9670;&nbsp;</a></span>unused_variable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr void iffl::unused_variable </td>
+          <td>(</td>
+          <td class="paramtype">[[maybe_unused] ] T const &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Restore saved min and max definition. </p>
+<p>Silence unused variable warning when both</p><ul>
+<li>MSVC: var;</li>
+<li>and [[maybe_unused]] do not work <dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>- type of unused variable </td></tr>
+  </table>
+  </dd>
+</dl>
+</li>
+</ul>
 
 </div>
 </div>

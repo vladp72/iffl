@@ -9,7 +9,7 @@ var searchData=
   ['disarm',['disarm',['../classiffl_1_1scope__guard.html#af38bd5f45a30b2ba63ea9bd2b218c05f',1,'iffl::scope_guard']]],
   ['discharge',['discharge',['../classiffl_1_1scope__guard.html#a3570a333c8317d0077253b57c406fc50',1,'iffl::scope_guard']]],
   ['distance',['distance',['../namespaceiffl.html#a75de19b348b30c2c9cec77c6ab5d0e12',1,'iffl']]],
-  ['do_5fallocate',['do_allocate',['../classiffl_1_1input__buffer__memory__resource.html#aa7df8cad423f4fcdc0cb9e2b420548a9',1,'iffl::input_buffer_memory_resource']]],
-  ['do_5fdeallocate',['do_deallocate',['../classiffl_1_1input__buffer__memory__resource.html#ac0773a1e829b86a8853749d7f09c3e52',1,'iffl::input_buffer_memory_resource']]],
+  ['do_5fallocate',['do_allocate',['../classiffl_1_1input__buffer__memory__resource.html#a77e971eee6c780d88e9891a914319cbc',1,'iffl::input_buffer_memory_resource']]],
+  ['do_5fdeallocate',['do_deallocate',['../classiffl_1_1input__buffer__memory__resource.html#a5abb2f4be953c70530a2709806927499',1,'iffl::input_buffer_memory_resource']]],
   ['do_5fis_5fequal',['do_is_equal',['../classiffl_1_1input__buffer__memory__resource.html#a6d630e0212c871020e83419ff6a616c4',1,'iffl::input_buffer_memory_resource']]]
 ];

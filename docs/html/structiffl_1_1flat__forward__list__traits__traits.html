@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>iffl: iffl::flat_forward_list_traits_traits&lt; TT &gt; Class Template Reference</title>
+<title>iffl: iffl::flat_forward_list_traits_traits&lt; T, TT &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -73,7 +73,7 @@ $(function() {
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="structiffl_1_1flat__forward__list__traits__traits-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">iffl::flat_forward_list_traits_traits&lt; TT &gt; Class Template Reference</div>  </div>
+<div class="title">iffl::flat_forward_list_traits_traits&lt; T, TT &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -84,120 +84,141 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ade16604366585216fd04f44d88e7704d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a> = TT</td></tr>
-<tr class="separator:ade16604366585216fd04f44d88e7704d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1040075f472667e53a5fd8e57d6682c2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a1040075f472667e53a5fd8e57d6682c2">has_minimum_size_t</a> = <a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">iffl::mpl::is_detected</a>&lt; has_minimum_size_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a> &gt;</td></tr>
-<tr class="memdesc:a1040075f472667e53a5fd8e57d6682c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses detect idiom with has_minimum_size_mfn to find if traits implemented minimum_size.  <a href="#a1040075f472667e53a5fd8e57d6682c2">More...</a><br /></td></tr>
-<tr class="separator:a1040075f472667e53a5fd8e57d6682c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbe2ecd0bdbbe949b1b0743662e2ba32"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#afbe2ecd0bdbbe949b1b0743662e2ba32">has_get_size_t</a> = <a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">iffl::mpl::is_detected</a>&lt; has_get_size_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a> &gt;</td></tr>
-<tr class="memdesc:afbe2ecd0bdbbe949b1b0743662e2ba32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses detect idiom with has_get_size_mfn to find if traits implemented get_size.  <a href="#afbe2ecd0bdbbe949b1b0743662e2ba32">More...</a><br /></td></tr>
-<tr class="separator:afbe2ecd0bdbbe949b1b0743662e2ba32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1731132610dcb70db02d052f980f7a08"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a1731132610dcb70db02d052f980f7a08">has_next_offset_t</a> = <a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">iffl::mpl::is_detected</a>&lt; has_next_offset_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a> &gt;</td></tr>
-<tr class="memdesc:a1731132610dcb70db02d052f980f7a08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses detect idiom with has_next_offset_mfn to find if traits implemented get_next_offset.  <a href="#a1731132610dcb70db02d052f980f7a08">More...</a><br /></td></tr>
-<tr class="separator:a1731132610dcb70db02d052f980f7a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af76b13b35ff79484c23d8177e18393d4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#af76b13b35ff79484c23d8177e18393d4">can_set_next_offset_t</a> = <a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">iffl::mpl::is_detected</a>&lt; can_set_next_offset_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a> &gt;</td></tr>
-<tr class="memdesc:af76b13b35ff79484c23d8177e18393d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses detect idiom with can_set_next_offset_mfn to find if traits implemented set_next_offset.  <a href="#af76b13b35ff79484c23d8177e18393d4">More...</a><br /></td></tr>
-<tr class="separator:af76b13b35ff79484c23d8177e18393d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a930c1b7a38d7fdf4fab3438ce020043e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a930c1b7a38d7fdf4fab3438ce020043e">can_validate_t</a> = <a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">iffl::mpl::is_detected</a>&lt; can_validate_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a> &gt;</td></tr>
-<tr class="memdesc:a930c1b7a38d7fdf4fab3438ce020043e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses detect idiom with can_validate_mfn to find if traits implemented validate.  <a href="#a930c1b7a38d7fdf4fab3438ce020043e">More...</a><br /></td></tr>
-<tr class="separator:a930c1b7a38d7fdf4fab3438ce020043e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a640a361855d23b938eabf341ba43183b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a640a361855d23b938eabf341ba43183b">has_alignment_t</a> = <a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">iffl::mpl::is_detected</a>&lt; has_alignment_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a> &gt;</td></tr>
-<tr class="memdesc:a640a361855d23b938eabf341ba43183b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses detect idiom with has_alignment_mfn to find if traits implemented validate.  <a href="#a640a361855d23b938eabf341ba43183b">More...</a><br /></td></tr>
-<tr class="separator:a640a361855d23b938eabf341ba43183b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af88543910b2f89f5cb271c57aea132ab"><td class="memItemLeft" align="right" valign="top"><a id="af88543910b2f89f5cb271c57aea132ab"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#af88543910b2f89f5cb271c57aea132ab">range_t</a> = <a class="el" href="structiffl_1_1range__with__alighment.html">range_with_alighment</a>&lt; <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa3fe68f843e48534915ef6303cd45deb">alignment</a> &gt;</td></tr>
-<tr class="memdesc:af88543910b2f89f5cb271c57aea132ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of <a class="el" href="structiffl_1_1range__with__alighment.html" title="Vocabulary type that describes a subbuffer in a larger buffer and portion of that subbuffer actuallu ...">range_with_alighment</a> fo this type alignment. <br /></td></tr>
-<tr class="separator:af88543910b2f89f5cb271c57aea132ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad77593ff4fd28ace80b243920a57bc51"><td class="memItemLeft" align="right" valign="top"><a id="ad77593ff4fd28ace80b243920a57bc51"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ad77593ff4fd28ace80b243920a57bc51">size_with_padding_t</a> = <a class="el" href="structiffl_1_1size__with__padding.html">size_with_padding</a>&lt; <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa3fe68f843e48534915ef6303cd45deb">alignment</a> &gt;</td></tr>
-<tr class="memdesc:ad77593ff4fd28ace80b243920a57bc51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of <a class="el" href="structiffl_1_1size__with__padding.html" title="Vocabulary type that describes an size and template parameter that specifies element&#39;s type alignment...">size_with_padding</a> fo this type alignment. <br /></td></tr>
-<tr class="separator:ad77593ff4fd28ace80b243920a57bc51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa01a29e472dfdd74fd15b2c63387a51"><td class="memItemLeft" align="right" valign="top"><a id="aaa01a29e472dfdd74fd15b2c63387a51"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aaa01a29e472dfdd74fd15b2c63387a51">offset_with_aligment_t</a> = <a class="el" href="structiffl_1_1offset__with__aligment.html">offset_with_aligment</a>&lt; <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa3fe68f843e48534915ef6303cd45deb">alignment</a> &gt;</td></tr>
-<tr class="memdesc:aaa01a29e472dfdd74fd15b2c63387a51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of <a class="el" href="structiffl_1_1offset__with__aligment.html" title="Vocabulary type that describes an offset in a larger buffer and template parameter that specifies ele...">offset_with_aligment</a> fo this type alignment. <br /></td></tr>
-<tr class="separator:aaa01a29e472dfdd74fd15b2c63387a51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aa3f3f21fcb8e5b2dc70842d3a29a38"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a8aa3f3f21fcb8e5b2dc70842d3a29a38">value_type</a> = T</td></tr>
+<tr class="separator:a8aa3f3f21fcb8e5b2dc70842d3a29a38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa039834a4d7d5a1f80d3de11a2d8b76d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a> = TT</td></tr>
+<tr class="separator:aa039834a4d7d5a1f80d3de11a2d8b76d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1c0eeaa131eedc957517274c7c09ba9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa1c0eeaa131eedc957517274c7c09ba9">has_minimum_size_t</a> = <a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">iffl::mpl::is_detected</a>&lt; has_minimum_size_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a> &gt;</td></tr>
+<tr class="memdesc:aa1c0eeaa131eedc957517274c7c09ba9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses detect idiom with has_minimum_size_mfn to find if traits implemented minimum_size.  <a href="#aa1c0eeaa131eedc957517274c7c09ba9">More...</a><br /></td></tr>
+<tr class="separator:aa1c0eeaa131eedc957517274c7c09ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6a01676995e497c407341511567972c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ac6a01676995e497c407341511567972c">has_get_size_t</a> = <a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">iffl::mpl::is_detected</a>&lt; has_get_size_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a> &gt;</td></tr>
+<tr class="memdesc:ac6a01676995e497c407341511567972c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses detect idiom with has_get_size_mfn to find if traits implemented get_size.  <a href="#ac6a01676995e497c407341511567972c">More...</a><br /></td></tr>
+<tr class="separator:ac6a01676995e497c407341511567972c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bb5b0a653d920aafc17dd9bc33cbf92"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a5bb5b0a653d920aafc17dd9bc33cbf92">has_next_offset_t</a> = <a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">iffl::mpl::is_detected</a>&lt; has_next_offset_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a> &gt;</td></tr>
+<tr class="memdesc:a5bb5b0a653d920aafc17dd9bc33cbf92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses detect idiom with has_next_offset_mfn to find if traits implemented get_next_offset.  <a href="#a5bb5b0a653d920aafc17dd9bc33cbf92">More...</a><br /></td></tr>
+<tr class="separator:a5bb5b0a653d920aafc17dd9bc33cbf92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3b2e23809f827027f3386174792b33c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa3b2e23809f827027f3386174792b33c">can_set_next_offset_t</a> = <a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">iffl::mpl::is_detected</a>&lt; can_set_next_offset_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a> &gt;</td></tr>
+<tr class="memdesc:aa3b2e23809f827027f3386174792b33c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses detect idiom with can_set_next_offset_mfn to find if traits implemented set_next_offset.  <a href="#aa3b2e23809f827027f3386174792b33c">More...</a><br /></td></tr>
+<tr class="separator:aa3b2e23809f827027f3386174792b33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab396ad8bb59dcca4e48ed03a0bd20024"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ab396ad8bb59dcca4e48ed03a0bd20024">can_validate_t</a> = <a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">iffl::mpl::is_detected</a>&lt; can_validate_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a> &gt;</td></tr>
+<tr class="memdesc:ab396ad8bb59dcca4e48ed03a0bd20024"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses detect idiom with can_validate_mfn to find if traits implemented validate.  <a href="#ab396ad8bb59dcca4e48ed03a0bd20024">More...</a><br /></td></tr>
+<tr class="separator:ab396ad8bb59dcca4e48ed03a0bd20024"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bebe1ec30f2692bc75703be4ae954d2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a3bebe1ec30f2692bc75703be4ae954d2">has_alignment_t</a> = <a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">iffl::mpl::is_detected</a>&lt; has_alignment_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a> &gt;</td></tr>
+<tr class="memdesc:a3bebe1ec30f2692bc75703be4ae954d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses detect idiom with has_alignment_mfn to find if traits implemented validate.  <a href="#a3bebe1ec30f2692bc75703be4ae954d2">More...</a><br /></td></tr>
+<tr class="separator:a3bebe1ec30f2692bc75703be4ae954d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09070f2856cd1e1e0cfcdc6c062e325a"><td class="memItemLeft" align="right" valign="top"><a id="a09070f2856cd1e1e0cfcdc6c062e325a"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a09070f2856cd1e1e0cfcdc6c062e325a">range_t</a> = <a class="el" href="structiffl_1_1range__with__alighment.html">range_with_alighment</a>&lt; <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a636070852c896d289502060b143cce10">alignment</a> &gt;</td></tr>
+<tr class="memdesc:a09070f2856cd1e1e0cfcdc6c062e325a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of <a class="el" href="structiffl_1_1range__with__alighment.html" title="Vocabulary type that describes a subbuffer in a larger buffer and portion of that subbuffer actuallu ...">range_with_alighment</a> fo this type alignment. <br /></td></tr>
+<tr class="separator:a09070f2856cd1e1e0cfcdc6c062e325a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48d7e22031ebb3f41b0cacad606ec413"><td class="memItemLeft" align="right" valign="top"><a id="a48d7e22031ebb3f41b0cacad606ec413"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a48d7e22031ebb3f41b0cacad606ec413">size_with_padding_t</a> = <a class="el" href="structiffl_1_1size__with__padding.html">size_with_padding</a>&lt; <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a636070852c896d289502060b143cce10">alignment</a> &gt;</td></tr>
+<tr class="memdesc:a48d7e22031ebb3f41b0cacad606ec413"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of <a class="el" href="structiffl_1_1size__with__padding.html" title="Vocabulary type that describes an size and template parameter that specifies element&#39;s type alignment...">size_with_padding</a> fo this type alignment. <br /></td></tr>
+<tr class="separator:a48d7e22031ebb3f41b0cacad606ec413"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7b268a9cb4e1709db48d5666dbd71f8"><td class="memItemLeft" align="right" valign="top"><a id="ab7b268a9cb4e1709db48d5666dbd71f8"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ab7b268a9cb4e1709db48d5666dbd71f8">offset_with_aligment_t</a> = <a class="el" href="structiffl_1_1offset__with__aligment.html">offset_with_aligment</a>&lt; <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a636070852c896d289502060b143cce10">alignment</a> &gt;</td></tr>
+<tr class="memdesc:ab7b268a9cb4e1709db48d5666dbd71f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialization of <a class="el" href="structiffl_1_1offset__with__aligment.html" title="Vocabulary type that describes an offset in a larger buffer and template parameter that specifies ele...">offset_with_aligment</a> fo this type alignment. <br /></td></tr>
+<tr class="separator:ab7b268a9cb4e1709db48d5666dbd71f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a9de26b3d77ac24bd161409f50c8d89fb"><td class="memItemLeft" align="right" valign="top"><a id="a9de26b3d77ac24bd161409f50c8d89fb"></a>
-static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a9de26b3d77ac24bd161409f50c8d89fb">minimum_size</a> () noexcept</td></tr>
-<tr class="memdesc:a9de26b3d77ac24bd161409f50c8d89fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns minimum valid element size <br /></td></tr>
-<tr class="separator:a9de26b3d77ac24bd161409f50c8d89fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b04725bc83f2016c5de44f844521937"><td class="memItemLeft" align="right" valign="top"><a id="a5b04725bc83f2016c5de44f844521937"></a>
-static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a5b04725bc83f2016c5de44f844521937">get_alignment</a> () noexcept</td></tr>
-<tr class="memdesc:a5b04725bc83f2016c5de44f844521937"><td class="mdescLeft">&#160;</td><td class="mdescRight">If traits defined allignment then size of alignment, and 1 otherwise. <br /></td></tr>
-<tr class="separator:a5b04725bc83f2016c5de44f844521937"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a619b601da2eb1a2fa55664db2dd857fb"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a619b601da2eb1a2fa55664db2dd857fb">roundup_to_alignment</a> (size_t s) noexcept</td></tr>
-<tr class="memdesc:a619b601da2eb1a2fa55664db2dd857fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If traits defined allignment then s padded to alignment, or unchanged value of s otherwise.  <a href="#a619b601da2eb1a2fa55664db2dd857fb">More...</a><br /></td></tr>
-<tr class="separator:a619b601da2eb1a2fa55664db2dd857fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c7fb2211cbe5c87e79dcbb964b0a64c"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ad77593ff4fd28ace80b243920a57bc51">size_with_padding_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a6c7fb2211cbe5c87e79dcbb964b0a64c">get_size</a> (char const *buffer) noexcept</td></tr>
-<tr class="memdesc:a6c7fb2211cbe5c87e79dcbb964b0a64c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asks type traits to calculate element size.  <a href="#a6c7fb2211cbe5c87e79dcbb964b0a64c">More...</a><br /></td></tr>
-<tr class="separator:a6c7fb2211cbe5c87e79dcbb964b0a64c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab07f0493befe4419703714d53a4e8260"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ab07f0493befe4419703714d53a4e8260">validate</a> (size_t buffer_size, char const *buffer) noexcept</td></tr>
-<tr class="memdesc:ab07f0493befe4419703714d53a4e8260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asks type traits to validate element.  <a href="#ab07f0493befe4419703714d53a4e8260">More...</a><br /></td></tr>
-<tr class="separator:ab07f0493befe4419703714d53a4e8260"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1bd33757d170ad44881c9e5cf8a5db4"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ab1bd33757d170ad44881c9e5cf8a5db4">get_next_offset</a> (char const *buffer) noexcept</td></tr>
-<tr class="memdesc:ab1bd33757d170ad44881c9e5cf8a5db4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns next element offset.  <a href="#ab1bd33757d170ad44881c9e5cf8a5db4">More...</a><br /></td></tr>
-<tr class="separator:ab1bd33757d170ad44881c9e5cf8a5db4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae578d68dfd27c9b5f82cbf7cd2482fc2"><td class="memItemLeft" align="right" valign="top">static constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ae578d68dfd27c9b5f82cbf7cd2482fc2">set_next_offset</a> (char *buffer, size_t size) noexcept</td></tr>
-<tr class="memdesc:ae578d68dfd27c9b5f82cbf7cd2482fc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets next element offset.  <a href="#ae578d68dfd27c9b5f82cbf7cd2482fc2">More...</a><br /></td></tr>
-<tr class="separator:ae578d68dfd27c9b5f82cbf7cd2482fc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7551d5f3bf716e50a2fd4bbd167a74ca"><td class="memItemLeft" align="right" valign="top"><a id="a7551d5f3bf716e50a2fd4bbd167a74ca"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a7551d5f3bf716e50a2fd4bbd167a74ca">print_traits_info</a> () noexcept</td></tr>
-<tr class="memdesc:a7551d5f3bf716e50a2fd4bbd167a74ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints information about what traits_traits discovered about traits class. <br /></td></tr>
-<tr class="separator:a7551d5f3bf716e50a2fd4bbd167a74ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1816f36edea97b0bad0a234d310f62dd"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a8aa3f3f21fcb8e5b2dc70842d3a29a38">value_type</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a1816f36edea97b0bad0a234d310f62dd">ptr_to_t</a> (void *ptr)</td></tr>
+<tr class="memdesc:a1816f36edea97b0bad0a234d310f62dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts buffer pointer to a pointer to the element type.  <a href="#a1816f36edea97b0bad0a234d310f62dd">More...</a><br /></td></tr>
+<tr class="separator:a1816f36edea97b0bad0a234d310f62dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3be9864cc9780f06b7f76582b3bfdf0c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a8aa3f3f21fcb8e5b2dc70842d3a29a38">value_type</a> const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a3be9864cc9780f06b7f76582b3bfdf0c">ptr_to_t</a> (void const *ptr)</td></tr>
+<tr class="memdesc:a3be9864cc9780f06b7f76582b3bfdf0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts buffer pointer to a pointer to the element type.  <a href="#a3be9864cc9780f06b7f76582b3bfdf0c">More...</a><br /></td></tr>
+<tr class="separator:a3be9864cc9780f06b7f76582b3bfdf0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1bcc3919a38432d79a2a13d1390ef9f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a8aa3f3f21fcb8e5b2dc70842d3a29a38">value_type</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ac1bcc3919a38432d79a2a13d1390ef9f">ptr_to_t</a> (char *ptr)</td></tr>
+<tr class="memdesc:ac1bcc3919a38432d79a2a13d1390ef9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts buffer pointer to a pointer to the element type.  <a href="#ac1bcc3919a38432d79a2a13d1390ef9f">More...</a><br /></td></tr>
+<tr class="separator:ac1bcc3919a38432d79a2a13d1390ef9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63c19f390e3e46a36ec9830919177c74"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a8aa3f3f21fcb8e5b2dc70842d3a29a38">value_type</a> const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a63c19f390e3e46a36ec9830919177c74">ptr_to_t</a> (char const *ptr)</td></tr>
+<tr class="memdesc:a63c19f390e3e46a36ec9830919177c74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts buffer pointer to a pointer to the element type.  <a href="#a63c19f390e3e46a36ec9830919177c74">More...</a><br /></td></tr>
+<tr class="separator:a63c19f390e3e46a36ec9830919177c74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eb566c6774c9d851ffc024e0a1279f3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a8aa3f3f21fcb8e5b2dc70842d3a29a38">value_type</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a5eb566c6774c9d851ffc024e0a1279f3">ptr_to_t</a> (unsigned char *ptr)</td></tr>
+<tr class="memdesc:a5eb566c6774c9d851ffc024e0a1279f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts buffer pointer to a pointer to the element type.  <a href="#a5eb566c6774c9d851ffc024e0a1279f3">More...</a><br /></td></tr>
+<tr class="separator:a5eb566c6774c9d851ffc024e0a1279f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f9c2fcc6f8a6e1cf58d602d35d33df6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a8aa3f3f21fcb8e5b2dc70842d3a29a38">value_type</a> const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a5f9c2fcc6f8a6e1cf58d602d35d33df6">ptr_to_t</a> (unsigned char const *ptr)</td></tr>
+<tr class="memdesc:a5f9c2fcc6f8a6e1cf58d602d35d33df6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts buffer pointer to a pointer to the element type.  <a href="#a5f9c2fcc6f8a6e1cf58d602d35d33df6">More...</a><br /></td></tr>
+<tr class="separator:a5f9c2fcc6f8a6e1cf58d602d35d33df6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d4b893e4e2c6d4898fe8f5d28fb6e6f"><td class="memItemLeft" align="right" valign="top"><a id="a0d4b893e4e2c6d4898fe8f5d28fb6e6f"></a>
+static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a0d4b893e4e2c6d4898fe8f5d28fb6e6f">minimum_size</a> () noexcept</td></tr>
+<tr class="memdesc:a0d4b893e4e2c6d4898fe8f5d28fb6e6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns minimum valid element size <br /></td></tr>
+<tr class="separator:a0d4b893e4e2c6d4898fe8f5d28fb6e6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d1305bb334c3af1ac941f5884ac85ef"><td class="memItemLeft" align="right" valign="top"><a id="a6d1305bb334c3af1ac941f5884ac85ef"></a>
+static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a6d1305bb334c3af1ac941f5884ac85ef">get_alignment</a> () noexcept</td></tr>
+<tr class="memdesc:a6d1305bb334c3af1ac941f5884ac85ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">If traits defined allignment then size of alignment, and 1 otherwise. <br /></td></tr>
+<tr class="separator:a6d1305bb334c3af1ac941f5884ac85ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a187cd8675522128ee1ee545397920dc7"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a187cd8675522128ee1ee545397920dc7">roundup_to_alignment</a> (size_t s) noexcept</td></tr>
+<tr class="memdesc:a187cd8675522128ee1ee545397920dc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">If traits defined allignment then s padded to alignment, or unchanged value of s otherwise.  <a href="#a187cd8675522128ee1ee545397920dc7">More...</a><br /></td></tr>
+<tr class="separator:a187cd8675522128ee1ee545397920dc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a910b76697220da301e29274b99b86697"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a48d7e22031ebb3f41b0cacad606ec413">size_with_padding_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a910b76697220da301e29274b99b86697">get_size</a> (char const *buffer) noexcept</td></tr>
+<tr class="memdesc:a910b76697220da301e29274b99b86697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asks type traits to calculate element size.  <a href="#a910b76697220da301e29274b99b86697">More...</a><br /></td></tr>
+<tr class="separator:a910b76697220da301e29274b99b86697"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7422d62d8810c4a4cbe6e4eb6ccb9b14"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a7422d62d8810c4a4cbe6e4eb6ccb9b14">validate</a> (size_t buffer_size, T const &amp;buffer) noexcept</td></tr>
+<tr class="memdesc:a7422d62d8810c4a4cbe6e4eb6ccb9b14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asks type traits to validate element.  <a href="#a7422d62d8810c4a4cbe6e4eb6ccb9b14">More...</a><br /></td></tr>
+<tr class="separator:a7422d62d8810c4a4cbe6e4eb6ccb9b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3774450e9c7a8d5529c0bcb23f94a984"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a3774450e9c7a8d5529c0bcb23f94a984">get_next_offset</a> (char const *buffer) noexcept</td></tr>
+<tr class="memdesc:a3774450e9c7a8d5529c0bcb23f94a984"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns next element offset.  <a href="#a3774450e9c7a8d5529c0bcb23f94a984">More...</a><br /></td></tr>
+<tr class="separator:a3774450e9c7a8d5529c0bcb23f94a984"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f42c462aee8651a4f47aaade0bc628a"><td class="memItemLeft" align="right" valign="top">static constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a5f42c462aee8651a4f47aaade0bc628a">set_next_offset</a> (char *buffer, size_t size) noexcept</td></tr>
+<tr class="memdesc:a5f42c462aee8651a4f47aaade0bc628a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets next element offset.  <a href="#a5f42c462aee8651a4f47aaade0bc628a">More...</a><br /></td></tr>
+<tr class="separator:a5f42c462aee8651a4f47aaade0bc628a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a885c7791094c4daae00f7a31b910c714"><td class="memItemLeft" align="right" valign="top"><a id="a885c7791094c4daae00f7a31b910c714"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a885c7791094c4daae00f7a31b910c714">print_traits_info</a> () noexcept</td></tr>
+<tr class="memdesc:a885c7791094c4daae00f7a31b910c714"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints information about what traits_traits discovered about traits class. <br /></td></tr>
+<tr class="separator:a885c7791094c4daae00f7a31b910c714"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a5a4164badd536348e427683d6e5c6e11"><td class="memItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a5a4164badd536348e427683d6e5c6e11">has_minimum_size_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_minimum_size_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a>&gt; }</td></tr>
-<tr class="memdesc:a5a4164badd536348e427683d6e5c6e11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of has_minimum_size_t.  <a href="#a5a4164badd536348e427683d6e5c6e11">More...</a><br /></td></tr>
-<tr class="separator:a5a4164badd536348e427683d6e5c6e11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a8f7857effc1c2ee92d3589e8e04d21"><td class="memItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a9a8f7857effc1c2ee92d3589e8e04d21">has_get_size_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_get_size_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a>&gt; }</td></tr>
-<tr class="memdesc:a9a8f7857effc1c2ee92d3589e8e04d21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of has_get_size_t.  <a href="#a9a8f7857effc1c2ee92d3589e8e04d21">More...</a><br /></td></tr>
-<tr class="separator:a9a8f7857effc1c2ee92d3589e8e04d21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76e96ecd83d331e5aebf4717972c5e9e"><td class="memItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a76e96ecd83d331e5aebf4717972c5e9e">has_next_offset_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_next_offset_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a>&gt; }</td></tr>
-<tr class="memdesc:a76e96ecd83d331e5aebf4717972c5e9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of has_next_offset_t.  <a href="#a76e96ecd83d331e5aebf4717972c5e9e">More...</a><br /></td></tr>
-<tr class="separator:a76e96ecd83d331e5aebf4717972c5e9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98c92a8f60d412da34a653d26a6d5065"><td class="memItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a98c92a8f60d412da34a653d26a6d5065">can_set_next_offset_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; can_set_next_offset_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a>&gt; }</td></tr>
-<tr class="memdesc:a98c92a8f60d412da34a653d26a6d5065"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of can_set_next_offset_t.  <a href="#a98c92a8f60d412da34a653d26a6d5065">More...</a><br /></td></tr>
-<tr class="separator:a98c92a8f60d412da34a653d26a6d5065"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05b342e69b43a8275191df67211b6ca6"><td class="memItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a05b342e69b43a8275191df67211b6ca6">can_validate_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; can_validate_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a>&gt; }</td></tr>
-<tr class="memdesc:a05b342e69b43a8275191df67211b6ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of can_validate_t.  <a href="#a05b342e69b43a8275191df67211b6ca6">More...</a><br /></td></tr>
-<tr class="separator:a05b342e69b43a8275191df67211b6ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f04621fe08d7c6574756cf935352245"><td class="memItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a9f04621fe08d7c6574756cf935352245">has_alignment_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_alignment_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a>&gt; }</td></tr>
-<tr class="memdesc:a9f04621fe08d7c6574756cf935352245"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of has_alignment_t.  <a href="#a9f04621fe08d7c6574756cf935352245">More...</a><br /></td></tr>
-<tr class="separator:a9f04621fe08d7c6574756cf935352245"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3fe68f843e48534915ef6303cd45deb"><td class="memItemLeft" align="right" valign="top"><a id="aa3fe68f843e48534915ef6303cd45deb"></a>
-static constexpr size_t const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa3fe68f843e48534915ef6303cd45deb">alignment</a> { <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a5b04725bc83f2016c5de44f844521937">get_alignment</a>() }</td></tr>
-<tr class="memdesc:aa3fe68f843e48534915ef6303cd45deb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines static constexpr member that with value that has alignment requirements of elements. <br /></td></tr>
-<tr class="separator:aa3fe68f843e48534915ef6303cd45deb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8e8ca99599d777eb3498c79c04e757c"><td class="memItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ac8e8ca99599d777eb3498c79c04e757c">has_minimum_size_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_minimum_size_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a>&gt; }</td></tr>
+<tr class="memdesc:ac8e8ca99599d777eb3498c79c04e757c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of has_minimum_size_t.  <a href="#ac8e8ca99599d777eb3498c79c04e757c">More...</a><br /></td></tr>
+<tr class="separator:ac8e8ca99599d777eb3498c79c04e757c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac33c052713a32e92d8cf61104210504"><td class="memItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aac33c052713a32e92d8cf61104210504">has_get_size_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_get_size_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a>&gt; }</td></tr>
+<tr class="memdesc:aac33c052713a32e92d8cf61104210504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of has_get_size_t.  <a href="#aac33c052713a32e92d8cf61104210504">More...</a><br /></td></tr>
+<tr class="separator:aac33c052713a32e92d8cf61104210504"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04376a4f5e98fe384f837425e26dfcd8"><td class="memItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a04376a4f5e98fe384f837425e26dfcd8">has_next_offset_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_next_offset_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a>&gt; }</td></tr>
+<tr class="memdesc:a04376a4f5e98fe384f837425e26dfcd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of has_next_offset_t.  <a href="#a04376a4f5e98fe384f837425e26dfcd8">More...</a><br /></td></tr>
+<tr class="separator:a04376a4f5e98fe384f837425e26dfcd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bda2df196f5927f4d855cfc71055013"><td class="memItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a4bda2df196f5927f4d855cfc71055013">can_set_next_offset_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; can_set_next_offset_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a>&gt; }</td></tr>
+<tr class="memdesc:a4bda2df196f5927f4d855cfc71055013"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of can_set_next_offset_t.  <a href="#a4bda2df196f5927f4d855cfc71055013">More...</a><br /></td></tr>
+<tr class="separator:a4bda2df196f5927f4d855cfc71055013"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1c417e2d7bdf7969fa5948f9de98de0"><td class="memItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa1c417e2d7bdf7969fa5948f9de98de0">can_validate_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; can_validate_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a>&gt; }</td></tr>
+<tr class="memdesc:aa1c417e2d7bdf7969fa5948f9de98de0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of can_validate_t.  <a href="#aa1c417e2d7bdf7969fa5948f9de98de0">More...</a><br /></td></tr>
+<tr class="separator:aa1c417e2d7bdf7969fa5948f9de98de0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a160565ecad18431bff0e1caddd4d9340"><td class="memItemLeft" align="right" valign="top">static constexpr auto const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a160565ecad18431bff0e1caddd4d9340">has_alignment_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_alignment_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a>&gt; }</td></tr>
+<tr class="memdesc:a160565ecad18431bff0e1caddd4d9340"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of has_alignment_t.  <a href="#a160565ecad18431bff0e1caddd4d9340">More...</a><br /></td></tr>
+<tr class="separator:a160565ecad18431bff0e1caddd4d9340"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a636070852c896d289502060b143cce10"><td class="memItemLeft" align="right" valign="top"><a id="a636070852c896d289502060b143cce10"></a>
+static constexpr size_t const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a636070852c896d289502060b143cce10">alignment</a> { <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a6d1305bb334c3af1ac941f5884ac85ef">get_alignment</a>() }</td></tr>
+<tr class="memdesc:a636070852c896d289502060b143cce10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines static constexpr member that with value that has alignment requirements of elements. <br /></td></tr>
+<tr class="separator:a636070852c896d289502060b143cce10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename TT&gt;<br />
-class iffl::flat_forward_list_traits_traits&lt; TT &gt;</h3>
+<div class="textblock"><h3>template&lt;typename T, typename TT = flat_forward_list_traits&lt;T&gt;&gt;<br />
+class iffl::flat_forward_list_traits_traits&lt; T, TT &gt;</h3>
 
 <p>traits for <a class="el" href="structiffl_1_1flat__forward__list__traits.html" title="traits for an elements that are in the flat forward list">flat_forward_list_traits</a> </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">TT</td><td>type traits</td></tr>
+    <tr><td class="paramname">T</td><td>- element header type </td></tr>
+    <tr><td class="paramname">TT</td><td>- type traits</td></tr>
   </table>
   </dd>
 </dl>
 <p>I know, traits of traits does sounds redicules, but this is exactly what this class is. Given <a class="el" href="structiffl_1_1flat__forward__list__traits.html" title="traits for an elements that are in the flat forward list">flat_forward_list_traits</a> instantiation, or a class that you want to use as traits for your <a class="el" href="classiffl_1_1flat__forward__list.html" title="Intrusive flat forward list container.">flat_forward_list</a> element types, it detects what methods are implemented by this trait so in the rest of algorithms and containers we can use this helper, and avoid rewriting same complicated and nusty machinery. In other words traits might be missing some methods, and traits_traits will implement these missing parts providing a uniformal interface.</p>
 <p>How to use:</p>
-<div class="fragment"><div class="line"><span class="keyword">using</span> my_traits_traits = flat_forward_list_traits_traits&lt;my_traits&gt;;</div></div><!-- fragment --><p>For example:</p>
+<div class="fragment"><div class="line"><span class="keyword">using</span> my_traits_traits = flat_forward_list_traits_traits&lt;my_type, my_traits&gt;;</div></div><!-- fragment --><p>For example:</p>
 <p>If traits provide us a way to get value of the next element offset for a type then use it, otherwise ask it to calculate next element offset from its own size If traits provides alignment member then we will use in calculation of padding, otherwise calculations of padding will use 1 byte alignment.</p>
 <div class="fragment"><div class="line"><span class="keywordflow">if</span> constexpr (my_traits_traits::has_next_offset_v) {</div><div class="line">     my_traits::get_next_offset(buffer)</div><div class="line">} <span class="keywordflow">else</span> {</div><div class="line">     my_traits::get_size(buffer)</div><div class="line">}</div></div><!-- fragment --> </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="af76b13b35ff79484c23d8177e18393d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af76b13b35ff79484c23d8177e18393d4">&#9670;&nbsp;</a></span>can_set_next_offset_t</h2>
+<a id="aa3b2e23809f827027f3386174792b33c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3b2e23809f827027f3386174792b33c">&#9670;&nbsp;</a></span>can_set_next_offset_t</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#af76b13b35ff79484c23d8177e18393d4">can_set_next_offset_t</a></td>
+          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa3b2e23809f827027f3386174792b33c">can_set_next_offset_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -207,16 +228,16 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="a930c1b7a38d7fdf4fab3438ce020043e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a930c1b7a38d7fdf4fab3438ce020043e">&#9670;&nbsp;</a></span>can_validate_t</h2>
+<a id="ab396ad8bb59dcca4e48ed03a0bd20024"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab396ad8bb59dcca4e48ed03a0bd20024">&#9670;&nbsp;</a></span>can_validate_t</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a930c1b7a38d7fdf4fab3438ce020043e">can_validate_t</a></td>
+          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ab396ad8bb59dcca4e48ed03a0bd20024">can_validate_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -226,16 +247,16 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="a640a361855d23b938eabf341ba43183b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a640a361855d23b938eabf341ba43183b">&#9670;&nbsp;</a></span>has_alignment_t</h2>
+<a id="a3bebe1ec30f2692bc75703be4ae954d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bebe1ec30f2692bc75703be4ae954d2">&#9670;&nbsp;</a></span>has_alignment_t</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a640a361855d23b938eabf341ba43183b">has_alignment_t</a></td>
+          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a3bebe1ec30f2692bc75703be4ae954d2">has_alignment_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -245,16 +266,16 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="afbe2ecd0bdbbe949b1b0743662e2ba32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbe2ecd0bdbbe949b1b0743662e2ba32">&#9670;&nbsp;</a></span>has_get_size_t</h2>
+<a id="ac6a01676995e497c407341511567972c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6a01676995e497c407341511567972c">&#9670;&nbsp;</a></span>has_get_size_t</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#afbe2ecd0bdbbe949b1b0743662e2ba32">has_get_size_t</a></td>
+          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ac6a01676995e497c407341511567972c">has_get_size_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -264,16 +285,16 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="a1040075f472667e53a5fd8e57d6682c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1040075f472667e53a5fd8e57d6682c2">&#9670;&nbsp;</a></span>has_minimum_size_t</h2>
+<a id="aa1c0eeaa131eedc957517274c7c09ba9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1c0eeaa131eedc957517274c7c09ba9">&#9670;&nbsp;</a></span>has_minimum_size_t</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a1040075f472667e53a5fd8e57d6682c2">has_minimum_size_t</a></td>
+          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa1c0eeaa131eedc957517274c7c09ba9">has_minimum_size_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -283,16 +304,16 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="a1731132610dcb70db02d052f980f7a08"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1731132610dcb70db02d052f980f7a08">&#9670;&nbsp;</a></span>has_next_offset_t</h2>
+<a id="a5bb5b0a653d920aafc17dd9bc33cbf92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bb5b0a653d920aafc17dd9bc33cbf92">&#9670;&nbsp;</a></span>has_next_offset_t</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a1731132610dcb70db02d052f980f7a08">has_next_offset_t</a></td>
+          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a5bb5b0a653d920aafc17dd9bc33cbf92">has_next_offset_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -302,16 +323,16 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="ade16604366585216fd04f44d88e7704d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade16604366585216fd04f44d88e7704d">&#9670;&nbsp;</a></span>type_traits</h2>
+<a id="aa039834a4d7d5a1f80d3de11a2d8b76d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa039834a4d7d5a1f80d3de11a2d8b76d">&#9670;&nbsp;</a></span>type_traits</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a></td>
+          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -319,20 +340,37 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab1bd33757d170ad44881c9e5cf8a5db4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1bd33757d170ad44881c9e5cf8a5db4">&#9670;&nbsp;</a></span>get_next_offset()</h2>
+<a id="a8aa3f3f21fcb8e5b2dc70842d3a29a38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8aa3f3f21fcb8e5b2dc70842d3a29a38">&#9670;&nbsp;</a></span>value_type</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::<a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a8aa3f3f21fcb8e5b2dc70842d3a29a38">value_type</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>!brief alias for the value type </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3774450e9c7a8d5529c0bcb23f94a984"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3774450e9c7a8d5529c0bcb23f94a984">&#9670;&nbsp;</a></span>get_next_offset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static constexpr size_t <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::get_next_offset </td>
+          <td class="memname">static constexpr size_t <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::get_next_offset </td>
           <td>(</td>
           <td class="paramtype">char const *&#160;</td>
           <td class="paramname"><em>buffer</em></td><td>)</td>
@@ -357,19 +395,19 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="a6c7fb2211cbe5c87e79dcbb964b0a64c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c7fb2211cbe5c87e79dcbb964b0a64c">&#9670;&nbsp;</a></span>get_size()</h2>
+<a id="a910b76697220da301e29274b99b86697"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a910b76697220da301e29274b99b86697">&#9670;&nbsp;</a></span>get_size()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static constexpr <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ad77593ff4fd28ace80b243920a57bc51">size_with_padding_t</a> <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::get_size </td>
+          <td class="memname">static constexpr <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a48d7e22031ebb3f41b0cacad606ec413">size_with_padding_t</a> <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::get_size </td>
           <td>(</td>
           <td class="paramtype">char const *&#160;</td>
           <td class="paramname"><em>buffer</em></td><td>)</td>
@@ -394,19 +432,235 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="a619b601da2eb1a2fa55664db2dd857fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a619b601da2eb1a2fa55664db2dd857fb">&#9670;&nbsp;</a></span>roundup_to_alignment()</h2>
+<a id="a1816f36edea97b0bad0a234d310f62dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1816f36edea97b0bad0a234d310f62dd">&#9670;&nbsp;</a></span>ptr_to_t() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static constexpr size_t <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::roundup_to_alignment </td>
+          <td class="memname">static <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a8aa3f3f21fcb8e5b2dc70842d3a29a38">value_type</a>* <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::ptr_to_t </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>ptr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Casts buffer pointer to a pointer to the element type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ptr</td><td>- pointer to a buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3be9864cc9780f06b7f76582b3bfdf0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3be9864cc9780f06b7f76582b3bfdf0c">&#9670;&nbsp;</a></span>ptr_to_t() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a8aa3f3f21fcb8e5b2dc70842d3a29a38">value_type</a> const* <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::ptr_to_t </td>
+          <td>(</td>
+          <td class="paramtype">void const *&#160;</td>
+          <td class="paramname"><em>ptr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Casts buffer pointer to a pointer to the element type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ptr</td><td>- pointer to a buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac1bcc3919a38432d79a2a13d1390ef9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1bcc3919a38432d79a2a13d1390ef9f">&#9670;&nbsp;</a></span>ptr_to_t() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a8aa3f3f21fcb8e5b2dc70842d3a29a38">value_type</a>* <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::ptr_to_t </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>ptr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Casts buffer pointer to a pointer to the element type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ptr</td><td>- pointer to a buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a63c19f390e3e46a36ec9830919177c74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63c19f390e3e46a36ec9830919177c74">&#9670;&nbsp;</a></span>ptr_to_t() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a8aa3f3f21fcb8e5b2dc70842d3a29a38">value_type</a> const* <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::ptr_to_t </td>
+          <td>(</td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>ptr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Casts buffer pointer to a pointer to the element type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ptr</td><td>- pointer to a buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5eb566c6774c9d851ffc024e0a1279f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5eb566c6774c9d851ffc024e0a1279f3">&#9670;&nbsp;</a></span>ptr_to_t() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a8aa3f3f21fcb8e5b2dc70842d3a29a38">value_type</a>* <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::ptr_to_t </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char *&#160;</td>
+          <td class="paramname"><em>ptr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Casts buffer pointer to a pointer to the element type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ptr</td><td>- pointer to a buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5f9c2fcc6f8a6e1cf58d602d35d33df6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f9c2fcc6f8a6e1cf58d602d35d33df6">&#9670;&nbsp;</a></span>ptr_to_t() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#a8aa3f3f21fcb8e5b2dc70842d3a29a38">value_type</a> const* <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::ptr_to_t </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char const *&#160;</td>
+          <td class="paramname"><em>ptr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Casts buffer pointer to a pointer to the element type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ptr</td><td>- pointer to a buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a187cd8675522128ee1ee545397920dc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a187cd8675522128ee1ee545397920dc7">&#9670;&nbsp;</a></span>roundup_to_alignment()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr size_t <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::roundup_to_alignment </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>s</em></td><td>)</td>
@@ -431,19 +685,19 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="ae578d68dfd27c9b5f82cbf7cd2482fc2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae578d68dfd27c9b5f82cbf7cd2482fc2">&#9670;&nbsp;</a></span>set_next_offset()</h2>
+<a id="a5f42c462aee8651a4f47aaade0bc628a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f42c462aee8651a4f47aaade0bc628a">&#9670;&nbsp;</a></span>set_next_offset()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static constexpr void <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::set_next_offset </td>
+          <td class="memname">static constexpr void <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::set_next_offset </td>
           <td>(</td>
           <td class="paramtype">char *&#160;</td>
           <td class="paramname"><em>buffer</em>, </td>
@@ -478,19 +732,19 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="ab07f0493befe4419703714d53a4e8260"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab07f0493befe4419703714d53a4e8260">&#9670;&nbsp;</a></span>validate()</h2>
+<a id="a7422d62d8810c4a4cbe6e4eb6ccb9b14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7422d62d8810c4a4cbe6e4eb6ccb9b14">&#9670;&nbsp;</a></span>validate()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static constexpr bool <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::validate </td>
+          <td class="memname">static constexpr bool <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::validate </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>buffer_size</em>, </td>
@@ -498,7 +752,7 @@ template&lt;typename TT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char const *&#160;</td>
+          <td class="paramtype">T const &amp;&#160;</td>
           <td class="paramname"><em>buffer</em>&#160;</td>
         </tr>
         <tr>
@@ -527,19 +781,19 @@ template&lt;typename TT &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a98c92a8f60d412da34a653d26a6d5065"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98c92a8f60d412da34a653d26a6d5065">&#9670;&nbsp;</a></span>can_set_next_offset_v</h2>
+<a id="a4bda2df196f5927f4d855cfc71055013"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bda2df196f5927f4d855cfc71055013">&#9670;&nbsp;</a></span>can_set_next_offset_v</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto const <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::can_set_next_offset_v { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; can_set_next_offset_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a>&gt; }</td>
+          <td class="memname">constexpr auto const <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::can_set_next_offset_v { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; can_set_next_offset_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a>&gt; }</td>
         </tr>
       </table>
   </td>
@@ -554,19 +808,19 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="a05b342e69b43a8275191df67211b6ca6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05b342e69b43a8275191df67211b6ca6">&#9670;&nbsp;</a></span>can_validate_v</h2>
+<a id="aa1c417e2d7bdf7969fa5948f9de98de0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1c417e2d7bdf7969fa5948f9de98de0">&#9670;&nbsp;</a></span>can_validate_v</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto const <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::can_validate_v { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; can_validate_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a>&gt; }</td>
+          <td class="memname">constexpr auto const <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::can_validate_v { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; can_validate_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a>&gt; }</td>
         </tr>
       </table>
   </td>
@@ -581,19 +835,19 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="a9f04621fe08d7c6574756cf935352245"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f04621fe08d7c6574756cf935352245">&#9670;&nbsp;</a></span>has_alignment_v</h2>
+<a id="a160565ecad18431bff0e1caddd4d9340"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a160565ecad18431bff0e1caddd4d9340">&#9670;&nbsp;</a></span>has_alignment_v</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto const <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::has_alignment_v { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_alignment_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a>&gt; }</td>
+          <td class="memname">constexpr auto const <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::has_alignment_v { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_alignment_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a>&gt; }</td>
         </tr>
       </table>
   </td>
@@ -608,19 +862,19 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="a9a8f7857effc1c2ee92d3589e8e04d21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a8f7857effc1c2ee92d3589e8e04d21">&#9670;&nbsp;</a></span>has_get_size_v</h2>
+<a id="aac33c052713a32e92d8cf61104210504"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac33c052713a32e92d8cf61104210504">&#9670;&nbsp;</a></span>has_get_size_v</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto const <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::has_get_size_v { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_get_size_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a>&gt; }</td>
+          <td class="memname">constexpr auto const <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::has_get_size_v { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_get_size_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a>&gt; }</td>
         </tr>
       </table>
   </td>
@@ -635,19 +889,19 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="a5a4164badd536348e427683d6e5c6e11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a4164badd536348e427683d6e5c6e11">&#9670;&nbsp;</a></span>has_minimum_size_v</h2>
+<a id="ac8e8ca99599d777eb3498c79c04e757c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8e8ca99599d777eb3498c79c04e757c">&#9670;&nbsp;</a></span>has_minimum_size_v</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto const <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::has_minimum_size_v { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_minimum_size_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a>&gt; }</td>
+          <td class="memname">constexpr auto const <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::has_minimum_size_v { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_minimum_size_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a>&gt; }</td>
         </tr>
       </table>
   </td>
@@ -662,19 +916,19 @@ template&lt;typename TT &gt; </div>
 
 </div>
 </div>
-<a id="a76e96ecd83d331e5aebf4717972c5e9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76e96ecd83d331e5aebf4717972c5e9e">&#9670;&nbsp;</a></span>has_next_offset_v</h2>
+<a id="a04376a4f5e98fe384f837425e26dfcd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04376a4f5e98fe384f837425e26dfcd8">&#9670;&nbsp;</a></span>has_next_offset_v</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TT &gt; </div>
+template&lt;typename T , typename TT  = flat_forward_list_traits&lt;T&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto const <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; TT &gt;::has_next_offset_v { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_next_offset_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#ade16604366585216fd04f44d88e7704d">type_traits</a>&gt; }</td>
+          <td class="memname">constexpr auto const <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html">iffl::flat_forward_list_traits_traits</a>&lt; T, TT &gt;::has_next_offset_v { <a class="el" href="namespaceiffl_1_1mpl.html#afac0434045e5cf64ebb4d731266ffc56">iffl::mpl::is_detected_v</a> &lt; has_next_offset_mfn, <a class="el" href="structiffl_1_1flat__forward__list__traits__traits.html#aa039834a4d7d5a1f80d3de11a2d8b76d">type_traits</a>&gt; }</td>
         </tr>
       </table>
   </td>

@@ -94,17 +94,17 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a73c78e5d0abc5fc6cbc7547dc1ba5c79"><td class="memTemplParams" colspan="2"><a id="a73c78e5d0abc5fc6cbc7547dc1ba5c79"></a>
+<tr class="memitem:a5eeac5fa7e21953f92d491060c405bc4"><td class="memTemplParams" colspan="2"><a id="a5eeac5fa7e21953f92d491060c405bc4"></a>
 template&lt;typename... Whatever&gt; </td></tr>
-<tr class="memitem:a73c78e5d0abc5fc6cbc7547dc1ba5c79"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl_1_1mpl.html#a73c78e5d0abc5fc6cbc7547dc1ba5c79">void_t</a> = std::void_t&lt; Whatever &gt;</td></tr>
-<tr class="memdesc:a73c78e5d0abc5fc6cbc7547dc1ba5c79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type that can take any number of template parameters and returns void. It is used by detector metafunction SFINAE. <br /></td></tr>
-<tr class="separator:a73c78e5d0abc5fc6cbc7547dc1ba5c79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eeac5fa7e21953f92d491060c405bc4"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl_1_1mpl.html#a5eeac5fa7e21953f92d491060c405bc4">void_t</a> = std::void_t&lt; Whatever ... &gt;</td></tr>
+<tr class="memdesc:a5eeac5fa7e21953f92d491060c405bc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type that can take any number of template parameters and returns void. It is used by detector metafunction SFINAE. <br /></td></tr>
+<tr class="separator:a5eeac5fa7e21953f92d491060c405bc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa469046f9dd3f5ecb17eb523fce34ca6"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; typename Operation, typename... Arguments&gt; </td></tr>
 <tr class="memitem:aa469046f9dd3f5ecb17eb523fce34ca6"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">is_detected</a> = typename <a class="el" href="structiffl_1_1mpl_1_1details_1_1detector.html">details::detector</a>&lt; <a class="el" href="structiffl_1_1mpl_1_1nonesuch.html">nonesuch</a>, void, Operation, Arguments... &gt;::value_type</td></tr>
 <tr class="memdesc:aa469046f9dd3f5ecb17eb523fce34ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">is_detected will be either true_type or false_type, depending if Operation&lt;Arguments...&gt; metafunction is well formed  <a href="#aa469046f9dd3f5ecb17eb523fce34ca6">More...</a><br /></td></tr>
 <tr class="separator:aa469046f9dd3f5ecb17eb523fce34ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6db054a1babac2c9eeb9d7fc6b13fad2"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; typename Operation, typename... Arguments&gt; </td></tr>
-<tr class="memitem:a6db054a1babac2c9eeb9d7fc6b13fad2"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl_1_1mpl.html#a6db054a1babac2c9eeb9d7fc6b13fad2">is_detected_t</a> = <a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">is_detected</a>&lt; Operation, Arguments &gt;</td></tr>
+<tr class="memitem:a6db054a1babac2c9eeb9d7fc6b13fad2"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl_1_1mpl.html#a6db054a1babac2c9eeb9d7fc6b13fad2">is_detected_t</a> = <a class="el" href="namespaceiffl_1_1mpl.html#aa469046f9dd3f5ecb17eb523fce34ca6">is_detected</a>&lt; Operation, Arguments... &gt;</td></tr>
 <tr class="memdesc:a6db054a1babac2c9eeb9d7fc6b13fad2"><td class="mdescLeft">&#160;</td><td class="mdescRight">alias for is_detected  <a href="#a6db054a1babac2c9eeb9d7fc6b13fad2">More...</a><br /></td></tr>
 <tr class="separator:a6db054a1babac2c9eeb9d7fc6b13fad2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40ce49f58423e926ff7eded2611f4a82"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; typename Operation, typename... Arguments&gt; </td></tr>
@@ -143,11 +143,11 @@ Variables</h2></td></tr>
 <tr class="memdesc:a15edcc4e958a5657140137db6e20015a"><td class="mdescLeft">&#160;</td><td class="mdescRight">instance of detector&lt;...&gt;::type of detected_or  <a href="#a15edcc4e958a5657140137db6e20015a">More...</a><br /></td></tr>
 <tr class="separator:a15edcc4e958a5657140137db6e20015a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cb199eddf79c01cfb3bb3023a418d6a"><td class="memTemplParams" colspan="2">template&lt;typename ExpectedType , template&lt; typename... &gt; typename Operation, typename... Arguments&gt; </td></tr>
-<tr class="memitem:a8cb199eddf79c01cfb3bb3023a418d6a"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto const&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl_1_1mpl.html#a8cb199eddf79c01cfb3bb3023a418d6a">is_detected_exact_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#a2c6c6c6aa3cbf1eb146e9f197a846d7e">is_detected_exact</a>&lt;ExpectedType, Operation, Arguments...&gt;::value{} }</td></tr>
+<tr class="memitem:a8cb199eddf79c01cfb3bb3023a418d6a"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto const&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl_1_1mpl.html#a8cb199eddf79c01cfb3bb3023a418d6a">is_detected_exact_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#a2c6c6c6aa3cbf1eb146e9f197a846d7e">is_detected_exact</a>&lt;ExpectedType, Operation, Arguments...&gt;{} }</td></tr>
 <tr class="memdesc:a8cb199eddf79c01cfb3bb3023a418d6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">instance of is_detected_exact&lt;...&gt;::value  <a href="#a8cb199eddf79c01cfb3bb3023a418d6a">More...</a><br /></td></tr>
 <tr class="separator:a8cb199eddf79c01cfb3bb3023a418d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a664a678993dd32a60941f8922a635475"><td class="memTemplParams" colspan="2">template&lt;typename ConvertableToType , template&lt; typename... &gt; typename Operation, typename... Arguments&gt; </td></tr>
-<tr class="memitem:a664a678993dd32a60941f8922a635475"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto const&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl_1_1mpl.html#a664a678993dd32a60941f8922a635475">is_detected_convertable_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#adf6fdb06a0e47fbcd712561e636cbed1">is_detected_convertable</a>&lt;ConvertableToType, Operation, Arguments...&gt;::value{} }</td></tr>
+<tr class="memitem:a664a678993dd32a60941f8922a635475"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto const&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceiffl_1_1mpl.html#a664a678993dd32a60941f8922a635475">is_detected_convertable_v</a> { <a class="el" href="namespaceiffl_1_1mpl.html#adf6fdb06a0e47fbcd712561e636cbed1">is_detected_convertable</a>&lt;ConvertableToType, Operation, Arguments...&gt;{} }</td></tr>
 <tr class="memdesc:a664a678993dd32a60941f8922a635475"><td class="mdescLeft">&#160;</td><td class="mdescRight">instance of the is_detected_convertable  <a href="#a664a678993dd32a60941f8922a635475">More...</a><br /></td></tr>
 <tr class="separator:a664a678993dd32a60941f8922a635475"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -403,7 +403,7 @@ template&lt;template&lt; typename... &gt; typename Operation, typename... Argume
 template&lt;typename ConvertableToType , template&lt; typename... &gt; typename Operation, typename... Arguments&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto const iffl::mpl::is_detected_convertable_v { <a class="el" href="namespaceiffl_1_1mpl.html#adf6fdb06a0e47fbcd712561e636cbed1">is_detected_convertable</a>&lt;ConvertableToType, Operation, Arguments...&gt;::value{} }</td>
+          <td class="memname">constexpr auto const iffl::mpl::is_detected_convertable_v { <a class="el" href="namespaceiffl_1_1mpl.html#adf6fdb06a0e47fbcd712561e636cbed1">is_detected_convertable</a>&lt;ConvertableToType, Operation, Arguments...&gt;{} }</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -429,7 +429,7 @@ template&lt;typename ConvertableToType , template&lt; typename... &gt; typename 
 template&lt;typename ExpectedType , template&lt; typename... &gt; typename Operation, typename... Arguments&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto const iffl::mpl::is_detected_exact_v { <a class="el" href="namespaceiffl_1_1mpl.html#a2c6c6c6aa3cbf1eb146e9f197a846d7e">is_detected_exact</a>&lt;ExpectedType, Operation, Arguments...&gt;::value{} }</td>
+          <td class="memname">constexpr auto const iffl::mpl::is_detected_exact_v { <a class="el" href="namespaceiffl_1_1mpl.html#a2c6c6c6aa3cbf1eb146e9f197a846d7e">is_detected_exact</a>&lt;ExpectedType, Operation, Arguments...&gt;{} }</td>
         </tr>
       </table>
 </div><div class="memdoc">
