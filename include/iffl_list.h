@@ -519,14 +519,14 @@ public:
     //!
     //! @brief returns minimum valid element size
     //!
-    constexpr static size_t minimum_size() noexcept {
+    constexpr static [[nodiscard]] size_t minimum_size() noexcept {
         return type_traits::minimum_size();
     }
     //!
     //! @brief If traits defined allignment then size of
     //! alignment, and 1 otherwise
     //!
-    constexpr static size_t get_alignment() noexcept {
+    constexpr static [[nodiscard]] size_t get_alignment() noexcept {
         if constexpr (has_alignment_v) {
             return type_traits::alignment;
         } else {
@@ -559,7 +559,7 @@ public:
     //! @param s - value that we are rounding up
     //! @return Value of s padded to alignment
     //!
-    constexpr static size_t roundup_to_alignment(size_t s) noexcept {
+    constexpr static[[nodiscard]] size_t roundup_to_alignment(size_t s) noexcept {
         if constexpr (has_alignment_v && 0 != alignment) {
             return roundup_size_to_alignment(s, alignment);
         } else {
@@ -571,7 +571,7 @@ public:
     //! @param buffer - pointer to the begining of the element
     //! @return element size wrapped into size_with_padding_t
     //!
-    constexpr static size_with_padding_t get_size(char const *buffer) noexcept {
+    constexpr static[[nodiscard]] size_with_padding_t get_size(char const *buffer) noexcept {
         return size_with_padding_t{ type_traits::get_size(*ptr_to_t(buffer)) };
     }
     //!
@@ -581,7 +581,7 @@ public:
     //! @param buffer - pointer to the begining of the element
     //! @return element size wrapped into size_with_padding_t
     //!
-    constexpr static bool validate(size_t buffer_size, T const &buffer) noexcept {
+    constexpr static[[nodiscard]] bool validate(size_t buffer_size, T const &buffer) noexcept {
         if constexpr (can_validate_v) {
             return type_traits::validate(buffer_size, buffer);
         } else {
@@ -594,7 +594,7 @@ public:
     //! @return For the types that support query for the next element offset
     //! method returns get_next_offset, otherwise it returns element size
     //!
-    constexpr static size_t get_next_offset(char const *buffer) noexcept {
+    constexpr static[[nodiscard]] size_t get_next_offset(char const *buffer) noexcept {
         if constexpr (has_next_offset_v) {
             return type_traits::get_next_offset(*ptr_to_t(buffer));
         } else {
@@ -1239,12 +1239,16 @@ public:
     constexpr T *operator->() const noexcept {
         return reinterpret_cast<T *>(p_);
     }
+
     //!
     //! @return Returns a pointer to the buffer conteining element. 
     //!
     constexpr buffer_char_pointer get_ptr() const noexcept {
         return p_;
     }
+
+private:
+
     //!
     //! @brief Assigns iterator to point to the new element
     //! @param p - pointer to the new element 
@@ -1255,9 +1259,6 @@ public:
         p_ = p;
         return tmp;
     }
-
-private:
-
     //!
     //! @brief Explicit constructor from char * or char const *, depending on T being const
     //! @param p - pointer to the buffer that contains element
@@ -1901,7 +1902,7 @@ public:
     //! element element that was found. If no valid list was found then
     //! buff().last will be nullptr.
     //!
-    bool revalidate_data() noexcept {
+    [[nodiscard]] bool revalidate_data() noexcept {
         auto[valid, buffer_view] = flat_forward_list_validate<T, TT>(buff().begin, 
                                                                      buff().end);
         if (valid) {
@@ -1999,7 +2000,7 @@ public:
     //! When iterator referes to container end or when position is npos
     //! the result will be false.
     //!
-    bool contains(const_iterator const &it, size_type position) const noexcept {
+    [[nodiscard]] bool contains(const_iterator const &it, size_type position) const noexcept {
         validate_iterator(it);
         if (cend() == it || npos == position) {
             return false;
@@ -2092,7 +2093,7 @@ public:
     //! that has buffer that does not contain any valid elements will
     //! return true.
     //!
-    bool empty() const noexcept {
+    [[nodiscard]] bool empty() const noexcept {
         validate_pointer_invariants();
         return  buff().last == nullptr;
     }
@@ -2905,7 +2906,11 @@ public:
                       size_t buffer_size,
                       AA &&a = AA{}) noexcept
         : buffer_( one_then_variadic_args_t{}, std::forward<AA>(a) ) {
-        attach(buffer, buffer_size);
+        //
+        // Drop error. If we cannot find valid list then
+        // still attach to the buffer, but set last to nullptr
+        //
+        (void )attach(buffer, buffer_size);
     }
     //!
     //! @brief Constructor that checks if buffer contains a valid list
@@ -2925,7 +2930,11 @@ public:
                       size_t buffer_size,
                       AA &&a = AA{})
         : buffer_( one_then_variadic_args_t{}, std::forward<AA>(a)) {
-        assign(buffer, buffer_size);
+        //
+        // Drop error. If we cannot find valid list then
+        // still attach to the buffer, but set last to nullptr
+        //
+        (void )assign(buffer, buffer_size);
     }
     //!
     //! @brief Copies element pointed by the iterators.
@@ -3095,8 +3104,8 @@ public:
     //! was allocated using method compatible with allocator used by 
     //! this container.
     //!
-    bool attach(char *buffer,
-                size_t buffer_size) noexcept {
+    [[nodiscard]] bool attach(char *buffer,
+                              size_t buffer_size) noexcept {
         FFL_CODDING_ERROR_IF(buff().begin == buffer);
         auto [is_valid, buffer_view] = flat_forward_list_validate<T, TT>(buffer, 
                                                                          buffer + buffer_size);
@@ -3168,8 +3177,8 @@ public:
     //! valid element in the buffer, and is buffer is valid then it
     //! copies elements to the new buffer.
     //!
-    bool assign(char const *buffer_begin, 
-                char const *buffer_end) {
+    [[nodiscard]] bool assign(char const *buffer_begin,
+                              char const *buffer_end) {
 
         auto[is_valid, buffer_view] = flat_forward_list_validate<T, TT>(buffer_begin,
                                                                         buffer_end);
@@ -3190,8 +3199,8 @@ public:
     //! valid element in the buffer, and is buffer is valid then it
     //! copies elements to the new buffer.
     //!
-    bool assign(char const *buffer,
-                size_type buffer_size) {
+    [[nodiscard]] bool assign(char const *buffer,
+                              size_type buffer_size) {
 
         return assign(buffer, buffer + buffer_size);
     }
@@ -3248,7 +3257,7 @@ public:
     //! @return True if allocators are equivalent, and  false otherwise.
     //!
     template<typename AA>
-    bool is_compatible_allocator(AA const &other_allocator) const noexcept {
+    [[nodiscard]] bool is_compatible_allocator(AA const &other_allocator) const noexcept {
         return other_allocator == get_allocator();
     }
     //!
@@ -3429,8 +3438,8 @@ public:
     //! @returns true if element was placed in the existing buffer and false if
     //! buffer does not have enough capacity for the new element.
     //!
-    bool try_push_back(size_type init_buffer_size,
-                       char const *init_buffer = nullptr) {
+    [[nodiscard]] bool try_push_back(size_type init_buffer_size,
+                                     char const *init_buffer = nullptr) {
 
         return try_emplace_back(init_buffer_size,
                                 [init_buffer_size, init_buffer](T &buffer,
@@ -3476,8 +3485,8 @@ public:
     //! unused space will become unused buffer capacity.
     //!
     template <typename F>
-    bool try_emplace_back(size_type element_size,
-                          F const &fn) {
+    [[nodiscard]] bool try_emplace_back(size_type element_size,
+                                        F const &fn) {
         return try_emplace_back_impl(can_reallocate::no, element_size, fn);
     }
 
@@ -3574,7 +3583,9 @@ public:
     //! @details New element becomes a new last element and, if set_next offset is supported,
     //! then it is called on the previous last element such that it points to the new one.
     //!
-    bool try_insert(iterator const &it, size_type init_buffer_size, char const *init_buffer = nullptr) {
+    [[nodiscard]] bool try_insert(iterator const &it, 
+                                  size_type init_buffer_size, 
+                                  char const *init_buffer = nullptr) {
         return try_emplace(it, 
                            init_buffer_size,
                            [init_buffer_size, init_buffer](T &buffer,
@@ -3645,9 +3656,9 @@ public:
     //! unused space will become unused buffer capacity.
     //!
     template <typename F>
-    bool try_emplace(iterator const &it,
-                     size_type new_element_size,
-                     F const &fn) {
+    [[nodiscard]] bool try_emplace(iterator const &it,
+                                   size_type new_element_size,
+                                   F const &fn) {
         auto[result, new_it] = try_emplace_impl(can_reallocate::no,
                                                 it,
                                                 new_element_size,
@@ -3666,7 +3677,8 @@ public:
     //!                      element data are zero initialized.
     //! @throw std::bad_alloca if allocating new buffer fails.
     //!
-    void push_front(size_type init_buffer_size, char const *init_buffer = nullptr) {
+    void push_front(size_type init_buffer_size, 
+                    char const *init_buffer = nullptr) {
         emplace(begin(),
                 init_buffer_size,
                 [init_buffer_size, init_buffer](T &buffer,
@@ -3692,7 +3704,8 @@ public:
     //! @returns true if element was placed in the existing buffer and false if
     //! buffer does not have enough capacity for the new element.
     //!
-    bool try_push_front(size_type init_buffer_size, char const *init_buffer = nullptr) {
+    [[nodiscard]] bool try_push_front(size_type init_buffer_size, 
+                                      char const *init_buffer = nullptr) {
         return try_emplace(begin(),
                            init_buffer_size,
                            [init_buffer_size, init_buffer](T &buffer,
@@ -3737,8 +3750,8 @@ public:
     //! buffer does not have enough capacity for the new element.
     //!
     template <typename F>
-    bool try_emplace_front(size_type element_size, 
-                           F const &fn) {
+    [[nodiscard]] bool try_emplace_front(size_type element_size,
+                                         F const &fn) {
         return try_emplace(begin(), element_size, fn);
     }
     //!
@@ -4379,7 +4392,7 @@ public:
     //! element element that was found. If no valid list was found then
     //! buff().last will be nullptr.
     //!
-    bool revalidate_data() noexcept {
+    [[nodiscard]] bool revalidate_data() noexcept {
         auto[valid, buffer_view] = flat_forward_list_validate<T, TT>(buff().begin, 
                                                                      buff().end);
         if (valid) {
@@ -4495,8 +4508,8 @@ public:
     //! added capacity becomes unused capacity that is reserved 
     //! for future use. Unused capacity is zero initialized.
     //!
-    bool try_element_add_size(iterator const &it,
-                              size_type size_to_add) {
+    [[nodiscard]] bool try_element_add_size(iterator const &it,
+                                            size_type size_to_add) {
         validate_pointer_invariants();
         validate_iterator_not_end(it);
 
@@ -4551,9 +4564,9 @@ public:
     //! adds missing padding.
     //!
     template <typename F>
-    bool try_element_resize(iterator const &it, 
-                            size_type new_size, 
-                            F const &fn) {
+    [[nodiscard]] bool try_element_resize(iterator const &it,
+                                          size_type new_size, 
+                                          F const &fn) {
         auto[result, new_it] = element_resize_impl(can_reallocate::no,
                                                    it,
                                                    new_size,
@@ -4915,9 +4928,9 @@ private:
     //! unused space will become unused buffer capacity.
     //!
     template <typename F>
-    bool try_emplace_back_impl(can_reallocate reallocation_policy,
-                               size_type element_size,
-                               F const &fn) {
+    [[nodiscard]] bool try_emplace_back_impl(can_reallocate reallocation_policy,
+                                             size_type element_size,
+                                             F const &fn) {
         validate_pointer_invariants();
 
         FFL_CODDING_ERROR_IF(element_size < traits_traits::minimum_size());
@@ -5015,10 +5028,10 @@ private:
     //! unused space will become unused buffer capacity.
     //!
     template <typename F>
-    std::pair<bool, iterator> try_emplace_impl(can_reallocate reallocation_policy,
-                                               iterator const &it,
-                                               size_type new_element_size, 
-                                               F const &fn) {
+    [[nodiscard]] std::pair<bool, iterator> try_emplace_impl(can_reallocate reallocation_policy,
+                                                             iterator const &it,
+                                                             size_type new_element_size, 
+                                                             F const &fn) {
 
         validate_pointer_invariants();
         validate_iterator(it);
@@ -5168,9 +5181,9 @@ private:
     //! 
     //!
     template <typename F>
-    std::pair<bool, iterator> resize_last_element(can_reallocate reallocation_policy,
-                                                  size_type new_size,
-                                                  F const &fn) {
+    [[nodiscard]] std::pair<bool, iterator> resize_last_element(can_reallocate reallocation_policy,
+                                                                size_type new_size,
+                                                                F const &fn) {
 
         validate_pointer_invariants();
 
@@ -5249,10 +5262,10 @@ private:
     //! adds missing padding.
     //!
     template <typename F>
-    std::pair<bool, iterator> element_resize_impl(can_reallocate reallocation_policy, 
-                                                  iterator const &it,
-                                                  size_type new_size, 
-                                                  F const &fn) {
+    [[nodiscard]] std::pair<bool, iterator> element_resize_impl(can_reallocate reallocation_policy,
+                                                                iterator const &it,
+                                                                size_type new_size, 
+                                                                F const &fn) {
         //
         // Resize to 0 is same as erase
         //
@@ -5461,14 +5474,14 @@ private:
     //! @brief Returns true when container has no or exactly one entry
     //! and false otherwise.
     //!
-    constexpr bool has_one_or_no_entry() const noexcept {
+    constexpr[[nodiscard]] bool has_one_or_no_entry() const noexcept {
         return buff().last == buff().begin;
     }
     //!
     //! @brief Returns true when container has exactly one entry
     //! and false otherwise.
     //!
-    constexpr bool has_exactly_one_entry() const noexcept {
+    constexpr[[nodiscard]] bool has_exactly_one_entry() const noexcept {
         return nullptr != buff().last &&
             buff().last == buff().begin;
     }
@@ -5551,7 +5564,7 @@ private:
     //! by this container
     //! @param buffer_size - size of the buffer that we are allocating
     //!
-    char *allocate_buffer(size_t buffer_size) {
+    [[nodiscard]] char *allocate_buffer(size_t buffer_size) {
         char *ptr{ allocator_type_traits::allocate(alloc(), buffer_size) };
         FFL_CODDING_ERROR_IF(nullptr == ptr);
         return ptr;
@@ -5599,7 +5612,7 @@ private:
     //! On output they are nulled out, because theya re not pointing to a valid 
     //! buffer any longer.
     //!
-    auto make_scoped_deallocator(char **buffer, size_t *buffer_size) noexcept {
+    [[nodiscard]] auto make_scoped_deallocator(char **buffer, size_t *buffer_size) noexcept {
         return make_scope_guard([this, buffer, buffer_size]() {
             if (*buffer) {
                 deallocate_buffer(*buffer, *buffer_size);
