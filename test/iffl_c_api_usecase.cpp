@@ -196,7 +196,7 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
 }
 
 void print([[maybe_unused]] char_array_list_entry const &e) {
-    std::printf("arr[%u] = {", e.length);
+    std::printf("arr[%lu] = {", e.length);
     std::for_each(e.arr, 
                   e.arr + e.length,
                   [](char v) noexcept {
