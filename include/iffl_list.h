@@ -599,7 +599,7 @@ public:
             return type_traits::get_next_offset(*ptr_to_t(buffer));
         } else {
             size_with_padding_t s{ get_size(buffer) };
-            return s.size_padded;
+            return s.size_padded();
         }
     }
     //!
@@ -5628,26 +5628,27 @@ private:
     void validate_data_invariants() const noexcept {
 #ifdef FFL_DBG_CHECK_DATA_VALID
         if (buff().last) {
+            size_with_padding_t const last_element_size = traits_traits::get_size(buff().last);
             //
             // For element types that have offset of next element use entire buffer for validation
-            // for element types that do not we have to limit by the end of the last element.
+            // for element types that do not have offset to the next element, we have to limit 
+            // by the end of the last element.
             // If there is sufficient reservation after last element then validate would not know 
             // where to stop, and might fail.
             //
-            size_type buffer_lenght{ static_cast<size_type>(buff().end - buff().begin) };
-            if constexpr (!traits_traits::has_next_offset_v) {
-                auto[last_element_size, last_element_size_padded] = traits_traits::get_size(buff().last);
-                buffer_lenght = last_element_size;
+            size_type buffer_length{ 0 };
+            if constexpr (traits_traits::has_next_offset_v) {
+                buffer_length = static_cast<size_type>(buff().end - buff().begin);
+            } else {
+                buffer_length = static_cast<size_type>(buff().last - buff().begin) + last_element_size.size;
             }
-            auto const [valid, buffer_view] = flat_forward_list_validate<T, TT>(buff().begin, buff().last + buffer_lenght);
+
+            size_type const last_element_offset{ static_cast<size_type>(buff().last - buff().begin) };
+            FFL_CODDING_ERROR_IF(buffer_length < (last_element_offset + last_element_size.size));
+
+            auto const [valid, buffer_view] = flat_forward_list_validate<T, TT>(buff().begin, buff().begin + buffer_length);
             FFL_CODDING_ERROR_IF_NOT(valid);
             FFL_CODDING_ERROR_IF_NOT(buffer_view.last().get_ptr() == buff().last);
-
-            if (buff().last) {
-                size_with_padding_t const last_element_size = traits_traits::get_size(buff().last);
-                size_type const last_element_offset{ static_cast<size_type>(buff().last - buff().begin) };
-                FFL_CODDING_ERROR_IF(buffer_lenght < (last_element_offset + last_element_size.size));
-            }
         }
 #endif //FFL_DBG_CHECK_DATA_VALID
     }
@@ -6273,7 +6274,7 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
         //
         // is it large enough to even query next offset?
         //
-        if (remaining_length <= 0 || remaining_length < traits_traits::minimum_size()) {
+        if (remaining_length <= 0 || remaining_length < static_cast<std::ptrdiff_t>(traits_traits::minimum_size())) {
             //
             // If buffer is too small to fit next element
             // then we are done.
