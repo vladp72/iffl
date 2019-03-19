@@ -184,6 +184,11 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
                               e.length = array_size;
                               std::fill(e.arr, e.arr + e.length, pattern);
                           });
+        //
+        // Make sure we are not leaking in the padding any information that can
+        // be helpful to attack server.
+        //
+        data.fill_padding();
 
         iffl::buffer_ref detached_buffer{ data.detach() };
         *buffer = detached_buffer.begin;
