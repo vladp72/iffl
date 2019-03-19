@@ -145,9 +145,8 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
         long long pattern{ 1 };
 
         data.emplace_back(element_buffer_size,
-                          [array_size, pattern] (char *buffer,
+                          [array_size, pattern] (long_long_array_list_entry &e,
                                                  size_t element_size) noexcept {
-                               long_long_array_list_entry &e {*reinterpret_cast<long_long_array_list_entry *>(buffer)};
                                e.length = array_size;
                                std::fill(e.arr, e.arr + e.length, pattern);
                           });
@@ -157,9 +156,8 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
         pattern = 2;
 
         data.emplace_back(element_buffer_size,
-                          [array_size, pattern](char *buffer,
+                          [array_size, pattern](long_long_array_list_entry &e,
                                                 size_t element_size) noexcept {
-                              long_long_array_list_entry &e{ *reinterpret_cast<long_long_array_list_entry *>(buffer) };
                               e.length = array_size;
                               std::fill(e.arr, e.arr + e.length, pattern);
                           });
@@ -169,9 +167,8 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
         pattern = 3;
 
         data.emplace_back(element_buffer_size,
-                          [array_size, pattern](char *buffer,
+                          [array_size, pattern](long_long_array_list_entry &e,
                                                 size_t element_size) noexcept {
-                              long_long_array_list_entry &e{ *reinterpret_cast<long_long_array_list_entry *>(buffer) };
                               e.length = array_size;
                               std::fill(e.arr, e.arr + e.length, pattern);
                           });
@@ -181,9 +178,8 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
         pattern = 4;
 
         data.emplace_back(element_buffer_size,
-                          [array_size, pattern](char *buffer,
+                          [array_size, pattern](long_long_array_list_entry &e,
                                                 size_t element_size) noexcept {
-                              long_long_array_list_entry &e{ *reinterpret_cast<long_long_array_list_entry *>(buffer) };
                               e.length = array_size;
                               std::fill(e.arr, e.arr + e.length, pattern);
                           });
@@ -193,9 +189,8 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
         pattern = 5;
 
         data.emplace_back(element_buffer_size,
-                          [array_size, pattern](char *buffer,
+                          [array_size, pattern](long_long_array_list_entry &e,
                                                 size_t element_size) noexcept {
-                              long_long_array_list_entry &e{ *reinterpret_cast<long_long_array_list_entry *>(buffer) };
                               e.length = array_size;
                               std::fill(e.arr, e.arr + e.length, pattern);
                           });

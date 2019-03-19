@@ -581,9 +581,9 @@ public:
     //! @param buffer - pointer to the begining of the element
     //! @return element size wrapped into size_with_padding_t
     //!
-    constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {
+    constexpr static bool validate(size_t buffer_size, T const &buffer) noexcept {
         if constexpr (can_validate_v) {
-            return type_traits::validate(buffer_size, *ptr_to_t(buffer));
+            return type_traits::validate(buffer_size, buffer);
         } else {
             return true;
         }
@@ -701,22 +701,26 @@ struct default_validate_element_fn {
     //!
     //! @brief Function call iterator that validates element
     //! @param buffer_size - size of the buffer used by the element
-    //! @param buffer - pointer to the buffer used by the element
+    //! @param e - pointer to the buffer used by the element
     //!
-    bool operator() (size_t buffer_size, char const *buffer) const noexcept {
-        return TT::validate(buffer_size, *reinterpret_cast<T const *>(buffer));
+    bool operator() (size_t buffer_size, 
+                     T const &e) const noexcept {
+        return TT::validate(buffer_size, e);
     }
 };
 //!
 //! @class noop_validate_element_fn
 //! @details Does nothing
 //!
+template<typename T,
+         typename TT = flat_forward_list_traits<T>>
 struct noop_validate_element_fn {
     //!
     //! @brief Function call iterator that validates element
     //! @details This functor noops validation 
     //!
-    bool operator() (size_t, char const *) const noexcept {
+    bool operator() ([[maybe_unused]] size_t, 
+                     [[maybe_unused]] T const &) const noexcept {
         return true;
     }
 };
@@ -3402,13 +3406,13 @@ public:
                    char const *init_buffer = nullptr) {
 
         emplace_back(init_buffer_size,
-                      [init_buffer_size, init_buffer](char *buffer,
+                      [init_buffer_size, init_buffer](T &buffer,
                                                       size_type element_size) {
                         FFL_CODDING_ERROR_IF_NOT(init_buffer_size == element_size);
                         if (init_buffer) {
-                            copy_data(buffer, init_buffer, element_size);
+                            copy_data(reinterpret_cast<char *>(&buffer), init_buffer, element_size);
                         } else {
-                            zero_buffer(buffer, element_size);
+                            zero_buffer(reinterpret_cast<char *>(&buffer), element_size);
                         }
                      });
     }
@@ -3429,13 +3433,13 @@ public:
                        char const *init_buffer = nullptr) {
 
         return try_emplace_back(init_buffer_size,
-                                [init_buffer_size, init_buffer](char *buffer,
+                                [init_buffer_size, init_buffer](T &buffer,
                                                                 size_type element_size) {
                                   FFL_CODDING_ERROR_IF_NOT(init_buffer_size == element_size);
                                   if (init_buffer) {
-                                      copy_data(buffer, init_buffer, element_size);
+                                      copy_data(reinterpret_cast<char *>(&buffer), init_buffer, element_size);
                                   } else {
-                                      zero_buffer(buffer, element_size);
+                                      zero_buffer(reinterpret_cast<char *>(&buffer), element_size);
                                   }
                                });
     }
@@ -3539,14 +3543,14 @@ public:
     iterator insert(iterator const &it, size_type init_buffer_size, char const *init_buffer = nullptr) {
         emplace(it, 
                 init_buffer_size,
-                [init_buffer_size, init_buffer](char *buffer,
+                [init_buffer_size, init_buffer](T &buffer,
                                                 size_type element_size) {
                     FFL_CODDING_ERROR_IF_NOT(init_buffer_size == element_size);
 
                     if (init_buffer) {
-                        copy_data(buffer, init_buffer, element_size);
+                        copy_data(reinterpret_cast<char *>(&buffer), init_buffer, element_size);
                     } else {
-                        zero_buffer(buffer, element_size);
+                        zero_buffer(reinterpret_cast<char *>(&buffer), element_size);
                     }
                 });
     }
@@ -3573,13 +3577,13 @@ public:
     bool try_insert(iterator const &it, size_type init_buffer_size, char const *init_buffer = nullptr) {
         return try_emplace(it, 
                            init_buffer_size,
-                           [init_buffer_size, init_buffer](char *buffer,
+                           [init_buffer_size, init_buffer](T &buffer,
                                                            size_type element_size) {
                                FFL_CODDING_ERROR_IF_NOT(init_buffer_size == element_size);
                                if (init_buffer) {
-                                   copy_data(buffer, init_buffer, element_size);
+                                   copy_data(reinterpret_cast<char *>(&buffer), init_buffer, element_size);
                                } else {
-                                   zero_buffer(buffer, element_size);
+                                   zero_buffer(reinterpret_cast<char *>(&buffer), element_size);
                                }
                            });
     }
@@ -3665,14 +3669,14 @@ public:
     void push_front(size_type init_buffer_size, char const *init_buffer = nullptr) {
         emplace(begin(),
                 init_buffer_size,
-                [init_buffer_size, init_buffer](char *buffer,
+                [init_buffer_size, init_buffer](T &buffer,
                                                 size_type element_size) {
                     FFL_CODDING_ERROR_IF_NOT(init_buffer_size == element_size);
 
                     if (init_buffer) {
-                        copy_data(buffer, init_buffer, element_size);
+                        copy_data(reinterpret_cast<char *>(&buffer), init_buffer, element_size);
                     } else {
-                        zero_buffer(buffer, element_size);
+                        zero_buffer(reinterpret_cast<char *>(&buffer), element_size);
                     }
                 });
     }
@@ -3691,13 +3695,13 @@ public:
     bool try_push_front(size_type init_buffer_size, char const *init_buffer = nullptr) {
         return try_emplace(begin(),
                            init_buffer_size,
-                           [init_buffer_size, init_buffer](char *buffer,
+                           [init_buffer_size, init_buffer](T &buffer,
                                                            size_type element_size) {
                                FFL_CODDING_ERROR_IF_NOT(init_buffer_size == element_size);
                                if (init_buffer) {
-                                   copy_data(buffer, init_buffer, element_size);
+                                   copy_data(reinterpret_cast<char *>(&buffer), init_buffer, element_size);
                                } else {
-                                   zero_buffer(buffer, element_size);
+                                   zero_buffer(reinterpret_cast<char *>(&buffer), element_size);
                                }
                            });
     }
@@ -4430,9 +4434,9 @@ public:
 
         iterator const ret_it = element_resize(it,
                                                new_element_size,
-                                               [new_element_size] (char *buffer,
-                                                       size_type old_size, 
-                                                       size_type new_size) {
+                                               [new_element_size] ([[maybe_unused]] T &buffer,
+                                                                   size_type old_size, 
+                                                                   size_type new_size) {
                                                        //
                                                        // might extend if element was not propertly alligned. 
                                                        // must be shrinking, and
@@ -4468,7 +4472,7 @@ public:
 
         return element_resize(it, 
                               traits_traits::roundup_to_alignment(used_size(it) + size_to_add),
-                              [] (char *buffer,  
+                              [] (T &buffer,  
                                   size_type old_size, 
                                   size_type new_size) {
                                   //
@@ -4476,7 +4480,7 @@ public:
                                   // data must fit new buffer
                                   //
                                   FFL_CODDING_ERROR_IF_NOT(old_size <= new_size);
-                                  zero_buffer(buffer + old_size, new_size - old_size);
+                                  zero_buffer(reinterpret_cast<char *>(&buffer) + old_size, new_size - old_size);
                                   FFL_CODDING_ERROR_IF_NOT(traits_traits::validate(new_size, buffer));
                               });
     }
@@ -4498,7 +4502,7 @@ public:
 
         return try_element_resize(it, 
                                   traits_traits::roundup_to_alignment(used_size(it) + size_to_add),
-                                  [] (char *buffer,  
+                                  [] (T &buffer,  
                                       size_type old_size, 
                                       size_type new_size) {
                                       //
@@ -4506,7 +4510,7 @@ public:
                                       // data must fit new buffer
                                       //
                                       FFL_CODDING_ERROR_IF_NOT(old_size <= new_size);
-                                      zero_buffer(buffer + old_size, new_size - old_size);
+                                      zero_buffer(reinterpret_cast<char *>(&buffer) + old_size, new_size - old_size);
                                       FFL_CODDING_ERROR_IF_NOT(traits_traits::validate(new_size, buffer));
                                   });
     }
@@ -4942,7 +4946,7 @@ private:
             cur = buff().begin + prev_sizes.used_capacity().size_padded();
         }
 
-        fn(cur, element_size);
+        fn(*traits_traits::ptr_to_t(cur), element_size);
 
         set_no_next_element(cur);
         //
@@ -5086,7 +5090,7 @@ private:
             //
             // Pass to the constructor requested size, not padded size
             //
-            fn(cur, new_element_size);
+            fn(*traits_traits::ptr_to_t(cur), new_element_size);
         } catch (...) {
             //
             // on failure to costruct move tail back
@@ -5186,7 +5190,7 @@ private:
         if (element_size_diff < 0 ||
             prev_sizes.remaining_capacity_for_insert() >= static_cast<size_type>(element_size_diff)) {
 
-            fn(buff().last,
+            fn(*traits_traits::ptr_to_t(buff().last),
                prev_sizes.last_element.data_size(),
                new_size);
 
@@ -5213,7 +5217,7 @@ private:
             //
             // change element
             //
-            fn(new_last_ptr,
+            fn(*traits_traits::ptr_to_t(new_last_ptr),
                prev_sizes.last_element.data_size(),
                new_size);
             //
@@ -5364,7 +5368,7 @@ private:
                 this->set_next_offset(it.get_ptr(), element_range_after.buffer_size());
             }) };
 
-            fn(it.get_ptr(), 
+            fn(*traits_traits::ptr_to_t(it.get_ptr()),
                element_range_before.buffer_size(),
                new_size);
 
@@ -5392,7 +5396,7 @@ private:
             //
             // change element
             //
-            fn(new_buffer + element_range_before.begin(),
+            fn(*traits_traits::ptr_to_t(new_buffer + element_range_before.begin()),
                element_range_before.buffer_size(),
                new_size);
             //
@@ -6168,7 +6172,7 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
         //
         // minimum and next are valid, check rest of the fields
         //
-        if (!validate_element_fn(remaining_length, first)) {
+        if (!validate_element_fn(remaining_length, *traits_traits::ptr_to_t(first))) {
             break;
         }
         //
@@ -6270,7 +6274,7 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
         // Check that element is valid before asking to calculate
         // element size.
         //
-        if (!validate_element_fn(remaining_length, first)) {
+        if (!validate_element_fn(remaining_length, *traits_traits::ptr_to_t(first))) {
             break;
         }
         //

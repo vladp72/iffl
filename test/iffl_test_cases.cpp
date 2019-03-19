@@ -478,11 +478,10 @@ void fill_container_with_data(T &ffl, size_t extra_reserve = 0 ) {
     for (size_t i = 1; i <= iterations_count; ++i) {
         size_t const element_size{ i * sizeof(FLAT_FORWARD_LIST_TEST) };
         ffl.emplace_back(element_size,
-                         [i, element_size](char *buffer,
+                         [i, element_size](FLAT_FORWARD_LIST_TEST &e,
                                            size_t new_element_size) {
                             FFL_CODDING_ERROR_IF_NOT(element_size == new_element_size);
                             FFL_CODDING_ERROR_IF(element_size < sizeof(FLAT_FORWARD_LIST_TEST));
-                            FLAT_FORWARD_LIST_TEST &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST *>(buffer);
                             e.Type = i;
                             e.DataLength = element_size - sizeof(FLAT_FORWARD_LIST_TEST);
                         });
@@ -596,10 +595,9 @@ void flat_forward_list_resize_elements_test1() {
     for (auto i = ffl.begin(); i != ffl.end(); ++i, ++idx) {
         i = ffl.element_resize(i,
                                sizeof(FLAT_FORWARD_LIST_TEST) + 10,
-                               [idx](char *buffer,
+                               [idx](FLAT_FORWARD_LIST_TEST &e,
                                      size_t old_element_size,
                                      size_t new_element_size) {
-                                    FLAT_FORWARD_LIST_TEST &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST *>(buffer);
                                     FFL_CODDING_ERROR_IF(old_element_size < sizeof(FLAT_FORWARD_LIST_TEST));
                                     FFL_CODDING_ERROR_IF(new_element_size < sizeof(FLAT_FORWARD_LIST_TEST));
                                     FFL_CODDING_ERROR_IF_NOT(e.DataLength + sizeof(FLAT_FORWARD_LIST_TEST) <= old_element_size);
@@ -620,10 +618,9 @@ void flat_forward_list_resize_elements_test1() {
     for (auto i = ffl.begin(); i != ffl.end(); ++i, ++idx) {
         i = ffl.element_resize(i,
                                sizeof(FLAT_FORWARD_LIST_TEST) + 20,
-                               [](char *buffer,
+                               [](FLAT_FORWARD_LIST_TEST &e,
                                   size_t old_element_size,
                                   size_t new_element_size) {
-                                    FLAT_FORWARD_LIST_TEST &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST *>(buffer);
                                     FFL_CODDING_ERROR_IF(old_element_size < sizeof(FLAT_FORWARD_LIST_TEST));
                                     FFL_CODDING_ERROR_IF(new_element_size < sizeof(FLAT_FORWARD_LIST_TEST));
                                     FFL_CODDING_ERROR_IF_NOT(e.DataLength + sizeof(FLAT_FORWARD_LIST_TEST) <= old_element_size);
@@ -694,10 +691,9 @@ void flat_forward_list_resize_elements_test1() {
     for (auto i = ffl.begin(); i != ffl.end(); ++idx) {
         i = ffl.element_resize(i,
                                0,
-                               [](char *buffer,
+                               []([[maybe_unused]] FLAT_FORWARD_LIST_TEST &e,
                                   [[maybe_unused]] size_t old_element_size,
                                   [[maybe_unused]] size_t new_element_size) noexcept {
-                                  [[maybe_unused]] FLAT_FORWARD_LIST_TEST const &e = *reinterpret_cast<FLAT_FORWARD_LIST_TEST *>(buffer);
                                     FFL_CRASH_APPLICATION();
                                 });
     }

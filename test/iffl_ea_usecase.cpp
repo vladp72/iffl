@@ -205,20 +205,16 @@ void handle_ea1(char const *buffer, size_t buffer_lenght) {
             buffer,
             buffer + buffer_lenght,
             [buffer, &idx, &failed_validation, &invalid_element_length] (size_t buffer_size,
-                                                                         char const *element_buffer) -> bool {
+                                                                         FILE_FULL_EA_INFORMATION const &e) -> bool {
                 //
                 // validate element
                 //
-                bool const is_valid{ iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>::validate(buffer_size, 
-                                                                                                        *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(element_buffer)) };
+                bool const is_valid{ iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>::validate(buffer_size, e) };
                 //
                 // if element is valid then process element
                 //
                 if (is_valid) {
-                    FILE_FULL_EA_INFORMATION const &e = 
-                        *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(element_buffer);
-
-                    print_ea(idx, element_buffer - buffer, e);
+                    print_ea(idx, reinterpret_cast<char const *>(&e) - buffer, e);
                     ++idx;
                 } else {
                     //
@@ -286,9 +282,8 @@ void prepare_ea_and_call_handler() {
 
     eas.emplace_front(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) 
                      + sizeof(ea_name0)-1, 
-                     [](char *buffer,
+                     [](FILE_FULL_EA_INFORMATION &e,
                         size_t new_element_size) noexcept {
-                        FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
                         e.Flags = 0;
                         e.EaNameLength = sizeof(ea_name0)-1;
                         e.EaValueLength = 0;
@@ -300,9 +295,8 @@ void prepare_ea_and_call_handler() {
     eas.emplace_back(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) 
                      + sizeof(ea_name1)-1
                      + sizeof(ea_data1),
-                     [](char *buffer,
+                     [](FILE_FULL_EA_INFORMATION &e,
                         size_t new_element_size) noexcept {
-                        FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
                         e.Flags = 1;
                         e.EaNameLength = sizeof(ea_name1)-1;
                         e.EaValueLength = sizeof(ea_data1);
@@ -317,9 +311,8 @@ void prepare_ea_and_call_handler() {
     eas.emplace_front(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) 
                      + sizeof(ea_name2)-1
                      + sizeof(ea_data2),
-                     [](char *buffer,
+                     [](FILE_FULL_EA_INFORMATION &e,
                         size_t new_element_size) noexcept {
-                        FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
                         e.Flags = 2;
                         e.EaNameLength = sizeof(ea_name2)-1;
                         e.EaValueLength = sizeof(ea_data2);
