@@ -35,27 +35,28 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
 
     std::printf("Preparing output, input buffer size %zu\n", *buffer_size);
 
-    for (unsigned long len{ 0 }; ; ++len) {
-        size_t element_size{ char_array_list::traits::minimum_size() + len * sizeof(char_array_list::value_type::type) };
-        std::printf("Emplacing element [%03lu] size %03zu, before {used capacity %03zu, remainig capacity %03zu}", 
-                    len, 
+    for (unsigned short idx{ 0 }; ; ++idx) {
+        size_t element_size{ char_array_list::traits::minimum_size() + idx * sizeof(char_array_list::value_type::type) };
+        std::printf("Emplacing element [%03hu] element size %03zu (padded %02zu), capacity before {used %03zu, remainig %03zu}", 
+                    idx,
                     element_size,
+                    iffl::flat_forward_list_traits_traits<char_array_list_entry>::roundup_to_alignment(element_size),
                     data.used_capacity(),
                     data.remaining_capacity());
         if (!data.try_emplace_back(element_size,
-                                    [len] (char_array_list_entry &e,
+                                    [idx] (char_array_list_entry &e,
                                            size_t element_size) noexcept {
-                                        e.length = len;
-                                        std::fill(e.arr, e.arr + e.length, static_cast<char>(len)+1);
+                                        e.length = idx;
+                                        std::fill(e.arr, e.arr + e.length, static_cast<char>(idx)+1);
                                     })) {
             data.fill_padding();
             *buffer_size = data.used_capacity();
-            std::printf("\nServer was able to add %03lu arrays, used capacity %03zu\n", 
-                        len, 
+            std::printf("\nServer was able to add %03hu arrays, used capacity %03zu\n", 
+                        idx,
                         *buffer_size);
             break;
         }
-        std::printf(", after {used capacity %03zu, remainig capacity %03zu}\n",
+        std::printf(", capacity after {used %03zu, remainig %03zu}\n",
                     data.used_capacity(),
                     data.remaining_capacity());
 

@@ -29,7 +29,7 @@
 //
 template <typename T>
 struct pod_array_list_entry {
-    unsigned long length;
+    unsigned short length;
     T arr[1];
 
     using type = T;
@@ -89,7 +89,7 @@ namespace iffl {
 using long_long_array_list = iffl::pmr_flat_forward_list<long_long_array_list_entry>;
 
 inline void print([[maybe_unused]] long_long_array_list_entry const &e) {
-    std::printf("arr[%lu] = {", e.length);
+    std::printf("arr[%hu] = {", e.length);
     std::for_each(e.arr,
                   e.arr + e.length,
                   [](long long v) noexcept {
@@ -111,7 +111,7 @@ using char_array_list = iffl::pmr_flat_forward_list<char_array_list_entry>;
 
 
 inline void print([[maybe_unused]] char_array_list_entry const &e) {
-    std::printf("arr[%lu] = {", e.length);
+    std::printf("arr[%hu] = {", e.length);
     std::for_each(e.arr,
                   e.arr + e.length,
                   [](char v) noexcept {

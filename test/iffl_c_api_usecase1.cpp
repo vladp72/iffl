@@ -34,7 +34,7 @@ bool server_api_call1(char **buffer, size_t *buffer_size) noexcept {
     
         char_array_list data{ &global_memory_resource };
     
-        unsigned long array_size{ 10 };
+        unsigned short array_size{ 10 };
         size_t element_buffer_size{ char_array_list_entry::byte_size_to_array_size(array_size) };
         char pattern{ 1 };
 
