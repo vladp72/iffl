@@ -23,9 +23,13 @@
 //  use explicit attach method.
 //
 
+unsigned short idx{ 0 };
+
 bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
+    bool result{ false };
+
     if (!buffer || !buffer_size) {
-        return false;
+        return result;
     }
 
     iffl::input_buffer_memory_resource input_buffer{reinterpret_cast<void *>(buffer), *buffer_size};
@@ -35,7 +39,7 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
 
     std::printf("Preparing output, input buffer size %zu\n", *buffer_size);
 
-    for (unsigned short idx{ 0 }; ; ++idx) {
+    for (unsigned short added_count{0};; ++idx, ++added_count) {
         size_t element_size{ char_array_list::traits::minimum_size() + idx * sizeof(char_array_list::value_type::type) };
         std::printf("Emplacing element [%03hu] element size %03zu (padded %02zu), capacity before {used %03zu, remainig %03zu}", 
                     idx,
@@ -44,7 +48,7 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
                     data.used_capacity(),
                     data.remaining_capacity());
         if (!data.try_emplace_back(element_size,
-                                    [idx] (char_array_list_entry &e,
+                                    [] (char_array_list_entry &e,
                                            size_t element_size) noexcept {
                                         e.length = idx;
                                         std::fill(e.arr, e.arr + e.length, static_cast<char>(idx)+1);
@@ -52,16 +56,17 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
             data.fill_padding();
             *buffer_size = data.used_capacity();
             std::printf("\nServer was able to add %03hu arrays, used capacity %03zu\n", 
-                        idx,
+                        added_count,
                         *buffer_size);
             break;
         }
+        result = true;
         std::printf(", capacity after {used %03zu, remainig %03zu}\n",
                     data.used_capacity(),
                     data.remaining_capacity());
 
     }
-    return true;
+    return result;
 }
 
 void process_data2(char_array_list const &data) {
@@ -71,19 +76,28 @@ void process_data2(char_array_list const &data) {
 }
 
 void call_server2() {
+    //
+    // Client uses debug memory resource to 
+    // help detecting buffer overruns/underruns
+    //
     iffl::debug_memory_resource client_memory_resource;
-
+    //
+    // Create flat forward list container, and resize
+    // its buffer to the size we want to use to fetch 
+    //
     char_array_list buffer{ &client_memory_resource };
-
     buffer.resize_buffer(100);
+
     size_t buffer_size{ buffer.total_capacity() };
 
-    if (server_api_call2(buffer.data(), &buffer_size)) {
+    while (server_api_call2(buffer.data(), &buffer_size) && 0 != buffer_size) {
         if (buffer.revalidate_data(buffer_size)) {
             process_data2(buffer);
         } else {
             std::printf("Buffer revalidate failed. New buffer size %zu\n", buffer_size);
+            break;
         }
+        buffer_size = buffer.total_capacity();
     }
 }
 
