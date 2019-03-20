@@ -4385,6 +4385,7 @@ public:
     }
     //!
     //! @brief Validates that buffer contains a valid list.
+    //! @param data_size - upper watermark for the valid data.
     //! @return true if valid list was found and false otherwise.
     //! @details You must call this method after passing pointer to 
     //! container's buffer to a function that might change buffer content.

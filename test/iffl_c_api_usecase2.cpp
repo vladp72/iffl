@@ -76,7 +76,7 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
         //
         if (!data.try_emplace_back(element_size,
                                     [] (char_array_list_entry &e,
-                                           size_t element_size) noexcept {
+                                        size_t element_size) noexcept {
                                         e.length = idx;
                                         std::fill(e.arr, e.arr + e.length, static_cast<char>(idx)+1);
                                     })) {
