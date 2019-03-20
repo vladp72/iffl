@@ -4392,12 +4392,15 @@ public:
     //! element element that was found. If no valid list was found then
     //! buff().last will be nullptr.
     //!
-    [[nodiscard]] bool revalidate_data() noexcept {
-        auto[valid, buffer_view] = flat_forward_list_validate<T, TT>(buff().begin, 
-                                                                     buff().end);
-        if (valid) {
-            buff().last = buffer_view.last().get_ptr();
+    [[nodiscard]] bool revalidate_data(size_type data_size = npos) noexcept {
+        size_type new_data_size{ total_capacity() };
+        if (data_size != npos) {
+            new_data_size = std::min(data_size, new_data_size);
         }
+        auto[valid, buffer_view] = flat_forward_list_validate<T, TT>(buff().begin, 
+                                                                     buff().begin + new_data_size);
+        buff().last = valid ? buffer_view.last().get_ptr() : nullptr;
+
         return valid;
     }
     //!

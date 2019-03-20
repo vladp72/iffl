@@ -1,5 +1,5 @@
 #include "iffl.h"
-#include "iffl_c_api_usecase.h"
+#include "iffl_c_api_usecase1.h"
 #include "iffl_list_array.h"
 
 // 
@@ -25,7 +25,7 @@
 
 iffl::debug_memory_resource global_memory_resource;
 
-bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
+bool server_api_call1(char **buffer, size_t *buffer_size) noexcept {
     if (!buffer || !buffer_size) {
         return false;
     }
@@ -125,17 +125,17 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
     return true;
 }
 
-void process_data(char_array_list const &data) {
+void process_data1(char_array_list const &data) {
     for (auto const &array_list_entry : data) {
         print(array_list_entry);
     }
 }
 
-void call_server() {
+void call_server1() {
     char *buffer{ nullptr };
     size_t buffer_size{ 0 };
 
-    if (server_api_call(&buffer, &buffer_size)) {
+    if (server_api_call1(&buffer, &buffer_size)) {
         //
         // If server call succeeded the 
         // take ownershipt of the buffer
@@ -144,14 +144,14 @@ void call_server() {
                               buffer, 
                               buffer_size,
                               &global_memory_resource };
-        process_data(data);
+        process_data1(data);
     } else {
         FFL_CODDING_ERROR_IF(buffer || buffer_size);
     }
 }
 
 
-void run_ffl_c_api_usecase() {
+void run_ffl_c_api_usecase1() {
     iffl::flat_forward_list_traits_traits<char_array_list_entry>::print_traits_info();
-    call_server();
+    call_server1();
 }

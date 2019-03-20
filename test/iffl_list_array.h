@@ -88,7 +88,7 @@ namespace iffl {
 
 using long_long_array_list = iffl::pmr_flat_forward_list<long_long_array_list_entry>;
 
-void print([[maybe_unused]] long_long_array_list_entry const &e) {
+inline void print([[maybe_unused]] long_long_array_list_entry const &e) {
     std::printf("arr[%lu] = {", e.length);
     std::for_each(e.arr,
                   e.arr + e.length,
@@ -110,7 +110,7 @@ namespace iffl {
 using char_array_list = iffl::pmr_flat_forward_list<char_array_list_entry>;
 
 
-void print([[maybe_unused]] char_array_list_entry const &e) {
+inline void print([[maybe_unused]] char_array_list_entry const &e) {
     std::printf("arr[%lu] = {", e.length);
     std::for_each(e.arr,
                   e.arr + e.length,

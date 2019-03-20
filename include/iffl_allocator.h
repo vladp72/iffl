@@ -273,7 +273,7 @@ public:
     //!
     explicit input_buffer_memory_resource(void *buffer, 
                                           size_t buffer_size) noexcept
-        : used_(buffer ? true : false)
+        : used_(buffer ? false : true)
         , buffer_{buffer}
         , buffer_size_{ buffer_size } {
     }
