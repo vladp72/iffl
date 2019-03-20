@@ -37,7 +37,7 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
 
     for (unsigned long len{ 0 }; ; ++len) {
         size_t element_size{ char_array_list::traits::minimum_size() + len * sizeof(char_array_list::value_type::type) };
-        std::printf("Emplacing element [%lu] size %zu, used capacity %zu, remainig capacity %zu \n", 
+        std::printf("Emplacing element [%03lu] size %03zu, before {used capacity %03zu, remainig capacity %03zu}", 
                     len, 
                     element_size,
                     data.used_capacity(),
@@ -50,9 +50,15 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
                                     })) {
             data.fill_padding();
             *buffer_size = data.used_capacity();
-            std::printf("Server was able to add %lu arrays, used capacity %zu\n", len, *buffer_size);
+            std::printf("\nServer was able to add %03lu arrays, used capacity %03zu\n", 
+                        len, 
+                        *buffer_size);
             break;
         }
+        std::printf(", after {used capacity %03zu, remainig capacity %03zu}\n",
+                    data.used_capacity(),
+                    data.remaining_capacity());
+
     }
     return true;
 }
