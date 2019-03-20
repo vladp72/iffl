@@ -33,7 +33,7 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
     char_array_list data{ &input_buffer };
     data.resize_buffer(*buffer_size);
 
-    std::printf("Preparing output, input buffer size %llu\n", *buffer_size);
+    std::printf("Preparing output, input buffer size %zu\n", *buffer_size);
 
     for (unsigned long len{ 0 }; ; ++len) {
         if (!data.try_emplace_back(char_array_list::traits::minimum_size() + len * sizeof(char_array_list::value_type::type),
@@ -44,7 +44,7 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
                             })) {
             data.fill_padding();
             *buffer_size = data.used_capacity();
-            std::printf("Server was able to add %lu arrays, used capacity %llu\n", len, *buffer_size);
+            std::printf("Server was able to add %lu arrays, used capacity %zu\n", len, *buffer_size);
             break;
         }
     }
