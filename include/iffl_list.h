@@ -2127,7 +2127,7 @@ public:
     size_type remaining_capacity() const noexcept {
         validate_pointer_invariants();
         sizes_t s{ get_all_sizes() };
-        return s.remaining_capacity;
+        return s.remaining_capacity_for_append();
     }
 
 private:
@@ -4852,7 +4852,7 @@ public:
     size_type remaining_capacity() const noexcept {
         validate_pointer_invariants();
         sizes_t const s{ get_all_sizes() };
-        return s.remaining_capacity;
+        return s.remaining_capacity_for_append();
     }
     //!
     //! @brief Fills parts of the buffer not used by element data with 

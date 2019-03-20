@@ -37,7 +37,11 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
 
     for (unsigned long len{ 0 }; ; ++len) {
         size_t element_size{ char_array_list::traits::minimum_size() + len * sizeof(char_array_list::value_type::type) };
-        std::printf("Emplacing element [%lu] size %zu\n", len, element_size);
+        std::printf("Emplacing element [%lu] size %zu, used capacity %zu, remainig capacity %zu \n", 
+                    len, 
+                    element_size,
+                    data.used_capacity(),
+                    data.remaining_capacity());
         if (!data.try_emplace_back(element_size,
                                     [len] (char_array_list_entry &e,
                                            size_t element_size) noexcept {
