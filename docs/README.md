@@ -89,15 +89,184 @@ typedef struct _FILE_ID_BOTH_DIR_INFO {
 Output of NtQueryDirectoryFile
 [FILE_ID_BOTH_DIR_INFO documentation](https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/ns-ntifs-_file_both_dir_information)
 
+Or types that do not have next element offset, but it can be calculated. Offset of the next element is size of this element data, plus optional padding to keep ext element propertly alligned
+```
+                     -----------------------------------
+                     |                                 |
+    (next element offset = sizeof(this element)        |
+                     |   + padding)                    |
+                     |                                 V
+| <fields> | <offsets of data> | [data] | [padding] || [next element] ...
+|       header                 | [data] | [padding] || [next element] ...
+```
+
+Exanmples:
+
+ CLUSPROP_SYNTAX
+* [property list](https://docs.microsoft.com/en-us/previous-versions/windows/desktop/mscs/property-lists)
+* [data structures](https://docs.microsoft.com/en-us/previous-versions/windows/desktop/mscs/data-structures)
+* [cluster property syntax](https://docs.microsoft.com/en-us/windows/desktop/api/clusapi/ns-clusapi-clusprop_syntax)
+
+```
+ typedef union CLUSPROP_SYNTAX {
+   DWORD  dw;
+   struct {
+       WORD wFormat;
+       WORD wType;
+   } DUMMYSTRUCTNAME;
+ } CLUSPROP_SYNTAX;
+```
+ [CLUSPROP_VALUE](https://docs.microsoft.com/en-us/windows/desktop/api/clusapi/ns-clusapi-clusprop_value)
+```
+ typedef struct CLUSPROP_VALUE {
+     CLUSPROP_SYNTAX Syntax;
+     DWORD           cbLength;
+ } CLUSPROP_VALUE;
+```
+
 ## Overview
 
 This header only library provides an algorithms and containers for safe creation and parsing such a collection.
 It includes:
-* _flat_forward_list_ref_ and _flat_forward_list_view_ a non-owning containers that allows iterating over a flat forward list in a buffer.
-* _flat_forward_list_validate_ a family of functions that help to validate untrusted buffer, and prodice a ref/view to a subrange to the buffer that contains valid list.
-* _flat_forward_list_ a container that owns and resizes buffer as you are adding/removing elements.
-* _debug_memory_resource_ a memory resource that help with debugging
-* _input_buffer_memory_resource_ a memory resource that helps in scenarios where server have to fill a passed in buffer. 
+* **flat_forward_list_ref** and **flat_forward_list_view** a non-owning containers that allows iterating over a flat forward list in a buffer.
+* **flat_forward_list_validate** a family of functions that help to validate untrusted buffer, and prodice a ref/view to a subrange to the buffer that contains valid list.
+* **flat_forward_list** a container that owns and resizes buffer as you are adding/removing elements.
+* **debug_memory_resource** a memory resource that help with debugging
+* **input_buffer_memory_resource** a memory resource that helps in scenarios where server have to fill a passed in buffer. 
+
+## Boilerplate
+
+User is responsible for implementing helper class that has following methods
+- tell us minimum required size element must have to be able to query element size
+constexpr static size_t minimum_size() noexcept;
+and addition documentation in this mode right above where primary
+constexpr static size_t get_next_element_offset(char const *buffer) noexcept;
+- update offset to the next element
+constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept;
+- calculate element size from data
+constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept;
+- validate that data fit into the buffer
+constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept;
+
+By default we are looking for a partial specialization for the element type.
+
+User have to implement following interface:
+```
+    namespace iffl {
+        template <>
+        struct flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> {
+            constexpr static size_t minimum_size() noexcept { <implementation> }
+            constexpr static size_t get_next_offset(<type> const &e) noexcept { <implementation> }
+            constexpr static void set_next_offset(<type> &e, size_t size) noexcept { <implementation> }
+            constexpr static size_t get_size(<type> const &buffer) noexcept { <implementation> }
+            constexpr static bool validate(size_t buffer_size, <type> const &buffer) noexcept {<implementation>}
+        };
+    }
+```
+
+Sample implementation for FILE_FULL_EA_INFORMATION:
+
+```
+typedef struct _FILE_FULL_EA_INFORMATION {
+    ULONG  NextEntryOffset;
+    UCHAR  Flags;
+    UCHAR  EaNameLength;
+    USHORT EaValueLength;
+    CHAR   EaName[1];
+} FILE_FULL_EA_INFORMATION, *PFILE_FULL_EA_INFORMATION;
+
+namespace iffl {
+    template <>
+    struct flat_forward_list_traits<FILE_FULL_EA_INFORMATION> {
+        //
+        // This is the only method required by flat_forward_list_iterator.
+        //
+        constexpr static size_t get_next_element_offset(char const *buffer) noexcept {
+            FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
+            return e.NextEntryOffset;
+        }
+        //
+        // This method is requiered for validate algorithm
+        //
+        constexpr static size_t minimum_size() noexcept {
+            return FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength);
+        }
+        //
+        // Helper method that calculates buffer size. Not required.
+        //
+        constexpr static size_t get_size(FILE_FULL_EA_INFORMATION const &e) {
+            return  FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) +
+                    e.EaNameLength +
+                    e.EaValueLength;
+        }
+        constexpr static size_t get_size(char const *buffer) {
+            return get_size(*reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer));
+        }
+        //
+        // Helper method that check that element sizes are correct. Not required.
+        //
+        constexpr static bool validate_size(FILE_FULL_EA_INFORMATION const &e, size_t buffer_size) noexcept {
+            if (e.NextEntryOffset == 0) {
+                return  get_size(e) <= buffer_size;
+            } else if (e.NextEntryOffset <= buffer_size) {
+                return  get_size(e) <= e.NextEntryOffset;
+            }
+            return false;
+        }
+        //
+        // Helper method that checks that data are valid
+        //
+        static bool validate_data(FILE_FULL_EA_INFORMATION const &e) noexcept {
+            //
+            // This is and example of a validation you might want to do.
+            // Extended attribute name does not have to be 0 terminated 
+            // so it is not strictly speaking nessesary here.
+            //
+            // char const *end = e.EaName + e.EaNameLength;
+            // return end != std::find_if(e.EaName,
+            //                            end, 
+            //                            [](char c) -> bool {
+            //                                 return c == '\0'; 
+            //                            });
+            return true;
+        }
+        //
+        // This method is required for validate algorithm and container
+        //
+        constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {
+            FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
+            return validate_size(e, buffer_size) && validate_data(e);
+        }
+        //
+        // This method is required by container only
+        //
+        constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept {
+            FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
+            FFL_CODDING_ERROR_IF_NOT(size == 0 || size >= get_size(e));
+            e.NextEntryOffset = static_cast<ULONG>(size);
+        }
+        //
+        // This method is required by container only
+        //
+        constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept {
+            return get_size(buffer);
+        }
+    };
+}
+```
+
+Now FILE_FULL_EA_INFORMATION is ready to be used with iffl. By default you will not explicitely spell that for FILE_FULL_EA_INFORMATION we should use iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>. Compiler will do the right thing using partial template specialization magic.
+Here is an example where prepare_ea_and_call_handler uses container to prepare buffer with FILE_FULL_EA_INFORMATION, and calls  handle_ea.
+Function handle_ea uses flat_forward_list_validate to safely process elements of untrusted buffer. 
+
+Since FILE_FULL_EA_INFORMATION is a Plain Old Definition (POD) it does not have constructor, container methods that deal with creation of new elements allow passing
+a functor that will be called once container allocates requested space for the element to initialize element data. In this sample you can see prepare_ea_and_call_handler is calling emplace_front and emplace_back and is passing in a lambda that initializes element.
+If you want to zero intialize element then call container.push_back(element_size). 
+If you want to initialzie element using a buffer that contains element blueprint then call .push_back(element_size, bluprint_buffer). It will initialize element by copy bluprint buffer.
+Note that for last element container always resets next element offset after element contruction is done so you do not need to worry about that.
+
+```
+using ea_iffl = iffl::flat_forward_list<FILE_FULL_EA_INFORMATION>;
 
 ## Scenarios
 
