@@ -6,10 +6,9 @@ https://github.com/vladp72/iffl/tree/master/include
 
 ## Motivation
 
-Often times when dealing with OS or just C interface we need to pass in or parse a linked list of variable size structs organized into a linked list in a buffer. This header only library provides an algorithm for safe parsing such a collection, iterators for going over trusted collection, and a container for manipulating this list (push/pop/erase/insert/sort/merge/etc). To facilitate usage across C interface container also supports attach (a.k.a adopt ) buffer and detach buffer (you would need a custom allocator both sides would agree on).
+Often times when dealing with OS or just C interface we need to pass in or parse a a buffer that contains a linked list of variable size structs. 
 
-This container is designed to contain element of following general structure:
-that can be used to enumerate over previously validated buffer
+These pods have following general structure:
 ```
                       ------------------------------------------------------------
                       |                                                          |
@@ -90,6 +89,18 @@ typedef struct _FILE_ID_BOTH_DIR_INFO {
 Output of NtQueryDirectoryFile
 [FILE_ID_BOTH_DIR_INFO documentation](https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/ns-ntifs-_file_both_dir_information)
 
+## Overview
+
+This header only library provides an algorithms and containers for safe creation and parsing such a collection.
+It includes:
+* _flat_forward_list_ref_ and _flat_forward_list_view_ a non-owning containers that allows iterating over a flat forward list in a buffer.
+* _flat_forward_list_validate_ a family of functions that help to validate untrusted buffer, and prodice a ref/view to a subrange to the buffer that contains valid list.
+* _flat_forward_list_ a container that owns and resizes buffer as you are adding/removing elements.
+* _debug_memory_resource_ a memory resource that help with debugging
+* _input_buffer_memory_resource_ a memory resource that helps in scenarios where server have to fill a passed in buffer. 
+
+## Scenarios
+
 function **flat_forward_list_validate** that can be use to deal with untrusted buffers. You can use it to validate if untrusted buffer contains a valid list, and to find boundary at which list gets invalid. with polymorphic allocator for debugging contained elements.
 
 ```
@@ -110,6 +121,12 @@ constexpr inline std::pair<bool, char const *> flat_forward_list_validate(
         F const &validate_element_fn = default_validate_element_fn<T, TT>{}
     ) noexcept;
 ```   
+
+
+
+iterators for going over trusted collection, and a container for manipulating this list (push/pop/erase/insert/sort/merge/etc). To facilitate usage across C interface container also supports attach (a.k.a adopt ) buffer and detach buffer (you would need a custom allocator both sides would agree on).
+
+
 
 **flat_forward_list_iterator** and flat_forward_list_const_iterator are forward iterators that can be used to enmirate over previously validated buffer.
 
