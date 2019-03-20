@@ -37,11 +37,11 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
 
     for (unsigned long len{ 0 }; ; ++len) {
         if (!data.try_emplace_back(char_array_list::traits::minimum_size() + len * sizeof(char_array_list::value_type::type),
-                            [len] (char_array_list_entry &e,
-                                   size_t element_size) noexcept {
-                                e.length = len;
-                                std::fill(e.arr, e.arr + e.length, static_cast<char>(len)+1);
-                            })) {
+                                    [len] (char_array_list_entry &e,
+                                           size_t element_size) noexcept {
+                                        e.length = len;
+                                        std::fill(e.arr, e.arr + e.length, static_cast<char>(len)+1);
+                                    })) {
             data.fill_padding();
             *buffer_size = data.used_capacity();
             std::printf("Server was able to add %lu arrays, used capacity %zu\n", len, *buffer_size);
@@ -69,7 +69,7 @@ void call_server2() {
         if (buffer.revalidate_data(buffer_size)) {
             process_data2(buffer);
         } else {
-            std::printf("Buffer revalidate failed. New buffer size %llu\n", buffer_size);
+            std::printf("Buffer revalidate failed. New buffer size %zu\n", buffer_size);
         }
     }
 }
