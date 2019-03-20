@@ -36,7 +36,9 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
     std::printf("Preparing output, input buffer size %zu\n", *buffer_size);
 
     for (unsigned long len{ 0 }; ; ++len) {
-        if (!data.try_emplace_back(char_array_list::traits::minimum_size() + len * sizeof(char_array_list::value_type::type),
+        size_t element_size{ char_array_list::traits::minimum_size() + len * sizeof(char_array_list::value_type::type) };
+        std::printf("Emplacing element [%lu] size %zu\n", len, element_size);
+        if (!data.try_emplace_back(element_size,
                                     [len] (char_array_list_entry &e,
                                            size_t element_size) noexcept {
                                         e.length = len;
