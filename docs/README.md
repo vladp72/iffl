@@ -169,7 +169,8 @@ List of methods that can be implemented:
     }
 ```
 
-container class declaration by default will use flat_forward_list_traits<T> to lookup type traits
+By default you will not explicitely spell that for FILE_FULL_EA_INFORMATION we should use iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>. Compiler will do the right thing using partial template specialization magic.
+
 ```
 template <typename T,
           typename TT = flat_forward_list_traits<T>,
@@ -227,17 +228,25 @@ namespace iffl {
         }
         
         static void set_next_offset(FILE_FULL_EA_INFORMATION &e, size_t size) noexcept {
-            FFL_CODDING_ERROR_IF_NOT(size == 0 ||
-                                     size >= get_size(e));
+            FFL_CODDING_ERROR_IF_NOT(size == 0 || size >= get_size(e));
             e.NextEntryOffset = static_cast<ULONG>(size);
         }
     };
 }
 
-using ea_iffl = iffl::flat_forward_list<FILE_FULL_EA_INFORMATION>;
 ```
 
-Now FILE_FULL_EA_INFORMATION is ready to be used with iffl. By default you will not explicitely spell that for FILE_FULL_EA_INFORMATION we should use iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>. Compiler will do the right thing using partial template specialization magic.
+Now FILE_FULL_EA_INFORMATION is ready to be used with iffl containers. 
+
+```
+using ea_iffl_ref = iffl::flat_forward_list_ref<FILE_FULL_EA_INFORMATION>;
+using ea_iffl_view = iffl::flat_forward_list_view<FILE_FULL_EA_INFORMATION>;
+using ea_iffl = iffl::flat_forward_list<FILE_FULL_EA_INFORMATION>;
+using pmr_ea_iffl = iffl::pmr_flat_forward_list<FILE_FULL_EA_INFORMATION>;
+```
+
+## Scenarios
+
 Here is an example where prepare_ea_and_call_handler uses container to prepare buffer with FILE_FULL_EA_INFORMATION, and calls  handle_ea.
 Function handle_ea uses flat_forward_list_validate to safely process elements of untrusted buffer. 
 
