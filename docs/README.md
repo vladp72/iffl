@@ -382,6 +382,78 @@ FILE_FULL_EA_INFORMATION[2].EaNameLength = 9 "TEST_EA_1"
 FILE_FULL_EA_INFORMATION[2].EaValueLength = 3 123
 ```
 
+### Adding elements to flat forward list over input buffer not owned by the calee
+
+```
+unsigned short idx{ 0 };
+
+bool server_api_call(char *buffer, size_t *buffer_size) noexcept {
+    bool result{ false };
+    //
+    // If user did not pass a valid buffer then bail out
+    //
+    if (!buffer || !buffer_size) {
+        return result;
+    }
+    //
+    // when container allocates memory this memory resource 
+    // returns pointer to the input buffer
+    //
+    iffl::input_buffer_memory_resource input_buffer{reinterpret_cast<void *>(buffer), *buffer_size};
+    //
+    // Create container that will use above memory resource
+    //
+    char_array_list data{ &input_buffer };
+    //
+    // Resizing container to the input buffer size.
+    // Container will ask memory resource for alllocation
+    // and resource will return pointer to the input buffer.
+    // Rest of algorith will avoid making any calls that can
+    // trigger memory reallocation. If we trigger that then 
+    // resource will throw std::bad_alloc because it does not have
+    // any more memory it can allocate.
+    //
+    data.resize_buffer(*buffer_size);
+    //
+    // idx is a global variable that remembers where server stopped last time.
+    // Keep adding elements for as long as buffer has capacity
+    //
+    for (;; ++idx) {
+        //
+        // Estimate size of the element we are inserting
+        //
+        size_t element_size{ char_array_list::traits::minimum_size() + idx * sizeof(char_array_list::value_type::type) };
+        //
+        // try_emplace_back will succeed if we can add element
+        // without triggering reallocation, otherwise it will return 
+        // false.
+        //
+        if (!data.try_emplace_back(element_size,
+                                    [] (char_array_list_entry &e, size_t element_size) noexcept {
+                                        e.length = idx;
+                                        std::fill(e.arr, e.arr + e.length, static_cast<char>(idx)+1);
+                                    })) {
+            //
+            // Before we return back to the caller make sure we are not leaking any
+            // values that would help caller to attack server.
+            //
+            data.fill_padding();
+            //
+            // Tell client up to what point buffer containes valid data
+            //
+            *buffer_size = data.used_capacity();
+            break;
+        }
+        //
+        // If we inserverd at least one element then return true
+        //
+        result = true;
+    }
+    return result;
+}
+
+```
+
 ### Validate input buffer
 
 Here is an example where prepare_ea_and_call_handler uses container to prepare buffer with FILE_FULL_EA_INFORMATION, and calls  handle_ea.
