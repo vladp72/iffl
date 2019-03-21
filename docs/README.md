@@ -245,6 +245,69 @@ using ea_iffl = iffl::flat_forward_list<FILE_FULL_EA_INFORMATION>;
 using pmr_ea_iffl = iffl::pmr_flat_forward_list<FILE_FULL_EA_INFORMATION>;
 ```
 
+Class pod_array_list_entry is an example of type that does not have offset to the next element. For that type we do not implement get_next_offset and set_next offset. 
+
+```
+template <typename T>
+struct pod_array_list_entry {
+    unsigned short length;
+    T arr[1];
+};
+
+template <typename T>
+struct pod_array_list_entry_traits {
+
+    using header_type = pod_array_list_entry<T>;
+
+    constexpr static size_t const alignment{ alignof(header_type) };
+
+    constexpr static size_t minimum_size() noexcept {
+        return FFL_SIZE_THROUGH_FIELD(header_type, length);
+    }
+
+    constexpr static size_t get_size(header_type const &e) {
+        size_t const size = FFL_FIELD_OFFSET(header_type, arr) + e.length * sizeof(T);
+        FFL_CODDING_ERROR_IF_NOT(iffl::roundup_size_to_alignment<T>(size) == size);
+        return size;
+    }
+
+    constexpr static bool validate(size_t buffer_size, header_type const &e) noexcept {
+        return  get_size(e) <= buffer_size;
+    }
+};
+```
+You can use tis type to declare variable array of long long
+
+```
+using long_long_array_list_entry = pod_array_list_entry<long long>;
+
+namespace iffl {
+    template <>
+    struct flat_forward_list_traits<long_long_array_list_entry>
+        : public pod_array_list_entry_traits<long_long_array_list_entry::type> {
+    };
+}
+
+using long_long_array_list = iffl::pmr_flat_forward_list<long_long_array_list_entry>;
+```
+Type long_long_array_list is a list of variable length arrays of long long. 
+
+Or a variable array of char
+
+```
+using char_array_list_entry = pod_array_list_entry<char>;
+
+namespace iffl {
+    template <>
+    struct flat_forward_list_traits<char_array_list_entry>
+        : public pod_array_list_entry_traits<char_array_list_entry::type> {
+    };
+}
+
+using char_array_list = iffl::pmr_flat_forward_list<char_array_list_entry>;
+```
+Type char_array_list is a list of variable length arrays of char. 
+
 ## Scenarios
 
 Here is an example where prepare_ea_and_call_handler uses container to prepare buffer with FILE_FULL_EA_INFORMATION, and calls  handle_ea.
