@@ -136,17 +136,20 @@ It includes:
 
 ## Boilerplate
 
-User is responsible for implementing helper class that has following methods
-- tell us minimum required size element must have to be able to query element size
-constexpr static size_t minimum_size() noexcept;
-and addition documentation in this mode right above where primary
-constexpr static size_t get_next_element_offset(char const *buffer) noexcept;
-- update offset to the next element
-constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept;
-- calculate element size from data
-constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept;
-- validate that data fit into the buffer
-constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept;
+Types that we are putting in container are defined Userelsewhere POD types, that cannot extent, and we need a user to implement several methods 
+
+* Has following madatory methods 
+  * Returns minimum required size element must have to be able to query element size
+  ```constexpr static size_t minimum_size() noexcept;```
+  * Returns element size calculated from size of data contained by the element
+  ```constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept;```
+* Optinal method that validates element contains correct data. For instance it can chack that size of the fields fit in the element buffer.
+  ```constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept;```
+* Types that have offset to the next element have to implement this method.
+```constexpr static size_t get_next_offset(char const *buffer) noexcept;```
+* And if they are used with flat_forward list then this method is also required.
+```constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept;```
+
 
 By default we are looking for a partial specialization for the element type.
 
