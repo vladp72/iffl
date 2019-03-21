@@ -266,9 +266,7 @@ struct pod_array_list_entry_traits {
     }
 
     constexpr static size_t get_size(header_type const &e) {
-        size_t const size = FFL_FIELD_OFFSET(header_type, arr) + e.length * sizeof(T);
-        FFL_CODDING_ERROR_IF_NOT(iffl::roundup_size_to_alignment<T>(size) == size);
-        return size;
+        return FFL_FIELD_OFFSET(header_type, arr) + e.length * sizeof(T);
     }
 
     constexpr static bool validate(size_t buffer_size, header_type const &e) noexcept {
