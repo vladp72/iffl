@@ -252,6 +252,8 @@ template <typename T>
 struct pod_array_list_entry {
     unsigned short length;
     T arr[1];
+    
+    using type = T;
 };
 
 template <typename T>
@@ -308,6 +310,8 @@ Type char_array_list is a list of variable length arrays of char.
 
 ## Scenarios
 
+### Validate input buffer
+
 Here is an example where prepare_ea_and_call_handler uses container to prepare buffer with FILE_FULL_EA_INFORMATION, and calls  handle_ea.
 Function handle_ea uses flat_forward_list_validate to safely process elements of untrusted buffer. 
 
@@ -319,11 +323,8 @@ Note that for last element container always resets next element offset after ele
 
 ```
 using ea_iffl = iffl::flat_forward_list<FILE_FULL_EA_INFORMATION>;
-
-## Scenarios
-
+```
 function **flat_forward_list_validate** that can be use to deal with untrusted buffers. You can use it to validate if untrusted buffer contains a valid list, and to find boundary at which list gets invalid. with polymorphic allocator for debugging contained elements.
-
 ```
 template<typename T,
          typename TT = flat_forward_list_traits<T>>
