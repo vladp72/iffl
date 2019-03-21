@@ -132,42 +132,39 @@ It includes:
 * **flat_forward_list_validate** a family of functions that help to validate untrusted buffer, and prodice a ref/view to a subrange to the buffer that contains valid list.
 * **flat_forward_list** a container that owns and resizes buffer as you are adding/removing elements.
 * **debug_memory_resource** a memory resource that help with debugging
-* **input_buffer_memory_resource** a memory resource that helps in scenarios where server have to fill a passed in buffer. 
+* **input_buffer_memory_resource** a memory resource that helps in scenarios where server have to fill a passed in buffer. alignof(FLAT_FORWARD_LIST_TEST)# BoilerplateFLAT_FORWARD_LIST_TESTypes that are usually used with this container are POD types defined elsewhere. We cannot extent these types.FLAT_FORWARD_LIST_TESTdo need several methods methods to be able to traverse andFLAT_FORWARD_LIST_TESTnts in te container 
 
-## Boilerplate
-
-Types that we are putting in container are defined Userelsewhere POD types, that cannot extent, and we need a user to implement several methods 
-
-* Has following madatory methods 
+* Madatory methods 
   * Returns minimum required size element must have to be able to query element size
-  ```constexpr static size_t minimum_size() noexcept;```
+  ```static size_t minimum_size() noexcept;```
   * Returns element size calculated from size of data contained by the element
-  ```constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept;```
+  ```static size_t get_size(<type> const &e) noexcept;```
 * Optinal method that validates element contains correct data. For instance it can chack that size of the fields fit in the element buffer.
-  ```constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept;```
-* Types that have offset to the next element have to implement this method.
-```constexpr static size_t get_next_offset(char const *buffer) noexcept;```
+  ```static bool validate(size_t buffer_size, <type> const &e) noexcept;```
+* Types that have offset to the next element must implement this method.
+```static size_t get_next_offset(<type> const &e) noexcept;```
 * And if they are used with flat_forward list then this method is also required.
-```constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept;```
+ ```static void set_next_element_offset(<type> &buffer, size_t size) noexcept;```
+* Optionally it can add ftatic variable that containes allignment required for an element header. Container will add padding to the element to keep next element propertly alligned.
+ ```constexpr static size_t const alignment{ <alignment> }```
 
+User can pass a type that implements these method as an explicit template parameter or he can scpecialize iffl::flat_forward_list_traits for his type. By default all containers and algorithms will look for this specialization.
 
-By default we are looking for a partial specialization for the element type.
-
-User have to implement following interface:
+List of methods that can be implemented:
 ```
     namespace iffl {
         template <>
         struct flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> {
+            constexpr static size_t const alignment{ alignof(FLAT_FORWARD_LIST_TEST) };
             constexpr static size_t minimum_size() noexcept { <implementation> }
-            constexpr static size_t get_next_offset(<type> const &e) noexcept { <implementation> }
-            constexpr static void set_next_offset(<type> &e, size_t size) noexcept { <implementation> }
-            constexpr static size_t get_size(<type> const &buffer) noexcept { <implementation> }
-            constexpr static bool validate(size_t buffer_size, <type> const &buffer) noexcept {<implementation>}
+            constexpr static size_t get_next_offset(FLAT_FORWARD_LIST_TEST const &e) noexcept { <implementation> }
+            constexpr static void set_next_offset(FLAT_FORWARD_LIST_TEST &e, size_t size) noexcept { <implementation> }
+            constexpr static size_t get_size(FLAT_FORWARD_LIST_TEST const &e) noexcept { <implementation> }
+            constexpr static bool validate(size_t buffer_size, FLAT_FORWARD_LIST_TEST const &e) noexcept {<implementation>}
         };
     }
 ```
-
-Sample implementation for FILE_FULL_EA_INFORMATION:
+Let's take a look at a complete implementation for FILE_FULL_EA_INFORMATION:
 
 ```
 typedef struct _FILE_FULL_EA_INFORMATION {
@@ -181,78 +178,44 @@ typedef struct _FILE_FULL_EA_INFORMATION {
 namespace iffl {
     template <>
     struct flat_forward_list_traits<FILE_FULL_EA_INFORMATION> {
-        //
-        // This is the only method required by flat_forward_list_iterator.
-        //
-        constexpr static size_t get_next_element_offset(char const *buffer) noexcept {
-            FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
+    
+        constexpr static size_t const alignment{ alignof(FILE_FULL_EA_INFORMATION) };
+        
+        static size_t get_next_offset(FILE_FULL_EA_INFORMATION const &e) noexcept {
             return e.NextEntryOffset;
         }
-        //
-        // This method is requiered for validate algorithm
-        //
-        constexpr static size_t minimum_size() noexcept {
+        
+        static size_t minimum_size() noexcept {
             return FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength);
         }
-        //
-        // Helper method that calculates buffer size. Not required.
-        //
-        constexpr static size_t get_size(FILE_FULL_EA_INFORMATION const &e) {
+        
+        static size_t get_size(FILE_FULL_EA_INFORMATION const &e) {
             return  FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) +
                     e.EaNameLength +
                     e.EaValueLength;
         }
-        constexpr static size_t get_size(char const *buffer) {
-            return get_size(*reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer));
-        }
-        //
-        // Helper method that check that element sizes are correct. Not required.
-        //
-        constexpr static bool validate_size(FILE_FULL_EA_INFORMATION const &e, size_t buffer_size) noexcept {
-            if (e.NextEntryOffset == 0) {
+        
+        static bool validate_size(FILE_FULL_EA_INFORMATION const &e, size_t buffer_size) noexcept {
+        if (e.NextEntryOffset == 0) {
                 return  get_size(e) <= buffer_size;
             } else if (e.NextEntryOffset <= buffer_size) {
                 return  get_size(e) <= e.NextEntryOffset;
             }
             return false;
         }
-        //
-        // Helper method that checks that data are valid
-        //
+
         static bool validate_data(FILE_FULL_EA_INFORMATION const &e) noexcept {
-            //
-            // This is and example of a validation you might want to do.
-            // Extended attribute name does not have to be 0 terminated 
-            // so it is not strictly speaking nessesary here.
-            //
-            // char const *end = e.EaName + e.EaNameLength;
-            // return end != std::find_if(e.EaName,
-            //                            end, 
-            //                            [](char c) -> bool {
-            //                                 return c == '\0'; 
-            //                            });
             return true;
         }
-        //
-        // This method is required for validate algorithm and container
-        //
-        constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {
-            FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
+        
+        static bool validate(size_t buffer_size, FILE_FULL_EA_INFORMATION const &e) noexcept {
             return validate_size(e, buffer_size) && validate_data(e);
         }
-        //
-        // This method is required by container only
-        //
-        constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept {
-            FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
-            FFL_CODDING_ERROR_IF_NOT(size == 0 || size >= get_size(e));
+        
+        static void set_next_offset(FILE_FULL_EA_INFORMATION &e, size_t size) noexcept {
+            FFL_CODDING_ERROR_IF_NOT(size == 0 ||
+                                     size >= get_size(e));
             e.NextEntryOffset = static_cast<ULONG>(size);
-        }
-        //
-        // This method is required by container only
-        //
-        constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept {
-            return get_size(buffer);
         }
     };
 }
