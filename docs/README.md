@@ -322,6 +322,8 @@ ea_iffl eas;
 
 char const ea_name0[] = "TEST_EA_0";
 
+// Add EA to the front of the list
+
 eas.emplace_front(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) + sizeof(ea_name0)-sizeof(char), 
                  [](FILE_FULL_EA_INFORMATION &e, size_t new_element_size) noexcept {
                     e.Flags = 0;
@@ -332,6 +334,8 @@ eas.emplace_front(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength
 
 char const ea_name1[] = "TEST_EA_1";
 char const ea_data1[] = {1,2,3};
+
+// Add EA to the end of the list
 
 eas.emplace_back(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) + sizeof(ea_name1)-sizeof(char) + sizeof(ea_data1),
                  [](FILE_FULL_EA_INFORMATION &e, size_t new_element_size) noexcept {
@@ -345,6 +349,8 @@ eas.emplace_back(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength)
 char const ea_name2[] = "TEST_EA_2";
 char const ea_data2[] = { 1,2,3,4,5,6,7,8,9,0xa,0xb,0xc,0xd,0xf };
 
+// Add EA to the front of the list
+
 eas.emplace_front(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) + sizeof(ea_name2)-sizeof(char) + sizeof(ea_data2),
                  [](FILE_FULL_EA_INFORMATION &e, size_t new_element_size) noexcept {
                     e.Flags = 2;
@@ -355,7 +361,26 @@ eas.emplace_front(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength
                   });
 
 ```
+will produce following list of extended attributes
+```
+FILE_FULL_EA_INFORMATION[0] @ = 0x0x607000000100, buffer offset 0
+FILE_FULL_EA_INFORMATION[0].NextEntryOffset = 32
+FILE_FULL_EA_INFORMATION[0].Flags = 2
+FILE_FULL_EA_INFORMATION[0].EaNameLength = 9 "TEST_EA_2"
+FILE_FULL_EA_INFORMATION[0].EaValueLength = 14 123456789abcdf
 
+FILE_FULL_EA_INFORMATION[1] @ = 0x0x607000000120, buffer offset 32
+FILE_FULL_EA_INFORMATION[1].NextEntryOffset = 20
+FILE_FULL_EA_INFORMATION[1].Flags = 0
+FILE_FULL_EA_INFORMATION[1].EaNameLength = 9 "TEST_EA_0"
+FILE_FULL_EA_INFORMATION[1].EaValueLength = 0
+
+FILE_FULL_EA_INFORMATION[2] @ = 0x0x607000000134, buffer offset 52
+FILE_FULL_EA_INFORMATION[2].NextEntryOffset = 0
+FILE_FULL_EA_INFORMATION[2].Flags = 1
+FILE_FULL_EA_INFORMATION[2].EaNameLength = 9 "TEST_EA_1"
+FILE_FULL_EA_INFORMATION[2].EaValueLength = 3 123
+```
 
 ### Validate input buffer
 
