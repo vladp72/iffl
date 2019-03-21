@@ -132,23 +132,27 @@ It includes:
 * **flat_forward_list_validate** a family of functions that help to validate untrusted buffer, and prodice a ref/view to a subrange to the buffer that contains valid list.
 * **flat_forward_list** a container that owns and resizes buffer as you are adding/removing elements.
 * **debug_memory_resource** a memory resource that help with debugging
-* **input_buffer_memory_resource** a memory resource that helps in scenarios where server have to fill a passed in buffer. alignof(FLAT_FORWARD_LIST_TEST)# BoilerplateFLAT_FORWARD_LIST_TESTypes that are usually used with this container are POD types defined elsewhere. We cannot extent these types.FLAT_FORWARD_LIST_TESTdo need several methods methods to be able to traverse andFLAT_FORWARD_LIST_TESTnts in te container 
+* **input_buffer_memory_resource** a memory resource that helps in scenarios where server have to fill a passed in buffer. 
 
-* Madatory methods 
-  * Returns minimum required size element must have to be able to query element size
-  ```static size_t minimum_size() noexcept;```
-  * Returns element size calculated from size of data contained by the element
-  ```static size_t get_size(<type> const &e) noexcept;```
-* Optinal method that validates element contains correct data. For instance it can chack that size of the fields fit in the element buffer.
-  ```static bool validate(size_t buffer_size, <type> const &e) noexcept;```
-* Types that have offset to the next element must implement this method.
-```static size_t get_next_offset(<type> const &e) noexcept;```
-* And if they are used with flat_forward list then this method is also required.
- ```static void set_next_element_offset(<type> &buffer, size_t size) noexcept;```
-* Optionally it can add ftatic variable that containes allignment required for an element header. Container will add padding to the element to keep next element propertly alligned.
- ```constexpr static size_t const alignment{ <alignment> }```
+## Boilerplate
 
-User can pass a type that implements these method as an explicit template parameter or he can scpecialize iffl::flat_forward_list_traits for his type. By default all containers and algorithms will look for this specialization.
+Types that are usually used with this container are POD types defined elsewhere. We cannot extent these types. We do need several methods to be able to traverse and modify elements in the container:
+
+* Mandatory methods have to be implemented in all types and all scenarios
+  * Returns minimum required buffer size. For example minimum requiered buffer size for FILE_FULL_EA_INFORMATION is offset of field EaValueLength, plus size of EaValueLength. If buffer is smaller then we canot even tell size used by the data of the element.
+   * ```static size_t minimum_size() noexcept;```
+  * Returns element size calculated from size of data contained by the element. For example for FILE_FULL_EA_INFORMATION it would be size of minimum header plus value in EaNameLength and EaValueLength.
+   * ```static size_t get_size(<type> const &e) noexcept;```
+* Optinal method that validates element contains correct data. For instance it can check that size of the fields fit in the element buffer. Forexample for FILE_FULL_EA_INFORMATION it can check that element size would not be larger than offset to the next element.
+  * ```static bool validate(size_t buffer_size, <type> const &e) noexcept;```
+* Types that have offset to the next element must implement method that return that value. Container uses this method to traverse list, but if type does not have that field then you should not implement this method. Without this method container will use get_size as an offset to the next element.
+ * ```static size_t get_next_offset(<type> const &e) noexcept;```
+* For scenario where we need to modify list, and the type supports next element offset field, you need to implement a method that allows setting updating this field. If type does not support next element offset then do not implement this method. If this method is not present then container assumes next offset field is not part of the type and wil no-op updating it.
+  * ```static void set_next_element_offset(<type> &buffer, size_t size) noexcept;```
+* Optionally you can add a static variable that tells allignment required for an element header. Container will add padding to the element to keep next element propertly alligned. If this member is absent then container asusmes that elements can be 1 byte alligned and would not add any padding. Reading unaligned data might cause an exception or sigfault on some platfors, unless you explicitely annotate your pointers as unaligned.
+  * ```constexpr static size_t const alignment{ <alignment> }```
+
+User can pass a type that implements these method as an explicit template parameter or she can scpecialize iffl::flat_forward_list_traits for the type. By default all containers and algorithms will look for this specialization.
 
 List of methods that can be implemented:
 ```
@@ -164,6 +168,16 @@ List of methods that can be implemented:
         };
     }
 ```
+
+container class declaration by default will use flat_forward_list_traits<T> to lookup type traits
+```
+template <typename T,
+          typename TT = flat_forward_list_traits<T>,
+          typename A = std::allocator<T>>
+class flat_forward_list final;
+```
+You can simply declare container as ```iffl::flat_forward_list final<FILE_FULL_EA_INFORMATION>```. If you want to point container to a different set of traits then you can pass them in explicitely ```iffl::flat_forward_list final<FILE_FULL_EA_INFORMATION, iffl::flat_forward_list_traits<FLAT_FORWARD_LIST_TEST>>```
+
 Let's take a look at a complete implementation for FILE_FULL_EA_INFORMATION:
 
 ```
@@ -219,6 +233,8 @@ namespace iffl {
         }
     };
 }
+
+using ea_iffl = iffl::flat_forward_list<FILE_FULL_EA_INFORMATION>;
 ```
 
 Now FILE_FULL_EA_INFORMATION is ready to be used with iffl. By default you will not explicitely spell that for FILE_FULL_EA_INFORMATION we should use iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>. Compiler will do the right thing using partial template specialization magic.
