@@ -310,16 +310,60 @@ Type char_array_list is a list of variable length arrays of char.
 
 ## Scenarios
 
+### Adding elements to flat forward list
+
+Since FILE_FULL_EA_INFORMATION is a Plain Old Definition (POD) it does not have constructor, container methods that deal with creation of new elements allow passing a functor that will be called once container allocates requested space for the element to initialize element data. In this sample you can see prepare_ea_and_call_handler is calling emplace_front and emplace_back and is passing in a lambda that initializes element.
+If you want to zero intialize element then call container.push_back(element_size). 
+If you want to initialzie element using a buffer that contains element blueprint then call .push_back(element_size, bluprint_buffer). It will initialize element by copy bluprint buffer.
+Note that for last element container always resets next element offset after element contruction is done so you do not need to worry about that.
+
+```
+ea_iffl eas;
+
+char const ea_name0[] = "TEST_EA_0";
+
+eas.emplace_front(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) + sizeof(ea_name0)-sizeof(char), 
+                 [](FILE_FULL_EA_INFORMATION &e, size_t new_element_size) noexcept {
+                    e.Flags = 0;
+                    e.EaNameLength = sizeof(ea_name0)-sizeof(char);
+                    e.EaValueLength = 0;
+                    iffl::copy_data(e.EaName, ea_name0, sizeof(ea_name0)-sizeof(char));
+                  });
+
+char const ea_name1[] = "TEST_EA_1";
+char const ea_data1[] = {1,2,3};
+
+eas.emplace_back(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) + sizeof(ea_name1)-sizeof(char) + sizeof(ea_data1),
+                 [](FILE_FULL_EA_INFORMATION &e, size_t new_element_size) noexcept {
+                    e.Flags = 1;
+                    e.EaNameLength = sizeof(ea_name1)-sizeof(char);
+                    e.EaValueLength = sizeof(ea_data1);
+                    iffl::copy_data(e.EaName, ea_name1, sizeof(ea_name1)-sizeof(char));
+                    iffl::copy_data(e.EaName + sizeof(ea_name1)-sizeof(char), ea_data1, sizeof(ea_data1));
+                  });
+
+char const ea_name2[] = "TEST_EA_2";
+char const ea_data2[] = { 1,2,3,4,5,6,7,8,9,0xa,0xb,0xc,0xd,0xf };
+
+eas.emplace_front(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) + sizeof(ea_name2)-sizeof(char) + sizeof(ea_data2),
+                 [](FILE_FULL_EA_INFORMATION &e, size_t new_element_size) noexcept {
+                    e.Flags = 2;
+                    e.EaNameLength = sizeof(ea_name2)-sizeof(char);
+                    e.EaValueLength = sizeof(ea_data2);
+                    iffl::copy_data(e.EaName, ea_name2, sizeof(ea_name2)-sizeof(char));
+                    iffl::copy_data(e.EaName + sizeof(ea_name2)-sizeof(char), ea_data2, sizeof(ea_data2));
+                  });
+
+```
+
+
 ### Validate input buffer
 
 Here is an example where prepare_ea_and_call_handler uses container to prepare buffer with FILE_FULL_EA_INFORMATION, and calls  handle_ea.
 Function handle_ea uses flat_forward_list_validate to safely process elements of untrusted buffer. 
 
-Since FILE_FULL_EA_INFORMATION is a Plain Old Definition (POD) it does not have constructor, container methods that deal with creation of new elements allow passing
-a functor that will be called once container allocates requested space for the element to initialize element data. In this sample you can see prepare_ea_and_call_handler is calling emplace_front and emplace_back and is passing in a lambda that initializes element.
-If you want to zero intialize element then call container.push_back(element_size). 
-If you want to initialzie element using a buffer that contains element blueprint then call .push_back(element_size, bluprint_buffer). It will initialize element by copy bluprint buffer.
-Note that for last element container always resets next element offset after element contruction is done so you do not need to worry about that.
+
+
 
 ```
 using ea_iffl = iffl::flat_forward_list<FILE_FULL_EA_INFORMATION>;
