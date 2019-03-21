@@ -33,9 +33,8 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
         return result;
     }
     //
-    // Server needs to fill input buffer
-    // This memory resource returns pointer to the bufefr
-    // when container allocates memory
+    // When container allocates memory this memory resource 
+    // returns pointer to the input buffer
     //
     iffl::input_buffer_memory_resource input_buffer{reinterpret_cast<void *>(buffer), 
                                                     *buffer_size};
