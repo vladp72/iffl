@@ -90,7 +90,7 @@ typedef struct _FILE_ID_BOTH_DIR_INFO {
 Output of NtQueryDirectoryFile
 [FILE_ID_BOTH_DIR_INFO documentation](https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/ns-ntifs-_file_both_dir_information)
 
-Or types that do not have next element offset, but it can be calculated. Offset of the next element is size of this element data, plus optional padding to keep ext element propertly alligned
+Or types that do not have next element offset, but it can be calculated. Offset of the next element is size of this element data, plus optional padding to keep ext element properly aligned
 ```
                      -----------------------------------
                      |                                 |
@@ -130,7 +130,7 @@ Exanmples:
 This header only library provides an algorithms and containers for safe creation and parsing such a collection.
 It includes:
 * **flat_forward_list_ref** and **flat_forward_list_view** a non-owning containers that allows iterating over a flat forward list in a buffer.
-* **flat_forward_list_validate** a family of functions that help to validate untrusted buffer, and prodice a ref/view to a subrange to the buffer that contains valid list.
+* **flat_forward_list_validate** a family of functions that help to validate untrusted buffer, and returns a ref/view to a subrange to the buffer that contains valid list.
 * **flat_forward_list** a container that owns and resizes buffer as you are adding/removing elements.
 * **debug_memory_resource** a memory resource that help with debugging
 * **input_buffer_memory_resource** a memory resource that helps in scenarios where server have to fill a passed in buffer. 
@@ -140,20 +140,20 @@ It includes:
 Types that are usually used with this container are POD types defined elsewhere. We cannot extent these types. We do need several methods to be able to traverse and modify elements in the container:
 
 * Mandatory methods have to be implemented in all types and all scenarios
-  * Returns minimum required buffer size. For example minimum requiered buffer size for FILE_FULL_EA_INFORMATION is offset of field EaValueLength, plus size of EaValueLength. If buffer is smaller then we canot even tell size used by the data of the element.
+  * Returns minimum required buffer size. For example minimum required buffer size for FILE_FULL_EA_INFORMATION is offset of field EaValueLength, plus size of EaValueLength. If buffer is smaller then we cannot even tell size used by the data of the element.
    * ```static size_t minimum_size() noexcept;```
   * Returns element size calculated from size of data contained by the element. For example for FILE_FULL_EA_INFORMATION it would be size of minimum header plus value in EaNameLength and EaValueLength.
    * ```static size_t get_size(<type> const &e) noexcept;```
-* Optinal method that validates element contains correct data. For instance it can check that size of the fields fit in the element buffer. Forexample for FILE_FULL_EA_INFORMATION it can check that element size would not be larger than offset to the next element.
+* Optional method that validates element contains correct data. For instance it can check that size of the fields fit in the element buffer. For example for FILE_FULL_EA_INFORMATION it can check that element size would not be larger than offset to the next element.
   * ```static bool validate(size_t buffer_size, <type> const &e) noexcept;```
 * Types that have offset to the next element must implement method that return that value. Container uses this method to traverse list, but if type does not have that field then you should not implement this method. Without this method container will use get_size as an offset to the next element.
  * ```static size_t get_next_offset(<type> const &e) noexcept;```
-* For scenario where we need to modify list, and the type supports next element offset field, you need to implement a method that allows setting updating this field. If type does not support next element offset then do not implement this method. If this method is not present then container assumes next offset field is not part of the type and wil no-op updating it.
+* For scenario where we need to modify list, and the type supports next element offset field, you need to implement a method that allows setting updating this field. If type does not support next element offset then do not implement this method. If this method is not present then container assumes next offset field is not part of the type and will no-op updating it.
   * ```static void set_next_element_offset(<type> &buffer, size_t size) noexcept;```
-* Optionally you can add a static variable that tells allignment required for an element header. Container will add padding to the element to keep next element propertly alligned. If this member is absent then container asusmes that elements can be 1 byte alligned and would not add any padding. Reading unaligned data might cause an exception or sigfault on some platfors, unless you explicitely annotate your pointers as unaligned.
+* Optionally you can add a static variable that tells alignment required for an element header. Container will add padding to the element to keep next element properly aligned. If this member is absent then container assumes that elements can be 1 byte aligned and would not add any padding. Reading unaligned data might cause an exception or sig-fault on some platforms, unless you explicitly annotate your pointers as unaligned.
   * ```constexpr static size_t const alignment{ <alignment> }```
 
-User can pass a type that implements these method as an explicit template parameter or she can scpecialize iffl::flat_forward_list_traits for the type. By default all containers and algorithms will look for this specialization.
+User can pass a type that implements these method as an explicit template parameter or she can specialize iffl::flat_forward_list_traits for the type. By default all containers and algorithms will look for this specialization.
 
 List of methods that can be implemented:
 ```
@@ -170,7 +170,7 @@ List of methods that can be implemented:
     }
 ```
 
-By default you will not explicitely spell that for FILE_FULL_EA_INFORMATION we should use iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>. Compiler will do the right thing using partial template specialization magic.
+By default you will not explicitly spell that for FILE_FULL_EA_INFORMATION we should use iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>. Compiler will do the right thing using partial template specialization magic.
 
 ```
 template <typename T,
@@ -178,7 +178,7 @@ template <typename T,
           typename A = std::allocator<T>>
 class flat_forward_list final;
 ```
-You can simply declare container as ```iffl::flat_forward_list final<FILE_FULL_EA_INFORMATION>```. If you want to point container to a different set of traits then you can pass them in explicitely ```iffl::flat_forward_list final<FILE_FULL_EA_INFORMATION, iffl::flat_forward_list_traits<FLAT_FORWARD_LIST_TEST>>```
+You can simply declare container as ```iffl::flat_forward_list final<FILE_FULL_EA_INFORMATION>```. If you want to point container to a different set of traits then you can pass them in explicitly ```iffl::flat_forward_list final<FILE_FULL_EA_INFORMATION, iffl::flat_forward_list_traits<FLAT_FORWARD_LIST_TEST>>```
 
 Let's take a look at a complete implementation for FILE_FULL_EA_INFORMATION:
 
@@ -314,9 +314,9 @@ Type char_array_list is a list of variable length arrays of char.
 ### Adding elements to flat forward list
 
 Since FILE_FULL_EA_INFORMATION is a Plain Old Definition (POD) it does not have constructor, container methods that deal with creation of new elements allow passing a functor that will be called once container allocates requested space for the element to initialize element data. In this sample you can see prepare_ea_and_call_handler is calling emplace_front and emplace_back and is passing in a lambda that initializes element.
-If you want to zero intialize element then call container.push_back(element_size). 
-If you want to initialzie element using a buffer that contains element blueprint then call .push_back(element_size, bluprint_buffer). It will initialize element by copy bluprint buffer.
-Note that for last element container always resets next element offset after element contruction is done so you do not need to worry about that.
+If you want to zero initialize element then call container.push_back(element_size). 
+If you want to initialize an element using a buffer that contains element blueprint then call .push_back(element_size, bluprint_buffer). It will initialize element by copy blueprint buffer.
+Note that for last element container always resets next element offset after element construction is done so you do not need to worry about that.
 
 ```
 ea_iffl eas;
@@ -407,9 +407,9 @@ bool server_api_call(char *buffer, size_t *buffer_size) noexcept {
     char_array_list data{ &input_buffer };
     //
     // Resizing container to the input buffer size.
-    // Container will ask memory resource for alllocation
+    // Container will ask memory resource for allocation
     // and resource will return pointer to the input buffer.
-    // Rest of algorith will avoid making any calls that can
+    // Rest of algorithm will avoid making any calls that can
     // trigger memory reallocation. If we trigger that then 
     // resource will throw std::bad_alloc because it does not have
     // any more memory it can allocate.
@@ -440,13 +440,13 @@ bool server_api_call(char *buffer, size_t *buffer_size) noexcept {
             //
             data.fill_padding();
             //
-            // Tell client up to what point buffer containes valid data
+            // Tell client up to what point buffer contains valid data
             //
             *buffer_size = data.used_capacity();
             break;
         }
         //
-        // If we inserverd at least one element then return true
+        // If we inserted at least one element then return true
         //
         result = true;
     }
@@ -457,7 +457,7 @@ bool server_api_call(char *buffer, size_t *buffer_size) noexcept {
 
 ### Validate input buffer
 
-If you are recieving a untrusted buffer that is expected to contain a flat forward list you can validate it using **flat_forward_list_validate** family of function.
+If you are receiving a untrusted buffer that is expected to contain a flat forward list you can validate it using **flat_forward_list_validate** family of function.
 
 ```
 template<typename T,
@@ -477,7 +477,7 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>>
                              F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept;
 ```
 
-Function returns a pair of boolen and a reference or view. If passed parameter is a non-const buffer then result is a reference. If input buffer is const then result is a view (const reference). Boolen indicates if buffer contains a valid list. Even if list is broken, and function returns false, view will point to the subset of the buffer that contains a valid list. For instance if a pointer to the next element refers outside of the buffer range, then validate would abort, and return false, but returned reference/view will describe element from the beginnign to the last valid element. 
+Function returns a pair of boolean and a reference or view. If passed parameter is a non-const buffer then result is a reference. If input buffer is const then result is a view (const reference). Boolean indicates if buffer contains a valid list. Even if list is broken, and function returns false, view will point to the subset of the buffer that contains a valid list. For instance if a pointer to the next element refers outside of the buffer range, then validate would abort, and return false, but returned reference/view will describe element from the beginning to the last valid element. 
 
 You can choose to be strict and reject invalid buffer.  
 
@@ -536,11 +536,11 @@ auto[is_valid, buffer_view] =
             return is_valid;
         });
 ```
-You can use flat_forward_list_validate as if it is a findfirst algorithm and abort validation as soon as you've found an element you are looking for.
+You can use flat_forward_list_validate as if it is a find-first algorithm and abort validation as soon as you've found an element you are looking for.
 
 ### Passing buffer ownership across C interface avoiding extra copy.
 
-If server and client can agree on how to allocate an deallocate buffer then you can create buffer using flat_forward_list, detach ownership of buffer from container, pass pointers to the buffer over a C interface, calee can take ownership of the buffer, and deallocate once processing is done.
+If server and client can agree on how to allocate an deallocate buffer then you can create buffer using flat_forward_list, detach ownership of buffer from container, pass pointers to the buffer over a C interface, callee can take ownership of the buffer, and deallocate once processing is done.
 
 In this example we will use a global variable providing a common memory resource for client and server
 ```
@@ -626,7 +626,7 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
         // 00000256`ebd78fd0  03 03 03 03 00 00 00 00 - 0b 00 00 00 05 05 05 05  ................
         // 00000256`ebd78fe0  05 05 05 05 05 05 05    -                          .......
         //
-        // After the call padding is filled with zeroes
+        // After the call padding is filled with zeros
         //
         // cdb/windbg>db 0x00000256`ebd78fa0 L47
         //
@@ -648,7 +648,7 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
     return true;
 }
 ```
-Client would take ownership of the buffer, validate recieved buffer, and process elements
+Client would take ownership of the buffer, validate received buffer, and process elements
 ```
 void call_server1() {
     char *buffer{ nullptr };
@@ -657,7 +657,7 @@ void call_server1() {
     if (server_api_call(&buffer, &buffer_size)) {
         //
         // If server call succeeded the 
-        // take ownershipt of the buffer
+        // take ownership of the buffer
         //
         char_array_list data{ iffl::attach_buffer{},
                               buffer, 
@@ -673,9 +673,9 @@ You can use a list of flat forward list as a queue where producer creates batche
 ```
 std::list<char_array_list>
 ```
-You can subdivide a large flat forwad list to sublists tracked using views, and pass processing of each view to a separate thread.
+You can subdivide a large flat forward list to sublists tracked using views, and pass processing of each view to a separate thread.
 
 You use an entry of char_array_list as a frame that contains a serialized message. Container char_array_list can accumulate certain number of frames, and once you are ready, you can send entire batch over a socket.
 
-On recieving side you can read data into a buffer, use _flat_forward_list_validate_ to process as many fully recieved frames as we can find in the buffer. Remove processed data, by shifting tal to the head, and recieve more data to the tails of the buffer.
+On receiving side you can read data into a buffer, use _flat_forward_list_validate_ to process as many fully received frames as we can find in the buffer. Remove processed data, by shifting tail to the head, and receive more data to the tails of the buffer.
 
