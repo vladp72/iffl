@@ -92,7 +92,7 @@
 //! Or types that do not have next element offset, but it can be calculated.
 //!
 //! Offset of the next element is size of this element data, plus optional padding to keep
-//! next element propertly alligned
+//! next element properly aligned
 //! @code
 //!                      -----------------------------------
 //!                      |                                 |
@@ -102,7 +102,7 @@
 //! | <fields> | <offsets of data> | [data] | [padding] || [next element] ...
 //! |       header                 | [data] | [padding] || [next element] ...
 //! @endcode
-//! Exanmples:
+//! Examples:
 //!
 //! CLUSPROP_SYNTAX
 //!   [property list](https://docs.microsoft.com/en-us/previous-versions/windows/desktop/mscs/property-lists)
@@ -145,13 +145,13 @@
 //!   flat_forward_list a container that provides a set of helper 
 //!   algorithms and manages buffer lifetime while list changes.
 //!
-//!   pmr_flat_forward_list is a an aliase of flat_forward_list
-//!   where allocator is polimorfic_allocator.
+//!   pmr_flat_forward_list is a an alias of flat_forward_list
+//!   where allocator is polymorphic_allocator.
 //!
 //! Interface that user have to implement for a type that will be stored in the container:
 //!
 //!  Since we are implementing intrusive container, user have to give us a 
-//!  helper class that implements folowing methods 
+//!  helper class that implements following methods 
 //!   - Specifies alignment requirements for the type
 //!          @code constexpr static size_t const alignment{ TYPE_ALIGNMENT }; @endcode 
 //!   - tell minimum required size am element must have to be able to query element size
@@ -165,7 +165,7 @@
 //!   - validate that data fit into the buffer
 //!          @code  constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept @endcode 
 //!
-//!  By default algorithms and conteiners in this library are looking for specialization 
+//!  By default algorithms and containers in this library are looking for specialization 
 //!  of flat_forward_list_traits for the element type.
 //!  For example:
 //! @code
@@ -183,7 +183,7 @@
 //!  @endcode
 //!
 //!   for sample implementation see flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> @ test\iffl_test_cases.cpp
-//!   and addition documetation in this mode right before primary
+//!   and addition documentation in this mode right before primary
 //!   template for flat_forward_list_traits definition
 //!
 //!   If picking traits using partial specialization is not preferable then traits can be passed as
@@ -200,11 +200,11 @@
 //!   Cost O(n).
 //!
 //!   If you define FFL_DBG_CHECK_ITERATOR_VALID then every input 
-//!   iterator will be cheked to match to valid element in the container.
+//!   iterator will be checked to match to valid element in the container.
 //!   Cost O(n)
 //!
 //!   You can use debug_memory_resource and pmr_flat_forward_list to validate
-//!   that all allocations are freed and that there are no buffer overruns/underruns
+//!   that all allocations are freed and that there are no buffer overruns/under-runs
 //!
 
 #include <iffl_config.h>
@@ -223,7 +223,7 @@ namespace iffl {
 //! we often times cannot change, like OS headers, but we need to be able
 //! to define methods that would help container operate on them. For instance
 //! we need a universal way how to find offset of the next element regardless
-//! of how it is calculated for a particular type. Spacialization of this calss
+//! of how it is calculated for a particular type. Specialization of this class
 //! provides a group of functions that help with that. User of the collection 
 //! is responsible for defining traits for the type he wants to use in the
 //! container.
@@ -235,7 +235,7 @@ namespace iffl {
 //! constexpr static size_t get_next_offset(char const *buffer) noexcept;
 //! @endcode
 //!
-//! This method is requiered for flat_forward_list_validate algorithm
+//! This method is required for flat_forward_list_validate algorithm
 //! Minimum number of bytes to be able to safely query offset to next 
 //! and safely examine other fields.
 //!
@@ -259,8 +259,8 @@ namespace iffl {
 //!
 //! Specifies alignment requirements for the type. When provided then
 //! every newly added element will have proper alignment. Elements that
-//! already were in the buffer can be not propertly alligned.
-//! If this member does not exist then alligned is assumed to be 1 byte
+//! already were in the buffer can be not properly aligned.
+//! If this member does not exist then aligned is assumed to be 1 byte
 //!
 //! @code 
 //! constexpr static size_t const alignment{ TYPE_ALIGNMENT };
@@ -292,17 +292,17 @@ struct flat_forward_list_traits;
 //! @tparam TT - type traits
 //!
 //! @details
-//! I know, traits of traits does sounds redicules,
+//! I know, traits of traits does sounds ridicules,
 //! but this is exactly what this class is.
 //! Given flat_forward_list_traits instantiation,
 //! or a class that you want to use as traits for your
 //! flat_forward_list element types, it detects what methods
 //! are implemented by this trait so in the rest of algorithms
 //! and containers we can use this helper, and avoid rewriting
-//! same complicated and nusty machinery.
+//! same complicated and nasty machinery.
 //! In other words traits might be missing some methods, and
 //! traits_traits will implement these missing parts providing
-//! a uniformal interface.
+//! a uniform interface.
 //!
 //! How to use:
 //!
@@ -332,54 +332,54 @@ struct flat_forward_list_traits_traits {
 
 private:
     //
-    // Metafunctions that we will use with detect-idiom to find
+    // Meta-functions that we will use with detect-idiom to find
     // properties of TT without triggering a compile time error
     //
     //!
     //! @typedef has_minimum_size_mfn
-    //! @tparam P - type we will evaluate this metafunction for. 
+    //! @tparam P - type we will evaluate this meta-function for. 
     //!             Traits type should be used here.
-    //! !brief Metafunction that detects if traits include minimum_size
+    //! !brief Meta-function that detects if traits include minimum_size
     //!
     template <typename P>
     using has_minimum_size_mfn = decltype(std::declval<P &>().minimum_size()); 
     //!
     //! @typedef has_get_size_mfn
-    //! @tparam P - type we will evaluate this metafunction for. 
+    //! @tparam P - type we will evaluate this Meta-function for. 
     //!             Traits type should be used here.
-    //! !brief Metafunction that detects if traits include get_size
+    //! !brief Meta-function that detects if traits include get_size
     //!
     template <typename P>
     using has_get_size_mfn = decltype(std::declval<P &>().get_size(std::declval<T const &>()));
     //!
     //! @typedef has_next_offset_mfn
-    //! @tparam P - type we will evaluate this metafunction for. 
+    //! @tparam P - type we will evaluate this Meta-function for. 
     //!             Traits type should be used here.
-    //! !brief Metafunction that detects if traits include get_next_offset
+    //! !brief Meta-function that detects if traits include get_next_offset
     //!
     template <typename P>
     using has_next_offset_mfn = decltype(std::declval<P &>().get_next_offset(std::declval<T const &>()));
     //!
     //! @typedef can_set_next_offset_mfn
-    //! @tparam P - type we will evaluate this metafunction for. 
+    //! @tparam P - type we will evaluate this Meta-function for. 
     //!             Traits type should be used here.
-    //! !brief Metafunction that detects if traits include set_next_offset
+    //! !brief Meta-function that detects if traits include set_next_offset
     //!
     template <typename P>
     using can_set_next_offset_mfn = decltype(std::declval<P &>().set_next_offset(std::declval<T &>(), size_t{ 0 }));
     //!
     //! @typedef can_validate_mfn
-    //! @tparam P - type we will evaluate this metafunction for. 
+    //! @tparam P - type we will evaluate this meta-function for. 
     //!             Traits type should be used here.
-    //! !brief Metafunction that detects if traits include validate
+    //! !brief Meta-function that detects if traits include validate
     //!
     template <typename P>
     using can_validate_mfn = decltype(std::declval<P &>().validate(size_t{0}, std::declval<T const &>()));
     //!
     //! @typedef has_alignment_mfn
-    //! @tparam P - type we will evaluate this metafunction for. 
+    //! @tparam P - type we will evaluate this meta-function for. 
     //!             Traits type should be used here.
-    //! !brief Metafunction that detects if traits define function that should be used to
+    //! !brief Meta-function that detects if traits define function that should be used to
     //! pad next element offset
     //!
     template <typename P>
@@ -523,7 +523,7 @@ public:
         return type_traits::minimum_size();
     }
     //!
-    //! @brief If traits defined allignment then size of
+    //! @brief If traits defined alignment then size of
     //! alignment, and 1 otherwise
     //!
     [[nodiscard]] constexpr static size_t get_alignment() noexcept {
@@ -540,21 +540,21 @@ public:
     constexpr static size_t const alignment{ get_alignment() };
     //!
     //! @typedef range_t
-    //! @brief Specialization of range_with_alighment fo this type alignment
+    //! @brief Specialization of range_with_alighment for this type alignment
     //!
     using range_t = range_with_alighment<alignment>;
     //!
     //! @typedef size_with_padding_t
-    //! @brief Specialization of size_with_padding fo this type alignment
+    //! @brief Specialization of size_with_padding for this type alignment
     //!
     using size_with_padding_t = size_with_padding<alignment>;
     //!
     //! @typedef offset_with_aligment_t
-    //! @brief Specialization of offset_with_aligment fo this type alignment
+    //! @brief Specialization of offset_with_aligment for this type alignment
     //!
     using offset_with_aligment_t = offset_with_aligment<alignment>;
     //!
-    //! @brief If traits defined allignment then s padded
+    //! @brief If traits defined alignment then s padded
     //! to alignment, or unchanged value of s otherwise
     //! @param s - value that we are rounding up
     //! @return Value of s padded to alignment
@@ -568,7 +568,7 @@ public:
     }
     //!
     //! @brief Asks type traits to calculate element size
-    //! @param buffer - pointer to the begining of the element
+    //! @param buffer - pointer to the beginning of the element
     //! @return element size wrapped into size_with_padding_t
     //!
     [[nodiscard]] constexpr static size_with_padding_t get_size(char const *buffer) noexcept {
@@ -578,7 +578,7 @@ public:
     //! @brief Asks type traits to validate element. 
     //! @details If traits do not have validate method
     //! @param buffer_size - size of the buffer used by this element
-    //! @param buffer - pointer to the begining of the element
+    //! @param buffer - pointer to the beginning of the element
     //! @return element size wrapped into size_with_padding_t
     //!
     [[nodiscard]] constexpr static bool validate(size_t buffer_size, T const &buffer) noexcept {
@@ -590,7 +590,7 @@ public:
     }
     //!
     //! @brief Returns next element offset. 
-    //! @param buffer - pointer to the begining of the element
+    //! @param buffer - pointer to the beginning of the element
     //! @return For the types that support query for the next element offset
     //! method returns get_next_offset, otherwise it returns element size
     //!
@@ -606,7 +606,7 @@ public:
     //! @brief Sets next element offset. 
     //! @details Types that support setting next element offset
     //! must also support get_next_offset.
-    //! @param buffer - pointer to the begining of the element
+    //! @param buffer - pointer to the beginning of the element
     //! @param size - offset of the next element
     //!
     constexpr static void set_next_offset(char *buffer, size_t size) noexcept {
@@ -690,7 +690,7 @@ class flat_forward_list_ref;
 //!
 //! @class default_validate_element_fn
 //! @tparam T - element type
-//! @tparam TT - element type traits. Detaulted to 
+//! @tparam TT - element type traits. Defaulted to 
 //! specialization flat_forward_list_traits<T>
 //! @details
 //! Calls flat_forward_list_traits::validate(...)
@@ -717,7 +717,7 @@ template<typename T,
 struct noop_validate_element_fn {
     //!
     //! @brief Function call iterator that validates element
-    //! @details This functor noops validation 
+    //! @details This functor no-ops validation 
     //!
     bool operator() ([[maybe_unused]] size_t, 
                      [[maybe_unused]] T const &) const noexcept {
@@ -882,7 +882,7 @@ public:
     using traits = TT;
     //!
     //! @typedef traits_traits
-    //! @brief Element traits traits type
+    //! @brief Element traits-traits type
     //!
     using traits_traits = flat_forward_list_traits_traits<T, TT>;
     //!
@@ -1006,7 +1006,7 @@ public:
     //! - this is not a const iterator
     //! - I not a non-const iterator
     //! If other is an rvalue then it can play a role of move constructor.
-    //! On move we will copy data other interator is pointing to, but we
+    //! On move we will copy data other iterator is pointing to, but we
     //! are not going to null it out. Nulling is not required because this type
     //! is not a RAII wrapper, and there is no harm in leaving other pointing to
     //! the same element.
@@ -1051,14 +1051,14 @@ public:
     }
     //!
     //! @brief Perfect forwarding assignment operator for const iterator from non-const iterator
-    //! @tparam I - iterator type we are assigningg from
+    //! @tparam I - iterator type we are assigning from
     //! @param other - iterator we are assigning from
     //! @return reference to this object
     //! @details We are relying on SFINAE to disable this assignment operator if
     //! - this is not a const iterator
     //! - I not a non-const iterator
     //! If other is an rvalue then it can play a role of move assignment operator.
-    //! On move we will copy data other interator is pointing to, but we
+    //! On move we will copy data other iterator is pointing to, but we
     //! are not going to null it out. Nulling is not required because this type
     //! is not a RAII wrapper, and there is no harm in leaving other pointing to
     //! the same element.
@@ -1071,7 +1071,7 @@ public:
         return *this;
     }
     //!
-    //! @brief whaps this iterator and the other iterator
+    //! @brief swaps this iterator and the other iterator
     //! @param other - reference to the other iterator
     //!
     constexpr void swap(flat_forward_list_iterator_t & other) noexcept {
@@ -1214,7 +1214,7 @@ public:
     //! @return value of iterator after it was advanced
     //! @details Advances iterator specified number of times
     //! caller is responsible for making sure iterator would not get
-    //! advanced beyond container's end, if that happen then beheviour is 
+    //! advanced beyond container's end, if that happen then behavior is 
     //! undefined.
     //!
     constexpr flat_forward_list_iterator_t operator+(unsigned int advance_by) const noexcept {
@@ -1241,7 +1241,7 @@ public:
     }
 
     //!
-    //! @return Returns a pointer to the buffer conteining element. 
+    //! @return Returns a pointer to the buffer containing element. 
     //!
     constexpr buffer_char_pointer get_ptr() const noexcept {
         return p_;
@@ -1370,10 +1370,10 @@ public:
 
     //
     // Technically we need T to be 
-    // - trivialy destructable
-    // - trivialy constructable
-    // - trivialy movable
-    // - trivialy copyable
+    // - trivially destructible
+    // - trivially constructible
+    // - trivially movable
+    // - trivially copyable
     //
     static_assert(std::is_pod_v<T>, "T must be a Plain Old Definition");
     //!
@@ -1422,7 +1422,7 @@ public:
     using traits = TT;
     //!
     //! @typedef traits_traits
-    //! @brief Element traits traits type
+    //! @brief Element traits-traits type
     //!
     using traits_traits = flat_forward_list_traits_traits<T, TT>;
     //!
@@ -1451,10 +1451,10 @@ public:
     using sizes_t = flat_forward_list_sizes<traits_traits::alignment>;
     //!
     //! @typedef buffer_value_type
-    //! @details Since we have variable size elementa,
+    //! @details Since we have variable size elements,
     //! and we cannot express it in the C++ type system
     //! we treat buffer with elements as a bag of chars
-    //! and cast to the element type when nessesary.
+    //! and cast to the element type when necessary.
     //! @brief Depending if T is const we will
     //! use const or non-const buffer pointer
     //!
@@ -1472,7 +1472,7 @@ public:
     using buffer_pointer = buffer_value_type *;
     //!
     //! @typedef const_buffer_pointer
-    //! @brief Type used as a pointer ot the const buffer.
+    //! @brief Type used as a pointer not the const buffer.
     //!
     using const_buffer_pointer = const_buffer_value_type *;
     //!
@@ -1517,8 +1517,8 @@ public:
         : buffer_(other.buffer_) {
     }
     //!
-    //! @brief Constructor that initializas view to point 
-    //! to the buffer buffer
+    //! @brief Constructor that initializes view to point 
+    //! to the buffer
     //! @param other_buff - pointer to the start of the buffer
     //! that contains list.
     //! @details This constructor does not validate if this is
@@ -1548,7 +1548,7 @@ public:
         : buffer_(buffer_type{ buffer_begin, last_element, buffer_end }) {
     }
     //!
-    //! @brief Constructor that creaates a view over a buffer described 
+    //! @brief Constructor that creates a view over a buffer described 
     //! by a pair of iterators
     //! @tparam V - For SFINAE we need to make this method a template
     //! Type const iterator is pointing to.
@@ -1574,7 +1574,7 @@ public:
     //! and if it does then copies that list.
     //! @param buffer - pointer to the start of the buffer
     //! that might contains list.
-    //! @param buffer_size - bufer size.
+    //! @param buffer_size - buffer size.
     //! @details This constructor searches for the last
     //! valid element in the buffer, and is buffer is valid then it
     //! copies elements to the new buffer.
@@ -1623,7 +1623,7 @@ public:
     //! @tparam VV - Type traits.
     //! @tparam A - allocator type
     //! @param c - container we are constructing view from
-    //! @returns referencce to self
+    //! @returns reference to self
     //!
     template <typename V,
               typename VV,
@@ -1700,7 +1700,7 @@ public:
     //! @brief Swaps content of this container and the other container.
     //! @param other - reference to the other container
     //! @throws might throw std::bad_alloc if allocator swap throws or if
-    //! allocators do not suport swap, and we need to make a copy of elements,
+    //! allocators do not support swap, and we need to make a copy of elements,
     //! which involves allocation.
     //!
     void swap(flat_forward_list_ref &other) noexcept {
@@ -1765,7 +1765,7 @@ public:
 
     //
     // It is not clear how to implement it 
-    // without adding extra boolen flags to iterator.
+    // without adding extra boolean flags to iterator.
     // Since elements are variable length we need to be able
     // to query offset to next, and we cannot not do that
     // no before_begin element
@@ -1899,7 +1899,7 @@ public:
     //! @details You must call this method after passing pointer to 
     //! container's buffer to a function that might change buffer content.
     //! If valid list of found then buff().last will be pointing to the
-    //! element element that was found. If no valid list was found then
+    //! element that was found. If no valid list was found then
     //! buff().last will be nullptr.
     //!
     [[nodiscard]] bool revalidate_data() noexcept {
@@ -1913,7 +1913,7 @@ public:
     //!
     //! @brief Returns capacity used by the element's data.
     //! @param it - iterator pointing to the element we are returning size for.
-    //! @returns Returns size of the element without paddint
+    //! @returns Returns size of the element without padding
     //!
     size_type required_size(const_iterator const &it) const noexcept {
         validate_pointer_invariants();
@@ -1976,7 +1976,7 @@ public:
     //! - start of the first element.
     //! - offset of the element before end data end.
     //! - offset of the element before end buffer end.
-    //! If range end is colelction end then data end and
+    //! If range end is collection end then data end and
     //! buffer end point to the same position.
     //! @details All offsets values are relative to the buffer 
     //! owned by the container.
@@ -1997,7 +1997,7 @@ public:
     //! @returns True if position is in the element's buffer. 
     //! and false otherwise. Element's buffer is retrieved using 
     //! range(it).
-    //! When iterator referes to container end or when position is npos
+    //! When iterator refers to container end or when position is npos
     //! the result will be false.
     //!
     [[nodiscard]] bool contains(const_iterator const &it, size_type position) const noexcept {
@@ -2009,13 +2009,13 @@ public:
         return r.buffer_contains(position);
     }
     //!
-    //! @brief Searches for an element before the element that containes 
+    //! @brief Searches for an element before the element that contains 
     //! given position.
-    //! @param position - offset in the conteiner's buffer
+    //! @param position - offset in the container's buffer
     //! @returns Const iterator to the found element, if it was found, and
     //! container's end const iterator otherwise.
-    //! @details Cost of this algorithm is O(nuber of elements in container)
-    //! because we have to performa linear search for an element from the start
+    //! @details Cost of this algorithm is O(number of elements in container)
+    //! because we have to performs linear search for an element from the start
     //! of container's buffer.
     //!
     const_iterator find_element_before(size_type position) const noexcept {
@@ -2031,12 +2031,12 @@ public:
         return end();
     }
     //!
-    //! @brief Searches for an element that containes given position.
-    //! @param position - offset in the conteiner's buffer
+    //! @brief Searches for an element that contains given position.
+    //! @param position - offset in the container's buffer
     //! @returns Const iterator to the found element, if it was found, and
     //! container's end const iterator otherwise.
-    //! @details Cost of this algorithm is O(nuber of elements in container)
-    //! because we have to performa linear search for an element from the start
+    //! @details Cost of this algorithm is O(number of elements in container)
+    //! because we have to performs linear search for an element from the start
     //! of container's buffer.
     //!
     const_iterator find_element_at(size_type position) const noexcept {
@@ -2051,13 +2051,13 @@ public:
         return end();
     }
     //!
-    //! @brief Searches for an element after the element that containes 
+    //! @brief Searches for an element after the element that contains 
     //! given position.
-    //! @param position - offset in the conteiner's buffer
+    //! @param position - offset in the container's buffer
     //! @returns Const iterator to the found element, if it was found, and
     //! container's end const iterator otherwise.
-    //! @details Cost of this algorithm is O(nuber of elements in container)
-    //! because we have to performa linear search for an element from the start
+    //! @details Cost of this algorithm is O(number of elements in container)
+    //! because we have to performs linear search for an element from the start
     //! of container's buffer.
     //!
     const_iterator find_element_after(size_type position) const noexcept {
@@ -2073,7 +2073,7 @@ public:
     //!
     //! @brief Number of elements in the container.
     //! @returns Number of elements in the container.
-    //! @details Cost of this algorithm is O(nuber of elements in container).
+    //! @details Cost of this algorithm is O(number of elements in container).
     //! Container does not actively cache/updates element count so we need to
     //! scan list to find number of elements.
     //!
@@ -2098,14 +2098,14 @@ public:
         return  buff().last == nullptr;
     }
     //!
-    //! @returns True when containe contains at least one element
+    //! @returns True when container contains at least one element
     //! and false otherwise.
     //!
     explicit operator bool() const {
         return !empty();
     }
     //!
-    //! @returns Number of bytes in the bufer used
+    //! @returns Number of bytes in the buffer used
     //! by existing elements.
     //!
     size_type used_capacity() const noexcept {
@@ -2133,7 +2133,7 @@ public:
 private:
     //!
     //! @brief Tells if container contains no elements.
-    //! @returns False when containe contains at least one element
+    //! @returns False when container has at least one element
     //! and true otherwise.
     //! @details Both container with no buffer as well as container
     //! that has buffer that does not contain any valid elements will
@@ -2263,7 +2263,7 @@ private:
     //! For any element data end is calculated using size of data used by element.
     //! For any element except last buffer size is calculated using
     //!  - Value of offset to the next element if type supports get_next_offset
-    //!  - If get_next_offset is not suported then it is calculated as padded 
+    //!  - If get_next_offset is not supported then it is calculated as padded 
     //!    element data size
     //! This method assumes that iterator is pointing to an element, and is not an
     //! end iterator. It assumes that caller verified that iterator satisfies 
@@ -2292,7 +2292,7 @@ private:
         return r;
     }
     //!
-    //! @returns information about the pasrt of container 
+    //! @returns information about the part of container 
     //! buffer used by elements in the range [first, last]
     //!
     range_t closed_range_unsafe(const_iterator const &first, const_iterator const &last) const noexcept {
@@ -2308,9 +2308,9 @@ private:
         }
     }
     //!
-    //! @returns information about the pasrt of container 
+    //! @returns information about the part of container 
     //! buffer used by elements in the range [first, end)
-    //! @details Algorithm complexity is O(number of elements in the niffer)
+    //! @details Algorithm complexity is O(number of elements in the buffer)
     //! because we need to scan container from the beginning to find element 
     //! before end.
     //!
@@ -2381,7 +2381,7 @@ using flat_forward_list_view = flat_forward_list_ref<T const, TT>;
 //! @param lhs - one of the containers we are swapping between
 //! @param rhs - other container we are swapping between
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -2397,7 +2397,7 @@ inline void swap(flat_forward_list_ref<T, TT> &lhs, flat_forward_list_ref<T, TT>
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -2413,7 +2413,7 @@ inline typename flat_forward_list_ref<T, TT>::iterator begin(flat_forward_list_r
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -2429,7 +2429,7 @@ inline typename flat_forward_list_ref<T, TT>::const_iterator begin(flat_forward_
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -2445,7 +2445,7 @@ inline typename flat_forward_list_ref<T, TT>::const_iterator cbegin(flat_forward
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -2461,7 +2461,7 @@ inline typename flat_forward_list_ref<T, TT>::iterator end(flat_forward_list_ref
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -2477,7 +2477,7 @@ inline typename flat_forward_list_ref<T, TT>::const_iterator end(flat_forward_li
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -2493,7 +2493,7 @@ inline typename flat_forward_list_ref<T, TT>::const_iterator cend(flat_forward_l
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -2509,7 +2509,7 @@ inline typename flat_forward_list_ref<T, TT>::iterator last(flat_forward_list_re
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -2525,7 +2525,7 @@ inline typename flat_forward_list_ref<T, TT>::const_iterator last(flat_forward_l
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -2542,7 +2542,7 @@ inline typename flat_forward_list_ref<T, TT>::const_iterator clast(flat_forward_
 //! @tparam TT - element type traits
 //! @tparam A - allocator type that should be used for this container
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //! Container is inherited from allocator to utilize
@@ -2556,7 +2556,7 @@ inline typename flat_forward_list_ref<T, TT>::const_iterator clast(flat_forward_
 //! or resizes elements of container.
 //! Methods that take iterator as an input, and can invalidate it
 //! return new valid iterator as an output.
-//! Caller must refresh end iterator by explicitely calling [c]end().
+//! Caller must refresh end iterator by explicitly calling [c]end().
 //!
 //! Debugging notes:
 //! Defining FFL_DBG_CHECK_ITERATOR_VALID will enable validation of
@@ -2568,23 +2568,23 @@ inline typename flat_forward_list_ref<T, TT>::const_iterator clast(flat_forward_
 //! Iterator names notes:
 //! begin or first - first element in a half-open [first, end) 
 //!       or closed [first, last] range.
-//! last - referes to the last element in half-closed (before_begin, last] 
+//! last - refers to the last element in half-closed (before_begin, last] 
 //!       or closed [first, last] range.
-//! end - referes to an element pass the last element. It is used with 
+//! end - refers to an element pass the last element. It is used with 
 //!       half open [begin, end) or open (before_begin, end) range.
-//! before_beging or before_first - referes to an element preceeding 
-//!       begin or first element. Is used in halfope (before_begin, last]
+//! before_beging or before_first - refers to an element preceding 
+//!       begin or first element. Is used in half-open (before_begin, last]
 //!       or open (before_begin, end) range.
 //!
 //! Security notes:
 //! One of the common directions for attack is to leak to the attacher 
 //! some uninitialized data that might contain addresses that might guide
-//! attacker how to bypass technics like Address Space Layout Randomization (ASLR).
+//! attacker how to bypass protections like Address Space Layout Randomization (ASLR).
 //! To prevent that consider using fill_padding that will fill any unused space
 //! with given pattern making sure we are not leaking any unintended information
 //! in the element padding and in the buffer's unused tail.
 //!
-//! Interop with C API notes:
+//! Inter-op with C API notes:
 //! When passing pointer to container's buffer to an API that can modify it
 //! it will invalidate container invariants. For instance pointer to the last 
 //! element will no longer be valid. User must call revalidate_data after this
@@ -2593,7 +2593,7 @@ inline typename flat_forward_list_ref<T, TT>::const_iterator clast(flat_forward_
 //!
 //! Allocator notes:
 //! COntainer supports adopting (attaching to) buffer that was allocated by
-//! someone else. This helps to minimize number of copies when interoping with 
+//! someone else. This helps to minimize number of copies when inter-oping with 
 //! C API. It is responsibility of user to make sure that container uses allocator
 //! that is compatible with how adopted buffer was allocated.
 //!
@@ -2613,10 +2613,10 @@ public:
 
     //
     // Technically we need T to be 
-    // - trivialy destructable
-    // - trivialy constructable
-    // - trivialy movable
-    // - trivialy copyable
+    // - trivially destructible
+    // - trivially constructible
+    // - trivially movable
+    // - trivially copyable
     //
     static_assert(std::is_pod_v<T>, "T must be a Plain Old Definition");
     //!
@@ -2700,10 +2700,10 @@ public:
     using allocator_type_traits = std::allocator_traits<allocator_type>;
     //!
     //! @typedef buffer_value_type
-    //! @brief Since we have variable size elementa,
+    //! @brief Since we have variable size elements,
     //! and we cannot express it in the C++ type system
     //! we treat buffer with elements as a bag of chars
-    //! and cast to the element type when nessesary.
+    //! and cast to the element type when necessary.
     //!
     using buffer_value_type = char;
     //!
@@ -2719,7 +2719,7 @@ public:
     using buffer_pointer = char *;
     //!
     //! @typedef const_buffer_pointer
-    //! @brief Type used as a pointer ot the const buffer.
+    //! @brief Type used as a pointer to the const buffer.
     //!
     using const_buffer_pointer = char const *;
 
@@ -2767,7 +2767,7 @@ public:
         move_from(std::move(other));
     }
     //!
-    //! @brief Copy constructor. Copies allocator if supprted and 
+    //! @brief Copy constructor. Copies allocator if supported and 
     //! copies content of other container to this container
     //! @param other - container we are copying from
     //! @throw std::bad_alloc if buffer allocation fails
@@ -2786,7 +2786,7 @@ public:
     //! a valid flat forward list. It assumes that
     //! caller validated buffer before using this constructor.
     //! The first parameter is an empty vocabulary type to help
-    //! with overload resolution and code redability.
+    //! with overload resolution and code readability.
     //! @code
     //! iffl::flat_forward_list<my_type> new_owner{iffl::attach_buffer{}, begin, last, end};
     //! @endcode
@@ -2835,7 +2835,7 @@ public:
     //! a valid flat forward list. It assumes that
     //! caller validated buffer before using this constructor.
     //! The first parameter is an empty vocabulary type to help
-    //! with overload resolution and code redability.
+    //! with overload resolution and code reliability.
     //! @code
     //! iffl::flat_forward_list<my_type> new_owner{iffl::attach_buffer{}, begin, last, end};
     //! @endcode
@@ -2890,7 +2890,7 @@ public:
     //! valid element in the buffer. If buffer validation fails then
     //! container will treat it as if it has no elements.
     //! The first parameter is an empty vocabulary type to help
-    //! with overload resolution and code redability.
+    //! with overload resolution and code reliability.
     //! @code
     //! iffl::flat_forward_list<my_type> new_owner{iffl::attach_buffer{}, begin, size};
     //! @endcode
@@ -2918,7 +2918,7 @@ public:
     //! @tparam AA - type of allocator.
     //! @param buffer - pointer to the start of the buffer
     //! that might contains list.
-    //! @param buffer_size - bufer size.
+    //! @param buffer_size - buffer size.
     //! @param a - allocator that should be used by this container.
     //! @throw std::bad_alloc if buffer allocation fails
     //! @details This constructor searches for the last
@@ -3193,7 +3193,7 @@ public:
     //! and if it does then copies that list.
     //! @param buffer - pointer to the start of the buffer
     //! that might contains list.
-    //! @param buffer_size - bufer size.
+    //! @param buffer_size - buffer size.
     //! @throw std::bad_alloc if buffer allocation fails
     //! @details This method searches for the last
     //! valid element in the buffer, and is buffer is valid then it
@@ -3252,7 +3252,7 @@ public:
     }
     //!
     //! @brief Compares if allocator used by container is 
-    //! equivalent to the other alocator.
+    //! equivalent to the other allocator.
     //! @param other_allocator - allocator we are comparing to
     //! @return True if allocators are equivalent, and  false otherwise.
     //!
@@ -3301,7 +3301,7 @@ public:
     //! that is required to keep all elements, moves
     //! all elements there and deallocates old buffer.
     //! If buffer already has no unused capacity then
-    //! this call is noop.
+    //! this call is no-op.
     //!
     void tail_shrink_to_fit() {
         resize_buffer(used_capacity());
@@ -3348,7 +3348,7 @@ public:
         } else if (0 == size) {
             clear();
         //
-        // to shrink to a smaler size we first need to 
+        // to shrink to a smaller size we first need to 
         // find last element that would completely fit 
         // in the new buffer, and if we found any, then
         // make it new last element. If we did not find 
@@ -3401,11 +3401,11 @@ public:
         validate_data_invariants();
     }
     //!
-    //! @brief Adds new elemnt to the end of the list. 
-    //! Element is initialized by coppying provided buffer.
+    //! @brief Adds new element to the end of the list. 
+    //! Element is initialized by copping provided buffer.
     //! @param init_buffer_size - size of the buffer that will be used for initialization 
     //!                           size smaller than minimum element size will trigger a fail-fast.
-    //! @param init_buffer - a poiner to the buffer. If pointer to the buffer is nullptr then
+    //! @param init_buffer - a pointer to the buffer. If pointer to the buffer is nullptr then
     //!                      element data are zero initialized.
     //! @throw std::bad_alloca if allocating new buffer fails
     //! @details New element becomes a new last element and, if set_next offset is supported,
@@ -3426,11 +3426,11 @@ public:
                      });
     }
     //!
-    //! @brief Adds new elemnt to the end of the list. 
-    //! Element is initialized by coppying provided buffer.
+    //! @brief Adds new element to the end of the list. 
+    //! Element is initialized by copping provided buffer.
     //! @param init_buffer_size - size of the buffer that will be used for initialization 
     //!                           size smaller than minimum element size will trigger a fail-fast.
-    //! @param init_buffer - a poiner to the buffer. If pointer to the buffer is nullptr then
+    //! @param init_buffer - a pointer to the buffer. If pointer to the buffer is nullptr then
     //!                      element data are zero initialized.
     //! @throw std::bad_alloca if allocating new buffer fails
     //! @details New element becomes a new last element and, if set_next offset is supported,
@@ -3492,7 +3492,7 @@ public:
 
     //!
     //! @brief Removes last element from the list. 
-    //! @details Tnis method has cost O(number of elements). 
+    //! @details This method has cost O(number of elements). 
     //! Cost comes from scanning buffer from beginning to find
     //! element before the current last element. Since this is
     //! a single linked list we have no faster way to locate it.
@@ -3532,18 +3532,18 @@ public:
     }
     //!
     //! @brief Inserts new element at the position described by iterator. 
-    //! Element is initialized by coppying provided buffer.
-    //! @param it - iterator pointing to the position new element should be inserte to.
+    //! Element is initialized by copping provided buffer.
+    //! @param it - iterator pointing to the position new element should be inserted to.
     //!             Iterator value must be a valid iterator pointing to one of the elements
     //!             or an end iterator.
-    //!             If iterator is pointing to an element that is not propertly alligned then
-    //!             new element will not be propertly alligned.
+    //!             If iterator is pointing to an element that is not properly aligned then
+    //!             new element will not be properly aligned.
     //! @param init_buffer_size - size of the buffer that will be used for initialization 
     //!                           size smaller than minimum element size will trigger a fail-fast.
     //!                           When iterator in not then end then size is padded to make sure that if
-    //!                           this element is propertly alligned then next element is also property 
+    //!                           this element is properly aligned then next element is also property 
     //!                           aligned.
-    //! @param init_buffer - a poiner to the buffer. If pointer to the buffer is nullptr then
+    //! @param init_buffer - a pointer to the buffer. If pointer to the buffer is nullptr then
     //!                      element data are zero initialized.
     //! @throw std::bad_alloca if allocating new buffer fails.
     //! @details New element becomes a new last element and, if set_next offset is supported,
@@ -3565,18 +3565,18 @@ public:
     }
     //!
     //! @brief Inserts new element at the position described by iterator. 
-    //! Element is initialized by coppying provided buffer.
-    //! @param it - iterator pointing to the position new element should be inserte to.
+    //! Element is initialized by copping provided buffer.
+    //! @param it - iterator pointing to the position new element should be inserted to.
     //!             Iterator value must be a valid iterator pointing to one of the elements
     //!             or an end iterator.
-    //!             If iterator is pointing to an element that is not propertly alligned then
-    //!             new element will not be propertly alligned.
+    //!             If iterator is pointing to an element that is not properly aligned then
+    //!             new element will not be properly aligned.
     //! @param init_buffer_size - size of the buffer that will be used for initialization 
     //!                           size smaller than minimum element size will trigger a fail-fast.
     //!                           When iterator in not then end then size is padded to make sure that if
-    //!                           this element is propertly alligned then next element is also property 
+    //!                           this element is properly aligned then next element is also property 
     //!                           aligned.
-    //! @param init_buffer - a poiner to the buffer. If pointer to the buffer is nullptr then
+    //! @param init_buffer - a pointer to the buffer. If pointer to the buffer is nullptr then
     //!                      element data are zero initialized.
     //! @returns true if element was placed in the existing buffer and false if
     //! buffer does not have enough capacity for the new element.
@@ -3602,13 +3602,13 @@ public:
     //! @brief Constructs new element at the position described by iterator. 
     //! Element is initialized with a help of the functor passed as a parameter.
     //! @tparam F - type of a functor
-    //! @param it - iterator pointing to the position new element should be inserte to.
+    //! @param it - iterator pointing to the position new element should be inserted to.
     //!             Iterator value must be a valid iterator pointing to one of the elements
     //!             or an end iterator.
-    //!             If iterator is pointing to an element that is not propertly alligned then
-    //!             new element will not be propertly alligned.
+    //!             If iterator is pointing to an element that is not properly aligned then
+    //!             new element will not be properly aligned.
     //!             When iterator in not then end then size is padded to make sure that if
-    //!             this element is propertly alligned then next element is also property 
+    //!             this element is properly aligned then next element is also property 
     //!             aligned.
     //! @param new_element_size - number of bytes required for the new element.
     //! @param fn - a functor used to construct new element.
@@ -3637,13 +3637,13 @@ public:
     //! @brief Constructs new element at the position described by iterator. 
     //! Element is initialized with a help of the functor passed as a parameter.
     //! @tparam F - type of a functor
-    //! @param it - iterator pointing to the position new element should be inserte to.
+    //! @param it - iterator pointing to the position new element should be inserted to.
     //!             Iterator value must be a valid iterator pointing to one of the elements
     //!             or an end iterator.
-    //!             If iterator is pointing to an element that is not propertly alligned then
-    //!             new element will not be propertly alligned.
+    //!             If iterator is pointing to an element that is not properly aligned then
+    //!             new element will not be properly aligned.
     //!             When iterator in not then end then size is padded to make sure that if
-    //!             this element is propertly alligned then next element is also property 
+    //!             this element is properly aligned then next element is also property 
     //!             aligned.
     //! @param new_element_size - number of bytes required for the new element.
     //! @param fn - a functor used to construct new element.
@@ -3667,13 +3667,13 @@ public:
         return result;
     }
     //!
-    //! @brief Constructs new element at the beginnig of the container. 
-    //! Element is initialized by coppying provided buffer.
+    //! @brief Constructs new element at the beginning of the container. 
+    //! Element is initialized by copping provided buffer.
     //! @param init_buffer_size - size of the buffer that will be used for initialization 
     //!                           size smaller than minimum element size will trigger a fail-fast.
     //!                           When container is not empty then size is padded to make sure that
     //!                           next element is also property aligned.
-    //! @param init_buffer - a poiner to the buffer. If pointer to the buffer is nullptr then
+    //! @param init_buffer - a pointer to the buffer. If pointer to the buffer is nullptr then
     //!                      element data are zero initialized.
     //! @throw std::bad_alloca if allocating new buffer fails.
     //!
@@ -3693,13 +3693,13 @@ public:
                 });
     }
     //!
-    //! @brief Constructs new element at the beginnig of the container. 
-    //! Element is initialized by coppying provided buffer.
+    //! @brief Constructs new element at the beginning of the container. 
+    //! Element is initialized by copping provided buffer.
     //! @param init_buffer_size - size of the buffer that will be used for initialization 
     //!                           size smaller than minimum element size will trigger a fail-fast.
     //!                           When container is not empty then size is padded to make sure that
     //!                           next element is also property aligned.
-    //! @param init_buffer - a poiner to the buffer. If pointer to the buffer is nullptr then
+    //! @param init_buffer - a pointer to the buffer. If pointer to the buffer is nullptr then
     //!                      element data are zero initialized.
     //! @returns true if element was placed in the existing buffer and false if
     //! buffer does not have enough capacity for the new element.
@@ -3719,7 +3719,7 @@ public:
                            });
     }
     //!
-    //! @brief Inserts new element at the beginnig of the container. 
+    //! @brief Inserts new element at the beginning of the container. 
     //! Element is initialized with a help of the functor passed as a parameter.
     //! @tparam F - type of a functor
     //! @param element_size - size of the buffer that will be used for initialization 
@@ -3738,7 +3738,7 @@ public:
         emplace(begin(), element_size, fn);
     }
     //!
-    //! @brief Inserts new element at the beginnig of the container. 
+    //! @brief Inserts new element at the beginning of the container. 
     //! Element is initialized with a help of the functor passed as a parameter.
     //! @tparam F - type of a functor
     //! @param element_size - size of the buffer that will be used for initialization 
@@ -3797,7 +3797,7 @@ public:
     void erase_after(iterator const &it) noexcept {
         validate_pointer_invariants();
         //
-        // Canot erase after end. Should we noop or fail?
+        // Cannot erase after end. Should we no-op or fail?
         //
         validate_iterator_not_end(it);
         //
@@ -3846,15 +3846,15 @@ public:
     //! that will be erased. If iterator is pointing to the last element
     //! of container then it will trigger fail-fast.
     //! @param last - iterator pointing to the last element to be erased.
-    //! if this iterator is end then it will irase all elements after before_start.
-    //! @details Usualy pair of iterators define aa half opened range [start, end)
+    //! if this iterator is end then it will erase all elements after before_start.
+    //! @details Usual pair of iterators define a half opened range [start, end)
     //! Note that in this case our range is (start, last]. In other words
     //! we will erase all elements after start, including last.
     //!
     void erase_after_half_closed(iterator const &before_start, iterator const &last) noexcept {
         validate_pointer_invariants();
         //
-        // Canot erase after end
+        // Cannot erase after end
         //
         validate_iterator_not_end(before_start);
         validate_iterator(before_start);
@@ -3890,7 +3890,7 @@ public:
 
         //
         // Note that element_range returns element size adjusted with padding
-        // that is required for the next element to be propertly aligned.
+        // that is required for the next element to be properly aligned.
         //
         size_type const bytes_to_copy{ prev_sizes.used_capacity().size - last_element_to_erase_range.buffer_end };
         size_type const bytes_erased{ last_element_to_erase_range.buffer_end - first_element_to_erase_range.begin() };
@@ -3917,7 +3917,7 @@ public:
         validate_iterator(it);
 
         //
-        // erasing after end iterator is a noop
+        // erasing after end iterator is a no-op
         //
         if (end() != it) {
             buff().last = it.get_ptr();
@@ -3939,7 +3939,7 @@ public:
         validate_iterator(it);
 
         //
-        // erasing after end iterator is a noop
+        // erasing after end iterator is a no-op
         //
         if (end() != it) {
 
@@ -4061,7 +4061,7 @@ public:
     //! @brief Swaps content of this container and the other container.
     //! @param other - reference to the other container
     //! @throws might throw std::bad_alloc if allocator swap throws or if
-    //! allocators do not suport swap, and we need to make a copy of elements,
+    //! allocators do not support swap, and we need to make a copy of elements,
     //! which involves allocation.
     //!
     void swap(flat_forward_list &other) noexcept (allocator_type_traits::propagate_on_container_swap::value ||
@@ -4291,7 +4291,7 @@ public:
 
     //
     // It is not clear how to implement it 
-    // without adding extra boolen flags to iterator.
+    // without adding extra boolean flags to iterator.
     // Since elements are variable length we need to be able
     // to query offset to next, and we cannot not do that
     // no before_begin element
@@ -4390,7 +4390,7 @@ public:
     //! @details You must call this method after passing pointer to 
     //! container's buffer to a function that might change buffer content.
     //! If valid list of found then buff().last will be pointing to the
-    //! element element that was found. If no valid list was found then
+    //! element that was found. If no valid list was found then
     //! buff().last will be nullptr.
     //!
     [[nodiscard]] bool revalidate_data(size_type data_size = npos) noexcept {
@@ -4410,7 +4410,7 @@ public:
     //! @details This method also fixes alignment of each element and 
     //! adds missing padding, so at the end used capacity might grow.
     //! Once unused capacity of each element is removed, and missing 
-    //! padding added, this method method reallocates buffer to remove
+    //! padding added, this method reallocates buffer to remove
     //! any unused capacity at the tail.
     //!
     void shrink_to_fit() {
@@ -4420,7 +4420,7 @@ public:
     //!
     //! @brief Removes unused padding of each element in the range [first, end).
     //! @param first - iterator that points to the first element to shrink.
-    //! @param end - iterator that points passt the last element.
+    //! @param end - iterator that points past the last element.
     //! @throws std::bad_alloc if allocating new buffer fails.
     //! @details This method also fixes alignment of each element and 
     //! adds missing padding, so at the end used capacity might grow.
@@ -4455,13 +4455,13 @@ public:
                                                                    size_type old_size, 
                                                                    size_type new_size) {
                                                        //
-                                                       // might extend if element was not propertly alligned. 
+                                                       // might extend if element was not properly aligned. 
                                                        // must be shrinking, and
                                                        // data must fit new buffer
                                                        //
                                                        FFL_CODDING_ERROR_IF_NOT(new_size <= new_element_size);
                                                        //
-                                                       // Cannot assert it here sice we have not changed next element offset yet
+                                                       // Cannot assert it here since we have not changed next element offset yet
                                                        // we will validate element at the end
                                                        //
                                                        //FFL_CODDING_ERROR_IF_NOT(traits_traits::validate(new_size, buffer));
@@ -4581,7 +4581,7 @@ public:
     //!
     //! @brief Returns capacity used by the element's data.
     //! @param it - iterator pointing to the element we are returning size for.
-    //! @returns Returns size of the element without paddint
+    //! @returns Returns size of the element without padding
     //!
     size_type required_size(const_iterator const &it) const noexcept {
         validate_pointer_invariants();
@@ -4645,7 +4645,7 @@ public:
     //! - start of the first element.
     //! - offset of the element before end data end.
     //! - offset of the element before end buffer end.
-    //! If range end is colelction end then data end and
+    //! If range end is collection end then data end and
     //! buffer end point to the same position.
     //! @details All offsets values are relative to the buffer 
     //! owned by the container.
@@ -4666,7 +4666,7 @@ public:
     //! @returns True if position is in the element's buffer. 
     //! and false otherwise. Element's buffer is retrieved using 
     //! range(it).
-    //! When iterator referes to container end or when position is npos
+    //! When iterator refers to container end or when position is npos
     //! the result will be false.
     //!
     bool contains(const_iterator const &it, size_type position) const noexcept {
@@ -4678,13 +4678,13 @@ public:
         return r.buffer_contains(position);
     }
     //!
-    //! @brief Searches for an element before the element that containes 
+    //! @brief Searches for an element before the element that contains 
     //! given position.
-    //! @param position - offset in the conteiner's buffer
+    //! @param position - offset in the container's buffer
     //! @returns Iterator to the found element, if it was found, and
     //! container's end iterator otherwise.
-    //! @details Cost of this algorithm is O(nuber of elements in container)
-    //! because we have to performa linear search for an element from the start
+    //! @details Cost of this algorithm is O(number of elements in container)
+    //! because we have to perform linear search for an element from the start
     //! of container's buffer.
     //!
     iterator find_element_before(size_type position) noexcept {
@@ -4702,13 +4702,13 @@ public:
         return end();
     }
     //!
-    //! @brief Searches for an element before the element that containes 
+    //! @brief Searches for an element before the element that contains 
     //! given position.
-    //! @param position - offset in the conteiner's buffer
+    //! @param position - offset in the container's buffer
     //! @returns Const iterator to the found element, if it was found, and
     //! container's end const iterator otherwise.
-    //! @details Cost of this algorithm is O(nuber of elements in container)
-    //! because we have to performa linear search for an element from the start
+    //! @details Cost of this algorithm is O(number of elements in container)
+    //! because we have to performs linear search for an element from the start
     //! of container's buffer.
     //!
     const_iterator find_element_before(size_type position) const noexcept {
@@ -4724,12 +4724,12 @@ public:
         return end();
     }
     //!
-    //! @brief Searches for an element that containes given position.
-    //! @param position - offset in the conteiner's buffer
+    //! @brief Searches for an element that contains given position.
+    //! @param position - offset in the container's buffer
     //! @returns Iterator to the found element, if it was found, and
     //! container's end iterator otherwise.
-    //! @details Cost of this algorithm is O(nuber of elements in container)
-    //! because we have to performa linear search for an element from the start
+    //! @details Cost of this algorithm is O(number of elements in container)
+    //! because we have to performs linear search for an element from the start
     //! of container's buffer.
     //!
     iterator find_element_at(size_type position) noexcept {
@@ -4744,12 +4744,12 @@ public:
         return end();
     }
     //!
-    //! @brief Searches for an element that containes given position.
-    //! @param position - offset in the conteiner's buffer
+    //! @brief Searches for an element that contains given position.
+    //! @param position - offset in the container's buffer
     //! @returns Const iterator to the found element, if it was found, and
     //! container's end const iterator otherwise.
-    //! @details Cost of this algorithm is O(nuber of elements in container)
-    //! because we have to performa linear search for an element from the start
+    //! @details Cost of this algorithm is O(number of elements in container)
+    //! because we have to performs linear search for an element from the start
     //! of container's buffer.
     //!
     const_iterator find_element_at(size_type position) const noexcept {
@@ -4764,13 +4764,13 @@ public:
         return end();
     }
     //!
-    //! @brief Searches for an element after the element that containes 
+    //! @brief Searches for an element after the element that contains 
     //! given position.
-    //! @param position - offset in the conteiner's buffer
+    //! @param position - offset in the container's buffer
     //! @returns Iterator to the found element, if it was found, and
     //! container's end iterator otherwise.
-    //! @details Cost of this algorithm is O(nuber of elements in container)
-    //! because we have to performa linear search for an element from the start
+    //! @details Cost of this algorithm is O(number of elements in container)
+    //! because we have to performs linear search for an element from the start
     //! of container's buffer.
     //!
     iterator find_element_after(size_type position) noexcept {
@@ -4784,13 +4784,13 @@ public:
         return end();
     }
     //!
-    //! @brief Searches for an element after the element that containes 
+    //! @brief Searches for an element after the element that contains 
     //! given position.
-    //! @param position - offset in the conteiner's buffer
+    //! @param position - offset in the container's buffer
     //! @returns Const iterator to the found element, if it was found, and
     //! container's end const iterator otherwise.
-    //! @details Cost of this algorithm is O(nuber of elements in container)
-    //! because we have to performa linear search for an element from the start
+    //! @details Cost of this algorithm is O(number of elements in container)
+    //! because we have to performs linear search for an element from the start
     //! of container's buffer.
     //!
     const_iterator find_element_after(size_type position) const noexcept {
@@ -4806,7 +4806,7 @@ public:
     //!
     //! @brief Number of elements in the container.
     //! @returns Number of elements in the container.
-    //! @details Cost of this algorithm is O(nuber of elements in container).
+    //! @details Cost of this algorithm is O(number of elements in container).
     //! Container does not actively cache/updates element count so we need to
     //! scan list to find number of elements.
     //!
@@ -4820,7 +4820,7 @@ public:
     }
     //!
     //! @brief Tells if container contains no elements.
-    //! @returns False when containe contains at least one element
+    //! @returns False when container contains at least one element
     //! and true otherwise.
     //! @details Both container with no buffer as well as container
     //! that has buffer that does not contain any valid elements will
@@ -4831,7 +4831,7 @@ public:
         return  buff().last == nullptr;
     }
     //!
-    //! @returns Number of bytes in the bufer used
+    //! @returns Number of bytes in the buffer used
     //! by existing elements.
     //!
     size_type used_capacity() const noexcept {
@@ -4898,7 +4898,7 @@ private:
 
     //!
     //! @class can_reallocate.
-    //! @brief Enumiration used to express per call
+    //! @brief Enumeration used to express per call
     //! buffer reallocation policy.
     //!
     enum class can_reallocate : bool {
@@ -4948,7 +4948,7 @@ private:
         char *cur{ nullptr };
         //
         // We are appending. New last element does not have to be padded 
-        // since there will be no elements after. We do need to padd the 
+        // since there will be no elements after. We do need to pad the 
         // previous last element so the new last element will be padded
         //
         if (prev_sizes.remaining_capacity_for_append() < element_size) {
@@ -4994,7 +4994,7 @@ private:
             commit_new_buffer(new_buffer, new_buffer_size);
         }
         //
-        // Element that we've just addede is the new last element
+        // Element that we've just added is the new last element
         //
         buff().last = cur;
 
@@ -5011,13 +5011,13 @@ private:
     //! fail if new element does not fit free capacity that we have in the buffer.
     //! can_reallocate::no tells that method is allowed to reallocate buffer to 
     //! fit additional element.
-    //! @param it - iterator pointing to the position new element should be inserte to.
+    //! @param it - iterator pointing to the position new element should be inserted to.
     //!             Iterator value must be a valid iterator pointing to one of the elements
     //!             or an end iterator.
-    //!             If iterator is pointing to an element that is not propertly alligned then
-    //!             new element will not be propertly alligned.
+    //!             If iterator is pointing to an element that is not properly aligned then
+    //!             new element will not be properly aligned.
     //!             When iterator in not then end then size is padded to make sure that if
-    //!             this element is propertly alligned then next element is also property 
+    //!             this element is properly aligned then next element is also property 
     //!             aligned.
     //! @param new_element_size - number of bytes required for the new element.
     //! @param fn - a functor used to construct new element.
@@ -5072,9 +5072,9 @@ private:
         char *cur{ nullptr };
         //
         // We are inserting new element in the middle. 
-        // We do not need make last eleement aligned. 
+        // We do not need make last element aligned. 
         // We need to add padding for the element that we are inserting to
-        // keep element that we are shifting right propertly aligned
+        // keep element that we are shifting right properly aligned
         //
         if (prev_sizes.remaining_capacity_for_insert() < new_element_size_aligned) {
             if (can_reallocate::no == reallocation_policy) {
@@ -5110,7 +5110,7 @@ private:
             fn(*traits_traits::ptr_to_t(cur), new_element_size);
         } catch (...) {
             //
-            // on failure to costruct move tail back
+            // on failure to construct move tail back
             // only if we are not reallocating
             //
             if (!new_buffer) {
@@ -5162,7 +5162,7 @@ private:
     }
     //!
     //! @brief Tells if container contains no elements.
-    //! @returns False when containe contains at least one element
+    //! @returns False when container contains at least one element
     //! and true otherwise.
     //! @details Both container with no buffer as well as container
     //! that has buffer that does not contain any valid elements will
@@ -5347,7 +5347,7 @@ private:
                 //
                 size_with_padding_t const element_size_after { this->size_unsafe(it)};
                 //
-                // New element size must not be larget than size that it is 
+                // New element size must not be larger than size that it is 
                 // allowed to grow by
                 //
                 FFL_CODDING_ERROR_IF(element_size_after.size > new_size);
@@ -5364,7 +5364,7 @@ private:
                 //
                 FFL_CODDING_ERROR_IF(element_range_after.buffer_end > tail_start_offset);
                 //
-                // if size changed, then shift tal to the left
+                // if size changed, then shift tail to the left
                 //
                 if (element_range_after.buffer_end != element_range_before.buffer_end) {
 
@@ -5430,7 +5430,7 @@ private:
             //
             size_with_padding_t const element_size_after = this->size_unsafe(result_it);
             //
-            // New element size must not be larget than size that it is 
+            // New element size must not be larger than size that it is 
             // allowed to grow by
             //
             FFL_CODDING_ERROR_IF(element_size_after.size > new_size);
@@ -5499,10 +5499,10 @@ private:
         set_next_offset(buffer, 0);
     }
     //!
-    //! @brief Sets offset ot the next element.
+    //! @brief Sets offset to the next element.
     //! @param buffer - pointer to the element buffer start.
     //! @param size - new element size
-    //! @details This call is a noop for the types that do not support 
+    //! @details This call is a no-op for the types that do not support 
     //! next element offset 
     //!
     constexpr static void set_next_offset([[maybe_unused]] char *buffer, [[maybe_unused]] size_t size) noexcept {
@@ -5515,7 +5515,7 @@ private:
     //! @details Note that after we move allocator other container will
     //! not be able to deallocate its buffer so this call can be used only
     //! along with methods that also adopt other container data.
-    //! @param other - other container we are movig allocator from.
+    //! @param other - other container we are moving allocator from.
     //!
     void move_allocator_from(flat_forward_list &&other) {
         alloc() = std::move(other.alloc());
@@ -5524,7 +5524,7 @@ private:
     //! @brief Cleans this container, and takes ownership of data
     //! from the other container. Caller must make sure that this 
     //! container has a compatible allocator.
-    //! @param other - other container we are movig data from.
+    //! @param other - other container we are moving data from.
     //!
     void move_from(flat_forward_list &&other) noexcept {
         clear();
@@ -5538,7 +5538,7 @@ private:
     //!
     //! @brief Cleans this container, and if it is safe then moves 
     //! data from the other container, otherwise it copies data.
-    //! @param other - other container we are movig or copying data from.
+    //! @param other - other container we are moving or copying data from.
     //! @details Data are moped if containers have equivalent allocators.
     //! otherwise data are copied
     //!
@@ -5551,7 +5551,7 @@ private:
     }
     //!
     //! @brief Copies data from the other container
-    //! @param other - other container we are movig or copying data from.
+    //! @param other - other container we are moving or copying data from.
     //! 
     void copy_from(flat_forward_list const &other) {
         clear();
@@ -5591,7 +5591,7 @@ private:
     //! @brief Swaps buffer owned by container with a new buffer.
     //! @param buffer - Reference to the pointer to the new buffer
     //! @param buffer_size - Reference to the buffer size
-    //! Both parameters are inout parameters. On input they describe
+    //! Both parameters are in-out parameters. On input they describe
     //! new buffer, and on output then contain information about the
     //! old buffer.
     //!
@@ -5613,7 +5613,7 @@ private:
     //! @param buffer_size - pointer to the buffer size.
     //! Both parameters are in-out . On input they contain information
     //! about the buffer we are deallocating. Buffer can be nullptr.
-    //! On output they are nulled out, because theya re not pointing to a valid 
+    //! On output they are nulled out, because they are not pointing to a valid 
     //! buffer any longer.
     //!
     [[nodiscard]] auto make_scoped_deallocator(char **buffer, size_t *buffer_size) noexcept {
@@ -5777,7 +5777,7 @@ private:
     //! For any element data end is calculated using size of data used by element.
     //! For any element except last buffer size is calculated using
     //!  - Value of offset to the next element if type supports get_next_offset
-    //!  - If get_next_offset is not suported then it is calculated as padded 
+    //!  - If get_next_offset is not supported then it is calculated as padded 
     //!    element data size
     //! This method assumes that iterator is pointing to an element, and is not an
     //! end iterator. It assumes that caller verified that iterator satisfies 
@@ -5806,7 +5806,7 @@ private:
         return r;
     }
     //!
-    //! @returns information about the pasrt of container 
+    //! @returns information about the part of container 
     //! buffer used by elements in the range [first, last]
     //!
     range_t closed_range_unsafe(const_iterator const &first, const_iterator const &last) const noexcept {
@@ -5822,9 +5822,9 @@ private:
         }
     }
     //!
-    //! @returns information about the pasrt of container 
+    //! @returns information about the part of container 
     //! buffer used by elements in the range [first, end)
-    //! @details Algorithm complexity is O(number of elements in the niffer)
+    //! @details Algorithm complexity is O(number of elements in the buffer)
     //! because we need to scan container from the beginning to find element 
     //! before end.
     //!
@@ -5906,7 +5906,7 @@ private:
 //! @param lhs - one of the containers we are swapping between
 //! @param rhs - other container we are swapping between
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -5925,7 +5925,7 @@ inline void swap(flat_forward_list<T, TT, A> &lhs, flat_forward_list<T, TT, A> &
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -5942,7 +5942,7 @@ inline typename flat_forward_list<T, TT, A>::iterator begin(flat_forward_list<T,
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -5959,7 +5959,7 @@ inline typename flat_forward_list<T, TT, A>::const_iterator begin(flat_forward_l
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -5976,7 +5976,7 @@ inline typename flat_forward_list<T, TT, A>::const_iterator cbegin(flat_forward_
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -5993,7 +5993,7 @@ inline typename flat_forward_list<T, TT, A>::iterator end(flat_forward_list<T, T
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -6010,7 +6010,7 @@ inline typename flat_forward_list<T, TT, A>::const_iterator end(flat_forward_lis
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -6027,7 +6027,7 @@ inline typename flat_forward_list<T, TT, A>::const_iterator cend(flat_forward_li
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -6044,7 +6044,7 @@ inline typename flat_forward_list<T, TT, A>::iterator last(flat_forward_list<T, 
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -6061,7 +6061,7 @@ inline typename flat_forward_list<T, TT, A>::const_iterator last(flat_forward_li
 //! @param c - container
 //!
 //! @details 
-//! TT is aefault initialized to specialization 
+//! TT is default initialized to specialization 
 //! of flat_forward_list_traits for T
 //! A is default initialized to std::allocator for T
 //!
@@ -6073,7 +6073,7 @@ inline typename flat_forward_list<T, TT, A>::const_iterator clast(flat_forward_l
 }
 //!
 //! @typedef pmr_flat_forward_list
-//! @brief Use this typedef if you want to use container with polimorfic allocator
+//! @brief Use this typedef if you want to use container with polymorphic allocator
 //! @tparam T - element type
 //! @tparam TT - element type traits
 //!
