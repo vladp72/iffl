@@ -63,7 +63,7 @@ FileIdExtdDirectoryInfo
 FileIdExtdDirectoryRestartInfo
 For example output buffer for
 ```
-For eample
+For example
 ```
 GetFileInformationByHandleEx(file_handle, FileIdBothDirectoryInfo, buffer, buffer_size);
 ```
