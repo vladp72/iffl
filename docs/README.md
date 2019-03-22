@@ -537,283 +537,144 @@ auto[is_valid, buffer_view] =
 ```
 You can use flat_forward_list_validate as if it is a findfirst algorithm and abort validation as soon as you've found an element you are looking for.
 
+### Passing buffer ownership across C interface avoiding extra copy.
 
+If server and client can agree on how to allocate an deallocate buffer then you can create buffer using flat_forward_list, detach ownership of buffer from container, pass pointers to the buffer over a C interface, calee can take ownership of the buffer, and deallocate once processing is done.
 
-**flat_forward_list** a container that provides a set of helper algorithms and manages y while list changes.
-Container tracks data in buffer using 3 pointers
- - **buffer_begin** is a pointer to the buffer that containes flat forward list
- - **last_element** is a pointer to the start of the last element in the buffer
- - **buffer_end** is a pointer pass the end of the buffer
- Just like with vector, user can resize buffer to a size larger than required by the current elements. This helps avoid buffer reallocations as you insert new elements or resize existing elements.
- Erasing elements does not shrink buffer. To shrink buffer user have to explicitely call shrink_to_fit.
-
- ```   
- template <typename T,
-          typename TT = flat_forward_list_traits<T>,
-          typename A = std::allocator<char>>
-class flat_forward_list;
-```   
-
-**pmr_flat_forward_list** is a an aliase of flat_forward_list where allocatoe is polimorfic_allocator.
-
- ```   
-template <typename T,
-          typename TT = flat_forward_list_traits<T>>
- using pmr_flat_forward_list = flat_forward_list<T, 
-                                                 TT, 
-                                                 std::pmr::polymorphic_allocator<char>>;
- ```   
-
-**debug_memory_resource** a memory resource that can be used along with polimorfic allocator for debugging contained.
- ```   
-class debug_memory_resource;
- ```   
-
-User is responsible for implementing helper class that has following methods
-- tell us minimum required size element must have to be able to query element size
-constexpr static size_t minimum_size() noexcept;
-and addition documentation in this mode right above where primary
-constexpr static size_t get_next_element_offset(char const *buffer) noexcept;
-- update offset to the next element
-constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept;
-- calculate element size from data
-constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept;
-- validate that data fit into the buffer
-constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept;
-
-By default we are looking for a partial specialization for the element type.
-
-User have to implement following interface:
+In this example we will use a global variable providing a common memory resource for client and server
 ```
-    namespace iffl {
-        template <>
-        struct flat_forward_list_traits<FLAT_FORWARD_LIST_TEST> {
-            constexpr static size_t minimum_size() noexcept { <implementation> }
-            constexpr static size_t get_next_element_offset(char const *buffer) noexcept { <implementation> }
-            constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept { <implementation> }
-            constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept { <implementation> }
-            constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {<implementation>}
-        };
+iffl::debug_memory_resource global_memory_resource;
+```
+Server creates list, and returns pointers to the buffer containing list
+```
+bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
+    if (!buffer || !buffer_size) {
+        return false;
     }
-```
 
-Sample implementation for FILE_FULL_EA_INFORMATION:
+    try {
+    
+        char_array_list data{ &global_memory_resource };
+    
+        unsigned short array_size{ 10 };
+        size_t element_buffer_size{ char_array_list_entry::byte_size_to_array_size(array_size) };
+        char pattern{ 1 };
 
-```
-typedef struct _FILE_FULL_EA_INFORMATION {
-    ULONG  NextEntryOffset;
-    UCHAR  Flags;
-    UCHAR  EaNameLength;
-    USHORT EaValueLength;
-    CHAR   EaName[1];
-} FILE_FULL_EA_INFORMATION, *PFILE_FULL_EA_INFORMATION;
+        data.emplace_back(element_buffer_size,
+                          [array_size, pattern] (char_array_list_entry &e,
+                                                 size_t element_size) noexcept {
+                               e.length = array_size;
+                               std::fill(e.arr, e.arr + e.length, pattern);
+                          });
 
-namespace iffl {
-    template <>
-    struct flat_forward_list_traits<FILE_FULL_EA_INFORMATION> {
+        array_size = 5;
+        element_buffer_size = char_array_list_entry::byte_size_to_array_size(array_size);
+        pattern = 2;
+
+        data.emplace_back(element_buffer_size,
+                          [array_size, pattern](char_array_list_entry &e,
+                                                size_t element_size) noexcept {
+                              e.length = array_size;
+                              std::fill(e.arr, e.arr + e.length, pattern);
+                          });
+
+        array_size = 20;
+        element_buffer_size = char_array_list_entry::byte_size_to_array_size(array_size);
+        pattern = 3;
+
+        data.emplace_back(element_buffer_size,
+                          [array_size, pattern](char_array_list_entry &e,
+                                                size_t element_size) noexcept {
+                              e.length = array_size;
+                              std::fill(e.arr, e.arr + e.length, pattern);
+                          });
+
+        array_size = 0;
+        element_buffer_size = char_array_list_entry::byte_size_to_array_size(array_size);
+        pattern = 4;
+
+        data.emplace_back(element_buffer_size,
+                          [array_size, pattern](char_array_list_entry &e,
+                                                size_t element_size) noexcept {
+                              e.length = array_size;
+                              std::fill(e.arr, e.arr + e.length, pattern);
+                          });
+
+        array_size = 11;
+        element_buffer_size = char_array_list_entry::byte_size_to_array_size(array_size);
+        pattern = 5;
+
+        data.emplace_back(element_buffer_size,
+                          [array_size, pattern](char_array_list_entry &e,
+                                                size_t element_size) noexcept {
+                              e.length = array_size;
+                              std::fill(e.arr, e.arr + e.length, pattern);
+                          });
         //
-        // This is the only method required by flat_forward_list_iterator.
+        // Make sure we are not leaking in the padding any information that can
+        // be helpful to attack server.
         //
-        constexpr static size_t get_next_element_offset(char const *buffer) noexcept {
-            FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
-            return e.NextEntryOffset;
-        }
+        // Without that call padding between entries is field with garbage. In this 
+        // case 0xfe.
         //
-        // This method is requiered for validate algorithm
+        // cdb/windbg>db 0x00000256`ebd78fa0 L47
         //
-        constexpr static size_t minimum_size() noexcept {
-            return FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength);
-        }
+        // 00000256`ebd78fa0  0a 00 00 00 01 01 01 01 - 01 01 01 01 01 01 fe fe  ................
+        // 00000256`ebd78fb0  05 00 00 00 02 02 02 02 - 02 fe fe fe 14 00 00 00  ................
+        // 00000256`ebd78fc0  03 03 03 03 03 03 03 03 - 03 03 03 03 03 03 03 03  ................
+        // 00000256`ebd78fd0  03 03 03 03 00 00 00 00 - 0b 00 00 00 05 05 05 05  ................
+        // 00000256`ebd78fe0  05 05 05 05 05 05 05    -                          .......
         //
-        // Helper method that calculates buffer size. Not required.
+        // After the call padding is filled with zeroes
         //
-        constexpr static size_t get_size(FILE_FULL_EA_INFORMATION const &e) {
-            return  FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) +
-                    e.EaNameLength +
-                    e.EaValueLength;
-        }
-        constexpr static size_t get_size(char const *buffer) {
-            return get_size(*reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer));
-        }
+        // cdb/windbg>db 0x00000256`ebd78fa0 L47
         //
-        // Helper method that check that element sizes are correct. Not required.
+        // 00000254`fd668fa0  0a 00 00 00 01 01 01 01 - 01 01 01 01 01 01 00 00  ................
+        // 00000254`fd668fb0  05 00 00 00 02 02 02 02 - 02 00 00 00 14 00 00 00  ................
+        // 00000254`fd668fc0  03 03 03 03 03 03 03 03 - 03 03 03 03 03 03 03 03  ................
+        // 00000254`fd668fd0  03 03 03 03 00 00 00 00 - 0b 00 00 00 05 05 05 05  ................
+        // 00000254`fd668fe0  05 05 05 05 05 05 05    -                          .......
         //
-        constexpr static bool validate_size(FILE_FULL_EA_INFORMATION const &e, size_t buffer_size) noexcept {
-            if (e.NextEntryOffset == 0) {
-                return  get_size(e) <= buffer_size;
-            } else if (e.NextEntryOffset <= buffer_size) {
-                return  get_size(e) <= e.NextEntryOffset;
-            }
-            return false;
-        }
-        //
-        // Helper method that checks that data are valid
-        //
-        static bool validate_data(FILE_FULL_EA_INFORMATION const &e) noexcept {
-            //
-            // This is and example of a validation you might want to do.
-            // Extended attribute name does not have to be 0 terminated 
-            // so it is not strictly speaking nessesary here.
-            //
-            // char const *end = e.EaName + e.EaNameLength;
-            // return end != std::find_if(e.EaName,
-            //                            end, 
-            //                            [](char c) -> bool {
-            //                                 return c == '\0'; 
-            //                            });
-            return true;
-        }
-        //
-        // This method is required for validate algorithm and container
-        //
-        constexpr static bool validate(size_t buffer_size, char const *buffer) noexcept {
-            FILE_FULL_EA_INFORMATION const &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(buffer);
-            return validate_size(e, buffer_size) && validate_data(e);
-        }
-        //
-        // This method is required by container only
-        //
-        constexpr static void set_next_element_offset(char *buffer, size_t size) noexcept {
-            FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
-            FFL_CODDING_ERROR_IF_NOT(size == 0 || size >= get_size(e));
-            e.NextEntryOffset = static_cast<ULONG>(size);
-        }
-        //
-        // This method is required by container only
-        //
-        constexpr static size_t calculate_next_element_offset(char const *buffer) noexcept {
-            return get_size(buffer);
-        }
-    };
+        data.fill_padding();
+
+        iffl::buffer_ref detached_buffer{ data.detach() };
+        *buffer = detached_buffer.begin;
+        *buffer_size = detached_buffer.size();
+
+    } catch (...) {
+        return false;
+    }
+    return true;
 }
 ```
-
-Now FILE_FULL_EA_INFORMATION is ready to be used with iffl. By default you will not explicitely spell that for FILE_FULL_EA_INFORMATION we should use iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>. Compiler will do the right thing using partial template specialization magic.
-Here is an example where prepare_ea_and_call_handler uses container to prepare buffer with FILE_FULL_EA_INFORMATION, and calls  handle_ea.
-Function handle_ea uses flat_forward_list_validate to safely process elements of untrusted buffer. 
-
-Since FILE_FULL_EA_INFORMATION is a Plain Old Definition (POD) it does not have constructor, container methods that deal with creation of new elements allow passing
-a functor that will be called once container allocates requested space for the element to initialize element data. In this sample you can see prepare_ea_and_call_handler is calling emplace_front and emplace_back and is passing in a lambda that initializes element.
-If you want to zero intialize element then call container.push_back(element_size). 
-If you want to initialzie element using a buffer that contains element blueprint then call .push_back(element_size, bluprint_buffer). It will initialize element by copy bluprint buffer.
-Note that for last element container always resets next element offset after element contruction is done so you do not need to worry about that.
-
+Client would take ownership of the buffer, validate recieved buffer, and process elements
 ```
-using ea_iffl = iffl::flat_forward_list<FILE_FULL_EA_INFORMATION>;
+void call_server1() {
+    char *buffer{ nullptr };
+    size_t buffer_size{ 0 };
 
-void handle_ea(char const *buffer, size_t buffer_lenght) {
-    size_t idx{ 0 };
-    char const *failed_validation{ nullptr };
-    size_t invalid_element_length{ 0 };
-    //
-    // Use flat_forward_list_validate algorithm to safely process elements of untrusted input buffer
-    //
-    auto[is_valid, last_valid] =
-        iffl::flat_forward_list_validate<FILE_FULL_EA_INFORMATION>(
-            buffer,
-            buffer + buffer_lenght,
-            [buffer, &idx, &failed_validation, &invalid_element_length] (size_t buffer_size,
-                                                                         char const *element_buffer) -> bool {
-                bool is_valid = iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>::validate(buffer_size, element_buffer);
-                if (is_valid) {
-                    //
-                    // Add here code that handles element
-                    //
-                    FILE_FULL_EA_INFORMATION const &e = 
-                        *reinterpret_cast<FILE_FULL_EA_INFORMATION const *>(element_buffer);
-                    printf("FILE_FULL_EA_INFORMATION[%zi] @ = 0x%p, buffer offset %zi\n",
-                           idx,
-                           &e,
-                           element_buffer - buffer);
-                } else {
-                    invalid_element_length = buffer_size;
-                    failed_validation = buffer;
-                }
-                return is_valid;
-            });
-}
-
-void prepare_ea_and_call_handler() {
-    //
-    // Use container to fill buffer
-    //
-    ea_iffl eas;
-
-    char const ea_name0[] = "TEST_EA_0";
-
-    eas.emplace_front(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) 
-                     + sizeof(ea_name0)-1, 
-                     [](char *buffer,
-                        size_t new_element_size) {
-                        FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
-                        e.Flags = 0;
-                        e.EaNameLength = sizeof(ea_name0)-1;
-                        e.EaValueLength = 0;
-                        iffl::copy_data(e.EaName,
-                                        ea_name0,
-                                        sizeof(ea_name0)-1);
-                      });
-
-    char const ea_name1[] = "TEST_EA_1";
-    char const ea_data1[] = {1,2,3};
-
-    eas.emplace_back(FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength) 
-                     + sizeof(ea_name1)-1
-                     + sizeof(ea_data1),
-                     [](char *buffer,
-                        size_t new_element_size) {
-                        FILE_FULL_EA_INFORMATION &e = *reinterpret_cast<FILE_FULL_EA_INFORMATION *>(buffer);
-                        e.Flags = 1;
-                        e.EaNameLength = sizeof(ea_name1)-1;
-                        e.EaValueLength = sizeof(ea_data1);
-                        iffl::copy_data(e.EaName,
-                                        ea_name1,
-                                        sizeof(ea_name1)-1);
-                        iffl::copy_data(e.EaName + sizeof(ea_name1)-1,
-                                        ea_data1,
-                                        sizeof(ea_data1));
-                      });
-
-    handle_ea(eas.data(), eas.used_capacity());
- }
-
-```
-If user prefers separate buffer validation and element processing then she can use default iffl::flat_forward_list_validate validation functor, and ince validation passes use iterators to walk the elements.
-Here is a samole implementation:
-
-```
-using ea_iterator = iffl::flat_forward_list_iterator<FILE_FULL_EA_INFORMATION>;
-using ea_const_iterator = iffl::flat_forward_list_const_iterator<FILE_FULL_EA_INFORMATION>;
-
-void handle_ea(char const *buffer, size_t buffer_lenght) {
-    size_t idx{ 0 };
-    char const *failed_validation{ nullptr };
-    size_t invalid_element_length{ 0 };
-    //
-    // Use flat_forward_list_validate algorithm to safely process elements of untrusted input buffer
-    //
-    auto[is_valid, last_valid] = iffl::flat_forward_list_validate<FILE_FULL_EA_INFORMATION>( buffer, buffer + buffer_lenght);
-    //
-    // If buffer contains a valid non-empty list then use iterators to walk elements
-    //
-    if (is_valid && last_valid) {
-        std::for_each(
-            ea_const_iterator{buffer}, 
-            ea_const_iterator{}, // this sentinel iterator plays a role of end
-             [](FILE_FULL_EA_INFORMATION const &e) {
-                    printf("FILE_FULL_EA_INFORMATION @ = 0x%p\n", &e);
-             }
+    if (server_api_call(&buffer, &buffer_size)) {
+        //
+        // If server call succeeded the 
+        // take ownershipt of the buffer
+        //
+        char_array_list data{ iffl::attach_buffer{},
+                              buffer, 
+                              buffer_size,
+                              &global_memory_resource };
+        process_data(data);
     }
 }
 ```
+### Other ideas.
 
-You can find sample implementation for another type FLAT_FORWARD_LIST_TEST at [test\iffl_test_cases.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_test_cases.cpp)
-Addition documetation is in [iffl.h](https://github.com/vladp72/iffl/blob/master/include/iffl.h) right above declaration of primary template for flat_forward_list_traits
-
-
-If picking traits using partial specialization is not feasible then traits can be passed as
-
-an explicit template parameter. For example:
+You can use a list of flat forward list as a queue where producer creates batches of buffers organized in flat forward lists, and once buffer is full it would move it to the list for processing by a consumer.
 ```
-   using ffl_iterator = iffl::flat_forward_list_iterator<FILE_FULL_EA_INFORMATION, my_alternative_ea_traits>;
+std::list<char_array_list>
 ```
+You can subdivide a large flat forwad list to sublists tracked using views, and pass processing of each view to a separate thread.
+
+You use an entry of char_array_list as a frame that contains a serialized message. Container char_array_list can accumulate certain number of frames, and once you are ready, you can send entire batch over a socket.
+
+On recieving side you can read data into a buffer, use _flat_forward_list_validate_ to process as many fully recieved frames as we can find in the buffer. Remove processed data, by shifting tal to the head, and recieve more data to the tails of the buffer.
+
