@@ -6349,29 +6349,29 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //!      You can use noop_validate_element_fn if you do not want 
 //!      validate element
 //!
-//! @return std::pair<id_valid, last_element_offset>
+//! @return std::pair<id_valid, flat_forward_list_ref<T, TT>>
 //!          first - result of validation
 //!                - true if buffer is null
 //!                - true if buffer is empty
 //!                - true if we found a valid element with offset to the next element equals 0
 //!                - false is all other cases
-//!          second - pointer to the last valid element
-//!                 - null if no valid elements were found
-//!         <true, nullptr>  - buffer is NULL or empty
-//!                            It is safe to use iterators.
-//!         <false, nullptr> - buffer is too small to query next element offset,
-//!                            or offset to next element is pointing beyond end,
-//!                            or element fields validation did not pass.
-//!                            We did not find any entries that pass validation
-//!                            so far.
+//!          second - reference or a view up to the last valid element
+//!                 - empty view if no valid elements were found
+//!         <true, empty view>  - buffer is NULL or empty
+//!                               It is safe to use iterators.
+//!         <false, empty view> - buffer is too small to query next element offset,
+//!                               or offset to next element is pointing beyond end,
+//!                               or element fields validation did not pass.
+//!                               We did not find any entries that pass validation
+//!                               so far.
 //!                            Buffer contains no flat list.
-//!         <false, ptr>     - same as above, but we did found at least one valid element.
-//!                            Buffer contains valid head, but tail is corrupt and have to 
-//!                            be either truncated by setting next offset on the last valid 
-//!                            element to 0 or if possible by fixing first elements pass the
-//!                            last valid element.
-//!         <true, ptr>      - buffer contains a valid flat forward list, it is safe
-//!                            to use iterators
+//!         <false, non empty view> - same as above, but we did found at least one valid element.
+//!                               Buffer contains valid head, but tail is corrupt and have to 
+//!                               be either truncated by setting next offset on the last valid 
+//!                               element to 0 or if possible by fixing first elements pass the
+//!                               last valid element.
+//!         <true, non empty view> - buffer contains a valid flat forward list, it is safe
+//!                               to use iterators
 //!
 //! @details
 //!     When TT has get_next_offset we will use
