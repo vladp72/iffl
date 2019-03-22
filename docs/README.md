@@ -456,52 +456,88 @@ bool server_api_call(char *buffer, size_t *buffer_size) noexcept {
 
 ### Validate input buffer
 
-Here is an example where prepare_ea_and_call_handler uses container to prepare buffer with FILE_FULL_EA_INFORMATION, and calls  handle_ea.
-Function handle_ea uses flat_forward_list_validate to safely process elements of untrusted buffer. 
+If you are recieving a untrusted buffer that is expected to contain a flat forward list you can validate it using **flat_forward_list_validate** family of function.
 
-
-
-
-```
-using ea_iffl = iffl::flat_forward_list<FILE_FULL_EA_INFORMATION>;
-```
-function **flat_forward_list_validate** that can be use to deal with untrusted buffers. You can use it to validate if untrusted buffer contains a valid list, and to find boundary at which list gets invalid. with polymorphic allocator for debugging contained elements.
 ```
 template<typename T,
-         typename TT = flat_forward_list_traits<T>>
-struct default_validate_element_fn {
-    bool operator() (size_t buffer_size, char const *buffer) const noexcept {
-        return TT::validate(buffer_size, buffer);
-    }
-};
+         typename TT = flat_forward_list_traits<T>,
+         typename F = default_validate_element_fn<T, TT>>
+constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> 
+  flat_forward_list_validate(char const *first,
+                             char const *end, 
+                             F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept;
 
 template<typename T,
          typename TT = flat_forward_list_traits<T>,
          typename F = default_validate_element_fn<T, TT>>
-constexpr inline std::pair<bool, char const *> flat_forward_list_validate(
-        char const *first,
-        char const *end, 
-        F const &validate_element_fn = default_validate_element_fn<T, TT>{}
-    ) noexcept;
-```   
+constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> 
+  flat_forward_list_validate(char *first,
+                             char *end,
+                             F const &validate_element_fn = default_validate_element_fn<T, TT>{}) noexcept;
+```
+
+Function returns a pair of boolen and a reference or view. If passed parameter is a non-const buffer then result is a reference. If input buffer is const then result is a view (const reference). Boolen indicates if buffer contains a valid list. Even if list is broken, and function returns false, view will point to the subset of the buffer that contains a valid list. For instance if a pointer to the next element refers outside of the buffer range, then validate would abort, and return false, but returned reference/view will describe element from the beginnign to the last valid element. 
+
+You can choose to be strict and reject invalid buffer.  
+
+```
+auto [is_valid, view] = iffl::flat_forward_list_validate<FILE_FULL_EA_INFORMATION>(std::begin(buffer), std::end(buffer));
+if (is_valid) {
+  std::for_each(view.begin(), view.begin(), 
+                [](FLAT_FORWARD_LIST_TEST &e) noexcept {
+                    print_element(e);
+                });
+    return true;
+} else {
+    return false;
+}
+```
+Or to handle as much of the buffer as you can.  
+```
+auto [is_valid, view] = iffl::flat_forward_list_validate<FILE_FULL_EA_INFORMATION>(std::begin(buffer), std::end(buffer));
+std::for_each(view.begin(), view.begin(), 
+              [](FLAT_FORWARD_LIST_TEST &e) noexcept {
+                  print_element(e);
+              });
+return is_valid;
+```
+In the samples above we traverse buffer two times. It is possible to traverse and handle elements in a single loop by passing your own functor in place of the default functor that calls trait's validate method.
+
+```
+FILE_FULL_EA_INFORMATION const *failed_validation{nullptr};
+size_t invalid_element_length{0};
+
+auto[is_valid, buffer_view] =
+    iffl::flat_forward_list_validate<FILE_FULL_EA_INFORMATION>(
+        buffer,
+        buffer + buffer_lenght,
+        [&failed_validation, &invalid_element_length] (size_t buffer_size,
+                                                       FILE_FULL_EA_INFORMATION const &e) -> bool {
+            //
+            // validate element
+            //
+            bool const is_valid{ iffl::flat_forward_list_traits<FILE_FULL_EA_INFORMATION>::validate(buffer_size, e) };
+            //
+            // if element is valid then process element
+            //
+            if (is_valid) {
+                handle_validated_element(e);
+            } else {
+                //
+                // Save additional information about element that failed validation
+                //
+                invalid_element_length = buffer_size;
+                failed_validation = &e;
+            }
+            //
+            // validation loop is aborted if element is not valid
+            //
+            return is_valid;
+        });
+```
+You can use flat_forward_list_validate as if it is a findfirst algorithm and abort validation as soon as you've found an element you are looking for.
 
 
-
-iterators for going over trusted collection, and a container for manipulating this list (push/pop/erase/insert/sort/merge/etc). To facilitate usage across C interface container also supports attach (a.k.a adopt ) buffer and detach buffer (you would need a custom allocator both sides would agree on).
-
-
-
-**flat_forward_list_iterator** and flat_forward_list_const_iterator are forward iterators that can be used to enmirate over previously validated buffer.
-
-```   
-template<typename T,
-         typename TT = flat_forward_list_traits<T>>
-using flat_forward_list_iterator = flat_forward_list_iterator_t<T, TT>;
-
-template<typename T,
-         typename TT = flat_forward_list_traits<T>>
-using flat_forward_list_const_iterator = flat_forward_list_iterator_t< std::add_const_t<T>, TT>;
-```   
 
 **flat_forward_list** a container that provides a set of helper algorithms and manages y while list changes.
 Container tracks data in buffer using 3 pointers
