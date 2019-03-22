@@ -6102,7 +6102,7 @@ flat_forward_list_ref<T, TT>::flat_forward_list_ref(flat_forward_list<V, VV, A> 
 //! @tparam T - element type
 //! @tparam TT - element type traits
 //! @tparam A - allocator type
-//! @returns referencce to self
+//! @returns reference to self
 //!
 template <typename T,
           typename TT>
@@ -6118,13 +6118,13 @@ flat_forward_list_ref<T, TT> &flat_forward_list_ref<T, TT>::operator= (flat_forw
 //!
 //! @brief flat_forward_list_validate_has_next_offset
 //! @tparam T - element type
-//! @tparam TT - element type traits. Detaulted to 
+//! @tparam TT - element type traits. Defaulted to 
 //! specialization flat_forward_list_traits<T>
 //! @tparam F - functor used to validate element
 //! by default uses default_validate_element_fn<T, TT>
 //! @details
 //! Validates if buffer contains a valid intrusive flat forward list
-//! See commment for flat_forward_list_validate.
+//! See comment for flat_forward_list_validate.
 //! Users are not expected to use this function directly,
 //! instead use flat_forward_list_validate, which will call
 //! flat_forward_list_validate_has_next_offset if TT::get_next_offset
@@ -6221,13 +6221,13 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //!
 //! @brief flat_forward_list_validate_no_next_offset
 //! @tparam T - element type
-//! @tparam TT - element type traits. Detaulted to 
+//! @tparam TT - element type traits. Defaulted to 
 //! specialization flat_forward_list_traits<T>
 //! @tparam F - functor used to validate element
 //! by default uses default_validate_element_fn<T, TT>
 //! @details
 //! Validates if buffer contains a valid intrusive flat forward list
-//! See commment for flat_forward_list_validate.
+//! See comment for flat_forward_list_validate.
 //! Users are not expected to use this function directly,
 //! instead prefer to use flat_forward_list_validate, which will call
 //! flat_forward_list_validate_no_next_offset if TT::get_next_offset
@@ -6330,7 +6330,7 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! and returns a pointer to the last element.
 //!
 //! @tparam T - element type
-//! @tparam TT - element type traits. Detaulted to 
+//! @tparam TT - element type traits. Defaulted to 
 //!              algorithms expects following methods
 //!                - get_next_offset
 //!                - minimum_size
@@ -6345,7 +6345,7 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>> flat_forward_list
 //! @param validate_element_fn - a functor that is used to validate
 //!      element. For instance if element contains offset to variable
 //!      lengths data, it can check that these data are in bound of 
-//!      the buffer. Default dunctor calls TT::validate.
+//!      the buffer. Default functor calls TT::validate.
 //!      You can use noop_validate_element_fn if you do not want 
 //!      validate element
 //!
