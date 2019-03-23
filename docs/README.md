@@ -4,6 +4,8 @@ This header only library that implements intrusive flat forward list (iffl).
 
 https://github.com/vladp72/iffl/tree/master/include
 
+[doxygen documentation](https://github.com/vladp72/iffl/blob/master/docs/html/index.html)
+
 ## Motivation
 
 Often times when dealing with OS or just C interface we need to pass in or parse a a buffer that contains a linked list of variable size structs. 
