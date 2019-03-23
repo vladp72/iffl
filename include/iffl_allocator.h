@@ -8,7 +8,7 @@
 //! [iffl github](https://github.com/vladp72/iffl)
 //!
 //! @brief This module implements debug_memory_resource a memory resource that can be used along
-//!        with polimorfic allocator for debugging contained.
+//!        with polymorphic allocator for debugging contained.
 //!
 
 #include <iffl_config.h>
@@ -23,7 +23,7 @@ namespace iffl {
 //!
 //! @class debug_memory_resource 
 //! @brief implements std::pmr::memory_resource interface. 
-//! @details This class can be used with Polimorfic Memory Allocator.
+//! @details This class can be used with Polymorphic Memory Allocator.
 //! Forward Linked List has typedef for PMR called pmr_flat_forward_list.
 //! 
 //! Sample usage:
@@ -37,11 +37,11 @@ namespace iffl {
 //! from this allocator is deallocated.
 //! 
 //! This class provides:
-//! - Basic buffer overrun and underrun detection by plang well knwn patters at the end and at the beginnig
+//! - Basic buffer overrun and under-run detection by putting a well known patters at the end and at the beginning
 //!   of the buffer. At deallocation time patterns we check that patterns did not change
 //! - Detection that deallocation is done using same memory resource as allocation. Allocation header
 //!   contains pointer to the memory resource. At deallocation time we check that pointer matches to the 
-//!   object that is deallocating memoty.
+//!   object that is deallocating memory.
 //! - Helps detecting when objects use memory without previously initializing it. Allocate memory is filled with
 //!   value that would trigger access violation if used as a pointer without initialization
 //! - Basic memory leak and lifetime management issues by counting number of outstanding allocations.
@@ -207,7 +207,7 @@ private:
 //!
 //! @class input_buffer_memory_resource 
 //! @brief implements std::pmr::memory_resource interface. 
-//! @details This class can be used with Polimorfic Memory Allocator.
+//! @details This class can be used with Polymorphic Memory Allocator.
 //! Forward Linked List has typedef for PMR called pmr_flat_forward_list.
 //! This memory resource allows constructing flat forward list on a buffer
 //! owned by someone else.
@@ -215,7 +215,7 @@ private:
 //! This memory resource can be instantiated to point to a buffer that
 //! is owned elsewhere. 
 //! Using this memory resource you can allocate buffer to a single owned
-//! Consequent allocations will throw bad_alloc until buffer is deallcoated.
+//! Consequent allocations will throw bad_alloc until buffer is deallocated.
 //! On deallocation it checks that deallocated buffer is the
 //! same as allocation buffer. It will fail-fast on mismatch.
 //! Deallocated buffer can be allocated again.
@@ -238,9 +238,9 @@ private:
 //! offset to the last element in the buffer.
 //! Container destructor will deallocate memory back to resource.
 //! Memory resource destructor will detach from the buffer.
-//! Buffer content remains untached, and still contains a valid list.
+//! Buffer content remains unattached, and still contains a valid list.
 //! Once method returns, caller can examine buffer using flat forward list reference or
-//! view or attach it to the container with allocator compatibe to how buffer was allocated.
+//! view or attach it to the container with allocator compatible to how buffer was allocated.
 //!
 //! @code
 //! void build_result(char *buffer, size_t buffer_size, size_t *output_size) {

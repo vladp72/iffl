@@ -12,13 +12,13 @@
 //   Caller fills buffer with FILE_FULL_EA_INFORMATION entries.
 //   See prepare_ea_and_call_handler
 //
-// - How to write a server that recieves a buffer with a list
+// - How to write a server that receives a buffer with a list
 //   of these structures. 
 //
-//   Fnction handle_ea1 demonstrates how to validate and iterate in one
+//   Function handle_ea1 demonstrates how to validate and iterate in one
 //   loop
 //
-//   Fnction handle_ea2 demonstrates how to first validate and then 
+//   Function handle_ea2 demonstrates how to first validate and then 
 //   iterate over trusted buffer
 //   
 //
@@ -49,11 +49,11 @@ namespace iffl {
         //
         // By default entries in container are not aligned.
         // By providing this member we are telling container to
-        // align entries as they are inserved in container.
-        // Container still would support lists that are not propertly
+        // align entries as they are inserted in container.
+        // Container still would support lists that are not properly
         // aligned, but when inserting new elements it will make sure
         // that elements are padded to guarantee that next entry
-        // is alligned, assuming current entry is alligned.
+        // is aligned, assuming current entry is aligned.
         // For example we have following array
         //
         // element1 - alignment correct, 
@@ -75,7 +75,7 @@ namespace iffl {
             return e.NextEntryOffset;
         }
         //
-        // This method is requiered for validate algorithm
+        // This method is required for validate algorithm
         //
         static size_t minimum_size() noexcept {
             return FFL_SIZE_THROUGH_FIELD(FILE_FULL_EA_INFORMATION, EaValueLength);
@@ -99,8 +99,8 @@ namespace iffl {
             // otherwise make sure that pointer to the next element fits reminder of buffer
             // and this element size fits before next element starts
             //
-            // Note that when we evaluate if buffer is valid we are not requiering
-            // that it is propertly alligned. An implementation can choose to enforce 
+            // Note that when we evaluate if buffer is valid we are not requiring
+            // that it is properly aligned. An implementation can choose to enforce 
             // that
             //
             //
@@ -116,7 +116,7 @@ namespace iffl {
             //
             // This is an example of a validation you might want to do.
             // Extended attribute name does not have to be 0 terminated 
-            // so it is not strictly speaking nessesary here.
+            // so it is not strictly speaking necessary here.
             //
             // char const * const end = e.EaName + e.EaNameLength;
             // return end != std::find_if(e.EaName,

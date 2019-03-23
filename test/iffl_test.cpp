@@ -7,16 +7,14 @@
 
 int main() {
 
-    //std::vector<int> foo;
-
-    std::printf("\n--------- Starting tests ----------\n\n");
+    std::printf("\n--------- Starting tests -----------\n\n");
     run_all_flat_forward_list_tests();
-    std::printf("\n------ Starting EA usecase --------\n\n");
+    std::printf("\n------ Starting EA use-case --------\n\n");
     run_ffl_ea_usecase();
-    std::printf("\n----- Starting C API usecase 1-----\n\n");
+    std::printf("\n----- Starting C API use-case 1-----\n\n");
     run_ffl_c_api_usecase1();
-    std::printf("\n----- Starting C API usecase 2-----\n\n");
+    std::printf("\n----- Starting C API use-case 2-----\n\n");
     run_ffl_c_api_usecase2();
-    std::printf("\n--------- Tests Complete ----------\n\n");
+    std::printf("\n--------- Tests Complete -----------\n\n");
     return 0;
 }

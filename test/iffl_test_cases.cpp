@@ -32,7 +32,7 @@ namespace iffl {
             return e.NextEntryOffset;
         }
         //
-        // This method is requiered for validate algorithm
+        // This method is required for validate algorithm
         //
         static size_t minimum_size() noexcept {
             return FFL_SIZE_THROUGH_FIELD(FLAT_FORWARD_LIST_TEST, DataLength);
@@ -55,8 +55,8 @@ namespace iffl {
             // otherwise make sure that pointer to the next element fits reminder of buffer
             // and this element size fits before next element starts
             //
-            // Note that when we evaluate if buffer is valid we are not requiering
-            // that it is propertly aligned. An implementation can choose to enforce 
+            // Note that when we evaluate if buffer is valid we are not requiring
+            // that it is properly aligned. An implementation can choose to enforce 
             // that
             //
             //
@@ -300,7 +300,7 @@ inline void flat_forward_list_iterator_test1() {
 //
 // This function is not designed to be called
 // it is for checking that stuff compiles.
-// Runnig this function will cause access violation.
+// Running this function will cause access violation.
 //
 inline void flat_forward_list_iterator_syntax_check() {
 

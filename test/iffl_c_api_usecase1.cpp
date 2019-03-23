@@ -3,19 +3,19 @@
 #include "iffl_list_array.h"
 
 // 
-//  This sample demostrates how to pass buffer ownership
+//  This sample demonstrates how to pass buffer ownership
 //  across C interface boundary.
 //  Server and client have to agree on allocator that will be used to 
 //  allocate buffer.
 //
 //  server_api_call creates container, and fills it with data.
 //  if no failures then it detaches buffer from container, and
-//   assignes pointers to the buffer to the output parameters.
+//   assigns pointers to the buffer to the output parameters.
 //
 //  call_server checks if server_api_call succeeded then
 //  it attaches buffers it got from server to a new container
 //  that will be responsible for deallocating buffer.
-//  Attch will validate buffer, but cunstructor will silently 
+//  Attach will validate buffer, but constructor will silently 
 //  swallow if validation was able to find any valid entries.
 //  If buffer did not contain a valid list then container will
 //  take ownership of buffer, but it would not contain any elements.
@@ -103,7 +103,7 @@ bool server_api_call1(char **buffer, size_t *buffer_size) noexcept {
         // 00000256`ebd78fd0  03 03 03 03 00 00 00 00 - 0b 00 00 00 05 05 05 05  ................
         // 00000256`ebd78fe0  05 05 05 05 05 05 05    -                          .......
         //
-        // After the call padding is filled with zeroes
+        // After the call padding is filled with zeros
         //
         // cdb/windbg>db 0x00000256`ebd78fa0 L47
         //
@@ -138,7 +138,7 @@ void call_server1() {
     if (server_api_call1(&buffer, &buffer_size)) {
         //
         // If server call succeeded the 
-        // take ownershipt of the buffer
+        // take ownership of the buffer
         //
         char_array_list data{ iffl::attach_buffer{},
                               buffer, 

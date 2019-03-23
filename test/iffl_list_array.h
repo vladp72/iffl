@@ -4,7 +4,7 @@
 //
 // How to define a generic header that can be used for types that
 // do not have intrusive hook.
-// Templace pod_array_list_entry that can be used for any POD type
+// Template pod_array_list_entry that can be used for any POD type
 // Template pod_array_list_entry_traits defines traits implementation
 // To use them with your type
 //
@@ -55,13 +55,13 @@ struct pod_array_list_entry_traits {
     constexpr static size_t const alignment{ alignof(header_type) };
 
     //
-    // This method is requiered for validate algorithm
+    // This method is required for validate algorithm
     //
     constexpr static size_t minimum_size() noexcept {
         return FFL_SIZE_THROUGH_FIELD(header_type, length);
     }
     //
-    // Required by container ir validate algorithm when type
+    // Required by container validate algorithm when type
     // does not support get_next_offset
     //
     constexpr static size_t get_size(header_type const &e) {

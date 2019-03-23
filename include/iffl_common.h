@@ -123,7 +123,7 @@
 //! @brief Size of padding [if any] between two fields.
 //!        Does not validate that F2 is following after F1 in the structure.
 //! @param T type fields are members of
-//! @param F1 firt field name
+//! @param F1 first field name
 //! @param F2 second field name
 //!
 #define FFL_PADDING_BETWEEN_FIELDS_UNSAFE(T, F1, F2)(FFL_FIELD_OFFSET(T, F2) - FFL_SIZE_THROUGH_FIELD(T, F1))
@@ -131,12 +131,12 @@
 //! @brief Size of padding [if any] between two fields.
 //!        Validate that F2 is following after F1 in the structure.
 //! @param T type fields are members of
-//! @param F1 firt field name
+//! @param F1 first field name
 //! @param F2 second field name
 //!
 #define FFL_PADDING_BETWEEN_FIELDS(T, F1, F2)([] {static_assert(FFL_FIELD_OFFSET(T, F1) <= FFL_FIELD_OFFSET(T, F2), "F1 must have lower offset in structure than F2"); }, FFL_PADDING_BETWEEN_FIELDS_UNSAFE(T, F1, F2))
 //!
-//! @brief Calculates pointer to the beginnig of the structure 
+//! @brief Calculates pointer to the beginning of the structure 
 //!        from the pointer to a field in that structure.
 //! @param T type fields are members of
 //! @param F field name
@@ -152,7 +152,7 @@ namespace iffl {
 
     //!
     //! @brief If min or max are defined as a macro then 
-    //! save current definition, and undefine it
+    //! save current definition, and undefined it
     //! at the end of the header we will restore 
     //! saved definition
     //!
@@ -167,7 +167,7 @@ namespace iffl {
 #endif
 //!
 //! @brief Constant value that represents invalid position/offset
-//! once numeric_limits are anotated as constexpr we should make
+//! once numeric_limits are annotated as constexpr we should make
 //! this variable constexpr
 //!
     inline static size_t const npos = std::numeric_limits<size_t>::max();
@@ -196,7 +196,7 @@ template<typename T>
 constexpr inline void unused_variable([[maybe_unused]] T const &) {
 }
 //!
-//! @brief Silence sinetizer warning about unused result of expression 
+//! @brief Silence sensitizers warning about unused result of expression 
 //! @tparam T - type of unused variable
 //!
 template<typename T>
@@ -243,7 +243,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //!
     template<typename T>
     constexpr inline size_t roundup_size_to_alignment(size_t size) noexcept {
-        static_assert(alignof(T) > 0, "Cannot devide by 0");
+        static_assert(alignof(T) > 0, "Cannot divide by 0");
         return roundup_size_to_alignment(size, alignof(T));
     }
     //!
@@ -263,7 +263,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //!
     template<typename T>
     inline void * roundup_ptr_to_alignment(void *ptr) noexcept {
-        static_assert(alignof(T) > 0, "Cannot devide by 0");
+        static_assert(alignof(T) > 0, "Cannot divide by 0");
         return roundup_ptr_to_alignment(ptr, alignof(T));
     }
     //!
@@ -283,7 +283,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //!
     template<typename T>
     inline void const * roundup_ptr_to_alignment(void const *ptr) noexcept {
-        static_assert(alignof(T) > 0, "Cannot devide by 0");
+        static_assert(alignof(T) > 0, "Cannot divide by 0");
         return roundup_ptr_to_alignment(ptr, alignof(T));
     }
     //!
@@ -308,7 +308,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
         std::memmove(to_buffer, from_buffer, length);
     }
     //!
-    //! @brief sets "length" consequative bytes of "to_buffer" to "value".
+    //! @brief sets "length" consecutive bytes of "to_buffer" to "value".
     //! @param buffer - Destination buffer.
     //! @param value - value we are assigning
     //! @param length - number of bytes to assign value to
@@ -317,7 +317,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
         std::memset(buffer, value, length);
     }
     //!
-    //! @brief sets "length" consequative bytes of "to_buffer" to 0.
+    //! @brief sets "length" consecutive bytes of "to_buffer" to 0.
     //! @param buffer - Destination buffer.
     //! @param length - number of bytes to assign 0 to
     //!
@@ -325,7 +325,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
         fill_buffer(buffer, 0, length);
     }
     //!
-    //! @brief sets "length" consequative bytes of "to_buffer" to 0.
+    //! @brief sets "length" consecutive bytes of "to_buffer" to 0.
     //! @param begin - Destination buffer.
     //! @param end - number of bytes to assign 0 to
     //!
@@ -361,15 +361,15 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     }
     //!
     //! @class scope_guard 
-    //! @brief template class that can be parametrised with a functor
-    //! or a lambda that it will call in distructor. 
+    //! @brief template class that can be parametrized with a functor
+    //! or a lambda that it will call in destructor. 
     //! @details Used to execute 
-    //! functor as we are leaving scope, unless it was explicitely 
+    //! functor as we are leaving scope, unless it was explicitly 
     //! disarmed.
     //! flat_forward_list uses this helper to deallocate memory
     //! on failures.
-    //! scoped_guald inherits from the functor to minimize tyoe size
-    //! when functor is emty type. For more information see Empty Base
+    //! scoped_guald inherits from the functor to minimize type size
+    //! when functor is an empty type. For more information see Empty Base
     //! Class Optimization (EBCO).
     //!
     //! @tparam G type of functor or a lambda
@@ -409,7 +409,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
         //!
         constexpr scope_guard &operator=(scope_guard &) = delete;
         //!
-        //! @brief Distructor attempts to call functor if guard was not disarmed
+        //! @brief Destructor attempts to call functor if guard was not disarmed
         //! 
         ~scope_guard() noexcept {
             discharge();
@@ -452,7 +452,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
 
     private:
         //!
-        //! @brief value is true when guard is armed and false otherwie
+        //! @brief value is true when guard is armed and false otherwise
         //!
         bool armed_{ true };
     };
@@ -481,8 +481,8 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
 
     //!
     //! @class range
-    //! @brief Vocabulary type that describes a subbuffer in a larger buffer, 
-    //! and portion of that subbuffer actuallu used by the data.
+    //! @brief Vocabulary type that describes a sub-buffer in a larger buffer, 
+    //! and portion of that sub-buffer actually used by the data.
     //! @details Following picture explains that concept
     //!
     //! @code
@@ -494,10 +494,10 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //! ---------------------------------------------------------------
     //! @endcode
     //!
-    //! unused space between data_end and buffer_end is either thace between 
-    //! elements in the buffer and/or padding.
-    //! This vocabulary type is a convinient building block for flat list.
-    //! When we move elements in the buffer it is more convinient
+    //! unused space between data_end and buffer_end is either reserved space for the
+    //! element in the buffer and/or padding to keep next element aligned.
+    //! This vocabulary type is a convenient building block for flat list.
+    //! When we move elements in the buffer it is more convenient
     //! to operate on relative offsets in the buffer.
     //!
     //!
@@ -518,7 +518,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
         //!
         size_t buffer_end{ 0 };
         //!
-        //! @brief offst of the buffer abd data begin
+        //! @brief Offset of the element buffer begin in a larger buffer.
         //! @return current value of buffer_begin
         //!
         constexpr size_t begin() const {
@@ -547,7 +547,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
         }
         //!
         //! @brief Size of unused buffer
-        //! @return Returns size of buffer not ued by the data
+        //! @return Returns size of buffer not used by the data
         //!
         constexpr size_t unused_capacity() const noexcept {
             return buffer_end - data_end;
@@ -563,7 +563,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
                         unused_capacity());
         }
         //!
-        //! @brief Zeroes unused part of buffer
+        //! @brief Zeros unused part of buffer
         //! @param data_ptr - a pointer to the element start
         //!
         void zero_unused_capacity_data_ptr(char *data_ptr) const noexcept {
@@ -578,7 +578,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
             fill_unused_capacity_data_ptr(container_ptr + buffer_begin, fill_byte);
         }
         //!
-        //! @brief Zeroes unused part of buffer
+        //! @brief Zeros unused part of buffer
         //! @param container_ptr - a pointer to the buffer start
         //!
         void zero_unused_capacity_container_ptr(char *container_ptr) const noexcept {
@@ -602,8 +602,8 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
 
     //!
     //! @class range_with_alighment
-    //! @brief Vocabulary type that describes a subbuffer in a larger buffer 
-    //! and portion of that subbuffer actuallu used by the data.
+    //! @brief Vocabulary type that describes a sub-buffer in a larger buffer 
+    //! and portion of that sub-buffer actually used by the data.
     //! @details This type extends range with template parameter that specifies
     //! element's type alignment requirements
     //! @tparam ALIGNMENT_V - alignment requirements of the element's type
@@ -634,7 +634,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
         constexpr size_t data_size_padded() const noexcept {
             //
             // current element size if we also add padding
-            // to keep next element alligned
+            // to keep next element aligned
             //
             return data_end_aligned() - begin();
         }
@@ -709,7 +709,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
         //!
         size_t size{ 0 };
         //!
-        //! @return Returns size padded to allignment
+        //! @return Returns size padded to alignment
         //!
         constexpr size_t size_padded() const noexcept {
             return roundup_size_to_alignment(size, ALIGNMENT_V);
@@ -744,13 +744,13 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
         }
         //!
         //! @details When we are inserting new element in the middle we need to make sure inserted element
-        //! is padded, but we do not need to padd tail element
+        //! is padded, but we do not need to pad tail element
         //!
         constexpr size_t remaining_capacity_for_insert() const {
             return total_capacity - used_capacity().size;
         }
         //!
-        //! @details If we are appending then we need to padd current last element, but new inserted 
+        //! @details If we are appending then we need to pad current last element, but new inserted 
         //! element does not have to be padded
         //
         constexpr size_t remaining_capacity_for_append() const {
@@ -765,15 +765,15 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //!
     //! @class zero_then_variadic_args_t
     //! @brief Tag type for value - initializing first,
-    //! constructing second from remaining args
+    //! constructing second from remaining arguments
     //!
     struct zero_then_variadic_args_t {
     };
 
     //!
     //! @class one_then_variadic_args_t
-    //! @brief Tag type for constructing first from one arg,
-    //! constructing second from remaining args
+    //! @brief Tag type for constructing first from one argument,
+    //! constructing second from remaining arguments
     //!
     struct one_then_variadic_args_t {
     };
@@ -790,7 +790,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
     //! We use SFINAE on the 3rd parameter to fail this instantiation
     //! when EBCO would not help or would not work. Other specialization 
     //! should be used in that case.
-    //! This is a nive implementation borrowed from
+    //! This is a naive implementation borrowed from
     //! the MSVC CRT. More complete implementation can 
     //! be found  in boost
     //!
@@ -802,7 +802,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
 
             //!
             //! @brief Constructor
-            //! @tparam P - variadic parameter pack firwarded 
+            //! @tparam P - triadic parameter pack forwarded 
             //!             to the constructor of T2
             //! @param p - parameters for the T2 constructor
             //! @details Value initialize first parameter,
@@ -889,7 +889,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
 
             //!
             //! @brief Constructor
-            //! @tparam P - variadic parameter pack firwarded 
+            //! @tparam P - variadic parameter pack forwarded 
             //!             to the constructor of T2
             //! @param p - parameters for the T2 constructor
             //! @details Value initialize first parameter,
@@ -1125,7 +1125,7 @@ constexpr inline void unused_expression_result([[maybe_unused]] T const &) {
         //!
         constexpr void validate() const noexcept {
             //
-            // empty() calls this method so we canot call it here
+            // empty() calls this method so we cannot call it here
             //
             if (nullptr == last) {
                 FFL_CODDING_ERROR_IF_NOT(begin <= end);

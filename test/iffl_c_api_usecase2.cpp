@@ -3,13 +3,13 @@
 #include "iffl_list_array.h"
 
 // 
-//  This sample demostrates how to use container on the client
+//  This sample demonstrates how to use container on the client
 //  to process batches of data from the server, and how to use 
 //  container with input_buffer_memory_resource to fill buffer
 //  with output.
 //
 //  server_api_call creates container that with the help of
-//  input_buffer_memory_resource temporarely attaches to the 
+//  input_buffer_memory_resource temporarily attaches to the 
 //  input buffer, and fills it with data using try_* functions,
 //  that avoid reallocation, and instead would return failure.
 //
@@ -44,9 +44,9 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
     char_array_list data{ &input_buffer };
     //
     // Resizing container to the input buffer size.
-    // Container will ask memory resource for alllocation
+    // Container will ask memory resource for allocation
     // and resource will return pointer to the input buffer.
-    // Rest of algorith will avoid making any calls that can
+    // Rest of algorithm will avoid making any calls that can
     // trigger memory reallocation. If we trigger that then 
     // resource will throw std::bad_alloc because it does not have
     // any more memory it can allocate.
@@ -62,7 +62,7 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
         // Estimate size of the element we are inserting
         //
         size_t element_size{ char_array_list::traits::minimum_size() + idx * sizeof(char_array_list::value_type::type) };
-        std::printf("Emplacing element [%03hu] element size %03zu (padded %02zu), capacity before {used %03zu, remainig %03zu}", 
+        std::printf("Emplacing element [%03hu] element size %03zu (padded %02zu), capacity before {used %03zu, remaining %03zu}", 
                     idx,
                     element_size,
                     iffl::flat_forward_list_traits_traits<char_array_list_entry>::roundup_to_alignment(element_size),
@@ -85,7 +85,7 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
             //
             data.fill_padding();
             //
-            // Tell client up to what point buffer containes valid data
+            // Tell client up to what point buffer contains valid data
             //
             *buffer_size = data.used_capacity();
             std::printf("\nServer was able to add %03hu arrays, used capacity %03zu\n", 
@@ -94,10 +94,10 @@ bool server_api_call2(char *buffer, size_t *buffer_size) noexcept {
             break;
         }
         //
-        // If we inserverd at least one element then return true
+        // If we inserted at least one element then return true
         //
         result = true;
-        std::printf(", capacity after {used %03zu, remainig %03zu}\n",
+        std::printf(", capacity after {used %03zu, remaining %03zu}\n",
                     data.used_capacity(),
                     data.remaining_capacity());
 
@@ -114,7 +114,7 @@ void process_data2(char_array_list const &data) {
 void call_server2() {
     //
     // Client uses debug memory resource to 
-    // help detecting buffer overruns/underruns
+    // help detecting buffer overruns/under-runs
     //
     iffl::debug_memory_resource client_memory_resource;
     //
@@ -144,7 +144,7 @@ void call_server2() {
         //
         if (buffer.revalidate_data(buffer_size)) {
             //
-            // If buffer containes a valid ffl then now we can safely iterate 
+            // If buffer contains a valid ffl then now we can safely iterate 
             // over the buffer
             //
             process_data2(buffer);
@@ -152,7 +152,7 @@ void call_server2() {
             //
             // Server returned invalid list. Abort.
             //
-            std::printf("Buffer revalidate failed. New buffer size %zu\n", buffer_size);
+            std::printf("Buffer revalidation failed. New buffer size %zu\n", buffer_size);
             break;
         }
         //
@@ -160,12 +160,12 @@ void call_server2() {
         // THis call will change buffer content, and will invalidate
         // position of the last element of the list.
         // Tell container to forget where last element is so we would not
-        // accedently attempt to use broken list.
+        // antecedently attempt to use broken list.
         // This call does not change size of the buffer.
         //
         buffer.erase_all();
         //
-        // After last call to server buffer_size containes number of
+        // After last call to server buffer_size contains number of
         // bytes returned by the server. Update it with buffer size
         // before starting next call.
         //

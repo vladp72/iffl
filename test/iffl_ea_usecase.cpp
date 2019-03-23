@@ -13,13 +13,13 @@
 //   Caller fills buffer with FILE_FULL_EA_INFORMATION entries.
 //   See prepare_ea_and_call_handler
 //
-// - How to write a server that recieves a buffer with a list
+// - How to write a server that receives a buffer with a list
 //   of these structures. 
 //
-//   Fnction handle_ea1 demonstrates how to validate and iterate in one
+//   Function handle_ea1 demonstrates how to validate and iterate in one
 //   loop
 //
-//   Fnction handle_ea2 demonstrates how to first validate and then 
+//   Function handle_ea2 demonstrates how to first validate and then 
 //   iterate over trusted buffer
 //   
 //
