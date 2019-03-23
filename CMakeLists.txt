@@ -1,6 +1,6 @@
 ﻿# CMakeList.txt : 
 # based on https://rix0r.nl/blog/2015/08/13/cmake-guide/ 
-# alse see 
+# also see 
 #     https://www.slideshare.net/DanielPfeifer1/cmake-48475415
 #     https://cliutils.gitlab.io/modern-cmake/
 #     https://codingnest.com/basic-cmake/
@@ -21,15 +21,15 @@ cmake_minimum_required ( VERSION 3.8 )
 project ("iffl" VERSION 0.1 LANGUAGES CXX )
 
 #
-# Supress CMake Warning: Manually-specified variables were not used by the project, CMAKE_C_COMPILER
+# Suppress CMake Warning: Manually-specified variables were not used by the project, CMAKE_C_COMPILER
 # Most solutions are suggesting to use --no-warn-unused-cli instead of touching variable,
-# but at least for now I like touching better because I do not have to look up helpon internet
+# but at least for now I like touching better because I do not have to look up help on Internet
 # name of that parameter every time I forget it.
 #
-message(STATUS "Supressing stupid warning that CMAKE_C_COMPILER is not used. Here I am using it! Happy now?: ${CMAKE_C_COMPILER}.")
+message(STATUS "Suppressing stupid warning that CMAKE_C_COMPILER is not used. Here I am using it! Happy now?: ${CMAKE_C_COMPILER}.")
 
 #
-# Not yet sure what thar really does
+# Not yet sure what that really does
 #
 enable_testing( )
 
