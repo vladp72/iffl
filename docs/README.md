@@ -256,7 +256,7 @@ using ea_iffl = iffl::flat_forward_list<FILE_FULL_EA_INFORMATION>;
 using pmr_ea_iffl = iffl::pmr_flat_forward_list<FILE_FULL_EA_INFORMATION>;
 ```
 
-Class pod_array_list_entry is an example of type that does not have offset to the next element. For that type we do not implement get_next_offset and set_next offset. A complete implementation is in [test/iffl_list_array.h] (https://github.com/vladp72/iffl/blob/master/test/iffl_list_array.h).
+Class pod_array_list_entry is an example of type that does not have offset to the next element. For that type we do not implement get_next_offset and set_next offset. A complete implementation is in [test/iffl_list_array.h](https://github.com/vladp72/iffl/blob/master/test/iffl_list_array.h).
 
 ```
 template <typename T>
