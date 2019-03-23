@@ -75,7 +75,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>defines detector metafunction  
+<p>defines detector meta-function  
  <a href="structiffl_1_1mpl_1_1details_1_1detector.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="iffl__mpl_8h_source.html">iffl_mpl.h</a>&gt;</code></p>
@@ -95,34 +95,34 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str
 <div class="textblock"><h3>template&lt;typename Default, typename AlwaysVoid, template&lt; typename... &gt; typename Operation, typename... Arguments&gt;<br />
 class iffl::mpl::details::detector&lt; Default, AlwaysVoid, Operation, Arguments &gt;</h3>
 
-<p>defines detector metafunction </p>
+<p>defines detector meta-function </p>
 <p>Specialization for the case when Operation&lt;Arguments...&gt; is well formed.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Default</td><td>- Default type assigned to <a class="el" href="structiffl_1_1mpl_1_1details_1_1detector.html#a4f5cf9457d17f7cb53bb081eebb73f76" title="In this template specialization it is Default type.">detector::type</a> is SFINAE fails instatiation of Operation&lt;Arguments&gt; </td></tr>
-    <tr><td class="paramname">AlwaysVoid</td><td>- used by specialization as place where it will attempt instatiation of Operation&lt;Arguments&gt;. It is not used in default case </td></tr>
-    <tr><td class="paramname">Operation</td><td>- metafunction that we are trying to evaluate </td></tr>
-    <tr><td class="paramname">Arguments</td><td>- arguments to be passed to the metafunction</td></tr>
+    <tr><td class="paramname">Default</td><td>- Default type assigned to <a class="el" href="structiffl_1_1mpl_1_1details_1_1detector.html#a4f5cf9457d17f7cb53bb081eebb73f76" title="In this template specialization it is Default type.">detector::type</a> is SFINAE fails instantiation of Operation&lt;Arguments&gt; </td></tr>
+    <tr><td class="paramname">AlwaysVoid</td><td>- used by specialization as place where it will attempt instantiation of Operation&lt;Arguments&gt;. It is not used in default case </td></tr>
+    <tr><td class="paramname">Operation</td><td>- meta-function that we are trying to evaluate </td></tr>
+    <tr><td class="paramname">Arguments</td><td>- arguments to be passed to the meta-function</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structiffl_1_1mpl_1_1details_1_1detector.html#aa8d7eadddc0eaa6f4f0f2e800c663712" title="In this template specialization it is always false_type.">detector::value_type</a> is std::false_type and <a class="el" href="structiffl_1_1mpl_1_1details_1_1detector.html#a4f5cf9457d17f7cb53bb081eebb73f76" title="In this template specialization it is Default type.">detector::type</a> is Default</dd></dl>
 <p>General case is selected if no better specialization is found</p>
-<p>This metafunction has 2 return types</p>
+<p>This meta-function has 2 return types</p>
 <ol type="1">
 <li>value_type is either std::true_type or std::false_type, depending if Operation&lt;Arguments...&gt; is well formed.</li>
 <li>type is a type of Operation&lt;Arguments...&gt; or a type of Default, depending if Operation&lt;Arguments...&gt; is well formed.</li>
 </ol>
 <p>Input parameters</p>
 <ol type="1">
-<li>Default type of result "type" is Operation&lt;Arguments...&gt; is not well formed, otherwised it is not used</li>
+<li>Default type of result "type" is Operation&lt;Arguments...&gt; is not well formed, otherwise it is not used</li>
 <li>AlwaysVoid is placeholder where specialization would attempt to evaluate std::void_t&lt;Operation&lt;Arguments ...&gt;&gt;. void_t returns type void no matter what parameters we pass</li>
-<li>Operation is the metafunction that we are trying to evaluate for the Arguments...</li>
-<li>Parameters for the metafunction Operation</li>
+<li>Operation is the meta-function that we are trying to evaluate for the Arguments...</li>
+<li>Parameters for the meta-function Operation</li>
 </ol>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Default</td><td>- Default type assigned to <a class="el" href="structiffl_1_1mpl_1_1details_1_1detector.html#a4f5cf9457d17f7cb53bb081eebb73f76" title="In this template specialization it is Default type.">detector::type</a> is SFINAE fails instatiation of Operation&lt;Arguments&gt; </td></tr>
+    <tr><td class="paramname">Default</td><td>- Default type assigned to <a class="el" href="structiffl_1_1mpl_1_1details_1_1detector.html#a4f5cf9457d17f7cb53bb081eebb73f76" title="In this template specialization it is Default type.">detector::type</a> is SFINAE fails instantiation of Operation&lt;Arguments&gt; </td></tr>
   </table>
   </dd>
 </dl>

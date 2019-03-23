@@ -103,12 +103,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>implements std::pmr::memory_resource interface. </p>
-<p>This class can be used with Polimorfic Memory Allocator. Forward Linked List has typedef for PMR called pmr_flat_forward_list.</p>
+<p>This class can be used with Polymorphic Memory Allocator. Forward Linked List has typedef for PMR called pmr_flat_forward_list.</p>
 <p>Sample usage:</p>
 <div class="fragment"><div class="line"><a class="code" href="classiffl_1_1debug__memory__resource.html">iffl::debug_memory_resource</a> dbg_memory_resource;</div><div class="line"><a class="code" href="classiffl_1_1flat__forward__list.html">iffl::pmr_flat_forward_list&lt;FLAT_FORWARD_LIST_TEST&gt;</a> ffl{ &amp;dbg_memory_resource };</div></div><!-- fragment --><p>Code should guarantee that memory resource is destroyed after all memory allocated from this allocator is deallocated.</p>
 <p>This class provides:</p><ul>
-<li>Basic buffer overrun and underrun detection by plang well knwn patters at the end and at the beginnig of the buffer. At deallocation time patterns we check that patterns did not change</li>
-<li>Detection that deallocation is done using same memory resource as allocation. Allocation header contains pointer to the memory resource. At deallocation time we check that pointer matches to the object that is deallocating memoty.</li>
+<li>Basic buffer overrun and under-run detection by putting a well known patters at the end and at the beginning of the buffer. At deallocation time patterns we check that patterns did not change</li>
+<li>Detection that deallocation is done using same memory resource as allocation. Allocation header contains pointer to the memory resource. At deallocation time we check that pointer matches to the object that is deallocating memory.</li>
 <li>Helps detecting when objects use memory without previously initializing it. Allocate memory is filled with value that would trigger access violation if used as a pointer without initialization</li>
 <li>Basic memory leak and lifetime management issues by counting number of outstanding allocations. At memory resource destruction time we check that there are no outstanding allocations. Table below describes layout of each allocated block.</li>
 </ul>

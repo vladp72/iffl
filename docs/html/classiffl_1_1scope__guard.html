@@ -75,7 +75,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>template class that can be parametrised with a functor or a lambda that it will call in distructor.  
+<p>template class that can be parametrized with a functor or a lambda that it will call in destructor.  
  <a href="classiffl_1_1scope__guard.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="iffl__common_8h_source.html">iffl_common.h</a>&gt;</code></p>
@@ -112,7 +112,7 @@ constexpr <a class="el" href="classiffl_1_1scope__guard.html">scope_guard</a> &a
 <tr class="separator:accd2651a97baa0227ee2dc8949208ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa08842b7a5ef1abea5028aa6c459f99"><td class="memItemLeft" align="right" valign="top"><a id="afa08842b7a5ef1abea5028aa6c459f99"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html#afa08842b7a5ef1abea5028aa6c459f99">~scope_guard</a> () noexcept</td></tr>
-<tr class="memdesc:afa08842b7a5ef1abea5028aa6c459f99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distructor attempts to call functor if guard was not disarmed. <br /></td></tr>
+<tr class="memdesc:afa08842b7a5ef1abea5028aa6c459f99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor attempts to call functor if guard was not disarmed. <br /></td></tr>
 <tr class="separator:afa08842b7a5ef1abea5028aa6c459f99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3570a333c8317d0077253b57c406fc50"><td class="memItemLeft" align="right" valign="top"><a id="a3570a333c8317d0077253b57c406fc50"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classiffl_1_1scope__guard.html#a3570a333c8317d0077253b57c406fc50">discharge</a> () noexcept</td></tr>
@@ -137,8 +137,8 @@ constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div class="textblock"><h3>template&lt;typename G&gt;<br />
 class iffl::scope_guard&lt; G &gt;</h3>
 
-<p>template class that can be parametrised with a functor or a lambda that it will call in distructor. </p>
-<p>Used to execute functor as we are leaving scope, unless it was explicitely disarmed. <a class="el" href="classiffl_1_1flat__forward__list.html" title="Intrusive flat forward list container.">flat_forward_list</a> uses this helper to deallocate memory on failures. scoped_guald inherits from the functor to minimize tyoe size when functor is emty type. For more information see Empty Base Class Optimization (EBCO).</p>
+<p>template class that can be parametrized with a functor or a lambda that it will call in destructor. </p>
+<p>Used to execute functor as we are leaving scope, unless it was explicitly disarmed. <a class="el" href="classiffl_1_1flat__forward__list.html" title="Intrusive flat forward list container.">flat_forward_list</a> uses this helper to deallocate memory on failures. scoped_guald inherits from the functor to minimize type size when functor is an empty type. For more information see Empty Base Class Optimization (EBCO).</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">G</td><td>type of functor or a lambda </td></tr>

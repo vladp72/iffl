@@ -125,7 +125,7 @@ class iffl::compressed_pair&lt; T1, T2, bool &gt;</h3>
   </table>
   </dd>
 </dl>
-<p>Store a pair of values, deriving from empty first. This is a general template for the case when inheriting from T1 would help. We use SFINAE on the 3rd parameter to fail this instantiation when EBCO would not help or would not work. Other specialization should be used in that case. This is a nive implementation borrowed from the MSVC CRT. More complete implementation can be found in boost </p>
+<p>Store a pair of values, deriving from empty first. This is a general template for the case when inheriting from T1 would help. We use SFINAE on the 3rd parameter to fail this instantiation when EBCO would not help or would not work. Other specialization should be used in that case. This is a naive implementation borrowed from the MSVC CRT. More complete implementation can be found in boost </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aaceb494629194047ddc99ffa730eff43"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaceb494629194047ddc99ffa730eff43">&#9670;&nbsp;</a></span>compressed_pair() <span class="overload">[1/2]</span></h2>
@@ -168,7 +168,7 @@ template&lt;class... P&gt; </div>
 <p>Constructor. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">P</td><td>- variadic parameter pack firwarded to the constructor of T2 </td></tr>
+    <tr><td class="paramname">P</td><td>- triadic parameter pack forwarded to the constructor of T2 </td></tr>
   </table>
   </dd>
 </dl>
