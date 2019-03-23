@@ -131,11 +131,11 @@ Exanmples:
 
 This header only library provides an algorithms and containers for safe creation and parsing such a collection.
 It includes:
-* **flat_forward_list_ref** and **flat_forward_list_view** a non-owning containers that allows iterating over a flat forward list in a buffer.
-* **flat_forward_list_validate** a family of functions that help to validate untrusted buffer, and returns a ref/view to a subrange to the buffer that contains valid list.
-* **flat_forward_list** a container that owns and resizes buffer as you are adding/removing elements.
-* **debug_memory_resource** a memory resource that help with debugging
-* **input_buffer_memory_resource** a memory resource that helps in scenarios where server have to fill a passed in buffer. 
+* [**flat_forward_list_ref**](https://vladp72.github.io/iffl/html/classiffl_1_1flat__forward__list__ref.html) and [**flat_forward_list_view**](https://vladp72.github.io/iffl/html/namespaceiffl.html) a non-owning containers that allows iterating over a flat forward list in a buffer.
+* [**flat_forward_list_validate**](https://vladp72.github.io/iffl/html/namespaceiffl.html) a family of functions that help to validate untrusted buffer, and returns a ref/view to a subrange to the buffer that contains valid list.
+* [**flat_forward_list**](https://vladp72.github.io/iffl/html/classiffl_1_1flat__forward__list.html) a container that owns and resizes buffer as you are adding/removing elements.
+* [**debug_memory_resource**](https://vladp72.github.io/iffl/html/classiffl_1_1debug__memory__resource.html) a memory resource that help with debugging
+* [**input_buffer_memory_resource**](https://vladp72.github.io/iffl/html/classiffl_1_1input__buffer__memory__resource.html) a memory resource that helps in scenarios where server have to fill a passed in buffer. 
 
 ## Boilerplate
 
