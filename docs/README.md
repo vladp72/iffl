@@ -4,7 +4,7 @@ This header only library that implements intrusive flat forward list (iffl).
 
 https://github.com/vladp72/iffl/tree/master/include
 
-[doxygen documentation](https://github.com/vladp72/iffl/blob/master/docs/html/index.html)
+[IFFL doxygen documentation](https://vladp72.github.io/iffl/html/index.html)
 
 ## Motivation
 
