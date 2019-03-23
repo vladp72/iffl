@@ -6,12 +6,12 @@ This header only library that implements intrusive flat forward list (iffl).
 
 [Doxygen documentation](https://vladp72.github.io/iffl/html/annotated.html)
 
-[Tests and samples] (https://github.com/vladp72/iffl/tree/master/test)
+[Tests and samples](https://github.com/vladp72/iffl/tree/master/test)
 
 [This project is compiled and published using CMake](https://github.com/vladp72/iffl/blob/master/CMakeLists.txt)
 
 Tests and samples are build and verified on 
-* Windowd 10 using visual studio C++ compiler 
+* Windowd 10 using Visual Studio C++ compiler 
 * Ubuntu Linux using both clang and gcc.
 
 ## Motivation
