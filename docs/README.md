@@ -688,7 +688,7 @@ You can use a list of flat forward list as a queue where producer creates batche
 ```
 std::list<char_array_list>
 ```
-You can subdivide a large flat forward list to sublists tracked using views, and pass processing of each view to a separate thread.
+You can subdivide a large flat forward list to sublists tracked using views, and pass processing of each view to a separate thread. Sample application for this use case is in [test/iffl_views.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_views.cpp).
 
 You use an entry of char_array_list as a frame that contains a serialized message. Container char_array_list can accumulate certain number of frames, and once you are ready, you can send entire batch over a socket.
 
