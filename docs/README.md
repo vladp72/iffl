@@ -2,9 +2,17 @@
 
 This header only library that implements intrusive flat forward list (iffl).
 
-https://github.com/vladp72/iffl/tree/master/include
+[Implementation] (https://github.com/vladp72/iffl/tree/master/include)
 
 [Doxygen documentation](https://vladp72.github.io/iffl/html/annotated.html)
+
+[Tests and samples](https://github.com/vladp72/iffl/tree/master/test)
+
+[This project is compiled and published using CMake](https://github.com/vladp72/iffl/blob/master/CMakeLists.txt)
+
+Tests and samples are build and verified on 
+* Windowd 10 using Visual Studio C++ compiler 
+* Ubuntu Linux using both clang and gcc.
 
 ## Motivation
 
@@ -131,11 +139,11 @@ Exanmples:
 
 This header only library provides an algorithms and containers for safe creation and parsing such a collection.
 It includes:
-* **flat_forward_list_ref** and **flat_forward_list_view** a non-owning containers that allows iterating over a flat forward list in a buffer.
-* **flat_forward_list_validate** a family of functions that help to validate untrusted buffer, and returns a ref/view to a subrange to the buffer that contains valid list.
-* **flat_forward_list** a container that owns and resizes buffer as you are adding/removing elements.
-* **debug_memory_resource** a memory resource that help with debugging
-* **input_buffer_memory_resource** a memory resource that helps in scenarios where server have to fill a passed in buffer. 
+* [**flat_forward_list_ref**](https://vladp72.github.io/iffl/html/classiffl_1_1flat__forward__list__ref.html) and [**flat_forward_list_view**](https://vladp72.github.io/iffl/html/namespaceiffl.html) a non-owning containers that allows iterating over a flat forward list in a buffer.
+* [**flat_forward_list_validate**](https://vladp72.github.io/iffl/html/namespaceiffl.html) a family of functions that help to validate untrusted buffer, and returns a ref/view to a subrange to the buffer that contains valid list.
+* [**flat_forward_list**](https://vladp72.github.io/iffl/html/classiffl_1_1flat__forward__list.html) a container that owns and resizes buffer as you are adding/removing elements.
+* [**debug_memory_resource**](https://vladp72.github.io/iffl/html/classiffl_1_1debug__memory__resource.html) a memory resource that help with debugging
+* [**input_buffer_memory_resource**](https://vladp72.github.io/iffl/html/classiffl_1_1input__buffer__memory__resource.html) a memory resource that helps in scenarios where server have to fill a passed in buffer. 
 
 ## Boilerplate
 
@@ -182,7 +190,7 @@ class flat_forward_list final;
 ```
 You can simply declare container as ```iffl::flat_forward_list final<FILE_FULL_EA_INFORMATION>```. If you want to point container to a different set of traits then you can pass them in explicitly ```iffl::flat_forward_list final<FILE_FULL_EA_INFORMATION, iffl::flat_forward_list_traits<FLAT_FORWARD_LIST_TEST>>```
 
-Let's take a look at a complete implementation for FILE_FULL_EA_INFORMATION:
+Let's take a look at a complete [implementation](https://github.com/vladp72/iffl/blob/master/test/iffl_ea.h) for FILE_FULL_EA_INFORMATION:
 
 ```
 typedef struct _FILE_FULL_EA_INFORMATION {
@@ -248,7 +256,7 @@ using ea_iffl = iffl::flat_forward_list<FILE_FULL_EA_INFORMATION>;
 using pmr_ea_iffl = iffl::pmr_flat_forward_list<FILE_FULL_EA_INFORMATION>;
 ```
 
-Class pod_array_list_entry is an example of type that does not have offset to the next element. For that type we do not implement get_next_offset and set_next offset. 
+Class pod_array_list_entry is an example of type that does not have offset to the next element. For that type we do not implement get_next_offset and set_next offset. A complete implementation is in [test/iffl_list_array.h](https://github.com/vladp72/iffl/blob/master/test/iffl_list_array.h).
 
 ```
 template <typename T>
@@ -319,6 +327,7 @@ Since FILE_FULL_EA_INFORMATION is a Plain Old Definition (POD) it does not have 
 If you want to zero initialize element then call container.push_back(element_size). 
 If you want to initialize an element using a buffer that contains element blueprint then call .push_back(element_size, bluprint_buffer). It will initialize element by copy blueprint buffer.
 Note that for last element container always resets next element offset after element construction is done so you do not need to worry about that.
+A complete sample is located in [test/iffl_ea_usecase.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_ea_usecase.cpp).
 
 ```
 ea_iffl eas;
@@ -385,7 +394,9 @@ FILE_FULL_EA_INFORMATION[2].EaNameLength = 9 "TEST_EA_1"
 FILE_FULL_EA_INFORMATION[2].EaValueLength = 3 123
 ```
 
-### Adding elements to flat forward list over input buffer not owned by the calee
+### Adding elements to flat forward list over input buffer not owned by the calee.
+
+A complete sample is located in [test/iffl_c_api_usecase2.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_c_api_usecase2.cpp).
 
 ```
 unsigned short idx{ 0 };
@@ -481,7 +492,7 @@ constexpr inline std::pair<bool, flat_forward_list_ref<T, TT>>
 
 Function returns a pair of boolean and a reference or view. If passed parameter is a non-const buffer then result is a reference. If input buffer is const then result is a view (const reference). Boolean indicates if buffer contains a valid list. Even if list is broken, and function returns false, view will point to the subset of the buffer that contains a valid list. For instance if a pointer to the next element refers outside of the buffer range, then validate would abort, and return false, but returned reference/view will describe element from the beginning to the last valid element. 
 
-You can choose to be strict and reject invalid buffer.  
+You can choose to be strict and reject invalid buffer. A complete sample is in [test/iffl_test_cases.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_test_cases.cpp). 
 
 ```
 auto [is_valid, view] = iffl::flat_forward_list_validate<FILE_FULL_EA_INFORMATION>(std::begin(buffer), std::end(buffer));
@@ -504,7 +515,7 @@ std::for_each(view.begin(), view.begin(),
               });
 return is_valid;
 ```
-In the samples above we traverse buffer two times. It is possible to traverse and handle elements in a single loop by passing your own functor in place of the default functor that calls trait's validate method.
+In the samples above we traverse buffer two times. It is possible to traverse and handle elements in a single loop by passing your own functor in place of the default functor that calls trait's validate method. A complete sample is in [test/iffl_ea_usecase.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_ea_usecase.cpp).
 
 ```
 FILE_FULL_EA_INFORMATION const *failed_validation{nullptr};
@@ -544,11 +555,13 @@ You can use flat_forward_list_validate as if it is a find-first algorithm and ab
 
 If server and client can agree on how to allocate an deallocate buffer then you can create buffer using flat_forward_list, detach ownership of buffer from container, pass pointers to the buffer over a C interface, callee can take ownership of the buffer, and deallocate once processing is done.
 
-In this example we will use a global variable providing a common memory resource for client and server
+A complete sample is located in [test/iffl_c_api_usecase1.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_c_api_usecase1.cpp).
+
+In this example we will use a global variable providing a common memory resource for client and server.
 ```
 iffl::debug_memory_resource global_memory_resource;
 ```
-Server creates list, and returns pointers to the buffer containing list
+Server creates list, and returns pointers to the buffer containing list.
 ```
 bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
     if (!buffer || !buffer_size) {
@@ -652,7 +665,7 @@ bool server_api_call(char **buffer, size_t *buffer_size) noexcept {
 ```
 Client would take ownership of the buffer, validate received buffer, and process elements
 ```
-void call_server1() {
+void call_server() {
     char *buffer{ nullptr };
     size_t buffer_size{ 0 };
 
