@@ -86,6 +86,8 @@ namespace iffl {
     };
 }
 
+using long_long_array_list_ref = iffl::flat_forward_list_ref<long_long_array_list_entry>;
+using long_long_array_list_view = iffl::flat_forward_list_view<long_long_array_list_entry>;
 using long_long_array_list = iffl::pmr_flat_forward_list<long_long_array_list_entry>;
 
 inline void print([[maybe_unused]] long_long_array_list_entry const &e) {
@@ -107,6 +109,8 @@ namespace iffl {
     };
 }
 
+using char_array_list_ref = iffl::flat_forward_list_ref<char_array_list_entry>;
+using char_array_list_view = iffl::flat_forward_list_view<char_array_list_entry>;
 using char_array_list = iffl::pmr_flat_forward_list<char_array_list_entry>;
 
 

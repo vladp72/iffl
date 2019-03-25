@@ -222,6 +222,7 @@ add_executable ( iffl_test
                  test/iffl_ea_usecase.cpp
                  test/iffl_c_api_usecase1.cpp
                  test/iffl_c_api_usecase2.cpp
+                 test/iffl_views.cpp
                )
 
 #

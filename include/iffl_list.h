@@ -3212,14 +3212,11 @@ public:
     void assign(const_iterator const &begin,
                 const_iterator const &last) {
         
-        validate_iterator_not_end(begin);
-        validate_iterator_not_end(last);
-
         flat_forward_list new_list(get_allocator());
         new_list.resize_buffer(distance(begin.get_ptr(),
                                         last.get_ptr()) + traits_traits::get_size(last.get_ptr()).size);
         const_iterator const end = last + 1;
-        for (const_iterator const it = begin; it != end; ++it) {
+        for (const_iterator it{ begin }; it != end; ++it) {
             new_list.push_back(used_size(it), it.get_ptr());
         }
         //
@@ -4595,7 +4592,7 @@ public:
     //!
     size_type used_size(const_iterator const &it) const noexcept {
         validate_pointer_invariants();
-        validate_iterator_not_end(it);
+        //validate_iterator_not_end(it);
 
         return used_size_unsafe(it);
     }
