@@ -35,7 +35,7 @@ void process_batch(size_t batch_number, char_array_list_view view) {
     std::printf("--Complete processing batch # %zu\n", batch_number);
 }
 
-void process_container_in_batches(char_array_list const data, size_t batch_size) {
+void process_container_in_batches(char_array_list const &data, size_t batch_size) {
 
     FFL_CODDING_ERROR_IF(0 == batch_size);
 
@@ -50,6 +50,10 @@ void process_container_in_batches(char_array_list const data, size_t batch_size)
     for (; cur != end; ++cur) {
         ++element_in_batch;
         batch_end = cur;
+        //
+        // If we've accumulated batch size of elements
+        // then post it for processing.
+        //
         if (batch_size == element_in_batch) {
             process_batch(++batch_number, { batch_begin, batch_end });
             element_in_batch = 0;
@@ -60,7 +64,10 @@ void process_container_in_batches(char_array_list const data, size_t batch_size)
             batch_begin = cur;
         }
     }
-
+    //
+    // if we've any tail left smaller then batch 
+    // size then post process it for processing
+    //
     if (0 < element_in_batch) {
         process_batch(++batch_number, { batch_begin, batch_end });
     }
