@@ -685,7 +685,9 @@ void call_server() {
 
 ### Handle buffer that containes not propertly alligned elements.
 
-In some cases you need to handle flat forward list that contains elements that are not propertly alligned. Ideally you always should prefer fixing code that produces broken list, but if it is not an option and you have to woraround the issue then you have to access your elements using pointers annotated as unaligned. On Visual studio you can use [*unaligned*](https://docs.microsoft.com/en-us/cpp/cpp/unaligned?view=vs-2017). On GCC and CLANG you can use  [*attribute ((packed))*](https://gcc.gnu.org/onlinedocs/gcc-4.0.2/gcc/Type-Attributes.html). Complete Sample is [intest/iffl_unaligned.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_unaligned.cpp)
+In some cases you need to handle flat forward list that contains elements that are not propertly alligned. Ideally you always should prefer fixing code that produces broken list, but if it is not an option and you have to woraround the issue then you have to access your elements using pointers annotated as unaligned. On Visual studio you can use [*unaligned*](https://docs.microsoft.com/en-us/cpp/cpp/unaligned?view=vs-2017). On GCC and CLANG you can use  [*attribute ((packed))*](https://gcc.gnu.org/onlinedocs/gcc-4.0.2/gcc/Type-Attributes.html). If you ignore problem then on some platforms CPU might rase a fault and you program will crash when trying to load a value using unaligned pointer. When pointer is marked unaligned compiler will generate code to aload data in smaller pieces. This will cause performance hit, but would avoid fault. Some platforms allow annotating executable such that OS will handle CPU faults for unaligned access and will patch it up. That would have even higher performance cost. While this option might bethe only option if you do not have access to the source code, you always should prefer fixing code. 
+
+Complete Sample is [intest/iffl_unaligned.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_unaligned.cpp)
 
 ```
 template <typename T>
