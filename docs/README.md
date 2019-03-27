@@ -682,6 +682,84 @@ void call_server() {
     }
 }
 ```
+
+### Handle buffer that containes not propertly alligned elements.
+
+In some cases you need to handle flat forward list that contains elements that are not propertly alligned. Ideally you always should prefer fixing code that produces broken list, but if it is not an option and you have to woraround the issue then you have to access your elements using pointers annotated as unaligned. On Visual studio you can use [*unaligned*](https://docs.microsoft.com/en-us/cpp/cpp/unaligned?view=vs-2017). On GCC and CLANG you can use  [*attribute ((packed))*](https://gcc.gnu.org/onlinedocs/gcc-4.0.2/gcc/Type-Attributes.html). Complete Sample is [intest/iffl_unaligned.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_unaligned.cpp)
+
+```
+template <typename T>
+struct flat_forward_list_traits_unaligned {
+    using  header_type = pod_array_list_entry<T>;
+    //
+    // All memory access will be done using pointer annotated
+    // that data might be unaligned. On platforms where CPU raises 
+    // signal when accessing unaligned data, compiler is expected to 
+    // generate code that reads data in multiple round trips using
+    // smaller types that will be properly aligned. For instance
+    // it can load it as a series of bytes.
+    //
+    using header_type_ptr = FFL_UNALIGNED header_type *;
+    using header_type_const_ptr = FFL_UNALIGNED header_type const *;
+
+    constexpr static size_t const alignment{ 1 };
+    //
+    // This method is required for validate algorithm
+    //
+    constexpr static size_t minimum_size() noexcept {
+        return FFL_SIZE_THROUGH_FIELD(header_type, length);
+    }
+    //
+    // Required by container validate algorithm when type
+    // does not support get_next_offset
+    //
+    constexpr static size_t get_size(header_type const &e) {
+        //
+        // Element might be pointing to unaligned data
+        // make sure we access it using pointer marked as 
+        // unaligned
+        //
+        header_type_const_ptr unaligned_e{ &e };
+        size_t const size = FFL_FIELD_OFFSET(header_type, arr) + unaligned_e->length * sizeof(T);
+        return size;
+    }
+    //
+    // This method is required for validate algorithm
+    //
+    constexpr static bool validate(size_t buffer_size, header_type const &e) noexcept {
+        return  get_size(e) <= buffer_size;
+    }
+};
+
+ using unaligned_char_array_list_entry_ptr = FFL_UNALIGNED char_array_list_entry *;
+ using unaligned_char_array_list_entry_const_ptr = FFL_UNALIGNED char_array_list_entry const *;
+
+using unaligned_char_array_list_ref = iffl::flat_forward_list_ref<char_array_list_entry, 
+                                                                  flat_forward_list_traits_unaligned<char_array_list_entry::type>>;
+using unaligned_char_array_list_view = iffl::flat_forward_list_view<char_array_list_entry, 
+                                                                    flat_forward_list_traits_unaligned<char_array_list_entry::type>>;
+using unaligned_char_array_list = iffl::pmr_flat_forward_list<char_array_list_entry, 
+                                                              flat_forward_list_traits_unaligned<char_array_list_entry::type>>;
+
+
+void process_unaligned_view(unaligned_char_array_list_view const &data) {
+    unaligned_char_array_list_view::const_iterator end{ data.cend() };
+    for (auto cur{ data.cbegin() }; cur != end; ++cur) {
+        //
+        // Element might be pointing to unaligned data
+        // make sure we access it using pointer marked as 
+        // unaligned
+        //
+        unaligned_char_array_list_entry_const_ptr unaligned_e_ptr{ &*cur };
+        if (iffl::roundup_ptr_to_alignment<char_array_list_entry>(unaligned_e_ptr) != unaligned_e_ptr) {
+            std::printf("Found char_array_list_entry length %03hu at unaligned address %p\n",
+                        unaligned_e_ptr->length,
+                        reinterpret_cast<void const*>(unaligned_e_ptr));
+        }
+    }
+}
+```
+
 ### Other ideas.
 
 You can use a list of flat forward list as a queue where producer creates batches of buffers organized in flat forward lists, and once buffer is full it would move it to the list for processing by a consumer.
