@@ -687,7 +687,9 @@ void call_server() {
 
 In some cases you need to handle flat forward list that contains elements that are not properly aligned. Ideally you always should prefer fixing code that produces broken list, but if it is not an option and you have to workaround the issue then you have to access your elements using pointers annotated as unaligned. On Visual studio you can use [*unaligned*](https://docs.microsoft.com/en-us/cpp/cpp/unaligned?view=vs-2017). On GCC and CLANG you can use  [*attribute ((packed))*](https://gcc.gnu.org/onlinedocs/gcc-4.0.2/gcc/Type-Attributes.html). If you ignore problem then on some platforms CPU might raise a fault and you program will crash when trying to load a value using unaligned pointer. When pointer is marked unaligned, compiler will generate code to load data in smaller pieces. This will cause performance hit, but it would avoid faults. Some platforms allow annotating executable such that OS will handle CPU faults for unaligned access and will patch it up. That would have even higher performance cost. While this might be the only option if you do not have access to the source code, you always should prefer fixing code. 
 
-Complete Sample is [intest/iffl_unaligned.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_unaligned.cpp)
+Complete Sample is [intest/iffl_unaligned.cpp](https://github.com/vladp72/iffl/blob/master/test/iffl_unaligned.cpp).
+
+This sample also demonstates how to explicitely pass type traits to the container, instead of relying on a default, which picks traits using template class specialization. 
 
 ```
 template <typename T>
