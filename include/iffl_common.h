@@ -42,7 +42,7 @@
 //! @brief On gcc and clang use __pack keyword to signify that
 //! pointer is pointing to a not properly aligned data
 //!
-#define FFL_UNALIGNED __packed
+#define FFL_UNALIGNED __attribute__ ((__packed__))
 #else
 //!
 //! @brief On vc use __unaligned keyword to signify that
