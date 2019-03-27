@@ -38,6 +38,26 @@
 #include <cstdio>
 
 #if defined(__GNUC__) || defined(__clang__)
+//!
+//! @brief On gcc and clang use __pack keyword to signify that
+//! pointer is pointing to a not properly aligned data
+//!
+#define FFL_UNALIGNED __packed
+#else
+//!
+//! @brief On vc use __unaligned keyword to signify that
+//! pointer is pointing to a not properly aligned data.
+//! __unaligned is not supported on x86
+//!
+#if defined(_M_IX86 )
+#define FFL_UNALIGNED
+#else 
+#define FFL_UNALIGNED __unaligned
+#endif
+
+#endif
+
+#if defined(__GNUC__) || defined(__clang__)
 //#include <x86intrin.h>
 //!
 //! @brief Need to find out what is GCC equivalent to __fastfail

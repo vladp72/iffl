@@ -3,6 +3,7 @@
 #include "iffl_c_api_usecase1.h"
 #include "iffl_c_api_usecase2.h"
 #include "iffl_views.h"
+#include "iffl_unaligned.h"
 
 #include <cstdio>
 
@@ -18,6 +19,8 @@ int main() {
     run_ffl_c_api_usecase2();
     std::printf("\n----- Starting views use-case ------\n\n");
     run_ffl_views();
+    std::printf("\n--- Starting unaligned use-case ----\n\n");
+    run_ffl_unaligned();
     std::printf("\n--------- Tests Complete -----------\n\n");
     return 0;
 }
