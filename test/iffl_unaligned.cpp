@@ -94,7 +94,7 @@ void populate_container_of_unaligned_elements(unaligned_char_array_list &data, s
                                   ++unaligned_count;
                                   std::printf("Added char_array_list_entry length %03hu at unaligned address %p\n", 
                                               idx,
-                                              unaligned_e_ptr);
+                                              reinterpret_cast<void*>(unaligned_e_ptr));
                               }
 
                               unaligned_e_ptr->length = idx;
@@ -119,7 +119,7 @@ void process_unaligned_view(unaligned_char_array_list_view const &data) {
         if (iffl::roundup_ptr_to_alignment<char_array_list_entry>(unaligned_e_ptr) != unaligned_e_ptr) {
             std::printf("Found char_array_list_entry length %03hu at unaligned address %p\n",
                         unaligned_e_ptr->length,
-                        unaligned_e_ptr);
+                        reinterpret_cast<void const*>(unaligned_e_ptr));
         }
     }
 }
