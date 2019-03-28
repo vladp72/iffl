@@ -1,4 +1,4 @@
-# Intrusive Flat Forward List for plain old definition (POD) types
+# Intrusive Flat Forward List for Plain Old Definition (POD) types
 
 This header only library that implements intrusive flat forward list (iffl).
 
