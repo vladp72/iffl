@@ -2,6 +2,12 @@
 
 This header only library that implements intrusive flat forward list (iffl).
 
+__Intrusive__ - Pointer to the next element must be a part of the container's elements data type;
+__Flat__ - All elements of container are layed out in a continues block of memory, rathar than each element being allocated separately.
+__Forward__ __List__ - Elements have information on how to locate start of the next element. There is no way to get to the previous element other than linear scan from the beginning of the list. Because this is a __Flat__ container instead of pointers this container uses offset to the next element from the beginning of the current element.
+
+
+
 [Implementation] (https://github.com/vladp72/iffl/tree/master/include)
 
 [Doxygen documentation](https://vladp72.github.io/iffl/html/annotated.html)
