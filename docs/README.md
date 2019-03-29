@@ -22,9 +22,9 @@ Tests and samples are build and verified on
 
 ## Motivation
 
-Often times when dealing with OS or just C interface we need to pass in or parse a a buffer that contains a linked list of variable size structs. 
+Often times when dealing with OS or just C interface we need to pass in or parse a a buffer that contains a linked list of variable size structures. 
 
-These pods have following general structure:
+These POD typess have following general structure:
 ```
                       ------------------------------------------------------------
                       |                                                          |
