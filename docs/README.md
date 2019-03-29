@@ -105,7 +105,7 @@ typedef struct _FILE_ID_BOTH_DIR_INFO {
 ```
 You would get the same output when you call NtQueryDirectoryFile with [FileIdBothDirectoryInfo](https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/ns-ntifs-_file_both_dir_information).
 
-Or types that do not have next element offset, but it can be calculated. Offset of the next element is size of this element data, plus optional padding to keep ext element properly aligned
+Other class of types that fall into similar category are types that do not have next element offset, but it can be calculated from the element size. Offset of the next element is size of this element data, plus optional padding to keep ext element properly aligned
 ```
                      -----------------------------------
                      |                                 |
