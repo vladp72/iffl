@@ -32,8 +32,6 @@ These POD typess have following general structure:
  | <fields> | offset to next element | <offsets of data> | [data] | [padding] || [next element] ...
  |                        header                         | [data] | [padding] || [next element] ...
  ```
-
-Examples are from Windows, but I am sure there is plenty of samples in Unix:
 ```
 typedef struct _FILE_FULL_EA_INFORMATION {
   ULONG  NextEntryOffset; // intrusive hook with offset of the next element
