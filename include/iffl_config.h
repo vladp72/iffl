@@ -15,12 +15,12 @@
 //!
 //! @brief Intrusive flat forward list library major version number
 //!
-#define IFFL_VERSION_MAJOR (1)
+#define IFFL_VERSION_MAJOR 1
 //!
 //! @brief Intrusive flat forward list library minor version number
 //!
-#define IFFL_VERSION_MINOR (3)
+#define IFFL_VERSION_MINOR 3
 //!
 //! @brief Intrusive flat forward list library patch version number
 //!
-#define IFFL_VERSION_PATCH (4)
+#define IFFL_VERSION_PATCH 4

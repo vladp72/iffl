@@ -16,9 +16,21 @@
 cmake_minimum_required ( VERSION 3.8 )
 
 #
+# Load library version from the header file
+#
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/include/iffl_config.h" IFFL_CONFIG_FILE)
+string(REGEX MATCH "IFFL_VERSION_MAJOR ([0-9]+)" _ "${IFFL_CONFIG_FILE}")
+set(IFFL_VERSION_MAJOR ${CMAKE_MATCH_1})
+string(REGEX MATCH "IFFL_VERSION_MINOR ([0-9]+)" _ "${IFFL_CONFIG_FILE}")
+set(IFFL_VERSION_MINOR ${CMAKE_MATCH_1})
+string(REGEX MATCH "IFFL_VERSION_PATCH ([0-9]+)" _ "${IFFL_CONFIG_FILE}")
+set(IFFL_VERSION_PATCH ${CMAKE_MATCH_1})
+message("IFFL version from include/iffl_config.h is ${IFFL_VERSION_MAJOR}.${IFFL_VERSION_MINOR}.${IFFL_VERSION_PATCH}")
+
+#
 # iffl is a C++ project
 #
-project ("iffl" VERSION 0.1 LANGUAGES CXX )
+project ("iffl" VERSION ${IFFL_VERSION_MAJOR}.${IFFL_VERSION_MINOR}.${IFFL_VERSION_PATCH} LANGUAGES CXX )
 
 #
 # Suppress CMake Warning: Manually-specified variables were not used by the project, CMAKE_C_COMPILER
@@ -33,9 +45,9 @@ message(STATUS "Suppressing stupid warning that CMAKE_C_COMPILER is not used. He
 #
 enable_testing( )
 
-set(VERSION_MAJOR   1   CACHE STRING "Project major version number.")
-set(VERSION_MINOR   0   CACHE STRING "Project minor version number.")
-set(VERSION_PATCH   0   CACHE STRING "Project patch version number.")
+set(VERSION_MAJOR   ${IFFL_VERSION_MAJOR}   CACHE STRING "Project major version number.")
+set(VERSION_MINOR   ${IFFL_VERSION_MINOR}   CACHE STRING "Project minor version number.")
+set(VERSION_PATCH   ${IFFL_VERSION_PATCH}   CACHE STRING "Project patch version number.")
 mark_as_advanced(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
 
 #

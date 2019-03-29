@@ -13,5 +13,6 @@ var searchData=
   ['ffl_5fpadding_5foffset_5fafter_5ffield',['FFL_PADDING_OFFSET_AFTER_FIELD',['../iffl__common_8h.html#ac0002c633fc1a2007f916a3c5a2140ec',1,'iffl_common.h']]],
   ['ffl_5fplatform_5ffail_5ffast',['FFL_PLATFORM_FAIL_FAST',['../iffl__common_8h.html#ad3446afdc909500674dffd418ea2c711',1,'iffl_common.h']]],
   ['ffl_5fpmr',['FFL_PMR',['../iffl__common_8h.html#a8e5c91b6712957180e76b0fbd15d61a3',1,'iffl_common.h']]],
-  ['ffl_5fsize_5fthrough_5ffield',['FFL_SIZE_THROUGH_FIELD',['../iffl__common_8h.html#a6cbf58e5d7148a9c14be9397079f2c53',1,'iffl_common.h']]]
+  ['ffl_5fsize_5fthrough_5ffield',['FFL_SIZE_THROUGH_FIELD',['../iffl__common_8h.html#a6cbf58e5d7148a9c14be9397079f2c53',1,'iffl_common.h']]],
+  ['ffl_5funaligned',['FFL_UNALIGNED',['../iffl__common_8h.html#a3759e802f5b2de296bba02ab529ad0c7',1,'iffl_common.h']]]
 ];

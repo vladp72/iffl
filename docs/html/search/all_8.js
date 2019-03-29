@@ -30,6 +30,6 @@ var searchData=
   ['is_5fref',['is_ref',['../classiffl_1_1flat__forward__list__ref.html#a0b7417346a70c40c231d1bb8575c2906',1,'iffl::flat_forward_list_ref']]],
   ['iterator',['iterator',['../classiffl_1_1flat__forward__list__ref.html#a67aa09c32ee4a1db2529f0c4e9864ddb',1,'iffl::flat_forward_list_ref::iterator()'],['../classiffl_1_1flat__forward__list.html#a59bf6a6f46962a1fbaf0d2f7d91098f2',1,'iffl::flat_forward_list::iterator()']]],
   ['iterator_5fcategory',['iterator_category',['../classiffl_1_1flat__forward__list__iterator__t.html#aa756dbdb3271bd802803cfc6560c9f76',1,'iffl::flat_forward_list_iterator_t']]],
-  ['intrusive_20flat_20forward_20list_20for_20plain_20old_20definition_20_28pod_29_20types',['Intrusive Flat Forward List for plain old definition (POD) types',['../md_docs__r_e_a_d_m_e.html',1,'']]],
+  ['intrusive_20flat_20forward_20list_20for_20plain_20old_20definition_20_28pod_29_20types',['Intrusive Flat Forward List for Plain Old Definition (POD) types',['../md_docs__r_e_a_d_m_e.html',1,'']]],
   ['mpl',['mpl',['../namespaceiffl_1_1mpl.html',1,'iffl']]]
 ];

@@ -14,6 +14,7 @@ var searchData=
   ['ffl_5fplatform_5ffail_5ffast',['FFL_PLATFORM_FAIL_FAST',['../iffl__common_8h.html#ad3446afdc909500674dffd418ea2c711',1,'iffl_common.h']]],
   ['ffl_5fpmr',['FFL_PMR',['../iffl__common_8h.html#a8e5c91b6712957180e76b0fbd15d61a3',1,'iffl_common.h']]],
   ['ffl_5fsize_5fthrough_5ffield',['FFL_SIZE_THROUGH_FIELD',['../iffl__common_8h.html#a6cbf58e5d7148a9c14be9397079f2c53',1,'iffl_common.h']]],
+  ['ffl_5funaligned',['FFL_UNALIGNED',['../iffl__common_8h.html#a3759e802f5b2de296bba02ab529ad0c7',1,'iffl_common.h']]],
   ['fill_5fbuffer',['fill_buffer',['../namespaceiffl.html#ac8bf093b969e4bf780b6d0347a942a2e',1,'iffl']]],
   ['fill_5fpadding',['fill_padding',['../classiffl_1_1flat__forward__list.html#a9a8d7e83cb1edc97e4a1d4afc2e7ea7b',1,'iffl::flat_forward_list']]],
   ['fill_5funused_5fcapacity_5fcontainer_5fptr',['fill_unused_capacity_container_ptr',['../structiffl_1_1range.html#ac1171d7838a8f66cadf210b43874b84a',1,'iffl::range']]],
