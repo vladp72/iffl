@@ -5,7 +5,7 @@ This header only library that implements intrusive flat forward list (iffl).
 * __Intrusive__ - Pointer to the next element must be a part of the container's elements data type;
 * __Flat__ - All elements of container are laid out in a continues block of memory, rather than each element being allocated separately.
 * __Forward__ __List__ - Elements have information on how to locate start of the next element. There is no way to get to the previous element other than linear scan from the beginning of the list. Because this is a __Flat__ container instead of pointers to the next element, it uses offset to the next element from the beginning of the current element.
-* [__Plain Old Definition (POD)__](https://en.cppreference.com/w/cpp/named_req/PODType)
+* [Plain Old Definition (POD)](https://en.cppreference.com/w/cpp/named_req/PODType)
 
 
 [Implementation](https://github.com/vladp72/iffl/tree/master/include)
