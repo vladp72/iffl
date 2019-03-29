@@ -79,11 +79,11 @@ FileIdExtdDirectoryInfo
 FileIdExtdDirectoryRestartInfo
 For example output buffer for
 ```
-For example
+For example on success following call
 ```
 GetFileInformationByHandleEx(file_handle, FileIdBothDirectoryInfo, buffer, buffer_size);
 ```
-will be fill output buffer with structures
+will fill output buffer with structures
 ```
 typedef struct _FILE_ID_BOTH_DIR_INFO {
   DWORD         NextEntryOffset; // intrusive hook with offset of the next element
@@ -103,8 +103,7 @@ typedef struct _FILE_ID_BOTH_DIR_INFO {
   WCHAR         FileName[1];
 } FILE_ID_BOTH_DIR_INFO, *PFILE_ID_BOTH_DIR_INFO;
 ```
-Output of NtQueryDirectoryFile
-[FILE_ID_BOTH_DIR_INFO documentation](https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/ns-ntifs-_file_both_dir_information)
+You would get the same output when you call NtQueryDirectoryFile with [FileIdBothDirectoryInfo](https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/content/ntifs/ns-ntifs-_file_both_dir_information).
 
 Or types that do not have next element offset, but it can be calculated. Offset of the next element is size of this element data, plus optional padding to keep ext element properly aligned
 ```
