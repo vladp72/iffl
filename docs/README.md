@@ -83,7 +83,7 @@ For example
 ```
 GetFileInformationByHandleEx(file_handle, FileIdBothDirectoryInfo, buffer, buffer_size);
 ```
-will be filled with structures
+will be fill output buffer with structures
 ```
 typedef struct _FILE_ID_BOTH_DIR_INFO {
   DWORD         NextEntryOffset; // intrusive hook with offset of the next element
