@@ -767,7 +767,7 @@ void process_unaligned_view(unaligned_char_array_list_view const &data) {
 }
 ```
 
-### Other ideas.
+### Other Use Cases.
 
 You can use a list of flat forward list as a queue where producer creates batches of buffers organized in flat forward lists, and once buffer is full it would move it to the list for processing by a consumer.
 ```
