@@ -17,7 +17,7 @@ This header only library that implements intrusive flat forward list (iffl).
 [This project is compiled and published using CMake](https://github.com/vladp72/iffl/blob/master/CMakeLists.txt)
 
 Tests and samples are build and verified on 
-* Windowd 10 using Visual Studio C++ compiler 
+* Windows 10 using Visual Studio C++ compiler 
 * Ubuntu Linux using both clang and gcc.
 
 ## Motivation
