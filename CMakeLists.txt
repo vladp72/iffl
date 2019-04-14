@@ -13,7 +13,7 @@
 #
 # We will follow Modern CMake guidelines
 #
-cmake_minimum_required ( VERSION 3.8 )
+cmake_minimum_required ( VERSION 3.11 )
 
 #
 # Load library version from the header file
@@ -176,7 +176,7 @@ install ( EXPORT ifflconfig
 #
 # This makes the project importable from the build directory
 #
-export ( TARGETS iffl FILE aiiflconfig.cmake )
+export ( TARGETS iffl FILE iiflconfig.cmake )
 
 
 #
