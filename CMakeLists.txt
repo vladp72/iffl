@@ -84,14 +84,25 @@ target_include_directories ( iffl
 
 install ( TARGETS iffl 
           EXPORT ifflconfig
-          INCLUDES DESTINATION include "include"
         )
+#
+# Without that line
+#          INCLUDES DESTINATION include "include"
+#
+# install generates ifflconfig.cmake with
+# INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include
+# if we add line above the include header shows up here 
+# 2 more times
+#
 
 #
-# This is for Windows
+# We do not need to copy includes to the install 
+# folder. install above will add include directory
+# on the exported targets
+# #This is for Windows
 #
-install ( DIRECTORY include/ 
-          DESTINATION include ${CMAKE_INSTALL_INCLUDEDIR} )
+#install ( DIRECTORY include/ 
+#          DESTINATION include ${CMAKE_INSTALL_INCLUDEDIR} )
 
 #
 # This makes the project importable from the install directory
