@@ -45,24 +45,16 @@ message(STATUS "Suppressing stupid warning that CMAKE_C_COMPILER is not used. He
 #
 enable_testing( )
 
-set(VERSION_MAJOR   ${IFFL_VERSION_MAJOR}   CACHE STRING "Project major version number.")
-set(VERSION_MINOR   ${IFFL_VERSION_MINOR}   CACHE STRING "Project minor version number.")
-set(VERSION_PATCH   ${IFFL_VERSION_PATCH}   CACHE STRING "Project patch version number.")
+set(VERSION_MAJOR ${IFFL_VERSION_MAJOR} CACHE STRING "Project major version number.")
+set(VERSION_MINOR ${IFFL_VERSION_MINOR} CACHE STRING "Project minor version number.")
+set(VERSION_PATCH ${IFFL_VERSION_PATCH} CACHE STRING "Project patch version number.")
 mark_as_advanced(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
 
 #
 # This is a static library
 #
 add_library ( iffl 
-              STATIC
-              "src/dummy.cpp")
-
-#
-# need to find a way how to install generated file
-#
-#set(IFFL_CONFIG_IN ${CMAKE_CURRENT_SOURCE_DIR}/include/iffl_config.h.in)
-#set(IFFL_CONFIG_OUT ${CMAKE_CURRENT_BINARY_DIR}/include/iffl_config.h)
-#configure_file(${IFFL_CONFIG_IN} ${IFFL_CONFIG_OUT} @ONLY)
+              INTERFACE )
 
 #
 # If we have compiler requirements for this library, list them
@@ -70,7 +62,7 @@ add_library ( iffl
 # https://cmake.org/cmake/help/v3.8/prop_gbl/CMAKE_CXX_KNOWN_FEATURES.html#prop_gbl:CMAKE_CXX_KNOWN_FEATURES 
 #
 target_compile_features ( iffl
-                          PUBLIC
+                          INTERFACE
                               cxx_std_17
                               cxx_auto_type
                               cxx_final
@@ -80,83 +72,19 @@ target_compile_features ( iffl
                               cxx_variadic_templates )
 
 #
-# MSVC specific hacks
-#
-if ( MSVC )
-   
-    # append("/W4" msvc_warning_flags)
-    #
-    # CMake appends /W3 by default, and having /W3 followed by /W4 will result in 
-    # cl : Command line warning D9025 : overriding '/W3' with '/W4'.  Since this is
-    # a command line warning and not a compiler warning, it cannot be suppressed except
-    # by fixing the command line.
-    #
-    string (REGEX REPLACE " /W[0-4]" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}" )
-    string (REGEX REPLACE " /W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" )
-
-    #
-    # Downgrade following warnings to level W4
-    #
-    # 4061 - enumerator 'identifier' in switch of enum 'enumeration' is not explicitly handled by a case label
-    # 4062 - enumerator 'identifier' in switch of enum 'enumeration' is not handled
-    # 4265 - 'classname': class has virtual functions, but destructor is not virtual\n instances of this class may not be destructed correctly
-    #        
-    target_compile_options ( iffl
-                             PRIVATE
-                                 /W3
-                                 /w44265
-                                 /w44061
-                                 /w44062
-                                 /WX )
-
-    #
-    # generate preprocessor header
-    #
-    #target_compile_options( ac PRIVATE /P)
-
-    #
-    # Make sure we are MSVC extensions free
-    #
-    target_compile_options( iffl 
-                            PRIVATE 
-                                /permissive- )
-
-elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Werror")
-endif( )
-
-#
-# We are building in unicode mode, 
-# and we support only clients that are build 
-#in unicode mode
-#
-# target_compile_definitions ( iffl 
-#                             PUBLIC
-#                                 UNICODE
-#                                 _UNICODE
-#                                 JET_UNICODE )
-
-#
 # Define headers for this library. PUBLIC headers are used for
 # compiling the library, and will be added to consumers' build
 # paths.
 # PRIVATE headers are used only while building this project 
 #
 target_include_directories ( iffl 
-                             PUBLIC
+                             INTERFACE
                                  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-                                 $<INSTALL_INTERFACE:include>
-                             PRIVATE 
-                                 src )
+                                 $<INSTALL_INTERFACE:include>)
 
-#
-# 'make install' to the correct locations (provided by GNUInstallDirs).
-#
 install ( TARGETS iffl 
           EXPORT ifflconfig
-          ARCHIVE  DESTINATION lib ${CMAKE_INSTALL_LIBDIR}
-          LIBRARY  DESTINATION lib ${CMAKE_INSTALL_LIBDIR}
-          RUNTIME  DESTINATION bin ${CMAKE_INSTALL_BINDIR}
+          INCLUDES DESTINATION include "include"
         )
 
 #
