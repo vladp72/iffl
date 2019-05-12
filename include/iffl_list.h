@@ -523,14 +523,14 @@ public:
         return type_traits::minimum_size();
     }
     //!
-    //! @brief If traits defined alignment then size of
-    //! alignment, and 1 otherwise
+    //! @brief If traits defined alignment then value defined
+    //! by traits, and alignment of the T otherwise
     //!
     [[nodiscard]] constexpr static size_t get_alignment() noexcept {
         if constexpr (has_alignment_v) {
             return type_traits::alignment;
         } else {
-            return 1;
+            return alignof(value_type);
         }
     }
     //!
@@ -560,7 +560,7 @@ public:
     //! @return Value of s padded to alignment
     //!
     [[nodiscard]] constexpr static size_t roundup_to_alignment(size_t s) noexcept {
-        if constexpr (has_alignment_v && 0 != alignment) {
+        if constexpr (alignment > 1) {
             return roundup_size_to_alignment(s, alignment);
         } else {
             return s;
