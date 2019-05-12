@@ -2767,6 +2767,18 @@ public:
         move_from(std::move(other));
     }
     //!
+    //! @brief Move constructor.
+    //! @details This constructor is used when list is embedded
+    //! in another container. It is used to propagate container to 
+    //! the child containers.
+    //! @param other - container we are moving from
+    //! @param a - allocator that should be used by this container.
+    //!
+    flat_forward_list(flat_forward_list && other, allocator_type a) noexcept
+        : buffer_(one_then_variadic_args_t{}, a) {
+        copy_from(std::move(other));
+    }
+    //!
     //! @brief Copy constructor. Copies allocator if supported and 
     //! copies content of other container to this container
     //! @param other - container we are copying from
@@ -2777,6 +2789,17 @@ public:
         copy_from(other);
     }
     //!
+    //! @brief Copy constructor. 
+    //! @details This constructor is used when list is embedded
+    //! in another container. It is used to propagate container to 
+    //! the child containers.
+    //! @param other - container we are copying from
+    //! @throw std::bad_alloc if buffer allocation fails
+    //!
+    flat_forward_list(flat_forward_list const &other, allocator_type a)
+        : buffer_(one_then_variadic_args_t{}, a) {
+        copy_from(other);
+    }    //!
     //! @brief Constructor that takes ownership of a buffer
     //! @tparam A - type of allocator.
     //! @param other_buff - pointer to the start of the buffer

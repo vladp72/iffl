@@ -1225,6 +1225,34 @@ void flat_forward_list_traits_traits_test1() noexcept {
     test_traits_traits::print_traits_info();
 }
 
+void flat_forward_list_allocator_propogation_test1() {
+
+    iffl::debug_memory_resource dbg_memory_resource1;
+    iffl::debug_memory_resource dbg_memory_resource2;
+
+    iffl::pmr_flat_forward_list<FLAT_FORWARD_LIST_TEST> unordered_ffl1{ reinterpret_cast<char const *>(list_unordered1_len_4),
+                                                                        sizeof(list_unordered1_len_4),
+                                                                        &dbg_memory_resource1 };
+
+    using iffl_pmr_test = iffl::pmr_flat_forward_list<FLAT_FORWARD_LIST_TEST>;
+    using vector_iffl_pmr_test = std::pmr::vector<iffl_pmr_test>;
+    using pmr_allocator = vector_iffl_pmr_test::allocator_type;
+
+    vector_iffl_pmr_test vector_of_lists( &dbg_memory_resource1);
+
+    vector_of_lists.resize(1);
+
+    FFL_CODDING_ERROR_IF_NOT(vector_of_lists[0].get_allocator() == pmr_allocator{ &dbg_memory_resource1 });
+
+    vector_of_lists.push_back(iffl_pmr_test{ &dbg_memory_resource1 });
+
+    FFL_CODDING_ERROR_IF_NOT(vector_of_lists[1].get_allocator() == pmr_allocator{ &dbg_memory_resource1 });
+
+    vector_of_lists.push_back(iffl_pmr_test{ &dbg_memory_resource2 });
+
+    FFL_CODDING_ERROR_IF_NOT(vector_of_lists[2].get_allocator() == pmr_allocator{ &dbg_memory_resource1 });
+}
+
 
 void run_all_flat_forward_list_tests() {
     flat_forward_list_traits_traits_test1();
@@ -1245,4 +1273,5 @@ void run_all_flat_forward_list_tests() {
     flat_forward_list_erase_after_test1();
     flat_forward_list_resize_buffer_test1();
     flat_forward_list_sort_test1();
+    flat_forward_list_allocator_propogation_test1();
 }
