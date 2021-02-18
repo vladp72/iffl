@@ -7,7 +7,7 @@ This header only library that implements intrusive flat forward list (iffl).
 * __Forward__ __List__ - Elements have information on how to locate start of the next element. There is no way to get to the previous element other than linear scan from the beginning of the list. Because this is a __Flat__ container instead of pointers to the next element, it uses offset to the next element from the beginning of the current element.
 *
 [A talk](https://www.youtube.com/watch?v=Bfr0iDPgV8g) @ [Northwest C++ Users Group Meeting](https://nwcpp.org/) on [Flat Forward List (IFFL)](https://www.youtube.com/watch?v=Bfr0iDPgV8g). 
-[Slides from the talk](https://github.com/vladp72/iffl/blob/master/docs/IFFL.pptx).
+Slides from the talk can be downloaded [here](https://github.com/vladp72/iffl/blob/master/docs/IFFL.pptx).
 
 [Trivialy Movable](https://quuxplusone.github.io/blog/2018/09/28/trivially-relocatable-vs-destructive-movable/)
 
