@@ -162,7 +162,7 @@ inline void print_ea(size_t idx,
            idx,
            static_cast<int>(e.EaNameLength),
            (e.EaNameLength ? std::string{ e.EaName, e.EaName + e.EaNameLength }
-    : std::string{}).c_str());
+                           : std::string{}).c_str());
     std::printf("FILE_FULL_EA_INFORMATION[%zi].EaValueLength = %hu\n",
            idx,
            e.EaValueLength);

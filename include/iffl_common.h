@@ -20,13 +20,22 @@
 #include <typeinfo>
 #include <memory>
 #include <cstring>
+#include <limits>
+#include <string>
 
 #if defined(__GNUC__) || defined(__clang__)
-#include <experimental/memory_resource>
+//#include <experimental/memory_resource>
 //!
 //! @brief in GCC and CLANG pmr is still an experimental feature
 //!
-#define FFL_PMR std::experimental::pmr
+//#define FFL_PMR std::experimental::pmr
+//!
+//! @brief Looks like latest GCC and CLANG support pmr.
+//! I cannot figure out what condition I can use to choose 
+//! between including experimental version and final version
+//!
+#include <memory_resource>
+#define FFL_PMR std::pmr
 #else
 #include <memory_resource>
 //!
@@ -37,12 +46,21 @@
 
 #include <cstdio>
 
-#if defined(__GNUC__) || defined(__clang__)
+#if defined(__GNUC__)
 //!
-//! @brief On gcc and clang use __pack keyword to signify that
+//! @brief gcc complain about __pack keyword.
+//! need to figure out what I should be using on gcc
+//!
+//#define FFL_UNALIGNED
+#define FFL_UNALIGNED __attribute__((aligned(1)))
+
+#elif defined(__clang__)
+//!
+//! @brief clang use __pack keyword to signify that
 //! pointer is pointing to a not properly aligned data
 //!
-#define FFL_UNALIGNED __attribute__ ((__packed__))
+#define FFL_UNALIGNED __attribute__((__packed__))
+//#define FFL_UNALIGNED __attribute__((packed))
 #else
 //!
 //! @brief On vc use __unaligned keyword to signify that
